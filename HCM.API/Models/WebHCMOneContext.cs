@@ -17,13 +17,17 @@ namespace HCM.API.Models
         }
 
         public virtual DbSet<LogBranch> LogBranches { get; set; } = null!;
+        public virtual DbSet<LogCalendar> LogCalendars { get; set; } = null!;
         public virtual DbSet<LogDepartment> LogDepartments { get; set; } = null!;
         public virtual DbSet<LogDesignation> LogDesignations { get; set; } = null!;
+        public virtual DbSet<LogLeaveCalendar> LogLeaveCalendars { get; set; } = null!;
         public virtual DbSet<LogLocation> LogLocations { get; set; } = null!;
         public virtual DbSet<LogPosition> LogPositions { get; set; } = null!;
         public virtual DbSet<MstBranch> MstBranches { get; set; } = null!;
+        public virtual DbSet<MstCalendar> MstCalendars { get; set; } = null!;
         public virtual DbSet<MstDepartment> MstDepartments { get; set; } = null!;
         public virtual DbSet<MstDesignation> MstDesignations { get; set; } = null!;
+        public virtual DbSet<MstLeaveCalendar> MstLeaveCalendars { get; set; } = null!;
         public virtual DbSet<MstLocation> MstLocations { get; set; } = null!;
         public virtual DbSet<MstPosition> MstPositions { get; set; } = null!;
 
@@ -53,6 +57,33 @@ namespace HCM.API.Models
                 entity.Property(e => e.LogUser).HasMaxLength(200);
 
                 entity.Property(e => e.SourceId).HasColumnName("SourceID");
+            });
+
+            modelBuilder.Entity<LogCalendar>(entity =>
+            {
+                entity.ToTable("LogCalendar");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Code).HasMaxLength(20);
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.CreateddBy).HasMaxLength(20);
+
+                entity.Property(e => e.Description).HasMaxLength(250);
+
+                entity.Property(e => e.EndDate).HasColumnType("datetime");
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.SourceId).HasColumnName("SourceID");
+
+                entity.Property(e => e.StartDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(20);
             });
 
             modelBuilder.Entity<LogDepartment>(entity =>
@@ -87,6 +118,33 @@ namespace HCM.API.Models
                 entity.Property(e => e.LogUser).HasMaxLength(200);
 
                 entity.Property(e => e.SourceId).HasColumnName("SourceID");
+            });
+
+            modelBuilder.Entity<LogLeaveCalendar>(entity =>
+            {
+                entity.ToTable("LogLeaveCalendar");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Code).HasMaxLength(20);
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.CreateddBy).HasMaxLength(20);
+
+                entity.Property(e => e.Description).HasMaxLength(250);
+
+                entity.Property(e => e.EndDate).HasColumnType("datetime");
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.SourceId).HasColumnName("SourceID");
+
+                entity.Property(e => e.StartDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(20);
             });
 
             modelBuilder.Entity<LogLocation>(entity =>
@@ -134,6 +192,23 @@ namespace HCM.API.Models
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
             });
 
+            modelBuilder.Entity<MstCalendar>(entity =>
+            {
+                entity.ToTable("MstCalendar");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Code).HasMaxLength(20);
+
+                entity.Property(e => e.Description).HasMaxLength(250);
+
+                entity.Property(e => e.EndDate).HasColumnType("datetime");
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.StartDate).HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<MstDepartment>(entity =>
             {
                 entity.ToTable("MstDepartment");
@@ -154,6 +229,23 @@ namespace HCM.API.Models
                 entity.Property(e => e.Description).HasMaxLength(200);
 
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+            });
+
+            modelBuilder.Entity<MstLeaveCalendar>(entity =>
+            {
+                entity.ToTable("MstLeaveCalendar");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Code).HasMaxLength(20);
+
+                entity.Property(e => e.Description).HasMaxLength(250);
+
+                entity.Property(e => e.EndDate).HasColumnType("datetime");
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.StartDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<MstLocation>(entity =>
