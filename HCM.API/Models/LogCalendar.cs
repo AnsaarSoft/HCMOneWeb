@@ -12,9 +12,7 @@ namespace HCM.API.Models
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public bool? FlgActive { get; set; }
-        public string? CreateddBy { get; set; }
-        public DateTime? CreateDate { get; set; }
-        public string? UpdatedBy { get; set; }
-        public DateTime? UpdateDate { get; set; }
+        public string? LogUser { get; set; }
+        public DateTime? LogTime { get; set; }
     }
 }

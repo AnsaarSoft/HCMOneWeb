@@ -22,6 +22,7 @@ namespace HCM.API.Models
         public virtual DbSet<LogDesignation> LogDesignations { get; set; } = null!;
         public virtual DbSet<LogLeaveCalendar> LogLeaveCalendars { get; set; } = null!;
         public virtual DbSet<LogLocation> LogLocations { get; set; } = null!;
+        public virtual DbSet<LogObloan> LogObloans { get; set; } = null!;
         public virtual DbSet<LogPosition> LogPositions { get; set; } = null!;
         public virtual DbSet<MstBranch> MstBranches { get; set; } = null!;
         public virtual DbSet<MstCalendar> MstCalendars { get; set; } = null!;
@@ -30,6 +31,7 @@ namespace HCM.API.Models
         public virtual DbSet<MstLeaveCalendar> MstLeaveCalendars { get; set; } = null!;
         public virtual DbSet<MstLocation> MstLocations { get; set; } = null!;
         public virtual DbSet<MstPosition> MstPositions { get; set; } = null!;
+        public virtual DbSet<TrnsObloan> TrnsObloans { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -67,23 +69,19 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.Code).HasMaxLength(20);
 
-                entity.Property(e => e.CreateDate).HasColumnType("datetime");
-
-                entity.Property(e => e.CreateddBy).HasMaxLength(20);
-
                 entity.Property(e => e.Description).HasMaxLength(250);
 
                 entity.Property(e => e.EndDate).HasColumnType("datetime");
 
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
 
+                entity.Property(e => e.LogTime).HasColumnType("datetime");
+
+                entity.Property(e => e.LogUser).HasMaxLength(200);
+
                 entity.Property(e => e.SourceId).HasColumnName("SourceID");
 
                 entity.Property(e => e.StartDate).HasColumnType("datetime");
-
-                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
-
-                entity.Property(e => e.UpdatedBy).HasMaxLength(20);
             });
 
             modelBuilder.Entity<LogDepartment>(entity =>
@@ -128,23 +126,19 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.Code).HasMaxLength(20);
 
-                entity.Property(e => e.CreateDate).HasColumnType("datetime");
-
-                entity.Property(e => e.CreateddBy).HasMaxLength(20);
-
                 entity.Property(e => e.Description).HasMaxLength(250);
 
                 entity.Property(e => e.EndDate).HasColumnType("datetime");
 
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
 
+                entity.Property(e => e.LogTime).HasColumnType("datetime");
+
+                entity.Property(e => e.LogUser).HasMaxLength(200);
+
                 entity.Property(e => e.SourceId).HasColumnName("SourceID");
 
                 entity.Property(e => e.StartDate).HasColumnType("datetime");
-
-                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
-
-                entity.Property(e => e.UpdatedBy).HasMaxLength(20);
             });
 
             modelBuilder.Entity<LogLocation>(entity =>
@@ -162,6 +156,35 @@ namespace HCM.API.Models
                 entity.Property(e => e.LogUser).HasMaxLength(200);
 
                 entity.Property(e => e.SourceId).HasColumnName("SourceID");
+            });
+
+            modelBuilder.Entity<LogObloan>(entity =>
+            {
+                entity.ToTable("LogOBLoan");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.BalanceAmount).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.CalCode).HasMaxLength(50);
+
+                entity.Property(e => e.EmpId).HasColumnName("EmpID");
+
+                entity.Property(e => e.FkloanId).HasColumnName("FKLoanID");
+
+                entity.Property(e => e.Installment).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.LoanDate).HasColumnType("datetime");
+
+                entity.Property(e => e.LogTime).HasColumnType("datetime");
+
+                entity.Property(e => e.LogUser).HasMaxLength(100);
+
+                entity.Property(e => e.RecoverdAmount).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.SourceId).HasColumnName("SourceID");
+
+                entity.Property(e => e.TotalAmount).HasColumnType("numeric(18, 6)");
             });
 
             modelBuilder.Entity<LogPosition>(entity =>
@@ -268,6 +291,31 @@ namespace HCM.API.Models
                 entity.Property(e => e.Description).HasMaxLength(200);
 
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+            });
+
+            modelBuilder.Entity<TrnsObloan>(entity =>
+            {
+                entity.ToTable("TrnsOBLoan");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.BalanceAmount).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.CalCode).HasMaxLength(50);
+
+                entity.Property(e => e.EmpId).HasColumnName("EmpID");
+
+                entity.Property(e => e.FkloanId).HasColumnName("FKLoanID");
+
+                entity.Property(e => e.Installment).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.LoanDate).HasColumnType("datetime");
+
+                entity.Property(e => e.RecoverdAmount).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.TotalAmount)
+                    .HasColumnType("numeric(19, 6)")
+                    .HasComputedColumnSql("([BalanceAmount]+[RecoverdAmount])", false);
             });
 
             OnModelCreatingPartial(modelBuilder);
