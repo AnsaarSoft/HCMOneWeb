@@ -1,0 +1,70 @@
+﻿@page "/Position"
+@using HCM.API.Models
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>Position Setup</h3>
+            <MudDivider/>
+        </div>
+        @*<div class="col-sm-1">
+            <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.List" Title="View All" />
+        </div>*@
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudGrid>
+                <MudItem xs="8" sm="8" md="8" lg="8">
+                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="200" Counter="200" HelperText="Enter Position Name" Immediate="true" Clearable="true" Label="Position" Variant="Variant.Text" 
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem> 
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudSwitch @bind-Checked="@oModel.FlgActive" ThumbIcon="@(oModel.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgActive==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgActive==true ? "Active" : "In Active")</span>
+                    </MudSwitch>
+                </MudItem>
+                @if (Loading)
+                {
+                            <MudItem xs="2" sm="2" md="2" lg="2">
+                                <MudText>Loading...</MudText>
+                                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                            </MudItem>
+                }
+                else
+                {
+                            <MudItem xs="2" sm="2" md="2" lg="2">                                
+                                <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" />
+                            </MudItem>
+                }
+            </MudGrid>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudCard Elevation="5">
+                        <MudCardContent>
+                            <MudTable Items="@oList" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstPosition,bool>(FilterFunc)">
+                                <ToolBarContent>
+                                    <MudText Typo="Typo.h6">Position</MudText>
+                                    <MudSpacer />
+                                    <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                                </ToolBarContent>
+                                <HeaderContent>
+                                    <MudTh>Position Name</MudTh>
+                                    <MudTh>Active</MudTh>
+                                    <MudTh>Action</MudTh>
+                                </HeaderContent>
+                                <RowTemplate>
+                                    <MudTd DataLabel="Location Name">@context.Description</MudTd>
+                                    <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                                    <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id) )" Title="Edit"></MudIconButton></MudTd>
+                                </RowTemplate>
+                                <PagerContent>
+                                    <MudTablePager />
+                                </PagerContent>
+                            </MudTable>
+                        </MudCardContent>
+            </MudCard>
+        </div>
+    </div>    
+</div>

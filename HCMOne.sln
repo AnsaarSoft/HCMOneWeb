@@ -3,24 +3,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32505.173
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCM.UI", "HCM.UI\HCM.UI.csproj", "{1B955470-462D-4D09-A045-455C999BE1E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HCM.UI", "HCM.UI\HCM.UI.csproj", "{1B955470-462D-4D09-A045-455C999BE1E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCM.API", "HCM.API\HCM.API.csproj", "{28604F13-2938-4693-ADEC-66E6E5913341}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HCM.API", "HCM.API\HCM.API.csproj", "{28604F13-2938-4693-ADEC-66E6E5913341}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1B955470-462D-4D09-A045-455C999BE1E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1B955470-462D-4D09-A045-455C999BE1E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1B955470-462D-4D09-A045-455C999BE1E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1B955470-462D-4D09-A045-455C999BE1E8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{28604F13-2938-4693-ADEC-66E6E5913341}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{28604F13-2938-4693-ADEC-66E6E5913341}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{28604F13-2938-4693-ADEC-66E6E5913341}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{28604F13-2938-4693-ADEC-66E6E5913341}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B955470-462D-4D09-A045-455C999BE1E8}.Debug|x64.ActiveCfg = Debug|x64
+		{1B955470-462D-4D09-A045-455C999BE1E8}.Debug|x64.Build.0 = Debug|x64
+		{1B955470-462D-4D09-A045-455C999BE1E8}.Release|x64.ActiveCfg = Release|x64
+		{1B955470-462D-4D09-A045-455C999BE1E8}.Release|x64.Build.0 = Release|x64
+		{28604F13-2938-4693-ADEC-66E6E5913341}.Debug|x64.ActiveCfg = Debug|x64
+		{28604F13-2938-4693-ADEC-66E6E5913341}.Debug|x64.Build.0 = Debug|x64
+		{28604F13-2938-4693-ADEC-66E6E5913341}.Release|x64.ActiveCfg = Release|x64
+		{28604F13-2938-4693-ADEC-66E6E5913341}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

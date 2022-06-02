@@ -13,12 +13,13 @@
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
         <MudDrawerHeader>
-            <MudText Typo="Typo.h6">HCM.UI</MudText>
+            <MudText Typo="Typo.h6">MEPL Web Payroll</MudText>
+            <MudDivider/>
         </MudDrawerHeader>
         <NavMenu />
     </MudDrawer>
     <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.Large" Class="my-16 pt-16">
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="my-3 pt-3">
             @Body
         </MudContainer>
     </MudMainContent>
