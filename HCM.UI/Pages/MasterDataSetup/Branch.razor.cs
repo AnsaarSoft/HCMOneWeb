@@ -47,19 +47,26 @@ namespace HCM.UI.Pages.MasterDataSetup
                 await Task.Delay(3);
                 if (!string.IsNullOrWhiteSpace(oModel.Description))
                 {
-                    if (oModel.Id == 0)
+                    if (oList.Where(x => x.Description == oModel.Description).Count() > 0)
                     {
-                        res = await _mstBranch.Insert(oModel);
+                        Snackbar.Add("Description already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
                     else
                     {
-                        res = await _mstBranch.Update(oModel);
+                        if (oModel.Id == 0)
+                        {
+                            res = await _mstBranch.Insert(oModel);
+                        }
+                        else
+                        {
+                            res = await _mstBranch.Update(oModel);
+                        }
                     }
                     if (res != null && res.Id == 1)
                     {
                         Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
                         await Task.Delay(3000);
-                        Navigation.NavigateTo("/Branch", forceLoad: true);                        
+                        Navigation.NavigateTo("/Branch", forceLoad: true);
                     }
                     else
                     {
@@ -82,6 +89,22 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
+        private async void Reset()
+        {
+            try
+            {
+                Loading = true;
+                await Task.Delay(3);
+                Navigation.NavigateTo("/Branch", forceLoad: true);
+                Loading = false;
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                Loading = false;
+            }
+        }
+
         private async Task GetAllBranchs()
         {
             try
@@ -92,7 +115,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             {
                 Logs.GenerateLogs(ex);
             }
-        }        
+        }
 
         private bool FilterFunc(MstBranch element, string searchString1)
         {
@@ -133,7 +156,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     oModel.Id = res.Id;
                     oModel.Description = res.Description;
                     oModel.FlgActive = res.FlgActive;
-                   oList = oList.Where(x => x.Id != LineNum);
+                    oList = oList.Where(x => x.Id != LineNum);
                 }
             }
             catch (Exception ex)

@@ -37,13 +37,13 @@
                 else
                 {
                             <MudItem xs="2" sm="2" md="2" lg="2">
-                                <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" />
+                                <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                                <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
                             </MudItem>
                 }
                 <MudItem xs="8" sm="8" md="8" lg="8">
-                    <MudDateRangePicker @ref="_picker" DateFormat="MM/dd/yyyy" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.CalendarMonth" Label="Start and End Date Range" @bind-DateRange="_dateRange">
+                    <MudDateRangePicker @ref="_picker" PickerVariant="PickerVariant.Dialog" Disabled="@DisbaledDate" MinDate="@MinDate" DateFormat="MM/dd/yyyy" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.CalendarMonth" Label="Start and End Date Range" @bind-DateRange="_dateRange">
                         <PickerActions>
-                            <MudButton Class="mr-auto align-self-start" OnClick="@(() => _picker.Clear())">Clear</MudButton>
                             <MudButton OnClick="@(() => _picker.Close(false))">Cancel</MudButton>
                             <MudButton Color="Color.Primary" OnClick="@(() => _picker.Close())">Ok</MudButton>
                         </PickerActions>

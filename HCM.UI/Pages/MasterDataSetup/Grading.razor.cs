@@ -47,13 +47,20 @@ namespace HCM.UI.Pages.MasterDataSetup
                 await Task.Delay(3);
                 if (!string.IsNullOrWhiteSpace(oModel.Description))
                 {
-                    if (oModel.Id == 0)
+                    if (oList.Where(x => x.Description == oModel.Description).Count() > 0)
                     {
-                        res = await _mstGrading.Insert(oModel);
+                        Snackbar.Add("Description already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
                     else
                     {
-                        res = await _mstGrading.Update(oModel);
+                        if (oModel.Id == 0)
+                        {
+                            res = await _mstGrading.Insert(oModel);
+                        }
+                        else
+                        {
+                            res = await _mstGrading.Update(oModel);
+                        }
                     }
                     if (res != null && res.Id == 1)
                     {
@@ -79,6 +86,22 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Logs.GenerateLogs(ex);
                 Loading = false;
                 return null;
+            }
+        }
+
+        private async void Reset()
+        {
+            try
+            {
+                Loading = true;
+                await Task.Delay(3);
+                Navigation.NavigateTo("/Grading", forceLoad: true);
+                Loading = false;
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                Loading = false;
             }
         }
 
@@ -159,6 +182,8 @@ namespace HCM.UI.Pages.MasterDataSetup
             {
                 Loading = true;
                 oModel.FlgActive = true;
+                oModel.MinSalary = 1;
+                oModel.MaxSalary = 1;
                 await GetAllGradings();
                 Loading = false;
             }

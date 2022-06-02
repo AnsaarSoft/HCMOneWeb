@@ -34,15 +34,16 @@
                 else
                 {
                             <MudItem xs="2" sm="2" md="2" lg="2">
-                                <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" />
+                                <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                                <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
                             </MudItem>
                 }
                 <MudItem xs="5" sm="5" md="5" lg="5">
-                    <MudNumericField @bind-Value="oModel.MinSalary" HelperText="Enter Min Salary" Immediate="true" Clearable="true" Label="Min Salary" Variant="Variant.Text" 
+                    <MudNumericField @bind-Value="oModel.MinSalary" Min="0" HelperText="Enter Min Salary" Immediate="true" Clearable="true" Label="Min Salary" Variant="Variant.Text" 
                     Adornment="Adornment.Start" AdornmentText="Rs" Format="N2" Culture="@CultureInfo.InvariantCulture" />                    
                 </MudItem>
                 <MudItem xs="5" sm="5" md="5" lg="5">
-                    <MudNumericField @bind-Value="oModel.MaxSalary" HelperText="Enter Max Salary" Immediate="true" Clearable="true" Label="Max Salary" Variant="Variant.Text" 
+                    <MudNumericField @bind-Value="oModel.MaxSalary" Min="0" HelperText="Enter Max Salary" Immediate="true" Clearable="true" Label="Max Salary" Variant="Variant.Text" 
                     Adornment="Adornment.Start" AdornmentText="Rs" Format="N2" Culture="@CultureInfo.InvariantCulture"/> 
                 </MudItem>
             </MudGrid>
