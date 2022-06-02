@@ -412,81 +412,81 @@ namespace HCM.API.Controllers
 
         #endregion
 
-        #region MST Grading
+        //#region MST Grading
 
-        [Route("getAllGrading")]
-        [HttpGet]
-        public async Task<IActionResult> GetAllGrading()
-        {
-            List<MstGrading> oMstGrading = new List<MstGrading>();
-            try
-            {
-                oMstGrading = await _mstGrading.GetAllData();
-                if (oMstGrading == null)
-                {
-                    return BadRequest(oMstGrading);
-                }
-                else
-                {
-                    return Ok(oMstGrading);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-                return BadRequest("Something went wrong.");
-            }
-        }
+        //[Route("getAllGrading")]
+        //[HttpGet]
+        //public async Task<IActionResult> GetAllGrading()
+        //{
+        //    List<MstGrading> oMstGrading = new List<MstGrading>();
+        //    try
+        //    {
+        //        oMstGrading = await _mstGrading.GetAllData();
+        //        if (oMstGrading == null)
+        //        {
+        //            return BadRequest(oMstGrading);
+        //        }
+        //        else
+        //        {
+        //            return Ok(oMstGrading);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logs.GenerateLogs(ex);
+        //        return BadRequest("Something went wrong.");
+        //    }
+        //}
 
-        [Route("addGrading")]
-        [HttpPost]
-        public async Task<IActionResult> Add([FromBody] MstGrading pMstGrading)
-        {
-            ApiResponseModel response = new ApiResponseModel();
-            try
-            {
-                response = await _mstGrading.Insert(pMstGrading);
-                if (response == null)
-                {
-                    return BadRequest(response);
-                }
-                else
-                {
-                    return Ok(response);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-                return BadRequest("Something went wrong.");
-            }
-        }
+        //[Route("addGrading")]
+        //[HttpPost]
+        //public async Task<IActionResult> Add([FromBody] MstGrading pMstGrading)
+        //{
+        //    ApiResponseModel response = new ApiResponseModel();
+        //    try
+        //    {
+        //        response = await _mstGrading.Insert(pMstGrading);
+        //        if (response == null)
+        //        {
+        //            return BadRequest(response);
+        //        }
+        //        else
+        //        {
+        //            return Ok(response);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logs.GenerateLogs(ex);
+        //        return BadRequest("Something went wrong.");
+        //    }
+        //}
 
-        [Route("updateGrading")]
-        [HttpPost]
-        public async Task<IActionResult> Update([FromBody] MstGrading pMstGrading)
-        {
-            ApiResponseModel response = new ApiResponseModel();
-            try
-            {
-                response = await _mstGrading.Update(pMstGrading);
-                if (response == null)
-                {
-                    return BadRequest(response);
-                }
-                else
-                {
-                    return Ok(response);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-                return BadRequest("Something went wrong.");
-            }
-        }
+        //[Route("updateGrading")]
+        //[HttpPost]
+        //public async Task<IActionResult> Update([FromBody] MstGrading pMstGrading)
+        //{
+        //    ApiResponseModel response = new ApiResponseModel();
+        //    try
+        //    {
+        //        response = await _mstGrading.Update(pMstGrading);
+        //        if (response == null)
+        //        {
+        //            return BadRequest(response);
+        //        }
+        //        else
+        //        {
+        //            return Ok(response);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logs.GenerateLogs(ex);
+        //        return BadRequest("Something went wrong.");
+        //    }
+        //}
 
-        #endregion
+        //#endregion
 
         #region MST Calendar
 

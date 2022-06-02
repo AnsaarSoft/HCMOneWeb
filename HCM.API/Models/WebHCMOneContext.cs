@@ -20,6 +20,7 @@ namespace HCM.API.Models
         public virtual DbSet<LogCalendar> LogCalendars { get; set; } = null!;
         public virtual DbSet<LogDepartment> LogDepartments { get; set; } = null!;
         public virtual DbSet<LogDesignation> LogDesignations { get; set; } = null!;
+        public virtual DbSet<LogGrading> LogGradings { get; set; } = null!;
         public virtual DbSet<LogLeaveCalendar> LogLeaveCalendars { get; set; } = null!;
         public virtual DbSet<LogLocation> LogLocations { get; set; } = null!;
         public virtual DbSet<LogObloan> LogObloans { get; set; } = null!;
@@ -28,8 +29,10 @@ namespace HCM.API.Models
         public virtual DbSet<MstCalendar> MstCalendars { get; set; } = null!;
         public virtual DbSet<MstDepartment> MstDepartments { get; set; } = null!;
         public virtual DbSet<MstDesignation> MstDesignations { get; set; } = null!;
+        public virtual DbSet<MstGrading> MstGradings { get; set; } = null!;
         public virtual DbSet<MstLeaveCalendar> MstLeaveCalendars { get; set; } = null!;
         public virtual DbSet<MstLocation> MstLocations { get; set; } = null!;
+        public virtual DbSet<MstPayroll> MstPayrolls { get; set; } = null!;
         public virtual DbSet<MstPosition> MstPositions { get; set; } = null!;
         public virtual DbSet<TrnsObloan> TrnsObloans { get; set; } = null!;
 
@@ -114,6 +117,27 @@ namespace HCM.API.Models
                 entity.Property(e => e.LogTime).HasColumnType("datetime");
 
                 entity.Property(e => e.LogUser).HasMaxLength(200);
+
+                entity.Property(e => e.SourceId).HasColumnName("SourceID");
+            });
+
+            modelBuilder.Entity<LogGrading>(entity =>
+            {
+                entity.ToTable("LogGrading");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Description).HasMaxLength(200);
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.LogTime).HasColumnType("datetime");
+
+                entity.Property(e => e.LogUser).HasMaxLength(200);
+
+                entity.Property(e => e.MaxSalary).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.MinSalary).HasColumnType("numeric(18, 6)");
 
                 entity.Property(e => e.SourceId).HasColumnName("SourceID");
             });
@@ -254,6 +278,21 @@ namespace HCM.API.Models
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
             });
 
+            modelBuilder.Entity<MstGrading>(entity =>
+            {
+                entity.ToTable("MstGrading");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Description).HasMaxLength(200);
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.MaxSalary).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.MinSalary).HasColumnType("numeric(18, 6)");
+            });
+
             modelBuilder.Entity<MstLeaveCalendar>(entity =>
             {
                 entity.ToTable("MstLeaveCalendar");
@@ -280,6 +319,37 @@ namespace HCM.API.Models
                 entity.Property(e => e.Description).HasMaxLength(200);
 
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+            });
+
+            modelBuilder.Entity<MstPayroll>(entity =>
+            {
+                entity.ToTable("MstPayroll");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(20);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.FirstPeriodEndDt).HasColumnType("datetime");
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.FlgOffDaysExcludedFromSalaryPeriod).HasColumnName("flgOffDaysExcludedFromSalaryPeriod");
+
+                entity.Property(e => e.Gltype)
+                    .HasMaxLength(10)
+                    .HasColumnName("GLType");
+
+                entity.Property(e => e.PayrollName).HasMaxLength(30);
+
+                entity.Property(e => e.PayrollType).HasMaxLength(10);
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(20);
+
+                entity.Property(e => e.WorkHours).HasColumnType("numeric(10, 2)");
             });
 
             modelBuilder.Entity<MstPosition>(entity =>

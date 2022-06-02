@@ -23,7 +23,7 @@ namespace HCM.API.Repository.MasterData
                     //oList = (from a in _DBContext.MstBranchs
                     //         where a.FlgActive == true
                     //         select a).ToList();
-                    oList = _DBContext.MstBranchs.ToList();
+                    oList = _DBContext.MstBranches.ToList();
                 });                
             }
             catch (Exception ex)
@@ -39,7 +39,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    _DBContext.MstBranchs.Add(oMstBranch);
+                    _DBContext.MstBranches.Add(oMstBranch);
                     _DBContext.SaveChanges();                    
                     response.Id = 1;
                     response.Message = "Saved successfully";
@@ -60,7 +60,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    _DBContext.MstBranchs.Update(oMstBranch);
+                    _DBContext.MstBranches.Update(oMstBranch);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";
