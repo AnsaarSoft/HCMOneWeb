@@ -14,8 +14,12 @@
     <div class="row mt-5">
         <div class="col-sm-12">
             <MudGrid>
-                <MudItem xs="8" sm="8" md="8" lg="8">
-                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="200" Counter="200" HelperText="Enter Calendar Name" Immediate="true" Clearable="true" Label="Calendar" Variant="Variant.Text" 
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" @bind-Value="oModel.Code" MaxLength="20" Counter="00" HelperText="Enter Code" Immediate="true" Clearable="true" Label="Code" Variant="Variant.Text" 
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem> 
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="200" Counter="200" HelperText="Enter Calendar Name" Immediate="true" Clearable="true" Label="Calendar Name" Variant="Variant.Text" 
                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem> 
                 <MudItem xs="2" sm="2" md="2" lg="2">
@@ -36,6 +40,15 @@
                                 <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" />
                             </MudItem>
                 }
+                <MudItem xs="8" sm="8" md="8" lg="8">
+                    <MudDateRangePicker @ref="_picker" DateFormat="MM/dd/yyyy" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.CalendarMonth" Label="Start and End Date Range" @bind-DateRange="_dateRange">
+                        <PickerActions>
+                            <MudButton Class="mr-auto align-self-start" OnClick="@(() => _picker.Clear())">Clear</MudButton>
+                            <MudButton OnClick="@(() => _picker.Close(false))">Cancel</MudButton>
+                            <MudButton Color="Color.Primary" OnClick="@(() => _picker.Close())">Ok</MudButton>
+                        </PickerActions>
+                    </MudDateRangePicker>
+                </MudItem>
             </MudGrid>
         </div>
     </div>
@@ -50,12 +63,18 @@
                                     <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
                                 </ToolBarContent>
                                 <HeaderContent>
+                                    <MudTh>Code</MudTh>
                                     <MudTh>Calendar Name</MudTh>
+                                    <MudTh>Start Date</MudTh>
+                                    <MudTh>End Date</MudTh>
                                     <MudTh>Active</MudTh>
                                     <MudTh>Action</MudTh>
                                 </HeaderContent>
                                 <RowTemplate>
+                                    <MudTd DataLabel="Code">@context.Code</MudTd>
                                     <MudTd DataLabel="Calendar Name">@context.Description</MudTd>
+                                    <MudTd DataLabel="Start Date">@Convert.ToDateTime(context.StartDate).ToString("MM/dd/yyyy")</MudTd>
+                                    <MudTd DataLabel="End Date">@Convert.ToDateTime(context.EndDate).ToString("MM/dd/yyyy")</MudTd>
                                     <MudTd DataLabel="Active">@context.FlgActive</MudTd>
                                     <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id) )" Title="Edit"></MudIconButton></MudTd>
                                 </RowTemplate>

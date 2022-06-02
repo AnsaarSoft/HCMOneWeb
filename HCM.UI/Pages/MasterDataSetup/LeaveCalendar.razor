@@ -4,7 +4,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
-            <h3>LeaveCalendar Setup</h3>
+            <h3>Leave Calendar Setup</h3>
             <MudDivider/>
         </div>
         @*<div class="col-sm-1">
@@ -15,7 +15,7 @@
         <div class="col-sm-12">
             <MudGrid>
                 <MudItem xs="8" sm="8" md="8" lg="8">
-                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="200" Counter="200" HelperText="Enter LeaveCalendar Name" Immediate="true" Clearable="true" Label="LeaveCalendar" Variant="Variant.Text" 
+                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="200" Counter="200" HelperText="Enter Leave Calendar Name" Immediate="true" Clearable="true" Label="Leave Calendar" Variant="Variant.Text" 
                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem> 
                 <MudItem xs="2" sm="2" md="2" lg="2">
@@ -45,12 +45,12 @@
                         <MudCardContent>
                             <MudTable Items="@oList" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstLeaveCalendar,bool>(FilterFunc)">
                                 <ToolBarContent>
-                                    <MudText Typo="Typo.h6">LeaveCalendars</MudText>
+                                    <MudText Typo="Typo.h6">Leave Calendar</MudText>
                                     <MudSpacer />
                                     <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
                                 </ToolBarContent>
                                 <HeaderContent>
-                                    <MudTh>LeaveCalendar Name</MudTh>
+                                    <MudTh>Leave Calendar Name</MudTh>
                                     <MudTh>Active</MudTh>
                                     <MudTh>Action</MudTh>
                                 </HeaderContent>

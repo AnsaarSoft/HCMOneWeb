@@ -34,6 +34,9 @@ namespace HCM.UI.Pages.MasterDataSetup
         MstCalendar oModel = new MstCalendar();
         private IEnumerable<MstCalendar> oList = new List<MstCalendar>();
 
+        MudDateRangePicker _picker;
+        DateRange _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date);
+
         #endregion
 
         #region Functions
@@ -45,8 +48,10 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
-                if (!string.IsNullOrWhiteSpace(oModel.Description))
+                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description))
                 {
+                    oModel.StartDate = _dateRange.Start;
+                    oModel.EndDate = _dateRange.End;
                     if (oModel.Id == 0)
                     {
                         res = await _mstCalendar.Insert(oModel);
@@ -59,7 +64,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     {
                         Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
                         await Task.Delay(3000);
-                        Navigation.NavigateTo("/Calendar", forceLoad: true);                        
+                        Navigation.NavigateTo("/Calendar", forceLoad: true);
                     }
                     else
                     {
@@ -92,13 +97,19 @@ namespace HCM.UI.Pages.MasterDataSetup
             {
                 Logs.GenerateLogs(ex);
             }
-        }        
+        }
 
         private bool FilterFunc(MstCalendar element, string searchString1)
         {
             if (string.IsNullOrWhiteSpace(searchString1))
                 return true;
+            if (element.Code.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
             if (element.Description.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.StartDate.Equals(searchString1))
+                return true;
+            if (element.EndDate.Equals(searchString1))
                 return true;
             if (element.FlgActive.Equals(searchString1))
                 return true;
@@ -131,9 +142,13 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (res != null)
                 {
                     oModel.Id = res.Id;
+                    oModel.Code = res.Code;
                     oModel.Description = res.Description;
+                    oModel.StartDate = _dateRange.Start = res.StartDate;
+                    oModel.EndDate = _dateRange.End = res.EndDate;
                     oModel.FlgActive = res.FlgActive;
-                   oList = oList.Where(x => x.Id != LineNum);
+                    oList = oList.Where(x => x.Id != LineNum);
+                    //_ = InvokeAsync(StateHasChanged);
                 }
             }
             catch (Exception ex)
