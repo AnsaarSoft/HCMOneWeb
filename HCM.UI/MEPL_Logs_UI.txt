@@ -1,0 +1,18 @@
+System.InvalidOperationException: Nullable object must have a value.
+   at System.Nullable`1.get_Value()
+   at HCM.UI.Pages.MasterDataSetup.Calendar.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Calendar.razor.cs:line 223: 6/2/2022 7:25:26 PM
+System.InvalidOperationException: Nullable object must have a value.
+   at System.Nullable`1.get_Value()
+   at HCM.UI.Pages.MasterDataSetup.Calendar.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Calendar.razor.cs:line 223: 6/2/2022 7:25:26 PM
+System.InvalidOperationException: Nullable object must have a value.
+   at System.Nullable`1.get_Value()
+   at HCM.UI.Pages.MasterDataSetup.Calendar.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Calendar.razor.cs:line 223: 6/2/2022 7:25:36 PM
+System.InvalidOperationException: Nullable object must have a value.
+   at System.Nullable`1.get_Value()
+   at HCM.UI.Pages.MasterDataSetup.Calendar.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Calendar.razor.cs:line 223: 6/2/2022 7:25:36 PM
+System.InvalidOperationException: Nullable object must have a value.
+   at System.Nullable`1.get_Value()
+   at HCM.UI.Pages.MasterDataSetup.Calendar.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Calendar.razor.cs:line 223: 6/2/2022 7:26:33 PM
+System.InvalidOperationException: Nullable object must have a value.
+   at System.Nullable`1.get_Value()
+   at HCM.UI.Pages.MasterDataSetup.Calendar.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Calendar.razor.cs:line 223: 6/2/2022 7:27:10 PM

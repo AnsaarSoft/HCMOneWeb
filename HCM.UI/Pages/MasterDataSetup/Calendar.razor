@@ -15,7 +15,7 @@
         <div class="col-sm-12">
             <MudGrid>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" @bind-Value="oModel.Code" MaxLength="20" Counter="00" HelperText="Enter Code" Immediate="true" Clearable="true" Label="Code" Variant="Variant.Text" 
+                    <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisbaledCode" Mask="@AlphaNumericMask" MaxLength="20" Counter="20" HelperText="Enter Code" Immediate="true" Clearable="true" Label="Code" Variant="Variant.Text" 
                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem> 
                 <MudItem xs="4" sm="4" md="4" lg="4">

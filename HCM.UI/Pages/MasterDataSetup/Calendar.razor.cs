@@ -29,6 +29,8 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         bool Loading = false;
         bool DisbaledDate = false;
+        bool DisbaledCode = false;
+        public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
         private string searchString1 = "";
         private bool FilterFunc(MstCalendar element) => FilterFunc(element, searchString1);
 
@@ -60,13 +62,29 @@ namespace HCM.UI.Pages.MasterDataSetup
                     {
                         oModel.StartDate = _dateRange.Start;
                         oModel.EndDate = _dateRange.End;
-                        if (oModel.Id == 0)
+                        if (oModel.Code.Length > 20)
                         {
-                            res = await _mstCalendar.Insert(oModel);
+                            Snackbar.Add("Code accept only 20 characters", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                         }
                         else
                         {
-                            res = await _mstCalendar.Update(oModel);
+                            var MonthDifference = DateTimeSpan.GetMonthDifference((DateTime)oModel.StartDate, (DateTime)oModel.EndDate);
+                            if (MonthDifference < 12)
+                            {
+                                Snackbar.Add("Invalid Date Selection, must be within 12 months range", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                            }
+                            else
+                            {
+
+                                if (oModel.Id == 0)
+                                {
+                                    res = await _mstCalendar.Insert(oModel);
+                                }
+                                else
+                                {
+                                    res = await _mstCalendar.Update(oModel);
+                                }
+                            }
                         }
                     }
                     if (res != null && res.Id == 1)
@@ -116,7 +134,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         {
             try
             {
-                oList = await _mstCalendar.GetAllData();                       
+                oList = await _mstCalendar.GetAllData();
             }
             catch (Exception ex)
             {
@@ -131,10 +149,6 @@ namespace HCM.UI.Pages.MasterDataSetup
             if (element.Code.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
             if (element.Description.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
-                return true;
-            if (element.StartDate.Equals(searchString1))
-                return true;
-            if (element.EndDate.Equals(searchString1))
                 return true;
             if (element.FlgActive.Equals(searchString1))
                 return true;
@@ -166,15 +180,17 @@ namespace HCM.UI.Pages.MasterDataSetup
                 var res = oList.Where(x => x.Id == LineNum).FirstOrDefault();
                 if (res != null)
                 {
+                    AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
                     DisbaledDate = true;
                     oModel.Id = res.Id;
                     oModel.Code = res.Code;
+                    DisbaledCode = true;
                     oModel.Description = res.Description;
                     oModel.StartDate = _dateRange.Start = res.StartDate;
                     oModel.EndDate = _dateRange.End = res.EndDate;
                     _dateRange = new DateRange(oModel.StartDate, oModel.EndDate);
                     oModel.FlgActive = res.FlgActive;
-                    oList = oList.Where(x => x.Id != LineNum);                    
+                    oList = oList.Where(x => x.Id != LineNum);
                     //_ = InvokeAsync(StateHasChanged);
                 }
             }
@@ -194,18 +210,19 @@ namespace HCM.UI.Pages.MasterDataSetup
             try
             {
                 Loading = true;
-                oModel.FlgActive = true;                
+                oModel.FlgActive = true;
                 await GetAllCalendars();
-                if (oList.Count() > 0)
+                if (oList.Where(x => x.FlgActive == true).Count() > 0)
                 {
                     var res = oList.Where(x => x.FlgActive == true).Max(x => x.EndDate);
-                    _dateRange = new DateRange(res.Value, res.Value);
-                    _dateRange.Start = MinDate = res.Value;
+                    Convert.ToDateTime(res).AddDays(1);
+                    _dateRange = new DateRange(Convert.ToDateTime(res.Value).AddDays(1), Convert.ToDateTime(res).AddMonths(12));
+                    _dateRange.Start = MinDate = Convert.ToDateTime(res).AddDays(1);
                 }
                 else
                 {
-                    MinDate = DateTime.Now.Date;
-                    _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date);
+                    //MinDate = DateTime.Now.Date;
+                    _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date.AddMonths(12));
                 }
                 Loading = false;
             }
