@@ -12,6 +12,7 @@ namespace HCM.API.Models
         public decimal? RecoverdAmount { get; set; }
         public decimal? TotalAmount { get; set; }
         public decimal? Installment { get; set; }
+        public int? CalId { get; set; }
         public string? CalCode { get; set; }
         public DateTime? LoanDate { get; set; }
     }
