@@ -46,6 +46,8 @@ namespace HCM.API.Models
         public virtual DbSet<MstPosition> MstPositions { get; set; } = null!;
         public virtual DbSet<MstShift> MstShifts { get; set; } = null!;
         public virtual DbSet<MstShiftsDetail> MstShiftsDetails { get; set; } = null!;
+        public virtual DbSet<MstTaxSetup> MstTaxSetups { get; set; } = null!;
+        public virtual DbSet<MstTaxSetupDetail> MstTaxSetupDetails { get; set; } = null!;
         public virtual DbSet<TrnsObloan> TrnsObloans { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -713,6 +715,49 @@ namespace HCM.API.Models
                     .WithMany(p => p.MstShiftsDetails)
                     .HasForeignKey(d => d.Fkid)
                     .HasConstraintName("FK_MstShiftsDetails_MstShifts");
+            });
+
+            modelBuilder.Entity<MstTaxSetup>(entity =>
+            {
+                entity.ToTable("MstTaxSetup");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.DiscountOnTotalTax).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.MaxSalaryDisc).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.MinTaxSalaryF).HasColumnType("numeric(18, 6)");
+            });
+
+            modelBuilder.Entity<MstTaxSetupDetail>(entity =>
+            {
+                entity.ToTable("MstTaxSetupDetail");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.AdditionalDisc).HasColumnType("numeric(19, 6)");
+
+                entity.Property(e => e.Description).HasMaxLength(50);
+
+                entity.Property(e => e.FixTerm).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.Fkid).HasColumnName("FKID");
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.MaxAmount).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.MinAmount).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.TaxCode).HasMaxLength(20);
+
+                entity.Property(e => e.TaxValue).HasColumnType("numeric(6, 3)");
+
+                entity.HasOne(d => d.Fk)
+                    .WithMany(p => p.MstTaxSetupDetails)
+                    .HasForeignKey(d => d.Fkid)
+                    .HasConstraintName("FK_MstTaxSetupDetail_MstTaxSetup");
             });
 
             modelBuilder.Entity<TrnsObloan>(entity =>
