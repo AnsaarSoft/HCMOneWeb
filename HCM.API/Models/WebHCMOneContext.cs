@@ -25,20 +25,25 @@ namespace HCM.API.Models
         public virtual DbSet<LogLocation> LogLocations { get; set; } = null!;
         public virtual DbSet<LogObloan> LogObloans { get; set; } = null!;
         public virtual DbSet<LogPosition> LogPositions { get; set; } = null!;
+        public virtual DbSet<MstAttendanceRule> MstAttendanceRules { get; set; } = null!;
         public virtual DbSet<MstBranch> MstBranches { get; set; } = null!;
         public virtual DbSet<MstCalendar> MstCalendars { get; set; } = null!;
+        public virtual DbSet<MstDeductionRule> MstDeductionRules { get; set; } = null!;
         public virtual DbSet<MstDepartment> MstDepartments { get; set; } = null!;
         public virtual DbSet<MstDesignation> MstDesignations { get; set; } = null!;
         public virtual DbSet<MstElement> MstElements { get; set; } = null!;
         public virtual DbSet<MstElementContribution> MstElementContributions { get; set; } = null!;
         public virtual DbSet<MstElementDeduction> MstElementDeductions { get; set; } = null!;
         public virtual DbSet<MstElementEarning> MstElementEarnings { get; set; } = null!;
+        public virtual DbSet<MstEmailConfig> MstEmailConfigs { get; set; } = null!;
         public virtual DbSet<MstGrading> MstGradings { get; set; } = null!;
         public virtual DbSet<MstLeaveCalendar> MstLeaveCalendars { get; set; } = null!;
         public virtual DbSet<MstLeaveDeduction> MstLeaveDeductions { get; set; } = null!;
         public virtual DbSet<MstLeaveType> MstLeaveTypes { get; set; } = null!;
         public virtual DbSet<MstLeavesAllocated> MstLeavesAllocateds { get; set; } = null!;
         public virtual DbSet<MstLocation> MstLocations { get; set; } = null!;
+        public virtual DbSet<MstLove> MstLoves { get; set; } = null!;
+        public virtual DbSet<MstOverTime> MstOverTimes { get; set; } = null!;
         public virtual DbSet<MstPayroll> MstPayrolls { get; set; } = null!;
         public virtual DbSet<MstPayrollBasicInitialization> MstPayrollBasicInitializations { get; set; } = null!;
         public virtual DbSet<MstPayrollElement> MstPayrollElements { get; set; } = null!;
@@ -48,6 +53,8 @@ namespace HCM.API.Models
         public virtual DbSet<MstShiftsDetail> MstShiftsDetails { get; set; } = null!;
         public virtual DbSet<MstTaxSetup> MstTaxSetups { get; set; } = null!;
         public virtual DbSet<MstTaxSetupDetail> MstTaxSetupDetails { get; set; } = null!;
+        public virtual DbSet<TrnsDeductionRule> TrnsDeductionRules { get; set; } = null!;
+        public virtual DbSet<TrnsDeductionRulesDetail> TrnsDeductionRulesDetails { get; set; } = null!;
         public virtual DbSet<TrnsObloan> TrnsObloans { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -242,6 +249,35 @@ namespace HCM.API.Models
                 entity.Property(e => e.SourceId).HasColumnName("SourceID");
             });
 
+            modelBuilder.Entity<MstAttendanceRule>(entity =>
+            {
+                entity.ToTable("MstAttendanceRule");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.DefaultLeaveType).HasMaxLength(50);
+
+                entity.Property(e => e.FlgDeductGpAfterStartTime).HasColumnName("flgDeductGpAfterStartTime");
+
+                entity.Property(e => e.FlgDeductGpAfterTimeEnd).HasColumnName("flgDeductGpAfterTimeEnd");
+
+                entity.Property(e => e.FlgDeductGpBeforeStartTime).HasColumnName("flgDeductGpBeforeStartTime");
+
+                entity.Property(e => e.FlgDeductGpBeforeTimeEnd).HasColumnName("flgDeductGpBeforeTimeEnd");
+
+                entity.Property(e => e.FlgSandwichLeavesDoubleSide).HasColumnName("flgSandwichLeavesDoubleSide");
+
+                entity.Property(e => e.FlgSandwichLeavesSingleSide).HasColumnName("flgSandwichLeavesSingleSide");
+
+                entity.Property(e => e.GpAfterStartTime).HasMaxLength(50);
+
+                entity.Property(e => e.GpAfterTimeEnd).HasMaxLength(50);
+
+                entity.Property(e => e.GpBeforeStartTime).HasMaxLength(50);
+
+                entity.Property(e => e.GpBeforeTimeEnd).HasMaxLength(50);
+            });
+
             modelBuilder.Entity<MstBranch>(entity =>
             {
                 entity.ToTable("MstBranch");
@@ -268,6 +304,21 @@ namespace HCM.API.Models
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
 
                 entity.Property(e => e.StartDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<MstDeductionRule>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Code).HasMaxLength(50);
+
+                entity.Property(e => e.LeaveCount).HasColumnType("numeric(19, 6)");
+
+                entity.Property(e => e.RangeFrom).HasMaxLength(10);
+
+                entity.Property(e => e.RangeTo).HasMaxLength(10);
+
+                entity.Property(e => e.Value).HasMaxLength(50);
             });
 
             modelBuilder.Entity<MstDepartment>(entity =>
@@ -423,6 +474,25 @@ namespace HCM.API.Models
                     .HasConstraintName("FK_MstElementEarning_MstElements");
             });
 
+            modelBuilder.Entity<MstEmailConfig>(entity =>
+            {
+                entity.ToTable("MstEmailConfig");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.FromEmail).HasMaxLength(50);
+
+                entity.Property(e => e.Password).HasMaxLength(50);
+
+                entity.Property(e => e.Smtport).HasColumnName("SMTPort");
+
+                entity.Property(e => e.Smtpserver)
+                    .HasMaxLength(100)
+                    .HasColumnName("SMTPServer");
+
+                entity.Property(e => e.TestEmail).HasMaxLength(50);
+            });
+
             modelBuilder.Entity<MstGrading>(entity =>
             {
                 entity.ToTable("MstGrading");
@@ -549,6 +619,52 @@ namespace HCM.API.Models
                 entity.Property(e => e.Description).HasMaxLength(200);
 
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+            });
+
+            modelBuilder.Entity<MstLove>(entity =>
+            {
+                entity.ToTable("MstLOVE");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Code).HasMaxLength(20);
+
+                entity.Property(e => e.Language).HasMaxLength(30);
+
+                entity.Property(e => e.Type).HasMaxLength(20);
+
+                entity.Property(e => e.Value).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<MstOverTime>(entity =>
+            {
+                entity.ToTable("MstOverTime");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Code).HasMaxLength(20);
+
+                entity.Property(e => e.Description).HasMaxLength(250);
+
+                entity.Property(e => e.Expression).HasMaxLength(1000);
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.FlgDefault).HasColumnName("flgDefault");
+
+                entity.Property(e => e.FlgFormula).HasColumnName("flgFormula");
+
+                entity.Property(e => e.Hours).HasMaxLength(10);
+
+                entity.Property(e => e.MonthDays).HasMaxLength(10);
+
+                entity.Property(e => e.PerDayCap).HasColumnType("numeric(19, 6)");
+
+                entity.Property(e => e.PerMonthCap).HasColumnType("numeric(19, 6)");
+
+                entity.Property(e => e.Value).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.ValueType).HasMaxLength(10);
             });
 
             modelBuilder.Entity<MstPayroll>(entity =>
@@ -758,6 +874,37 @@ namespace HCM.API.Models
                     .WithMany(p => p.MstTaxSetupDetails)
                     .HasForeignKey(d => d.Fkid)
                     .HasConstraintName("FK_MstTaxSetupDetail_MstTaxSetup");
+            });
+
+            modelBuilder.Entity<TrnsDeductionRule>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Code).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<TrnsDeductionRulesDetail>(entity =>
+            {
+                entity.ToTable("TrnsDeductionRulesDetail");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Code).HasMaxLength(50);
+
+                entity.Property(e => e.Fkid).HasColumnName("FKID");
+
+                entity.Property(e => e.LeaveCount).HasColumnType("numeric(19, 6)");
+
+                entity.Property(e => e.RangeFrom).HasMaxLength(10);
+
+                entity.Property(e => e.RangeTo).HasMaxLength(10);
+
+                entity.Property(e => e.Value).HasMaxLength(50);
+
+                entity.HasOne(d => d.Fk)
+                    .WithMany(p => p.TrnsDeductionRulesDetails)
+                    .HasForeignKey(d => d.Fkid)
+                    .HasConstraintName("FK_TrnsDeductionRulesDetail_TrnsDeductionRules");
             });
 
             modelBuilder.Entity<TrnsObloan>(entity =>
