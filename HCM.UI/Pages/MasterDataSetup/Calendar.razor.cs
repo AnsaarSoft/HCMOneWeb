@@ -214,6 +214,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 await GetAllCalendars();
                 if (oList.Where(x => x.FlgActive == true).Count() > 0)
                 {
+                    DisbaledDate = true;
                     var res = oList.Where(x => x.FlgActive == true).Max(x => x.EndDate);
                     Convert.ToDateTime(res).AddDays(1);
                     _dateRange = new DateRange(Convert.ToDateTime(res.Value).AddDays(1), Convert.ToDateTime(res).AddMonths(12));

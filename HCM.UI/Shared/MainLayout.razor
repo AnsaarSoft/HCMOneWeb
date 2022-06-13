@@ -5,15 +5,16 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar Elevation="0">
+    <MudAppBar Elevation="0" Class="header-bar">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudSpacer />
         <MudIconButton Icon="@Icons.Material.Filled.Message" Color="Color.Inherit" Link="https://mudblazor.com/" Target="_blank" />
         <MudIconButton Icon="@Icons.Material.Filled.Notifications" Color="Color.Inherit" Link="https://github.com/MudBlazor/MudBlazor/" Target="_blank" />
     </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="1" Class="main-sidebar-nav">
         <MudDrawerHeader>
-            <MudText Typo="Typo.h6">MEPL Web Payroll</MudText>
+
+            <MudImage Src="img/logo.png" Alt="mepl logo" Elevation="25" Class=""/><MudText Typo="Typo.h6">Web Payroll</MudText>
             <MudDivider/>
         </MudDrawerHeader>
         <NavMenu />

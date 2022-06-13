@@ -203,11 +203,13 @@ button.mud-button-root.mud-icon-button.mud-icon-button-color-primary.mud-ripple.
 }
 
 .mud-layout h3 {
-    background-color: #014399;
+    background-color: #122f3b;
     display: inline-block;
     color: #fff;
-    padding: 0px 7px 5px 7px;
     border-radius: 5px;
+    padding: 7px 15px;
+    margin: 0 -15px 10px;
+    font-size: 20px;
 }
 
 .mud-layout .col-md-1 {
@@ -289,3 +291,98 @@ button.mud-button-root.mud-icon-button.mud-icon-button-color-inherit.mud-ripple.
         transform: rotate(360deg)
     }
 }
+/******************************/
+/***Csutom Style**/
+/******************************/
+
+.page-content-setting .search-action-block.mud-grid {
+    align-items: center !important;
+}
+.page-content-setting .search-action-block button {
+    width:35px !important;
+    height:35px !important;
+}
+.page-content-setting .mud-card-content{
+    padding:0;
+}
+.mud-drawer.mud-drawer-fixed.main-sidebar-nav {
+    background-color: #122f3b;
+    color: #fff;
+    font-size: 14px;
+}
+.main-sidebar-nav .mud-nav-link .mud-nav-link-expand-icon {
+    color: #ffffff !important;
+}
+.main-sidebar-nav .mud-navmenu.mud-navmenu-default .mud-nav-link-expand-icon.mud-transform {
+    fill:#fff !important;
+}
+.main-sidebar-nav .mud-nav-link:not(.mud-nav-link-disabled) .mud-nav-link-icon.mud-nav-link-icon-default {
+    color: #fff;
+    
+}
+.main-sidebar-nav .mud-navmenu.mud-navmenu-default .mud-nav-link.active:not(.mud-nav-link-disabled) {
+    background-color: rgb(0 0 0 / 32%);
+}
+.main-sidebar-nav .mud-nav-link:hover {
+    color: #fff;
+    background-color: rgb(0 0 0 / 18%);
+}
+.main-sidebar-nav .mud-nav-link:focus {
+    outline:none;
+} 
+.main-sidebar-nav .mud-navmenu.mud-navmenu-default .mud-nav-link.active:not(.mud-nav-link-disabled) {
+    color: #fff;
+}
+.mud-drawer.mud-drawer-fixed.main-sidebar-nav::-webkit-scrollbar-thumb {
+    background: #051820;
+}
+.main-sidebar-nav .mud-drawer-content .mud-drawer-header {
+    padding: 10px 10px 10px 10px;
+    align-items: center;
+}
+.main-sidebar-nav .mud-drawer-content .mud-drawer-header img {
+    width: 60px;
+    filter: brightness(0) invert(1);
+    box-shadow: none;
+}
+.main-sidebar-nav .mud-drawer-content .mud-drawer-header .mud-typography-h6 {
+    line-height: 20px;
+    padding-left: 10px;
+ }
+    .mud-appbar.header-bar {
+        background-color: #122f3b;
+        border-left: 2px solid #ffffff;
+    }
+.mud-appbar.header-bar a:hover{
+    color:#fff;
+}
+.header-bar button:focus {
+    outline:none;
+}
+.header-bar .mud-button-root {
+    background-color: rgb(0 0 0 / 32%);
+}
+.header-bar .mud-button-root:hover {
+    background-color: rgb(0 0 0 / 89%);
+}
+.header-bar .mud-icon-root {
+    font-size: 20px;
+}
+.header-bar a:nth-of-type(1) {
+    margin-right: 10px;
+}
+.table-setting .mud-table-head {
+    background-color: #122f3b !important;
+    }
+.table-setting thead tr th {
+    
+    color: #fff !important;
+}
+.table-setting .mud-table-container .mud-button-root {
+    border-color: #122f3b !important;
+}
+    .table-setting .mud-table-container .mud-button-root .mud-icon-root {
+        width: 20px;
+        height: 20px;
+        color: #122f3b !important;
+    } 
