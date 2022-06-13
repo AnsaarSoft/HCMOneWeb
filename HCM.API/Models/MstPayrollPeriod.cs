@@ -10,6 +10,7 @@ namespace HCM.API.Models
         public string? PeriodName { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public int? FkcalId { get; set; }
         public string? CalCode { get; set; }
         public bool? FlgLocked { get; set; }
         public bool? FlgPosted { get; set; }
