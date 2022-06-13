@@ -27,5 +27,6 @@ namespace HCM.API.Models
         public decimal? EmployeeContributionMax { get; set; }
         public decimal? EmployerContributionMax { get; set; }
         public decimal? ApplicableAmountMax { get; set; }
+        public bool? FlgActive { get; set; }
     }
 }

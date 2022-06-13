@@ -362,6 +362,8 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.EndDate).HasColumnType("datetime");
 
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
                 entity.Property(e => e.FlgEffectOnGross).HasColumnName("flgEffectOnGross");
 
                 entity.Property(e => e.FlgEos).HasColumnName("flgEOS");
