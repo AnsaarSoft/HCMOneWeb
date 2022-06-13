@@ -16,5 +16,6 @@ namespace HCM.API.Models
         public bool? FlgLateInEarlyOutLeaveRules { get; set; }
         public bool? FlgMultipleDimension { get; set; }
         public bool? FlgEmployeeCodeSeries { get; set; }
+        public bool? FlgPayrollWithSap { get; set; }
     }
 }

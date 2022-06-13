@@ -32,9 +32,6 @@ namespace HCM.API.Models
         public virtual DbSet<MstDepartment> MstDepartments { get; set; } = null!;
         public virtual DbSet<MstDesignation> MstDesignations { get; set; } = null!;
         public virtual DbSet<MstElement> MstElements { get; set; } = null!;
-        public virtual DbSet<MstElementContribution> MstElementContributions { get; set; } = null!;
-        public virtual DbSet<MstElementDeduction> MstElementDeductions { get; set; } = null!;
-        public virtual DbSet<MstElementEarning> MstElementEarnings { get; set; } = null!;
         public virtual DbSet<MstEmailConfig> MstEmailConfigs { get; set; } = null!;
         public virtual DbSet<MstGrading> MstGradings { get; set; } = null!;
         public virtual DbSet<MstLeaveCalendar> MstLeaveCalendars { get; set; } = null!;
@@ -347,28 +344,13 @@ namespace HCM.API.Models
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.ApplicableAmountMax).HasColumnType("numeric(18, 6)");
+
                 entity.Property(e => e.Code).HasMaxLength(100);
 
                 entity.Property(e => e.Description).HasMaxLength(100);
 
                 entity.Property(e => e.ElmtType).HasMaxLength(10);
-
-                entity.Property(e => e.EndDate).HasColumnType("datetime");
-
-                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
-
-                entity.Property(e => e.StartDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Type).HasMaxLength(10);
-            });
-
-            modelBuilder.Entity<MstElementContribution>(entity =>
-            {
-                entity.ToTable("MstElementContribution");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.ApplicableAmountMax).HasColumnType("numeric(18, 6)");
 
                 entity.Property(e => e.EmployeeContribution).HasColumnType("numeric(18, 6)");
 
@@ -378,7 +360,7 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.EmployerContributionMax).HasColumnType("numeric(18, 6)");
 
-                entity.Property(e => e.Fkid).HasColumnName("FKID");
+                entity.Property(e => e.EndDate).HasColumnType("datetime");
 
                 entity.Property(e => e.FlgEffectOnGross).HasColumnName("flgEffectOnGross");
 
@@ -396,82 +378,13 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.FlgVariableValue).HasColumnName("flgVariableValue");
 
-                entity.Property(e => e.Value).HasColumnType("numeric(18, 6)");
+                entity.Property(e => e.StartDate).HasColumnType("datetime");
 
-                entity.Property(e => e.ValueType).HasMaxLength(10);
-
-                entity.HasOne(d => d.Fk)
-                    .WithMany(p => p.MstElementContributions)
-                    .HasForeignKey(d => d.Fkid)
-                    .HasConstraintName("FK_MstElementContribution_MstElements");
-            });
-
-            modelBuilder.Entity<MstElementDeduction>(entity =>
-            {
-                entity.ToTable("MstElementDeduction");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.Fkid).HasColumnName("FKID");
-
-                entity.Property(e => e.FlgEffectOnGross).HasColumnName("flgEffectOnGross");
-
-                entity.Property(e => e.FlgEos).HasColumnName("flgEOS");
-
-                entity.Property(e => e.FlgNotTaxable).HasColumnName("flgNotTaxable");
-
-                entity.Property(e => e.FlgProbationApplicable).HasColumnName("flgProbationApplicable");
-
-                entity.Property(e => e.FlgProcessInPayroll).HasColumnName("flgProcessInPayroll");
-
-                entity.Property(e => e.FlgPropotionate).HasColumnName("flgPropotionate");
-
-                entity.Property(e => e.FlgStandardElement).HasColumnName("flgStandardElement");
-
-                entity.Property(e => e.FlgVariableValue).HasColumnName("flgVariableValue");
+                entity.Property(e => e.Type).HasMaxLength(10);
 
                 entity.Property(e => e.Value).HasColumnType("numeric(18, 6)");
 
                 entity.Property(e => e.ValueType).HasMaxLength(10);
-
-                entity.HasOne(d => d.Fk)
-                    .WithMany(p => p.MstElementDeductions)
-                    .HasForeignKey(d => d.Fkid)
-                    .HasConstraintName("FK_MstElementDeduction_MstElements");
-            });
-
-            modelBuilder.Entity<MstElementEarning>(entity =>
-            {
-                entity.ToTable("MstElementEarning");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.Fkid).HasColumnName("FKID");
-
-                entity.Property(e => e.FlgEffectOnGross).HasColumnName("flgEffectOnGross");
-
-                entity.Property(e => e.FlgEos).HasColumnName("flgEOS");
-
-                entity.Property(e => e.FlgNotTaxable).HasColumnName("flgNotTaxable");
-
-                entity.Property(e => e.FlgProbationApplicable).HasColumnName("flgProbationApplicable");
-
-                entity.Property(e => e.FlgProcessInPayroll).HasColumnName("flgProcessInPayroll");
-
-                entity.Property(e => e.FlgPropotionate).HasColumnName("flgPropotionate");
-
-                entity.Property(e => e.FlgStandardElement).HasColumnName("flgStandardElement");
-
-                entity.Property(e => e.FlgVariableValue).HasColumnName("flgVariableValue");
-
-                entity.Property(e => e.Value).HasColumnType("numeric(18, 6)");
-
-                entity.Property(e => e.ValueType).HasMaxLength(10);
-
-                entity.HasOne(d => d.Fk)
-                    .WithMany(p => p.MstElementEarnings)
-                    .HasForeignKey(d => d.Fkid)
-                    .HasConstraintName("FK_MstElementEarning_MstElements");
             });
 
             modelBuilder.Entity<MstEmailConfig>(entity =>
@@ -711,6 +624,8 @@ namespace HCM.API.Models
                 entity.Property(e => e.FlgLeaveCalendar).HasColumnName("flgLeaveCalendar");
 
                 entity.Property(e => e.FlgMultipleDimension).HasColumnName("flgMultipleDimension");
+
+                entity.Property(e => e.FlgPayrollWithSap).HasColumnName("flgPayrollWithSAP");
 
                 entity.Property(e => e.FlgProcessingOnAttendance).HasColumnName("flgProcessingOnAttendance");
 
