@@ -1,6 +1,8 @@
 using HCM.API.Interfaces.MasterData;
+using HCM.API.Interfaces.MasterElement;
 using HCM.API.Models;
 using HCM.API.Repository.MasterData;
+using HCM.API.Repository.MasterElement;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +28,10 @@ builder.Services.AddScoped<IMstGrading, MstGradingRepo>();
 builder.Services.AddScoped<IMstBranch, MstBranchRepo>();
 builder.Services.AddScoped<IMstCalendar, MstCalendarRepo>();
 builder.Services.AddScoped<IMstLeaveCalendar, MstLeaveCalendarRepo>();
+builder.Services.AddScoped<IMstEmailConfig, MstEmailConfigRepo>();
+builder.Services.AddScoped<IMstPayrollinit, MstPayrollinitRepo>();
+builder.Services.AddScoped<IMstElement, MstElementRepo>();
+builder.Services.AddScoped<IMstLove, MstLoveRepo>();
 
 var app = builder.Build();
 

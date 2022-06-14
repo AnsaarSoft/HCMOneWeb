@@ -1,0 +1,297 @@
+﻿@page "/Element"
+@using HCM.API.Models
+@using System.Globalization
+
+<div class="container-fluid page-content-setting">
+    <div class="row">
+        <div class="col-sm-11">
+            <h3>Element Master</h3>
+            <MudDivider/>
+        </div>
+        <div class="col-sm-1">
+            <MudFab Color="Color.Primary" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Material.Filled.List" Title="View All" />
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudGrid class="search-action-block align-items-center">
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisbaledCode" Mask="@AlphaNumericMask" MaxLength="20" Counter="20" HelperText="Enter Code" Immediate="true" Clearable="true" Label="Code" Variant="Variant.Text" 
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem> 
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="200" Counter="200" HelperText="Enter Element Name" Immediate="true" Clearable="true" Label="Element Name" Variant="Variant.Text" 
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem> 
+                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                    <MudSwitch @bind-Checked="@oModel.FlgActive" ThumbIcon="@(oModel.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgActive==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgActive==true ? "Active" : "In Active")</span>
+                    </MudSwitch>
+                </MudItem>
+                @if (Loading)
+                {
+                                <MudItem xs="2" sm="2" md="2" lg="2">
+                                    <MudText>Loading...</MudText>
+                                    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                                </MudItem>
+                }
+                else
+                {
+                                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                                    <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                                    <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
+                                </MudItem>
+                }
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.StartDate" Label="Start Date" HelperText="Enter Start Date" DateFormat="MM/dd/yyyy"  Variant="Variant.Text" 
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.EndDate" Label="End Date" HelperText="Enter End Date" DateFormat="MM/dd/yyyy"  Variant="Variant.Text" 
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudSelect @bind-Value="oModel.ElmtType" Label="Element Type" HelperText="Select Element Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (MstLove Love in oLoveList.Where(x => x.Type == "Ele_Type").ToList())
+                        {
+                                    <MudSelectItem Value="@Love.Code">@Love.Value</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudSelect @bind-Value="oModel.Type" Label="Category Type" HelperText="Select Category Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (MstLove Love in oLoveList.Where(x => x.Type == "Ele_Cat").ToList())
+                        {
+                                    <MudSelectItem Value="@Love.Code">@Love.Value</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+            </MudGrid>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            @if (oModel.ElmtType == "Ear")
+            {
+                    <MudGrid class="search-action-block align-items-center">
+                        <MudItem xs="12" sm="12" md="12" lg="12">
+                        <h3>Detail</h3>
+                        <MudDivider/>
+                        </MudItem>
+                        <MudItem xs="4" sm="4" md="4" lg="4">
+                            <MudSelect @bind-Value="oModel.ValueType" Label="Value Type" HelperText="Select Value Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                            @foreach (MstLove Love in oLoveList.Where(x => x.Type == "Val_Type").ToList())
+                            {
+                                        <MudSelectItem Value="@Love.Code">@Love.Value</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem xs="4" sm="4" md="4" lg="4">
+                        <MudNumericField @bind-Value="oModel.Value" Min="0" HelperText="Enter Value" Immediate="true" Clearable="true" Label="Value" Variant="Variant.Text" 
+                    Adornment="Adornment.Start" AdornmentText="%" Format="N2" Culture="@CultureInfo.InvariantCulture" />
+                    </MudItem>  
+                    <MudItem xs="4" sm="4" md="4" lg="4" Class="text-right">                                            
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgProcessInPayroll" ThumbIcon="@(oModel.FlgProcessInPayroll==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgProcessInPayroll==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgProcessInPayroll==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgProcessInPayroll==true ? "Process in Payroll" : "Not process in Payroll")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgStandardElement" ThumbIcon="@(oModel.FlgStandardElement==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgStandardElement==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgStandardElement==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgStandardElement==true ? "Standard Element" : "Not Standard Element")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgEffectOnGross" ThumbIcon="@(oModel.FlgEffectOnGross==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgEffectOnGross==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgEffectOnGross==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgEffectOnGross==true ? "Effect on Gross" : "Not Effect on Gross")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgProbationApplicable" ThumbIcon="@(oModel.FlgProbationApplicable==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgProbationApplicable==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgProbationApplicable==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgProbationApplicable==true ? "Probation Applicable" : "Probation not applicable")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="4" sm="4" md="4" lg="4" Class="text-right">                                            
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgNotTaxable" ThumbIcon="@(oModel.FlgNotTaxable==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgNotTaxable==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgNotTaxable==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgNotTaxable==true ? "Taxable" : "Not Taxable")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgEos" ThumbIcon="@(oModel.FlgEos==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgEos==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgEos==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgEos==true ? "EOS" : "Not EOS")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgVariableValue" ThumbIcon="@(oModel.FlgVariableValue==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgVariableValue==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgVariableValue==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgVariableValue==true ? "Variable Value" : "Not Variable Value")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgPropotionate" ThumbIcon="@(oModel.FlgPropotionate==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgPropotionate==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgPropotionate==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgPropotionate==true ? "Propotionate" : "Not Propotionate")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="4" sm="4" md="4" lg="4" Class="text-right">                                            
+                    </MudItem>
+                </MudGrid>
+            }
+            else if (oModel.ElmtType == "Ded")
+            {
+                    <MudGrid class="search-action-block align-items-center">
+                        <MudItem xs="12" sm="12" md="12" lg="12">
+                        <h3>Detail</h3>
+                        <MudDivider/>
+                        </MudItem>
+                        <MudItem xs="4" sm="4" md="4" lg="4">
+                            <MudSelect @bind-Value="oModel.ValueType" Label="Value Type" HelperText="Select Value Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                            @foreach (MstLove Love in oLoveList.Where(x => x.Type == "Val_Type").ToList())
+                            {
+                                        <MudSelectItem Value="@Love.Code">@Love.Value</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem xs="4" sm="4" md="4" lg="4">
+                        <MudNumericField @bind-Value="oModel.Value" Min="0" HelperText="Enter Value" Immediate="true" Clearable="true" Label="Value" Variant="Variant.Text" 
+                    Adornment="Adornment.Start" AdornmentText="%" Format="N2" Culture="@CultureInfo.InvariantCulture" />
+                    </MudItem>  
+                    <MudItem xs="4" sm="4" md="4" lg="4" Class="text-right">                                            
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgProcessInPayroll" ThumbIcon="@(oModel.FlgProcessInPayroll==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgProcessInPayroll==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgProcessInPayroll==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgProcessInPayroll==true ? "Process in Payroll" : "Not process in Payroll")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgStandardElement" ThumbIcon="@(oModel.FlgStandardElement==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgStandardElement==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgStandardElement==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgStandardElement==true ? "Standard Element" : "Not Standard Element")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgEffectOnGross" ThumbIcon="@(oModel.FlgEffectOnGross==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgEffectOnGross==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgEffectOnGross==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgEffectOnGross==true ? "Effect on Gross" : "Not Effect on Gross")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgProbationApplicable" ThumbIcon="@(oModel.FlgProbationApplicable==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgProbationApplicable==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgProbationApplicable==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgProbationApplicable==true ? "Probation Applicable" : "Probation not applicable")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="4" sm="4" md="4" lg="4" Class="text-right">                                            
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgNotTaxable" ThumbIcon="@(oModel.FlgNotTaxable==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgNotTaxable==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgNotTaxable==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgNotTaxable==true ? "Taxable" : "Not Taxable")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgEos" ThumbIcon="@(oModel.FlgEos==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgEos==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgEos==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgEos==true ? "EOS" : "Not EOS")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgVariableValue" ThumbIcon="@(oModel.FlgVariableValue==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgVariableValue==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgVariableValue==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgVariableValue==true ? "Variable Value" : "Not Variable Value")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgPropotionate" ThumbIcon="@(oModel.FlgPropotionate==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgPropotionate==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgPropotionate==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgPropotionate==true ? "Propotionate" : "Not Propotionate")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="4" sm="4" md="4" lg="4" Class="text-right">                                            
+                    </MudItem>
+                </MudGrid>
+            }
+            else if (oModel.ElmtType == "Con")
+            {
+                    <MudGrid class="search-action-block align-items-center">
+                        <MudItem xs="12" sm="12" md="12" lg="12">
+                        <h3>Detail</h3>
+                        <MudDivider/>
+                        </MudItem>
+                        <MudItem xs="4" sm="4" md="4" lg="4">
+                            <MudSelect @bind-Value="oModel.ValueType" Label="Value Type" HelperText="Select Value Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                            @foreach (MstLove Love in oLoveList.Where(x => x.Type == "Val_Type").ToList())
+                            {
+                                        <MudSelectItem Value="@Love.Code">@Love.Value</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem xs="4" sm="4" md="4" lg="4">
+                        <MudNumericField @bind-Value="oModel.Value" Min="0" HelperText="Enter Value" Immediate="true" Clearable="true" Label="Value" Variant="Variant.Text" 
+                        Adornment="Adornment.Start" AdornmentText="%" Format="N2" Culture="@CultureInfo.InvariantCulture" />
+                    </MudItem>  
+                    <MudItem xs="4" sm="4" md="4" lg="4" Class="text-right"> 
+                        <MudNumericField @bind-Value="oModel.ApplicableAmountMax" Min="0" HelperText="Enter Applicable Amount Max" Immediate="true" Clearable="true" Label="Applicable Amount" Variant="Variant.Text" 
+                        Adornment="Adornment.Start" AdornmentText="%" Format="N2" Culture="@CultureInfo.InvariantCulture" />
+                    </MudItem>
+                    <MudItem xs="4" sm="4" md="4" lg="4" Class="text-right"> 
+                        <MudNumericField @bind-Value="oModel.EmployeeContribution" Min="0" HelperText="Enter Employee Contribution" Immediate="true" Clearable="true" Label="Employee Contribution" Variant="Variant.Text" 
+                        Adornment="Adornment.Start" AdornmentText="%" Format="N2" Culture="@CultureInfo.InvariantCulture" />
+                    </MudItem>
+                    <MudItem xs="4" sm="4" md="4" lg="4" Class="text-right"> 
+                        <MudNumericField @bind-Value="oModel.EmployeeContributionMax" Min="0" HelperText="Enter Employee Contribution Max" Immediate="true" Clearable="true" Label="Employee Contribution Max" Variant="Variant.Text" 
+                        Adornment="Adornment.Start" AdornmentText="%" Format="N2" Culture="@CultureInfo.InvariantCulture" />
+                    </MudItem>
+                    <MudItem xs="4" sm="4" md="4" lg="4" Class="text-right"> 
+                        <MudNumericField @bind-Value="oModel.EmployerContribution" Min="0" HelperText="Enter Employer Contribution" Immediate="true" Clearable="true" Label="Employer Contribution" Variant="Variant.Text" 
+                        Adornment="Adornment.Start" AdornmentText="%" Format="N2" Culture="@CultureInfo.InvariantCulture" />
+                    </MudItem>
+                    <MudItem xs="4" sm="4" md="4" lg="4" Class="text-right"> 
+                        <MudNumericField @bind-Value="oModel.EmployerContributionMax" Min="0" HelperText="Enter Employer Contribution Max" Immediate="true" Clearable="true" Label="Employer Contribution Max" Variant="Variant.Text" 
+                        Adornment="Adornment.Start" AdornmentText="%" Format="N2" Culture="@CultureInfo.InvariantCulture" />
+                    </MudItem>
+                    <MudItem xs="8" sm="8" md="8" lg="8" Class="text-right">                         
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgProcessInPayroll" ThumbIcon="@(oModel.FlgProcessInPayroll==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgProcessInPayroll==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgProcessInPayroll==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgProcessInPayroll==true ? "Process in Payroll" : "Not process in Payroll")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgStandardElement" ThumbIcon="@(oModel.FlgStandardElement==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgStandardElement==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgStandardElement==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgStandardElement==true ? "Standard Element" : "Not Standard Element")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgEffectOnGross" ThumbIcon="@(oModel.FlgEffectOnGross==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgEffectOnGross==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgEffectOnGross==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgEffectOnGross==true ? "Effect on Gross" : "Not Effect on Gross")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgProbationApplicable" ThumbIcon="@(oModel.FlgProbationApplicable==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgProbationApplicable==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgProbationApplicable==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgProbationApplicable==true ? "Probation Applicable" : "Probation not applicable")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="4" sm="4" md="4" lg="4" Class="text-right">                                            
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgNotTaxable" ThumbIcon="@(oModel.FlgNotTaxable==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgNotTaxable==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgNotTaxable==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgNotTaxable==true ? "Taxable" : "Not Taxable")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgEos" ThumbIcon="@(oModel.FlgEos==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgEos==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgEos==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgEos==true ? "EOS" : "Not EOS")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgVariableValue" ThumbIcon="@(oModel.FlgVariableValue==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgVariableValue==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgVariableValue==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgVariableValue==true ? "Variable Value" : "Not Variable Value")</span>
+                    </MudSwitch>
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                    <MudSwitch @bind-Checked="@oModel.FlgPropotionate" ThumbIcon="@(oModel.FlgPropotionate==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgPropotionate==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgPropotionate==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgPropotionate==true ? "Propotionate" : "Not Propotionate")</span>
+                    </MudSwitch>
+                    </MudItem>
+                </MudGrid>
+            }
+        </div>
+    </div>    
+</div>

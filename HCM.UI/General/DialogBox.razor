@@ -1,0 +1,41 @@
+﻿@using HCM.API.Models
+<MudDialog>
+
+    <DialogContent>
+        @if (Loading)
+        {
+                <center><MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" /></center>
+        }
+        @if (oListElement?.Count > 0)
+        {
+                <MudTable Items="@oListElement" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstElement,bool>(FilterFuncElement)"
+                    Loading="@Loading" LoadingProgressColor="Color.Primary" OnRowClick="RowClickEvent" T="MstElement" @bind-SelectedItem="oModel">
+                    <ToolBarContent>
+                        <MudText Typo="Typo.h6">Elements</MudText>
+                        <MudSpacer />
+                        <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                     </ToolBarContent>
+                     <HeaderContent>
+                        <MudTh>Code</MudTh>
+                        <MudTh>Description</MudTh>
+                        <MudTh>Element Type</MudTh>
+                        <MudTh>Type</MudTh>
+                        <MudTh>Active</MudTh>
+                     </HeaderContent>
+                     <RowTemplate>
+                         <MudTd DataLabel="Code">@context.Code</MudTd>                       
+                         <MudTd DataLabel="Code">@context.Description</MudTd>                       
+                         <MudTd DataLabel="Code">@context.ElmtType</MudTd>                       
+                         <MudTd DataLabel="Code">@context.Type</MudTd>                       
+                         <MudTd DataLabel="Code">@context.FlgActive</MudTd>                       
+                     </RowTemplate>
+                     <PagerContent>
+                         <MudTablePager />
+                     </PagerContent>
+                 </MudTable>
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+    </DialogActions>
+</MudDialog>

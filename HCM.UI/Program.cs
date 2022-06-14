@@ -1,6 +1,8 @@
 using HCM.UI;
 using HCM.UI.Data.MasterData;
+using HCM.UI.Data.MasterElement;
 using HCM.UI.Interfaces.MasterData;
+using HCM.UI.Interfaces.MasterElement;
 using MudBlazor;
 using MudBlazor.Services;
 
@@ -30,6 +32,10 @@ builder.Services.AddScoped<IMstGrading, MstGradingService>();
 builder.Services.AddScoped<IMstBranch, MstBranchService>();
 builder.Services.AddScoped<IMstCalendar, MstCalendarService>();
 builder.Services.AddScoped<IMstLeaveCalendar, MstLeaveCalendarService>();
+builder.Services.AddScoped<IMstEmailConfig, MstEmailConfigService>();
+builder.Services.AddScoped<IMstPayrollinit, MstPayrollinitService>();
+builder.Services.AddScoped<IMstElement, MstElementService>();
+builder.Services.AddScoped<IMstLove, MstLoveService>();
 
 
 //Configuration Start

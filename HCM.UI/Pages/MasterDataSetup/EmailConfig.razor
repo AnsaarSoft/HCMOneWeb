@@ -1,0 +1,47 @@
+﻿@page "/EmailConfig"
+@using HCM.API.Models
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>Email Configuration</h3>
+            <MudDivider/>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudGrid>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" @bind-Value="oModel.FromEmail" InputMode="InputMode.email" MaxLength="200" Counter="200" HelperText="Enter From Email Address" Immediate="true" Clearable="true" Label="Email Address" Variant="Variant.Text" 
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem> 
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" @bind-Value="oModel.Password" InputType="PasswordInput" MaxLength="50" Counter="50" HelperText="Enter Password" Immediate="true" Clearable="true" Label="Password" Variant="Variant.Text" 
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Password" OnAdornmentClick="ShowPassword" AdornmentAriaLabel="Show Password" />
+                </MudItem> 
+                @if (Loading)
+                {
+                                <MudItem xs="2" sm="2" md="2" lg="2">
+                                    <MudText>Loading...</MudText>
+                                    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                                </MudItem>
+                }
+                else
+                {
+                                <MudItem xs="2" sm="2" md="2" lg="2">
+                                    <MudFab Color="Color.Primary" OnClick="Update" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+
+                                </MudItem>
+                }
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" @bind-Value="oModel.Smtpserver" MaxLength="200" Counter="200" HelperText="Enter SMTP Server" Immediate="true" Clearable="true" Label="SMTP Server" Variant="Variant.Text" 
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem> 
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModel.Smtport" Disabled="@DisabledCode" Mask="@AlphaNumericMask"  MaxLength="20" Counter="20" HelperText="Enter SMTP Port Number" Immediate="true" Clearable="true" Label="SMTP Port Number" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
+                </MudItem>
+            </MudGrid>
+        </div>
+    </div>
+
+</div>

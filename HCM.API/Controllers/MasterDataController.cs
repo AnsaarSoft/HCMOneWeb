@@ -18,9 +18,11 @@ namespace HCM.API.Controllers
         private IMstGrading _mstGrading;
         private IMstCalendar _mstCalendar;
         private IMstLeaveCalendar _mstLeaveCalendar;
+        private IMstEmailConfig _mstEmailConfig;
+        private IMstPayrollinit _mstPayrollinit;
 
         public MasterDataController(IMstDepartment mstDepartment, IMstDesignation mstDesignation, IMstLocation mstLocation, IMstPosition mstPosition, IMstBranch mstBranch, IMstGrading mstGrading, IMstCalendar mstCalendar,
-            IMstLeaveCalendar mstLeaveCalendar)
+            IMstLeaveCalendar mstLeaveCalendar, IMstEmailConfig mstEmailConfig, IMstPayrollinit mstPayrollinit)
         {
             _mstDepartment = mstDepartment;
             _mstDesignation = mstDesignation;
@@ -30,6 +32,8 @@ namespace HCM.API.Controllers
             _mstGrading = mstGrading;
             _mstCalendar = mstCalendar;
             _mstLeaveCalendar = mstLeaveCalendar;
+            _mstEmailConfig = mstEmailConfig;
+            _mstPayrollinit = mstPayrollinit;
         }
 
         #region MST Department
@@ -638,6 +642,115 @@ namespace HCM.API.Controllers
             }
         }
 
+        #endregion
+
+        #region MST EmailConfig
+
+        [Route("getEmailConfig")]
+        [HttpGet]
+        public async Task<IActionResult> GetEmailConfig()
+        {
+            MstEmailConfig oMstEmailConfig = new MstEmailConfig();
+
+            try
+            {
+                oMstEmailConfig = await _mstEmailConfig.GetData();
+                if (oMstEmailConfig == null)
+                {
+                    return BadRequest(oMstEmailConfig);
+                }
+                else
+                {
+                    return Ok(oMstEmailConfig);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went Wrong");
+            }
+        }
+
+        [Route("updateEmailConfig")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstEmailConfig pMstEmailConfig)
+
+        {
+            ApiResponseModel response = new ApiResponseModel();
+
+            try
+            {
+                response = await _mstEmailConfig.Update(pMstEmailConfig);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went Wrong");
+            }
+        }
+        #endregion
+
+        #region Payrollinit
+
+        [Route("getPayrollinit")]
+        [HttpGet]
+        public async Task<IActionResult> GetPayrollinit()
+        {
+            MstPayrollBasicInitialization oMstPayrollinit = new MstPayrollBasicInitialization();
+
+            try
+            {
+                oMstPayrollinit = await _mstPayrollinit.GetData();
+                if (oMstPayrollinit == null)
+                {
+                    return BadRequest(oMstPayrollinit);
+                }
+                else
+                {
+                    return Ok(oMstPayrollinit);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went Wrong");
+            }
+        }
+
+        [Route("updatePayrollinit")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstPayrollBasicInitialization pMstPayrollinit)
+
+        {
+            ApiResponseModel response = new ApiResponseModel();
+
+            try
+            {
+                response = await _mstPayrollinit.Update(pMstPayrollinit);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went Wrong");
+            }
+        }
+        
         #endregion
     }
 }

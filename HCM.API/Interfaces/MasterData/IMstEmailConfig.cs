@@ -1,0 +1,10 @@
+﻿using HCM.API.Models;
+namespace HCM.API.Interfaces.MasterData
+{
+    public interface IMstEmailConfig
+    {
+        Task<MstEmailConfig> GetData();
+       
+        Task<ApiResponseModel> Update(MstEmailConfig oMstEmailConfig);
+    }
+}
