@@ -25,6 +25,7 @@ namespace HCM.API.Models
         public virtual DbSet<LogLocation> LogLocations { get; set; } = null!;
         public virtual DbSet<LogObloan> LogObloans { get; set; } = null!;
         public virtual DbSet<LogPosition> LogPositions { get; set; } = null!;
+        public virtual DbSet<MstAdvance> MstAdvances { get; set; } = null!;
         public virtual DbSet<MstAttendanceRule> MstAttendanceRules { get; set; } = null!;
         public virtual DbSet<MstBranch> MstBranches { get; set; } = null!;
         public virtual DbSet<MstCalendar> MstCalendars { get; set; } = null!;
@@ -38,6 +39,7 @@ namespace HCM.API.Models
         public virtual DbSet<MstLeaveDeduction> MstLeaveDeductions { get; set; } = null!;
         public virtual DbSet<MstLeaveType> MstLeaveTypes { get; set; } = null!;
         public virtual DbSet<MstLeavesAllocated> MstLeavesAllocateds { get; set; } = null!;
+        public virtual DbSet<MstLoan> MstLoans { get; set; } = null!;
         public virtual DbSet<MstLocation> MstLocations { get; set; } = null!;
         public virtual DbSet<MstLove> MstLoves { get; set; } = null!;
         public virtual DbSet<MstOverTime> MstOverTimes { get; set; } = null!;
@@ -50,6 +52,7 @@ namespace HCM.API.Models
         public virtual DbSet<MstShiftsDetail> MstShiftsDetails { get; set; } = null!;
         public virtual DbSet<MstTaxSetup> MstTaxSetups { get; set; } = null!;
         public virtual DbSet<MstTaxSetupDetail> MstTaxSetupDetails { get; set; } = null!;
+        public virtual DbSet<MstUser> MstUsers { get; set; } = null!;
         public virtual DbSet<TrnsDeductionRule> TrnsDeductionRules { get; set; } = null!;
         public virtual DbSet<TrnsDeductionRulesDetail> TrnsDeductionRulesDetails { get; set; } = null!;
         public virtual DbSet<TrnsObloan> TrnsObloans { get; set; } = null!;
@@ -244,6 +247,21 @@ namespace HCM.API.Models
                 entity.Property(e => e.LogUser).HasMaxLength(200);
 
                 entity.Property(e => e.SourceId).HasColumnName("SourceID");
+            });
+
+            modelBuilder.Entity<MstAdvance>(entity =>
+            {
+                entity.ToTable("MstAdvance");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Code).HasMaxLength(20);
+
+                entity.Property(e => e.Description).HasMaxLength(250);
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.FlgDefault).HasColumnName("flgDefault");
             });
 
             modelBuilder.Entity<MstAttendanceRule>(entity =>
@@ -525,6 +543,19 @@ namespace HCM.API.Models
                     .HasConstraintName("FK_MstLeavesAllocated_MstLeaveType");
             });
 
+            modelBuilder.Entity<MstLoan>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Code).HasMaxLength(50);
+
+                entity.Property(e => e.Description).HasMaxLength(250);
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.FlgDefault).HasColumnName("flgDefault");
+            });
+
             modelBuilder.Entity<MstLocation>(entity =>
             {
                 entity.ToTable("MstLocation");
@@ -791,6 +822,27 @@ namespace HCM.API.Models
                     .WithMany(p => p.MstTaxSetupDetails)
                     .HasForeignKey(d => d.Fkid)
                     .HasConstraintName("FK_MstTaxSetupDetail_MstTaxSetup");
+            });
+
+            modelBuilder.Entity<MstUser>(entity =>
+            {
+                entity.ToTable("MstUser");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("ID");
+
+                entity.Property(e => e.Email).HasMaxLength(250);
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.FlgPasswordRequest).HasColumnName("flgPasswordRequest");
+
+                entity.Property(e => e.Password).HasMaxLength(250);
+
+                entity.Property(e => e.UserCode).HasMaxLength(250);
+
+                entity.Property(e => e.UserName).HasMaxLength(250);
             });
 
             modelBuilder.Entity<TrnsDeductionRule>(entity =>
