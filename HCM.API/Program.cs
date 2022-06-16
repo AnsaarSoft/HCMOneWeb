@@ -32,6 +32,12 @@ builder.Services.AddScoped<IMstEmailConfig, MstEmailConfigRepo>();
 builder.Services.AddScoped<IMstPayrollinit, MstPayrollinitRepo>();
 builder.Services.AddScoped<IMstElement, MstElementRepo>();
 builder.Services.AddScoped<IMstLove, MstLoveRepo>();
+builder.Services.AddScoped<IMstOverTime, MstOverTimeRepo>();
+builder.Services.AddScoped<IMstLoans, MstLoansRepo>();
+builder.Services.AddScoped<IMstShifts, MstShiftRepo>();
+builder.Services.AddScoped<IMstAdvance, MstAdvanceRepo>();
+builder.Services.AddScoped<IMstLeaveType, MstLeaveTypeRepo>();
+builder.Services.AddScoped<IMstLeaveDeduction, MstLeaveDeductionRepo>();
 
 var app = builder.Build();
 

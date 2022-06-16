@@ -30,9 +30,9 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         bool Loading = false;
 
-        bool DisabledCode = false;
+        
         public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
-        private string searchString1 = "";
+        
 
         private bool FilterFunc(MstEmailConfig element) => FilterFunc(element);
 
@@ -41,7 +41,7 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         #region Functions
 
-        private async Task<ApiResponseModel> Update()
+        private async Task<ApiResponseModel> Save()
         {
             try
             {
@@ -78,7 +78,21 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
-        
+        private async void Reset()
+        {
+            try
+            {
+                Loading = true;
+                await Task.Delay(3);
+                Navigation.NavigateTo("/Payrollinit", forceLoad: true);
+                Loading = false;
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                Loading = false;
+            }
+        }
 
         private async Task GetPayrollinit()
         {

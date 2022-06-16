@@ -1,15 +1,12 @@
-﻿@page "/LeaveCalendar"
+﻿@page "/Advance"
 @using HCM.API.Models
 
 <div class="container-fluid page-content-setting">
     <div class="row">
         <div class="col-sm-12">
-            <h3>Leave Calendar Setup</h3>
+            <h3>Advance Master</h3>
             <MudDivider/>
         </div>
-        @*<div class="col-sm-1">
-            <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.List" Title="View All" />
-        </div>*@
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
@@ -22,7 +19,7 @@
                     <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="250" Counter="250" HelperText="Enter Description" Immediate="true" Clearable="true" Label="Description" Variant="Variant.Text" 
                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem> 
-                <MudItem xs="2" sm="2" md="2" lg="2">
+                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
                     <MudSwitch @bind-Checked="@oModel.FlgActive" ThumbIcon="@(oModel.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgActive==true ? Color.Info : Color.Error)">
                         <span>@(oModel.FlgActive==true ? "Active" : "In Active")</span>
                     </MudSwitch>
@@ -36,19 +33,17 @@
                 }
                 else
                 {
-                            <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
                                 <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
                                 <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
                             </MudItem>
                 }
-                <MudItem xs="8" sm="8" md="8" lg="8">
-                    <MudDateRangePicker @ref="_picker" PickerVariant="PickerVariant.Dialog" Disabled="@DisabledDate" MinDate="@MinDate" DateFormat="MM/dd/yyyy" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.CalendarMonth" Label="Start and End Date Range" @bind-DateRange="_dateRange">
-                        <PickerActions>
-                            <MudButton OnClick="@(() => _picker.Close(false))">Cancel</MudButton>
-                            <MudButton Color="Color.Primary" OnClick="@(() => _picker.Close())">Ok</MudButton>
-                        </PickerActions>
-                    </MudDateRangePicker>
+                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                    <MudSwitch @bind-Checked="@oModel.FlgDefault" ThumbIcon="@(oModel.FlgDefault==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgDefault==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgDefault==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgDefault==true ? "Default" : "Custom")</span>
+                    </MudSwitch>
                 </MudItem>
+                
             </MudGrid>
         </div>
     </div>
@@ -56,25 +51,23 @@
         <div class="col-sm-12">
             <MudCard Elevation="5">
                         <MudCardContent>
-                            <MudTable Items="@oList" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstLeaveCalendar,bool>(FilterFunc)">
+                            <MudTable Items="@oList" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstAdvance,bool>(FilterFunc)">
                                 <ToolBarContent>
-                                    <MudText Typo="Typo.h6">Leave Calendars</MudText>
+                                    <MudText Typo="Typo.h6">Advance</MudText>
                                     <MudSpacer />
                                     <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
                                 </ToolBarContent>
                                 <HeaderContent>
                                     <MudTh>Code</MudTh>
                                     <MudTh>Description</MudTh>
-                                    <MudTh>Start Date</MudTh>
-                                    <MudTh>End Date</MudTh>
+                                    <MudTh>Default</MudTh>
                                     <MudTh>Active</MudTh>
                                     <MudTh>Action</MudTh>
                                 </HeaderContent>
                                 <RowTemplate>
                                     <MudTd DataLabel="Code">@context.Code</MudTd>
-                                    <MudTd DataLabel="LeaveCalendarDescription">@context.Description</MudTd>
-                                    <MudTd DataLabel="StartDate">@Convert.ToDateTime(context.StartDate).ToString("MM/dd/yyyy")</MudTd>
-                                    <MudTd DataLabel="EndDate">@Convert.ToDateTime(context.EndDate).ToString("MM/dd/yyyy")</MudTd>
+                                    <MudTd DataLabel="Advance Name">@context.Description</MudTd>
+                                    <MudTd DataLabel="Default">@context.FlgDefault</MudTd>
                                     <MudTd DataLabel="Active">@context.FlgActive</MudTd>
                                     <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id) )" Title="Edit"></MudIconButton></MudTd>
                                 </RowTemplate>

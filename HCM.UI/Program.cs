@@ -34,14 +34,21 @@ builder.Services.AddScoped<IMstCalendar, MstCalendarService>();
 builder.Services.AddScoped<IMstLeaveCalendar, MstLeaveCalendarService>();
 builder.Services.AddScoped<IMstEmailConfig, MstEmailConfigService>();
 builder.Services.AddScoped<IMstPayrollinit, MstPayrollinitService>();
+builder.Services.AddScoped<IMstLoans, MstLoansService>();
 builder.Services.AddScoped<IMstElement, MstElementService>();
 builder.Services.AddScoped<IMstLove, MstLoveService>();
+builder.Services.AddScoped<IMstOverTime, MstOverTimeService>();
+builder.Services.AddScoped<IMstShifts, MstShiftService>();
+builder.Services.AddScoped<IMstAdvance, MstAdvanceService>();
+builder.Services.AddScoped<IMstLeaveType, MstLeaveTypeService>();
+builder.Services.AddScoped<IMstLeaveDeduction, MstLeaveDeductionService>();
+
 
 
 //Configuration Start
 
 Settings.APIBaseURL = builder.Configuration.GetValue<string>("APIBaseUrl");
-
+Settings.DialogFor = "";
 //Configuration End
 
 var app = builder.Build();

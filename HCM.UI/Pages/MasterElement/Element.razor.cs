@@ -48,6 +48,7 @@ namespace HCM.UI.Pages.MasterElement
         {
             try
             {
+                Settings.DialogFor = "Element";
                 var dialog = Dialog.Show<DialogBox>("", options);
                 var result = await dialog.Result;
                 if (!result.Cancelled)

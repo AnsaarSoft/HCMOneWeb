@@ -56,7 +56,7 @@
                     <MudSelect @bind-Value="oModel.ElmtType" Label="Element Type" HelperText="Select Element Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                         @foreach (MstLove Love in oLoveList.Where(x => x.Type == "Ele_Type").ToList())
                         {
-                                    <MudSelectItem Value="@Love.Code">@Love.Value</MudSelectItem>
+                                    <MudSelectItem Value="@Love.Code">@Love.Code - @Love.Value</MudSelectItem>
                         }
                     </MudSelect>
                 </MudItem>
@@ -64,7 +64,7 @@
                     <MudSelect @bind-Value="oModel.Type" Label="Category Type" HelperText="Select Category Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                         @foreach (MstLove Love in oLoveList.Where(x => x.Type == "Ele_Cat").ToList())
                         {
-                                    <MudSelectItem Value="@Love.Code">@Love.Value</MudSelectItem>
+                                    <MudSelectItem Value="@Love.Code">@Love.Code - @Love.Value</MudSelectItem>
                         }
                     </MudSelect>
                 </MudItem>
@@ -84,7 +84,7 @@
                             <MudSelect @bind-Value="oModel.ValueType" Label="Value Type" HelperText="Select Value Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                             @foreach (MstLove Love in oLoveList.Where(x => x.Type == "Val_Type").ToList())
                             {
-                                        <MudSelectItem Value="@Love.Code">@Love.Value</MudSelectItem>
+                                        <MudSelectItem Value="@Love.Code">@Love.Code - @Love.Value</MudSelectItem>
                             }
                         </MudSelect>
                     </MudItem>
@@ -151,7 +151,7 @@
                             <MudSelect @bind-Value="oModel.ValueType" Label="Value Type" HelperText="Select Value Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                             @foreach (MstLove Love in oLoveList.Where(x => x.Type == "Val_Type").ToList())
                             {
-                                        <MudSelectItem Value="@Love.Code">@Love.Value</MudSelectItem>
+                                        <MudSelectItem Value="@Love.Code">@Love.Code - @Love.Value</MudSelectItem>
                             }
                         </MudSelect>
                     </MudItem>
@@ -218,7 +218,7 @@
                             <MudSelect @bind-Value="oModel.ValueType" Label="Value Type" HelperText="Select Value Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                             @foreach (MstLove Love in oLoveList.Where(x => x.Type == "Val_Type").ToList())
                             {
-                                        <MudSelectItem Value="@Love.Code">@Love.Value</MudSelectItem>
+                                        <MudSelectItem Value="@Love.Code">@Love.Code - @Love.Value</MudSelectItem>
                             }
                         </MudSelect>
                     </MudItem>

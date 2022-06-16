@@ -12,7 +12,7 @@
         <div class="col-sm-12">
             <MudGrid>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" @bind-Value="oModel.FromEmail" InputMode="InputMode.email" MaxLength="200" Counter="200" HelperText="Enter From Email Address" Immediate="true" Clearable="true" Label="Email Address" Variant="Variant.Text" 
+                    <MudTextField T="string" @bind-Value="oModel.FromEmail" InputMode="InputMode.email" MaxLength="50" Counter="50" HelperText="Enter From Email Address" Immediate="true" Clearable="true" Label="Email Address" Variant="Variant.Text" 
                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem> 
                 <MudItem xs="4" sm="4" md="4" lg="4">
@@ -28,17 +28,17 @@
                 }
                 else
                 {
-                                <MudItem xs="2" sm="2" md="2" lg="2">
-                                    <MudFab Color="Color.Primary" OnClick="Update" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
-
+                                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                                    <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                                    <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
                                 </MudItem>
                 }
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" @bind-Value="oModel.Smtpserver" MaxLength="200" Counter="200" HelperText="Enter SMTP Server" Immediate="true" Clearable="true" Label="SMTP Server" Variant="Variant.Text" 
+                    <MudTextField T="string" @bind-Value="oModel.Smtpserver" MaxLength="100" Counter="100" HelperText="Enter SMTP Server" Immediate="true" Clearable="true" Label="SMTP Server" Variant="Variant.Text" 
                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem> 
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.Smtport" Disabled="@DisabledCode" Mask="@AlphaNumericMask"  MaxLength="20" Counter="20" HelperText="Enter SMTP Port Number" Immediate="true" Clearable="true" Label="SMTP Port Number" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
+                    <MudNumericField @bind-Value="oModel.Smtport" Disabled="@DisabledCode" Mask="@AlphaNumericMask"  MaxLength="4" Counter="4" HelperText="Enter SMTP Port Number" Immediate="true" Clearable="true" Label="SMTP Port Number" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
                 </MudItem>
             </MudGrid>
         </div>

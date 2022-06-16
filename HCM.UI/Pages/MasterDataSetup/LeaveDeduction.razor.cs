@@ -1,12 +1,13 @@
 ﻿using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.MasterData;
+using HCM.UI.Interfaces.MasterElement;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
 namespace HCM.UI.Pages.MasterDataSetup
 {
-    public partial class LeaveCalendar
+    public partial class LeaveDeduction
     {
         #region InjectService
 
@@ -20,30 +21,49 @@ namespace HCM.UI.Pages.MasterDataSetup
         public ISnackbar Snackbar { get; set; }
 
         [Inject]
-        public IMstLeaveCalendar _mstLeaveCalendar { get; set; }
+        public IMstLeaveDeduction _mstLeaveDeduction { get; set; }
 
-
+        [Inject]
+        public IMstLove _mstLove { get; set; }
         #endregion
 
         #region Variables
 
         bool Loading = false;
-        bool DisabledDate = false;
         bool DisabledCode = false;
         public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
+
         private string searchString1 = "";
-        private bool FilterFunc(MstLeaveCalendar element) => FilterFunc(element, searchString1);
+        private bool FilterFunc(MstLeaveDeduction element) => FilterFunc(element, searchString1);
 
-        MstLeaveCalendar oModel = new MstLeaveCalendar();
-        private IEnumerable<MstLeaveCalendar> oList = new List<MstLeaveCalendar>();
-
-        MudDateRangePicker _picker;
-        DateRange _dateRange;
-        DateTime MinDate;
+        MstLeaveDeduction oModel = new MstLeaveDeduction();
+       List<MstLove> oLovesList = new List<MstLove>();
+        private IEnumerable<MstLeaveDeduction> oList = new List<MstLeaveDeduction>();
+        DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
         #endregion
 
         #region Functions
+
+        private async Task OpenDialog(DialogOptions options)
+        {
+            try
+            {
+                var dialog = Dialog.Show<DialogBox>("", options);
+                var result = await dialog.Result;
+                if (!result.Cancelled)
+                {
+                    DisabledCode = true;
+                    var res = (MstLeaveDeduction)result.Data;
+                    AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
+                    oModel = res;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
 
         private async Task<ApiResponseModel> Save()
         {
@@ -52,46 +72,35 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
-                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description))
+                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description) && !string.IsNullOrWhiteSpace(oModel.ValueType))
                 {
-                    if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
+                    if (oModel.Code.Length > 20)
                     {
-                        Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                        Snackbar.Add("Code accept only 20 characters", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
                     else
                     {
-                        oModel.StartDate = _dateRange.Start;
-                        oModel.EndDate = _dateRange.End;
-                        if (oModel.Code.Length > 20)
+                        if (oModel.Id == 0)
                         {
-                            Snackbar.Add("Code accept only 20 characters", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                        }
-                        else
-                        {
-                            var MonthDifference = DateTimeSpan.GetMonthDifference((DateTime)oModel.StartDate, (DateTime)oModel.EndDate);
-                            if (MonthDifference < 12)
+                            if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
                             {
-                                Snackbar.Add("Invalid Date Selection, must be within 12 months range", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                                Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                             }
                             else
                             {
-
-                                if (oModel.Id == 0)
-                                {
-                                    res = await _mstLeaveCalendar.Insert(oModel);
-                                }
-                                else
-                                {
-                                    res = await _mstLeaveCalendar.Update(oModel);
-                                }
+                                res = await _mstLeaveDeduction.Insert(oModel);
                             }
+                        }
+                        else
+                        {
+                            res = await _mstLeaveDeduction.Update(oModel);
                         }
                     }
                     if (res != null && res.Id == 1)
                     {
                         Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
                         await Task.Delay(3000);
-                        Navigation.NavigateTo("/LeaveCalendar", forceLoad: true);
+                        Navigation.NavigateTo("/LeaveDeduction", forceLoad: true);
                     }
                     else
                     {
@@ -120,7 +129,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             {
                 Loading = true;
                 await Task.Delay(3);
-                Navigation.NavigateTo("/LeaveCalendar", forceLoad: true);
+                Navigation.NavigateTo("/LeaveDeduction", forceLoad: true);
                 Loading = false;
             }
             catch (Exception ex)
@@ -130,19 +139,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
-        private async Task GetAllLeaveCalendars()
-        {
-            try
-            {
-                oList = await _mstLeaveCalendar.GetAllData();
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-            }
-        }
-
-        private bool FilterFunc(MstLeaveCalendar element, string searchString1)
+        private bool FilterFunc(MstLeaveDeduction element, string searchString1)
         {
             if (string.IsNullOrWhiteSpace(searchString1))
                 return true;
@@ -150,27 +147,38 @@ namespace HCM.UI.Pages.MasterDataSetup
                 return true;
             if (element.Description.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
+            if (element.ValueType.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.Value.Equals(searchString1))
+                return true;
             if (element.FlgActive.Equals(searchString1))
                 return true;
+
             return false;
         }
 
-        public void RemoveRecord(int LineNum)
+        private async Task GetAllLeaveDeduction()
         {
             try
             {
-                var res = oList.Where(x => x.Id != LineNum);
-                oList = res;
-                if (oList.Count() == 0)
-                {
-                    oModel = new MstLeaveCalendar();
-                }
+                oList = await _mstLeaveDeduction.GetAllData();
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
             }
+        }
 
+        private async Task GetAllLove()
+        {
+            try
+            {
+                oLovesList = await _mstLove.GetAllData();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
         }
 
         public void EditRecord(int LineNum)
@@ -181,14 +189,13 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (res != null)
                 {
                     AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
-                    DisabledDate = true;
+
                     oModel.Id = res.Id;
                     oModel.Code = res.Code;
                     DisabledCode = true;
                     oModel.Description = res.Description;
-                    oModel.StartDate = _dateRange.Start = res.StartDate;
-                    oModel.EndDate = _dateRange.End = res.EndDate;
-                    _dateRange = new DateRange(oModel.StartDate, oModel.EndDate);
+                    oModel.ValueType = res.ValueType;
+                    oModel.Value = res.Value;
                     oModel.FlgActive = res.FlgActive;
                     oList = oList.Where(x => x.Id != LineNum);
                     //_ = InvokeAsync(StateHasChanged);
@@ -202,6 +209,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         }
 
         #endregion
+
         #region Events
 
         protected async override Task OnInitializedAsync()
@@ -209,21 +217,9 @@ namespace HCM.UI.Pages.MasterDataSetup
             try
             {
                 Loading = true;
+                await GetAllLove();
+                await GetAllLeaveDeduction();
                 oModel.FlgActive = true;
-                await GetAllLeaveCalendars();
-                if (oList.Where(x => x.FlgActive == true).Count() > 0)
-                {
-                    DisabledDate = true;
-                    var res = oList.Where(x => x.FlgActive == true).Max(x => x.EndDate);
-                    Convert.ToDateTime(res).AddDays(1);
-                    _dateRange = new DateRange(Convert.ToDateTime(res.Value).AddDays(1), Convert.ToDateTime(res).AddMonths(12));
-                    _dateRange.Start = MinDate = Convert.ToDateTime(res).AddDays(1);
-                }
-                else
-                {
-                    //MinDate = DateTime.Now.Date;
-                    _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date.AddMonths(12));
-                }
                 Loading = false;
             }
             catch (Exception ex)

@@ -1,0 +1,12 @@
+﻿@using HCM.API.Models
+<MudDialog>
+    <DialogContent>
+        @if (Loading)
+        {
+                <center><MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" /></center>
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+    </DialogActions>
+</MudDialog>

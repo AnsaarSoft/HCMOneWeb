@@ -12,11 +12,13 @@ namespace HCM.API.Controllers
     {
         private IMstElement _mstElement;
         private IMstLove _mstLove;
+        private IMstOverTime _mstOverTime;
 
-        public MasterElementController(IMstElement mstElement, IMstLove mstLove)
+        public MasterElementController(IMstElement mstElement, IMstLove mstLove, IMstOverTime mstOverTime)
         {
             _mstElement = mstElement;
             _mstLove = mstLove;
+            _mstOverTime = mstOverTime;
         }
 
         #region MST Element
@@ -112,6 +114,82 @@ namespace HCM.API.Controllers
                 else
                 {
                     return Ok(oMstLove);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
+
+        #region MST OverTime
+
+        [Route("getAllOverTime")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllOverTime()
+        {
+            List<MstOverTime> oMstOverTime = new List<MstOverTime>();
+            try
+            {
+                oMstOverTime = await _mstOverTime.GetAllData();
+                if (oMstOverTime == null)
+                {
+                    return BadRequest(oMstOverTime);
+                }
+                else
+                {
+                    return Ok(oMstOverTime);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addOverTime")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstOverTime pMstOverTime)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstOverTime.Insert(pMstOverTime);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateOverTime")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstOverTime pMstOverTime)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstOverTime.Update(pMstOverTime);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
                 }
             }
             catch (Exception ex)

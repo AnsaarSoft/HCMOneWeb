@@ -20,9 +20,15 @@ namespace HCM.API.Controllers
         private IMstLeaveCalendar _mstLeaveCalendar;
         private IMstEmailConfig _mstEmailConfig;
         private IMstPayrollinit _mstPayrollinit;
+        private IMstLoans _mstLoans;
+        private IMstShifts _mstShift;
+        private IMstAdvance _mstAdvance;
+        private IMstLeaveType _mstLeaveType;
+        private IMstLeaveDeduction _mstLeaveDeduction;
 
         public MasterDataController(IMstDepartment mstDepartment, IMstDesignation mstDesignation, IMstLocation mstLocation, IMstPosition mstPosition, IMstBranch mstBranch, IMstGrading mstGrading, IMstCalendar mstCalendar,
-            IMstLeaveCalendar mstLeaveCalendar, IMstEmailConfig mstEmailConfig, IMstPayrollinit mstPayrollinit)
+            IMstLeaveCalendar mstLeaveCalendar, IMstEmailConfig mstEmailConfig, IMstPayrollinit mstPayrollinit, IMstLoans mstLoans, IMstShifts mstShift, IMstAdvance mstAdvance, IMstLeaveDeduction mstLeaveDeduction, 
+            IMstLeaveType mstLeaveType)
         {
             _mstDepartment = mstDepartment;
             _mstDesignation = mstDesignation;
@@ -34,6 +40,11 @@ namespace HCM.API.Controllers
             _mstLeaveCalendar = mstLeaveCalendar;
             _mstEmailConfig = mstEmailConfig;
             _mstPayrollinit = mstPayrollinit;
+            _mstLoans = mstLoans;
+            _mstShift = mstShift;
+            _mstAdvance = mstAdvance;
+            _mstLeaveDeduction = mstLeaveDeduction;
+            _mstLeaveType = mstLeaveType;
         }
 
         #region MST Department
@@ -750,7 +761,363 @@ namespace HCM.API.Controllers
                 return BadRequest("Something went Wrong");
             }
         }
-        
+
+        #endregion
+
+        #region MST Loans
+
+        [Route("getAllLoans")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllLoans()
+        {
+            List<MstLoan> oMstLoans = new List<MstLoan>();
+            try
+            {
+                oMstLoans = await _mstLoans.GetAllData();
+                if (oMstLoans == null)
+                {
+                    return BadRequest(oMstLoans);
+                }
+                else
+                {
+                    return Ok(oMstLoans);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addLoans")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstLoan pMstLoans)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstLoans.Insert(pMstLoans);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateLoans")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstLoan pMstLoans)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstLoans.Update(pMstLoans);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
+
+        #region MST Loans
+
+        [Route("getAllShift")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllShift()
+        {
+            List<MstShift> oMstShift = new List<MstShift>();
+            try
+            {
+                oMstShift = await _mstShift.GetAllData();
+                if (oMstShift == null)
+                {
+                    return BadRequest(oMstShift);
+                }
+                else
+                {
+                    return Ok(oMstShift);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addShift")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstShift pMstShift)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstShift.Insert(pMstShift);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateShift")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstShift pMstShift)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstShift.Update(pMstShift);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
+
+        #region MST Advance
+
+        [Route("getAllAdvance")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllAdvance()
+        {
+            List<MstAdvance> oMstAdvance = new List<MstAdvance>();
+            try
+            {
+                oMstAdvance = await _mstAdvance.GetAllData();
+                if (oMstAdvance == null)
+                {
+                    return BadRequest(oMstAdvance);
+                }
+                else
+                {
+                    return Ok(oMstAdvance);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addAdvance")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstAdvance pMstAdvance)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstAdvance.Insert(pMstAdvance);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateAdvance")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstAdvance pMstAdvance)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstAdvance.Update(pMstAdvance);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
+
+        #region MST LeaveDeduction
+
+        [Route("getAllLeaveDeduction")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllLeaveDeduction()
+        {
+            List<MstLeaveDeduction> oMstLeaveDeduction = new List<MstLeaveDeduction>();
+            try
+            {
+                oMstLeaveDeduction = await _mstLeaveDeduction.GetAllData();
+                if (oMstLeaveDeduction == null)
+                {
+                    return BadRequest(oMstLeaveDeduction);
+                }
+                else
+                {
+                    return Ok(oMstLeaveDeduction);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addLeaveDeduction")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstLeaveDeduction pMstLeaveDeduction)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstLeaveDeduction.Insert(pMstLeaveDeduction);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateLeaveDeduction")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstLeaveDeduction pMstLeaveDeduction)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstLeaveDeduction.Update(pMstLeaveDeduction);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
+
+        #region MST LeaveType
+
+        [Route("getAllLeaveType")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllLeaveType()
+        {
+            List<MstLeaveType> oMstLeaveType = new List<MstLeaveType>();
+            try
+            {
+                oMstLeaveType = await _mstLeaveType.GetAllData();
+                if (oMstLeaveType == null)
+                {
+                    return BadRequest(oMstLeaveType);
+                }
+                else
+                {
+                    return Ok(oMstLeaveType);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateLeaveType")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstLeaveType pMstLeaveType)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstLeaveType.Update(pMstLeaveType);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
         #endregion
     }
 }

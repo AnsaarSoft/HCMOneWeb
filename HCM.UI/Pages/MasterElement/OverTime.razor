@@ -1,0 +1,123 @@
+﻿@page "/OverTime"
+@using HCM.API.Models
+@using System.Globalization
+
+<div class="container-fluid page-content-setting">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>OverTime Master</h3>
+            <MudDivider/>
+        </div>
+        @*<div class="col-sm-1">
+            <MudFab Color="Color.Primary" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Material.Filled.List" Title="View All" />
+        </div>*@
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudGrid class="search-action-block align-items-center">
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisabledCode" Mask="@AlphaNumericMask" MaxLength="20" Counter="20" HelperText="Enter Code" Immediate="true" Clearable="true" Label="Code" Variant="Variant.Text" 
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem> 
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="250" Counter="250" HelperText="Enter OverTime Description" Immediate="true" Clearable="true" Label="Description" Variant="Variant.Text" 
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>                
+                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                    <MudSwitch @bind-Checked="@oModel.FlgActive" ThumbIcon="@(oModel.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgActive==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgActive==true ? "Active" : "In Active")</span>
+                    </MudSwitch>
+                </MudItem>              
+                 @if (Loading)
+                {
+                                <MudItem xs="2" sm="2" md="2" lg="2">
+                                    <MudText>Loading...</MudText>
+                                    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                                </MudItem>
+                }
+                else
+                {
+                                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                                    <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                                    <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
+                                </MudItem>
+                }
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudSelect @bind-Value="oModel.ValueType" Label="Value Type" HelperText="Select Value Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (MstLove Love in oLoveList.Where(x => x.Type == "Val_Type").ToList())
+                        {
+                                    <MudSelectItem Value="@Love.Code">@Love.Code - @Love.Value</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>            
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModel.Value" HelperText="Enter Value" Immediate="true" Clearable="true" Label="Value" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModel.Hours" HelperText="Enter Number of Hours" Immediate="true" Clearable="true" Label="Hours" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModel.MonthDays" HelperText="Enter Month Days " Immediate="true" Clearable="true" Label="Month Days" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModel.PerDayCap" HelperText="Enter Per Day Cap " Immediate="true" Clearable="true" Label="Per Day Cap " Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModel.PerMonthCap" HelperText="Enter Per Month Cap " Immediate="true" Clearable="true" Label="Per Month Cap " Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
+                </MudItem>
+                @*<MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModel.Expression" HelperText="Enter Expression Number" Immediate="true" Clearable="true" Label="Expression Number" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
+                </MudItem>*@
+                 <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                    <MudSwitch @bind-Checked="@oModel.FlgDefault" ThumbIcon="@(oModel.FlgDefault==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgDefault==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgDefault==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgDefault==true ? "Default" : "Custom")</span>
+                    </MudSwitch>
+                </MudItem>
+            </MudGrid>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudCard Elevation="5">
+                        <MudCardContent>
+                            <MudTable Items="@oList" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstOverTime,bool>(FilterFunc)">
+                                <ToolBarContent>
+                                    <MudText Typo="Typo.h6">Over time</MudText>
+                                    <MudSpacer />
+                                    <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                                </ToolBarContent>
+                                <HeaderContent>
+                                    <MudTh>Code</MudTh>
+                                    <MudTh>Description</MudTh>
+                                    <MudTh>Value Type</MudTh>
+                                    <MudTh>Value</MudTh>
+                                    <MudTh>Hours</MudTh>
+                                    <MudTh>Month Days</MudTh>
+                                    <MudTh>Per Day Cap</MudTh>
+                                    <MudTh>Per Month Cap</MudTh>
+                                    <MudTh>Flg Default</MudTh>
+                                    <MudTh>Active</MudTh>
+                                    <MudTh>Action</MudTh>
+                                </HeaderContent>
+                                <RowTemplate>             
+                                    <MudTd DataLabel="Code">@context.Code</MudTd>                                   
+                                    <MudTd DataLabel="OverTime Description">@context.Description</MudTd>
+                                    <MudTd DataLabel="ValueType">@context.ValueType</MudTd>
+                                    <MudTd DataLabel="Value">@context.Value</MudTd>
+                                    <MudTd DataLabel="Hours">@context.Hours</MudTd>
+                                    <MudTd DataLabel="MonthDays">@context.MonthDays</MudTd>
+                                    <MudTd DataLabel="PerDayCap">@context.PerDayCap</MudTd>
+                                    <MudTd DataLabel="PerMonthCap">@context.PerMonthCap</MudTd>                                    
+                                    <MudTd DataLabel="Default">@context.FlgDefault</MudTd>
+                                    <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                                    <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id))" Title="Edit"></MudIconButton></MudTd>
+                                </RowTemplate>
+                                <PagerContent>
+                                    <MudTablePager />
+                                </PagerContent>
+                            </MudTable>
+                        </MudCardContent>
+            </MudCard>
+        </div>
+    </div>    
+</div>

@@ -31,7 +31,7 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         bool DisabledCode = false;
         public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
-        private string searchString1 = "";
+       
 
         bool isShow;
         InputType PasswordInput = InputType.Password;
@@ -44,7 +44,7 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         #region Functions
 
-        private async Task<ApiResponseModel> Update()
+        private async Task<ApiResponseModel> Save()
         {
             try
             {
@@ -93,7 +93,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             {
                 Loading = true;
                 await Task.Delay(3);
-                Navigation.NavigateTo("/Branch", forceLoad: true);
+                Navigation.NavigateTo("/EmailConfig", forceLoad: true);
                 Loading = false;
             }
             catch (Exception ex)
@@ -103,6 +103,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
+     
         private async Task GetEmailConfig()
         {
             try

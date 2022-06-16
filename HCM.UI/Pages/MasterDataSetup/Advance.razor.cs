@@ -6,7 +6,7 @@ using MudBlazor;
 
 namespace HCM.UI.Pages.MasterDataSetup
 {
-    public partial class LeaveCalendar
+    public partial class Advance
     {
         #region InjectService
 
@@ -20,7 +20,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         public ISnackbar Snackbar { get; set; }
 
         [Inject]
-        public IMstLeaveCalendar _mstLeaveCalendar { get; set; }
+        public IMstAdvance _mstAdvance { get; set; }
 
 
         #endregion
@@ -28,18 +28,15 @@ namespace HCM.UI.Pages.MasterDataSetup
         #region Variables
 
         bool Loading = false;
-        bool DisabledDate = false;
+
         bool DisabledCode = false;
         public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
         private string searchString1 = "";
-        private bool FilterFunc(MstLeaveCalendar element) => FilterFunc(element, searchString1);
+        private bool FilterFunc(MstAdvance element) => FilterFunc(element, searchString1);
 
-        MstLeaveCalendar oModel = new MstLeaveCalendar();
-        private IEnumerable<MstLeaveCalendar> oList = new List<MstLeaveCalendar>();
+        MstAdvance oModel = new MstAdvance();
+        private IEnumerable<MstAdvance> oList = new List<MstAdvance>();
 
-        MudDateRangePicker _picker;
-        DateRange _dateRange;
-        DateTime MinDate;
 
         #endregion
 
@@ -60,30 +57,19 @@ namespace HCM.UI.Pages.MasterDataSetup
                     }
                     else
                     {
-                        oModel.StartDate = _dateRange.Start;
-                        oModel.EndDate = _dateRange.End;
                         if (oModel.Code.Length > 20)
                         {
                             Snackbar.Add("Code accept only 20 characters", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                         }
                         else
                         {
-                            var MonthDifference = DateTimeSpan.GetMonthDifference((DateTime)oModel.StartDate, (DateTime)oModel.EndDate);
-                            if (MonthDifference < 12)
+                            if (oModel.Id == 0)
                             {
-                                Snackbar.Add("Invalid Date Selection, must be within 12 months range", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                                res = await _mstAdvance.Insert(oModel);
                             }
                             else
                             {
-
-                                if (oModel.Id == 0)
-                                {
-                                    res = await _mstLeaveCalendar.Insert(oModel);
-                                }
-                                else
-                                {
-                                    res = await _mstLeaveCalendar.Update(oModel);
-                                }
+                                res = await _mstAdvance.Update(oModel);
                             }
                         }
                     }
@@ -91,13 +77,14 @@ namespace HCM.UI.Pages.MasterDataSetup
                     {
                         Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
                         await Task.Delay(3000);
-                        Navigation.NavigateTo("/LeaveCalendar", forceLoad: true);
+                        Navigation.NavigateTo("/Advance", forceLoad: true);
                     }
                     else
                     {
                         Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
                     oModel.FlgActive = true;
+                    oModel.FlgDefault = true;
                 }
                 else
                 {
@@ -120,7 +107,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             {
                 Loading = true;
                 await Task.Delay(3);
-                Navigation.NavigateTo("/LeaveCalendar", forceLoad: true);
+                Navigation.NavigateTo("/Advance", forceLoad: true);
                 Loading = false;
             }
             catch (Exception ex)
@@ -130,11 +117,11 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
-        private async Task GetAllLeaveCalendars()
+        private async Task GetAllAdvance()
         {
             try
             {
-                oList = await _mstLeaveCalendar.GetAllData();
+                oList = await _mstAdvance.GetAllData();
             }
             catch (Exception ex)
             {
@@ -142,7 +129,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
-        private bool FilterFunc(MstLeaveCalendar element, string searchString1)
+        private bool FilterFunc(MstAdvance element, string searchString1)
         {
             if (string.IsNullOrWhiteSpace(searchString1))
                 return true;
@@ -151,6 +138,8 @@ namespace HCM.UI.Pages.MasterDataSetup
             if (element.Description.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
             if (element.FlgActive.Equals(searchString1))
+                return true;
+            if (element.FlgDefault.Equals(searchString1))
                 return true;
             return false;
         }
@@ -163,7 +152,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 oList = res;
                 if (oList.Count() == 0)
                 {
-                    oModel = new MstLeaveCalendar();
+                    oModel = new MstAdvance();
                 }
             }
             catch (Exception ex)
@@ -181,17 +170,15 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (res != null)
                 {
                     AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
-                    DisabledDate = true;
+
                     oModel.Id = res.Id;
                     oModel.Code = res.Code;
                     DisabledCode = true;
                     oModel.Description = res.Description;
-                    oModel.StartDate = _dateRange.Start = res.StartDate;
-                    oModel.EndDate = _dateRange.End = res.EndDate;
-                    _dateRange = new DateRange(oModel.StartDate, oModel.EndDate);
+
                     oModel.FlgActive = res.FlgActive;
+                    oModel.FlgDefault = res.FlgDefault;
                     oList = oList.Where(x => x.Id != LineNum);
-                    //_ = InvokeAsync(StateHasChanged);
                 }
             }
             catch (Exception ex)
@@ -210,20 +197,8 @@ namespace HCM.UI.Pages.MasterDataSetup
             {
                 Loading = true;
                 oModel.FlgActive = true;
-                await GetAllLeaveCalendars();
-                if (oList.Where(x => x.FlgActive == true).Count() > 0)
-                {
-                    DisabledDate = true;
-                    var res = oList.Where(x => x.FlgActive == true).Max(x => x.EndDate);
-                    Convert.ToDateTime(res).AddDays(1);
-                    _dateRange = new DateRange(Convert.ToDateTime(res.Value).AddDays(1), Convert.ToDateTime(res).AddMonths(12));
-                    _dateRange.Start = MinDate = Convert.ToDateTime(res).AddDays(1);
-                }
-                else
-                {
-                    //MinDate = DateTime.Now.Date;
-                    _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date.AddMonths(12));
-                }
+                await GetAllAdvance();
+
                 Loading = false;
             }
             catch (Exception ex)
@@ -232,7 +207,6 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = false;
             }
         }
-
         #endregion
     }
 }
