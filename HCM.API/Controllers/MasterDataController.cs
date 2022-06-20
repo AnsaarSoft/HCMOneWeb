@@ -46,6 +46,7 @@ namespace HCM.API.Controllers
             _mstAdvance = mstAdvance;
             _mstLeaveDeduction = mstLeaveDeduction;
             _mstLeaveType = mstLeaveType;
+            _mstDeductionRule = mstDeductionRule;
         }
 
         #region MST Department
