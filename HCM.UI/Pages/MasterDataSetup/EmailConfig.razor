@@ -1,7 +1,7 @@
 ﻿@page "/EmailConfig"
 @using HCM.API.Models
 
-<div class="container-fluid">
+<div class="container-fluid page-content-setting">
     <div class="row">
         <div class="col-sm-12">
             <h3>Email Configuration</h3>
@@ -10,7 +10,7 @@
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
-            <MudGrid>
+            <MudGrid class="search-action-block align-items-center">
                 <MudItem xs="4" sm="4" md="4" lg="4">
                     <MudTextField T="string" @bind-Value="oModel.FromEmail" InputMode="InputMode.email" MaxLength="50" Counter="50" HelperText="Enter From Email Address" Immediate="true" Clearable="true" Label="Email Address" Variant="Variant.Text" 
                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />

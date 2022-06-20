@@ -14,7 +14,7 @@
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
-            <MudGrid class="search-action-block align-items-center">
+            <MudGrid class="search-action-block align-items-center shift-master-page-setting">
                 <MudItem xs="4" sm="4" md="4" lg="4">
                     <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisabledCode" Mask="@AlphaNumericMask" MaxLength="20" Counter="20" HelperText="Enter Code" Immediate="true" Clearable="true" Label="Code" Variant="Variant.Text" 
                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
@@ -30,23 +30,23 @@
                 </MudItem>              
                 @if (Loading)
                 {
-                                        <MudItem xs="2" sm="2" md="2" lg="2">
-                                            <MudText>Loading...</MudText>
-                                            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
-                                        </MudItem>
+                                    <MudItem xs="2" sm="2" md="2" lg="2">
+                                        <MudText>Loading...</MudText>
+                                        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                                    </MudItem>
                 }
                 else
                 {
-                                        <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
-                                            <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
-                                            <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
-                                        </MudItem>
+                                    <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                                        <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                                        <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
+                                    </MudItem>
                 }
                 <MudItem xs="4" sm="4" md="4" lg="4">
                     <MudSelect @bind-Value="oModel.OverTimeId" Label="Over time Type" HelperText="Select Overtime" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                         @foreach (MstLove Love in oLoveList.Where(x => x.Type == "Val_Type").ToList())
                         {
-                                            <MudSelectItem Value="(int?)Love.Id">@Love.Code - @Love.Value</MudSelectItem>
+                                        <MudSelectItem Value="(int?)Love.Id">@Love.Code - @Love.Value</MudSelectItem>
                         }
                     </MudSelect>
                 </MudItem>   
@@ -54,7 +54,7 @@
                     <MudSelect @bind-Value="oModel.DeductionRuleId" Label="Deduction Type" HelperText="Select Deduction" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                         @foreach (MstLove Love in oLoveList.Where(x => x.Type == "Val_Type").ToList())
                         {
-                                            <MudSelectItem Value="(int?)Love.Id">@Love.Code - @Love.Value</MudSelectItem>
+                                        <MudSelectItem Value="(int?)Love.Id">@Love.Code - @Love.Value</MudSelectItem>
                         }
                     </MudSelect>
                 </MudItem> 
@@ -98,9 +98,77 @@
                         </MudItem>
                         <MudSpacer />
                         <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right pr-5">
-                            <MudFab Color="Color.Primary"  OnClick="@((e) => OpenProcessDialog(FullView))" StartIcon="@Icons.Material.Filled.Add" Title="Add Row" IconSize="Size.Small" />
+                            @if(oDetailList.Count == 0)
+                            {
+                                <MudFab Color="Color.Primary"  OnClick="@((e) => OpenProcessDialog(FullView,oDetailList))" StartIcon="@Icons.Material.Filled.Add" Title="Add Details" IconSize="Size.Small" />
+                            }
+                            else
+                            {
+                                <MudFab Color="Color.Primary"  OnClick="@((e) => OpenProcessDialog(FullView,oDetailList))" StartIcon="@Icons.Material.Filled.Edit" Title="Edit Details" IconSize="Size.Small" />
+                            }                          
                         </MudItem>
                     </MudGrid>
+                    <MudSimpleTable Dense="true" Hover="true" Bordered="true" Striped="true" Style="overflow-x: auto;" Class="mt-4 table-setting table-setting">
+                    <thead class="mud-table-head">
+                        <tr>
+                            <th style="font-weight:bold">Day</th>
+                            <th style="font-weight:bold">Start Time</th>
+                            <th style="font-weight:bold">End Time</th>
+                            <th style="font-weight:bold">Duration</th>
+                            <th style="font-weight:bold">Buffer Start Time</th>
+                            <th style="font-weight:bold">Buffer End Time</th>
+                            <th style="font-weight:bold">Start Grace Time</th>
+                            <th style="font-weight:bold">End Grace Time</th>
+                            <th style="font-weight:bold">Break Time</th>
+                            <th style="font-weight:bold">Out Overlap</th>
+                            <th style="font-weight:bold">Expected In</th>
+                            <th style="font-weight:bold">Expected Out</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in oDetailList)
+                    {
+                        <tr>
+                            <td>
+                                <MudText @bind-Value="item.Day">@item.Day</MudText>                                
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.TSStartTime">@item.TSStartTime.ToString()</MudText>  
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.TSEndTime">@item.TSEndTime.ToString()</MudText>  
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.TSDuration">@item.TSDuration.ToString()</MudText>  
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.TSBufferStartTime">@item.TSBufferStartTime.ToString()</MudText>  
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.TSBufferEndTime">@item.TSBufferEndTime.ToString()</MudText>  
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.TSGraceStartTime">@item.TSGraceStartTime.ToString()</MudText>  
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.TSGraceEndTime">@item.TSGraceEndTime.ToString()</MudText>  
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.TSBreakTime">@item.TSBreakTime.ToString()</MudText>  
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.FlgOutOverlap">@item.FlgOutOverlap.ToString()</MudText>  
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.FlgExpectedIn">@item.FlgExpectedIn.ToString()</MudText>  
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.FlgExpectedOut">@item.FlgExpectedOut.ToString()</MudText>  
+                            </td>
+                         </tr>   
+                    }                   
+                    </tbody>                    
+                </MudSimpleTable> 
                 </MudCardContent>
             </MudCard>
         </div>

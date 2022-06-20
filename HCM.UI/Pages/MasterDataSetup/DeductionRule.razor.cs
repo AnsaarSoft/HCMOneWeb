@@ -7,7 +7,7 @@ using MudBlazor;
 
 namespace HCM.UI.Pages.MasterDataSetup
 {
-    public partial class LeaveType 
+    public partial class DeductionRule
     {
         #region InjectService
 
@@ -21,11 +21,10 @@ namespace HCM.UI.Pages.MasterDataSetup
         public ISnackbar Snackbar { get; set; }
 
         [Inject]
-        public IMstLeaveType  _mstLeaveType { get; set; }
+        public IMstDeductionRule _mstDeductionRule { get; set; }
+
         [Inject]
         public IMstLove _mstLove { get; set; }
-
-
         #endregion
 
         #region Variables
@@ -35,11 +34,11 @@ namespace HCM.UI.Pages.MasterDataSetup
         public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
 
         private string searchString1 = "";
-        private bool FilterFunc(MstLeaveType  element) => FilterFunc(element, searchString1);
+        private bool FilterFunc(MstDeductionRule element) => FilterFunc(element, searchString1);
 
-        MstLeaveType  oModel = new MstLeaveType ();
+        MstDeductionRule oModel = new MstDeductionRule();
         List<MstLove> oLovesList = new List<MstLove>();
-        private IEnumerable<MstLeaveType > oList = new List<MstLeaveType >();
+        private IEnumerable<MstDeductionRule> oList = new List<MstDeductionRule>();
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
         #endregion
@@ -55,7 +54,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (!result.Cancelled)
                 {
                     DisabledCode = true;
-                    var res = (MstLeaveType )result.Data;
+                    var res = (MstDeductionRule)result.Data;
                     AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
                     oModel = res;
                 }
@@ -73,7 +72,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
-                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description) && !string.IsNullOrWhiteSpace(oModel.LeaveType))
+                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Value) && !string.IsNullOrWhiteSpace(oModel.RangeFrom) && !string.IsNullOrWhiteSpace(oModel.RangeTo))
                 {
                     if (oModel.Code.Length > 20)
                     {
@@ -81,22 +80,30 @@ namespace HCM.UI.Pages.MasterDataSetup
                     }
                     else
                     {
-                        if (oModel.Id != 0)
+                        if (oModel.Id == 0)
                         {
-                            res = await _mstLeaveType.Update(oModel);
+                            if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
+                            {
+                                Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                            }
+                            
+                        }
+                        else
+                        {
+                            res = await _mstDeductionRule.Update(oModel);
                         }
                     }
                     if (res != null && res.Id == 1)
                     {
                         Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
                         await Task.Delay(3000);
-                        Navigation.NavigateTo("/LeaveType", forceLoad: true);
+                        Navigation.NavigateTo("/DeductionRule", forceLoad: true);
                     }
                     else
                     {
                         Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
-                    oModel.FlgActive = true;
+                    
                 }
                 else
                 {
@@ -119,7 +126,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             {
                 Loading = true;
                 await Task.Delay(3);
-                Navigation.NavigateTo("/LeaveType", forceLoad: true);
+                Navigation.NavigateTo("/DeductionRule", forceLoad: true);
                 Loading = false;
             }
             catch (Exception ex)
@@ -129,37 +136,35 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
-        private bool FilterFunc(MstLeaveType  element, string searchString1)
+        private bool FilterFunc(MstDeductionRule element, string searchString1)
         {
             if (string.IsNullOrWhiteSpace(searchString1))
                 return true;
             if (element.Code.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
-            if (element.Description.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            if (element.Value.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
-            if (element.LeaveType.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            if (element.RangeFrom.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
-            if (element.DeductionId.Equals(searchString1))
+            if (element.RangeTo.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
-            if (element.MonthDays.Equals(searchString1))
+            if (element.Deduction.Equals(searchString1))
                 return true;
-            if (element.LeaveCap.Equals(searchString1))
+            if (element.LeaveType.Equals(searchString1))
                 return true;
-            if (element.FlgEncash.Equals(searchString1))
+            if (element.GracePeriod.Equals(searchString1))
                 return true;
-            if (element.FlgCarryForward.Equals(searchString1))
-                return true;
-            if (element.FlgActive.Equals(searchString1))
+            if (element.LeaveCount.Equals(searchString1))
                 return true;
 
             return false;
         }
 
-        private async Task GetAllLeaveType ()
+        private async Task GetAllDeductionRule()
         {
             try
             {
-                oList = await _mstLeaveType.GetAllData();
+                oList = await _mstDeductionRule.GetAllData();
             }
             catch (Exception ex)
             {
@@ -191,14 +196,13 @@ namespace HCM.UI.Pages.MasterDataSetup
                     oModel.Id = res.Id;
                     oModel.Code = res.Code;
                     DisabledCode = true;
-                    oModel.Description = res.Description;
+                    oModel.Value = res.Value;
+                    oModel.RangeFrom = res.RangeFrom;
+                    oModel.RangeTo = res.RangeTo;
+                    oModel.Deduction = res.Deduction;
                     oModel.LeaveType = res.LeaveType;
-                    oModel.DeductionId = res.DeductionId;
-                    oModel.MonthDays = res.MonthDays;
-                    oModel.LeaveCap = res.LeaveCap;
-                    oModel.FlgEncash = res.FlgEncash;
-                    oModel.FlgCarryForward = res.FlgCarryForward;
-                    oModel.FlgActive = res.FlgActive;
+                    oModel.GracePeriod = res.GracePeriod;
+                    oModel.LeaveCount = res.LeaveCount;
                     oList = oList.Where(x => x.Id != LineNum);
                     //_ = InvokeAsync(StateHasChanged);
                 }
@@ -220,10 +224,8 @@ namespace HCM.UI.Pages.MasterDataSetup
             {
                 Loading = true;
                 await GetAllLove();
-                await GetAllLeaveType();
-                oModel.FlgEncash = true;
-                oModel.FlgCarryForward = true;
-                oModel.FlgActive = true;
+                await GetAllDeductionRule();
+                oModel.Deduction = true;
                 Loading = false;
             }
             catch (Exception ex)

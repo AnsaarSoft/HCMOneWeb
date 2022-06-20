@@ -4,26 +4,26 @@ using HCM.API.Models;
 
 namespace HCM.API.Repository.MasterData
 {
-    public class MstLeaveTypeRepo : IMstLeaveType
+    public class MstDeductionRuleRepo : IMstDeductionRule
     {
         private WebHCMOneContext _DBContext;
 
-        public MstLeaveTypeRepo(WebHCMOneContext DBContext)
+        public MstDeductionRuleRepo(WebHCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
-        public async Task<List<MstLeaveType>> GetAllData()
+        public async Task<List<MstDeductionRule>> GetAllData()
         {
-            List<MstLeaveType> oList = new List<MstLeaveType>();
+            List<MstDeductionRule> oList = new List<MstDeductionRule>();
             try
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.MstLeaveTypes.Where(a => a.FlgActive == true).ToList();
+                    //oList = _DBContext.MstDeductionRule.Where(a => a.FlgActive == true).ToList();
                     //oList = (from a in _DBContext.MstDepartments
                     //         where a.FlgActive == true
                     //         select a).ToList();
-                    //oList = _DBContext.MstLeaveTypes.ToList();
+                    oList = _DBContext.MstDeductionRules.ToList();
                 });
             }
             catch (Exception ex)
@@ -32,15 +32,15 @@ namespace HCM.API.Repository.MasterData
             }
             return oList;
         }
-       
-        public async Task<ApiResponseModel> Update(MstLeaveType oMstLeaveType)
+        
+        public async Task<ApiResponseModel> Update(MstDeductionRule oMstDeductionRule)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    _DBContext.MstLeaveTypes.Update(oMstLeaveType);
+                    _DBContext.MstDeductionRules.Update(oMstDeductionRule);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";

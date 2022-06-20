@@ -42,12 +42,21 @@
                             </MudItem>
                 }
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" @bind-Value="oModel.LeaveType" MaxLength="10" Counter="10" HelperText="Enter LeaveType" Immediate="true" Clearable="true" Label="LeaveType" Variant="Variant.Text" 
-                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
-                </MudItem>
+                    <MudSelect @bind-Value="oModel.LeaveType" Label="Leave Type" HelperText="Select Leave Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (MstLove Love in oLovesList.Where(x => x.Type=="Val_Type").ToList())
+                        {
+                                    <MudSelectItem Value="@Love.Code">@Love.Code - @Love.Value</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem> 
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.DeductionId" HelperText="Enter Deduction ID" Immediate="true" Clearable="true" Label="Deduction ID" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
-                </MudItem>
+                    <MudSelect @bind-Value="oModel.DeductionId" Label="Deduction ID" HelperText="Select Deduction ID" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (MstLove Love in oLovesList.Where(x => x.Type=="Val_Type").ToList())
+                        {
+                                    <MudSelectItem Value="(int?)Love.Id">@Love.Code - @Love.Value</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>   
                 <MudItem xs="4" sm="4" md="4" lg="4">
                     <MudNumericField @bind-Value="oModel.MonthDays" HelperText="Enter Month Days" Immediate="true" Clearable="true" Label="Month Days" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
                 </MudItem>

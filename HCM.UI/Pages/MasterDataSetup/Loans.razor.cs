@@ -189,6 +189,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         }
 
         #endregion
+
         #region Events
 
         protected async override Task OnInitializedAsync()

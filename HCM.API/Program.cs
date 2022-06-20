@@ -4,6 +4,7 @@ using HCM.API.Models;
 using HCM.API.Repository.MasterData;
 using HCM.API.Repository.MasterElement;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,10 @@ builder.Services.AddDbContext<WebHCMOneContext>(options =>
 options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
+
+
+builder.Services.AddControllersWithViews()
+                .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddScoped<IMstDepartment, MstDepartmentRepo>();
 builder.Services.AddScoped<IMstDesignation, MstDesignationRepo>();
@@ -38,6 +43,7 @@ builder.Services.AddScoped<IMstShifts, MstShiftRepo>();
 builder.Services.AddScoped<IMstAdvance, MstAdvanceRepo>();
 builder.Services.AddScoped<IMstLeaveType, MstLeaveTypeRepo>();
 builder.Services.AddScoped<IMstLeaveDeduction, MstLeaveDeductionRepo>();
+builder.Services.AddScoped<IMstDeductionRule, MstDeductionRuleRepo>();
 
 var app = builder.Build();
 

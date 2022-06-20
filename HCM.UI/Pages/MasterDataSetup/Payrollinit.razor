@@ -1,7 +1,7 @@
 ﻿@page "/Payrollinit"
 @using HCM.API.Models
 
-<div class="container-fluid">
+<div class="container-fluid page-content-setting">
     <div class="row">
         <div class="col-sm-12">
             <h3>Payroll Initialization</h3>
@@ -10,7 +10,7 @@
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
-            <MudGrid>
+            <MudGrid class="search-action-block align-items-center">
                 <MudItem xs="4" sm="4" md="4" lg="4">
                     <MudSwitch @bind-Checked="@oModel.FlgEmployeeCodeSeries" ThumbIcon="@(oModel.FlgEmployeeCodeSeries==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgEmployeeCodeSeries==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgEmployeeCodeSeries==true ? Color.Info : Color.Error)">
                     <span>@(oModel.FlgEmployeeCodeSeries==true ? "Enabled Customized Employee Code Series" : "Disabled Customized Employee Code Series")</span>

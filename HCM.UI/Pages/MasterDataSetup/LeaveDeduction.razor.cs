@@ -37,7 +37,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         private bool FilterFunc(MstLeaveDeduction element) => FilterFunc(element, searchString1);
 
         MstLeaveDeduction oModel = new MstLeaveDeduction();
-       List<MstLove> oLovesList = new List<MstLove>();
+        List<MstLove> oLovesList = new List<MstLove>();
         private IEnumerable<MstLeaveDeduction> oList = new List<MstLeaveDeduction>();
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 

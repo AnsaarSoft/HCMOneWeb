@@ -41,12 +41,17 @@
                                 <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
                             </MudItem>
                 }
-                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
-                    <MudSwitch @bind-Checked="@oModel.FlgDefault" ThumbIcon="@(oModel.FlgDefault==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgDefault==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgDefault==true ? Color.Info : Color.Error)">
+            </MudGrid>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <MudGrid class="toggle-btn-setting align-items-center">
+                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right offset-8">
+                     <MudSwitch @bind-Checked="@oModel.FlgDefault" ThumbIcon="@(oModel.FlgDefault==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgDefault==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgDefault==true ? Color.Info : Color.Error)">
                         <span>@(oModel.FlgDefault==true ? "Default" : "Custom")</span>
                     </MudSwitch>
                 </MudItem>
-                
             </MudGrid>
         </div>
     </div>

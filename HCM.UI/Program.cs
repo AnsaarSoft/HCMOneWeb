@@ -42,6 +42,7 @@ builder.Services.AddScoped<IMstShifts, MstShiftService>();
 builder.Services.AddScoped<IMstAdvance, MstAdvanceService>();
 builder.Services.AddScoped<IMstLeaveType, MstLeaveTypeService>();
 builder.Services.AddScoped<IMstLeaveDeduction, MstLeaveDeductionService>();
+builder.Services.AddScoped<IMstDeductionRule, MstDeductionRuleService>();
 
 
 

@@ -1,0 +1,107 @@
+﻿@page "/DeductionRule"
+@using HCM.API.Models
+
+<div class="container-fluid page-content-setting">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>Deduction Rules</h3>
+            <MudDivider/>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudGrid class="search-action-block align-items-center">
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField @bind-Value="oModel.Code" Disabled="@DisabledCode" Mask="@AlphaNumericMask" MaxLength="50" Counter="50" HelperText="Enter Code" Immediate="true" Clearable="true" Label="Code" Variant="Variant.Text" 
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem> 
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField @bind-Value="oModel.RangeFrom" MaxLength="10" Counter="10" HelperText="Enter Range From" Immediate="true" Clearable="true" Label="Range From" Variant="Variant.Text" 
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudSwitch @bind-Checked="@oModel.Deduction" ThumbIcon="@(oModel.Deduction==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.Deduction==true ? Color.Primary : Color.Error)" Color="@(oModel.Deduction==true ? Color.Info : Color.Error)">
+                     <span>@(oModel.Deduction==true ? "Enabled Deduction" : "Disabled Deduction")</span>   
+                    </MudSwitch>
+                </MudItem>
+                @if(Loading)
+                {
+                            <MudItem xs="2" sm="2" md="2" lg="2">
+                                <MudText>Loading...</MudText>
+                                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                            </MudItem>
+                }
+                else
+                {
+                            <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                                <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                                <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
+                            </MudItem>
+                }
+                
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField @bind-Value="oModel.RangeTo" MaxLength="10" Counter="10" HelperText="Enter Range To" Immediate="true" Clearable="true" Label="Range To" Variant="Variant.Text" 
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudSelect @bind-Value="oModel.LeaveType" Label="Leave Type" HelperText="Select Leave Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (MstLove Love in oLovesList.Where(x => x.Type=="Val_Type").ToList())
+                        {
+                                    <MudSelectItem Value="(int?)Love.Id">@Love.Code - @Love.Value</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem> 
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModel.GracePeriod" HelperText="Enter Grace Period" Immediate="true" Clearable="true" Label="Grace Period" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModel.LeaveCount" HelperText="Enter Leave Count" Immediate="true" Clearable="true" Label="Leave Count" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
+                </MudItem>
+
+            </MudGrid>
+        </div>
+    </div>
+   <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudCard Elevation="5">
+                        <MudCardContent>
+                            <MudTable Items="@oList" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstDeductionRule,bool>(FilterFunc)">
+                                <ToolBarContent>
+                                    <MudText Typo="Typo.h6">Deduction Rules</MudText>
+                                    <MudSpacer />
+                                    <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                                </ToolBarContent>
+                                <HeaderContent>
+                                    <MudTh>Code</MudTh>
+                                    <MudTh>Value</MudTh>
+                                    <MudTh>Range From</MudTh>
+                                    <MudTh>Range To</MudTh>
+                                    <MudTh>Leave Type</MudTh>
+                                    <MudTh>Grace Period</MudTh>
+                                    <MudTh>Leave Count</MudTh>
+                                    <MudTh>Deduction</MudTh>
+                                    <MudTh>Action</MudTh>
+                                </HeaderContent>
+                                <RowTemplate>
+                                     <MudTd DataLabel="Code">@context.Code</MudTd>                                   
+                                    <MudTd DataLabel="Value">@context.Value</MudTd>
+                                    <MudTd DataLabel="RangeFrom">@context.RangeFrom</MudTd>
+                                    <MudTd DataLabel="RangeTo">@context.RangeTo</MudTd>
+                                    <MudTd DataLabel="LeaveType">@context.LeaveType</MudTd>
+                                    <MudTd DataLabel="GracePeriod">@context.GracePeriod</MudTd>
+                                     
+                                    <MudTd DataLabel="LeaveCount">@context.LeaveCount</MudTd>
+                                    <MudTd DataLabel="Deduction">@context.Deduction</MudTd>
+                                    <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id))" Title="Edit"></MudIconButton></MudTd>
+                                </RowTemplate>
+                                <PagerContent>
+                                    <MudTablePager />
+                                </PagerContent>
+                            </MudTable>
+                        </MudCardContent>
+            </MudCard>
+        </div>
+    </div>    
+</div>
+
+

@@ -3,10 +3,88 @@
     <DialogContent>
         @if (Loading)
         {
-                <center><MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" /></center>
+                        <center><MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" /></center>
         }
+        @if (Settings.DialogFor == "Shifts")
+        {
+             <MudTable Items="@oListShift" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true"
+                    Loading="@Loading" LoadingProgressColor="Color.Primary" T="VMMstShiftDetail" @bind-SelectedItem="oModelShiftDetail">
+                    <ToolBarContent>
+                        <MudText Typo="Typo.h6">Shift Detail</MudText>
+                        <MudSpacer />                        
+                     </ToolBarContent>
+                     <HeaderContent>
+                            <MudTh>Day</MudTh>
+                            <MudTh>Start Time</MudTh>
+                            <MudTh>End Time</MudTh>
+                            <MudTh>Duration</MudTh>
+                            <MudTh>Buffer Start Time</MudTh>
+                            <MudTh>Buffer End Time</MudTh>
+                            <MudTh>Start Grace Time</MudTh>
+                            <MudTh>End Grace Time</MudTh>
+                            <MudTh>Break Time</MudTh>
+                            <MudTh>Out Overlap</MudTh>
+                            <MudTh>Expected In</MudTh>
+                            <MudTh>Expected Out</MudTh>
+                     </HeaderContent>
+                     <RowTemplate>
+                         <MudTd DataLabel="Code">@context.Day</MudTd>                       
+                         <MudTd DataLabel="Code">
+                             <MudTimePicker PickerVariant="PickerVariant.Dialog" Label="24 hours" @bind-Time="@context.TSStartTime" HelperText="Start Time" Variant="Variant.Text"
+                            Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Timer"/>
+                         </MudTd>                       
+                         <MudTd DataLabel="Code">
+                             <MudTimePicker PickerVariant="PickerVariant.Dialog" PickerClosed="@((e) => OnValueChanged(context.Day))" Label="24 hours" @bind-Time="@context.TSEndTime" HelperText="End Time" Variant="Variant.Text"
+                             Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Timer"/>
+                         </MudTd>   
+                         <MudTd>
+                            <MudTimePicker Disabled="true" PickerVariant="PickerVariant.Dialog" Label="24 hours" @bind-Time="@context.TSDuration" HelperText="Duration" Variant="Variant.Text"
+                            Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Timer"/>
+                         </MudTd>
+                         <MudTd>
+                             <MudTimePicker PickerVariant="PickerVariant.Dialog" Label="Periods" @bind-Time="@context.TSBufferStartTime" HelperText="Buffer Start Time" Variant="Variant.Text"
+                             Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Timer"/>
+                         </MudTd>
+                         <MudTd>
+                             <MudTimePicker PickerVariant="PickerVariant.Dialog" Label="Periods" @bind-Time="@context.TSBufferEndTime" HelperText="Buffer End Time" Variant="Variant.Text"
+                             Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Timer"/>
+                         </MudTd>
+                         <MudTd>
+                             <MudTimePicker PickerVariant="PickerVariant.Dialog" Label="Periods" @bind-Time="@context.TSGraceStartTime" HelperText="Grace Start Time" Variant="Variant.Text"
+                             Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Timer"/>
+                         </MudTd>
+                         <MudTd>
+                             <MudTimePicker PickerVariant="PickerVariant.Dialog" Label="Periods" @bind-Time="@context.TSGraceEndTime" HelperText="Grace End Time" Variant="Variant.Text"
+                             Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Timer"/>
+                         </MudTd>
+                         <MudTd>
+                             <MudTimePicker PickerVariant="PickerVariant.Dialog" Label="Periods" @bind-Time="@context.TSBreakTime" HelperText="Break Time" Variant="Variant.Text"
+                             Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Timer"/>
+                         </MudTd>
+                         <MudTd>
+                             <MudSwitch @bind-Checked="@context.FlgOutOverlap" ThumbIcon="@(context.FlgOutOverlap==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(context.FlgOutOverlap==true ? Color.Primary : Color.Error)" Color="@(context.FlgOutOverlap==true ? Color.Info : Color.Error)">
+                                     <span>@(context.FlgOutOverlap==true ? "Enable Out Overlap" : "Disbale Out Overlap")</span>
+                             </MudSwitch>
+                         </MudTd>
+                         <MudTd>
+                             <MudSwitch @bind-Checked="@context.FlgExpectedIn" ThumbIcon="@(context.FlgExpectedIn==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(context.FlgExpectedIn==true ? Color.Primary : Color.Error)" Color="@(context.FlgExpectedIn==true ? Color.Info : Color.Error)">
+                                     <span>@(context.FlgExpectedIn==true ? "Enable Expected In" : "Disbale Expected In")</span>
+                             </MudSwitch>
+                         </MudTd>
+                         <MudTd>
+                             <MudSwitch @bind-Checked="@context.FlgExpectedOut" ThumbIcon="@(context.FlgExpectedOut==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(context.FlgExpectedOut==true ? Color.Primary : Color.Error)" Color="@(context.FlgExpectedOut==true ? Color.Info : Color.Error)">
+                                     <span>@(context.FlgExpectedOut==true ? "Enable Expected Out" : "Disbale Expected Out")</span>
+                             </MudSwitch>
+                         </MudTd>
+                     </RowTemplate>
+                     <PagerContent>
+                         <MudTablePager />
+                     </PagerContent>
+                 </MudTable>                     
+        }        
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
     </DialogActions>
 </MudDialog>

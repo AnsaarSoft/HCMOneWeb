@@ -381,8 +381,32 @@ button.mud-button-root.mud-icon-button.mud-icon-button-color-inherit.mud-ripple.
 .table-setting .mud-table-container .mud-button-root {
     border-color: #122f3b !important;
 }
-    .table-setting .mud-table-container .mud-button-root .mud-icon-root {
-        width: 20px;
-        height: 20px;
-        color: #122f3b !important;
-    } 
+.table-setting .mud-table-container .mud-button-root .mud-icon-root {
+    width: 20px;
+    height: 20px;
+    color: #122f3b !important;
+    }
+.table-setting .mud-table-container thead tr th {
+    /*white-space:nowrap;*/
+    line-height: 20px !important;
+}
+.toggle-btn-setting .mud-switch {
+    margin-right: 10px;
+}
+.shift-master-page-setting .mud-grid-item .mud-switch {
+    white-space:nowrap;
+}
+.shift-table-setting thead tr th{
+    white-space:nowrap;
+}
+.process-modal-setting .mud-dialog-content {
+    overflow-y: scroll;
+    height: 520px;
+}
+    .process-modal-setting .mud-dialog-content .mud-table .mud-table-container thead tr th {
+        /*white-space:nowrap;*/
+        padding: 6px 10px;
+    }
+.process-modal-setting .mud-dialog-content .mud-table .mud-table-container tbody tr td {
+        padding: 10px;
+    }

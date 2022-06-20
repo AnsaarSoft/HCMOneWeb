@@ -25,10 +25,11 @@ namespace HCM.API.Controllers
         private IMstAdvance _mstAdvance;
         private IMstLeaveType _mstLeaveType;
         private IMstLeaveDeduction _mstLeaveDeduction;
+        private IMstDeductionRule _mstDeductionRule;
 
         public MasterDataController(IMstDepartment mstDepartment, IMstDesignation mstDesignation, IMstLocation mstLocation, IMstPosition mstPosition, IMstBranch mstBranch, IMstGrading mstGrading, IMstCalendar mstCalendar,
-            IMstLeaveCalendar mstLeaveCalendar, IMstEmailConfig mstEmailConfig, IMstPayrollinit mstPayrollinit, IMstLoans mstLoans, IMstShifts mstShift, IMstAdvance mstAdvance, IMstLeaveDeduction mstLeaveDeduction, 
-            IMstLeaveType mstLeaveType)
+            IMstLeaveCalendar mstLeaveCalendar, IMstEmailConfig mstEmailConfig, IMstPayrollinit mstPayrollinit, IMstLoans mstLoans, IMstShifts mstShift, IMstAdvance mstAdvance, IMstLeaveDeduction mstLeaveDeduction,
+            IMstLeaveType mstLeaveType, IMstDeductionRule mstDeductionRule)
         {
             _mstDepartment = mstDepartment;
             _mstDesignation = mstDesignation;
@@ -840,7 +841,7 @@ namespace HCM.API.Controllers
 
         #endregion
 
-        #region MST Loans
+        #region MST Shift
 
         [Route("getAllShift")]
         [HttpGet]
@@ -1102,6 +1103,58 @@ namespace HCM.API.Controllers
             try
             {
                 response = await _mstLeaveType.Update(pMstLeaveType);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
+
+        #region MST DeductionRule
+
+        [Route("getAllDeductionRule")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllDeductionRule()
+        {
+            List<MstDeductionRule> oMstDeductionRule = new List<MstDeductionRule>();
+            try
+            {
+                oMstDeductionRule = await _mstDeductionRule.GetAllData();
+                if (oMstDeductionRule == null)
+                {
+                    return BadRequest(oMstDeductionRule);
+                }
+                else
+                {
+                    return Ok(oMstDeductionRule);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateDeductionRule")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstDeductionRule pMstDeductionRule)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstDeductionRule.Update(pMstDeductionRule);
                 if (response == null)
                 {
                     return BadRequest(response);

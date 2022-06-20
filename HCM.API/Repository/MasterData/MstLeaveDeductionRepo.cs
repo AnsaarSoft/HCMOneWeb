@@ -19,7 +19,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.MstLeaveDeductions.ToList();
+                    oList = _DBContext.MstLeaveDeductions.Where(a => a.FlgActive == true).ToList();
                     //oList = (from a in _DBContext.MstDepartments
                     //         where a.FlgActive == true
                     //         select a).ToList();

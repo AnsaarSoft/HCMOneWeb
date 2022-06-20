@@ -3,6 +3,7 @@ using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using System.Globalization;
 
 namespace HCM.UI.General
 {
@@ -30,44 +31,199 @@ namespace HCM.UI.General
         #region Variables
 
         bool Loading = false;
+        
         void Cancel() => MudDialog.Cancel();
+        [Parameter] public List<VMMstShiftDetail> oDetailListPara { get; set; } = new List<VMMstShiftDetail>();
 
-        MstShiftsDetail oModelShiftDetail = new MstShiftsDetail();
-        List<MstShiftsDetail> oListShift = new List<MstShiftsDetail>();
+        VMMstShiftDetail oModelShiftDetail = new VMMstShiftDetail();
+        List<VMMstShiftDetail> oListShift = new List<VMMstShiftDetail>();
 
         #endregion
 
-        #region Functions
-        private bool FilterFuncElement(MstElement element, string searchString1)
+        #region Functions        
+
+        private async Task CreateRows()
         {
-            if (string.IsNullOrWhiteSpace(searchString1))
-                return true;
-            if (element.Code.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
-                return true;
-            if (element.Description.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
-                return true;
-            if (element.ElmtType.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
-                return true;
-            if (element.Type.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
-                return true;
-            if (element.FlgActive.Equals(searchString1))
-                return true;
-            return false;
+            await Task.Delay(3);
+            if (oDetailListPara.Count > 0)
+            {
+                oListShift = oDetailListPara;
+            }
+            else
+            {
+                for (int i = 0; i <= 6; i++)
+                {
+                    oModelShiftDetail = new VMMstShiftDetail();
+                    if (i == 0)
+                    {
+                        oModelShiftDetail.Day = "Monday";
+                        oModelShiftDetail.TSStartTime = new TimeSpan();
+                        oModelShiftDetail.TSEndTime = new TimeSpan();
+                        oModelShiftDetail.TSDuration = new TimeSpan();
+                        oModelShiftDetail.TSBufferStartTime = new TimeSpan();
+                        oModelShiftDetail.TSBufferEndTime = new TimeSpan();
+                        oModelShiftDetail.TSGraceStartTime = new TimeSpan();
+                        oModelShiftDetail.TSGraceEndTime = new TimeSpan();
+                        oModelShiftDetail.TSBreakTime = new TimeSpan();
+                        oModelShiftDetail.FlgOutOverlap = true;
+                        oModelShiftDetail.FlgExpectedIn = true;
+                        oModelShiftDetail.FlgExpectedOut = true;
+                    }
+                    if (i == 1)
+                    {
+                        oModelShiftDetail.Day = "Tuesday";
+                        oModelShiftDetail.TSStartTime = new TimeSpan();
+                        oModelShiftDetail.TSEndTime = new TimeSpan();
+                        oModelShiftDetail.TSDuration = new TimeSpan();
+                        oModelShiftDetail.TSBufferStartTime = new TimeSpan();
+                        oModelShiftDetail.TSBufferEndTime = new TimeSpan();
+                        oModelShiftDetail.TSGraceStartTime = new TimeSpan();
+                        oModelShiftDetail.TSGraceEndTime = new TimeSpan();
+                        oModelShiftDetail.TSBreakTime = new TimeSpan();
+                        oModelShiftDetail.FlgOutOverlap = true;
+                        oModelShiftDetail.FlgExpectedIn = true;
+                        oModelShiftDetail.FlgExpectedOut = true;
+                    }
+                    if (i == 2)
+                    {
+                        oModelShiftDetail.Day = "Wednesday";
+                        oModelShiftDetail.TSStartTime = new TimeSpan();
+                        oModelShiftDetail.TSEndTime = new TimeSpan();
+                        oModelShiftDetail.TSDuration = new TimeSpan();
+                        oModelShiftDetail.TSBufferStartTime = new TimeSpan();
+                        oModelShiftDetail.TSBufferEndTime = new TimeSpan();
+                        oModelShiftDetail.TSGraceStartTime = new TimeSpan();
+                        oModelShiftDetail.TSGraceEndTime = new TimeSpan();
+                        oModelShiftDetail.TSBreakTime = new TimeSpan();
+                        oModelShiftDetail.FlgOutOverlap = true;
+                        oModelShiftDetail.FlgExpectedIn = true;
+                        oModelShiftDetail.FlgExpectedOut = true;
+                    }
+                    if (i == 3)
+                    {
+                        oModelShiftDetail.Day = "Thursday";
+                        oModelShiftDetail.TSStartTime = new TimeSpan();
+                        oModelShiftDetail.TSEndTime = new TimeSpan();
+                        oModelShiftDetail.TSDuration = new TimeSpan();
+                        oModelShiftDetail.TSBufferStartTime = new TimeSpan();
+                        oModelShiftDetail.TSBufferEndTime = new TimeSpan();
+                        oModelShiftDetail.TSGraceStartTime = new TimeSpan();
+                        oModelShiftDetail.TSGraceEndTime = new TimeSpan();
+                        oModelShiftDetail.TSBreakTime = new TimeSpan();
+                        oModelShiftDetail.FlgOutOverlap = true;
+                        oModelShiftDetail.FlgExpectedIn = true;
+                        oModelShiftDetail.FlgExpectedOut = true;
+                    }
+                    if (i == 4)
+                    {
+                        oModelShiftDetail.Day = "Friday";
+                        oModelShiftDetail.TSStartTime = new TimeSpan();
+                        oModelShiftDetail.TSEndTime = new TimeSpan();
+                        oModelShiftDetail.TSDuration = new TimeSpan();
+                        oModelShiftDetail.TSBufferStartTime = new TimeSpan();
+                        oModelShiftDetail.TSBufferEndTime = new TimeSpan();
+                        oModelShiftDetail.TSGraceStartTime = new TimeSpan();
+                        oModelShiftDetail.TSGraceEndTime = new TimeSpan();
+                        oModelShiftDetail.TSBreakTime = new TimeSpan();
+                        oModelShiftDetail.FlgOutOverlap = true;
+                        oModelShiftDetail.FlgExpectedIn = true;
+                        oModelShiftDetail.FlgExpectedOut = true;
+                    }
+                    if (i == 5)
+                    {
+                        oModelShiftDetail.Day = "Saturday";
+                        oModelShiftDetail.TSStartTime = new TimeSpan();
+                        oModelShiftDetail.TSEndTime = new TimeSpan();
+                        oModelShiftDetail.TSDuration = new TimeSpan();
+                        oModelShiftDetail.TSBufferStartTime = new TimeSpan();
+                        oModelShiftDetail.TSBufferEndTime = new TimeSpan();
+                        oModelShiftDetail.TSGraceStartTime = new TimeSpan();
+                        oModelShiftDetail.TSGraceEndTime = new TimeSpan();
+                        oModelShiftDetail.TSBreakTime = new TimeSpan();
+                        oModelShiftDetail.FlgOutOverlap = true;
+                        oModelShiftDetail.FlgExpectedIn = true;
+                        oModelShiftDetail.FlgExpectedOut = true;
+                    }
+                    if (i == 6)
+                    {
+                        oModelShiftDetail.Day = "Sunday";
+                        oModelShiftDetail.TSStartTime = new TimeSpan();
+                        oModelShiftDetail.TSEndTime = new TimeSpan();
+                        oModelShiftDetail.TSDuration = new TimeSpan();
+                        oModelShiftDetail.TSBufferStartTime = new TimeSpan();
+                        oModelShiftDetail.TSBufferEndTime = new TimeSpan();
+                        oModelShiftDetail.TSGraceStartTime = new TimeSpan();
+                        oModelShiftDetail.TSGraceEndTime = new TimeSpan();
+                        oModelShiftDetail.TSBreakTime = new TimeSpan();
+                        oModelShiftDetail.FlgOutOverlap = true;
+                        oModelShiftDetail.FlgExpectedIn = true;
+                        oModelShiftDetail.FlgExpectedOut = true;
+                    }
+                    oListShift.Add(oModelShiftDetail);
+                }
+            }
         }
 
-        private bool FilterFuncShift(MstShift element, string searchString1)
+        private async Task OnValueChanged(string Day)
         {
-            if (string.IsNullOrWhiteSpace(searchString1))
-                return true;
-            if (element.Code.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
-                return true;
-            if (element.Description.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
-                return true;
-            if (element.FlgActive.Equals(searchString1))
-                return true;
-            return false;
+            try
+            {
+                await Task.Delay(2);
+                var res = oListShift.Where(x => x.Day == Day).FirstOrDefault();
+                TimeSpan Dur = DateTime.ParseExact(res.TSEndTime.ToString(), "HH:mm:ss", CultureInfo.InvariantCulture).Subtract(DateTime.ParseExact(res.TSStartTime.ToString(), "HH:mm:ss", CultureInfo.InvariantCulture));
+
+               oListShift.Where(x => x.Day == Day).ToList().ForEach(s => s.TSDuration = Dur);
+                //foreach (var item in oListShift)
+                //{
+                //    if(Day == "Monday")
+                //    {
+                //        item.TSDuration = Dur;
+                //        break;
+                //    }
+                //    if (Day == "Tuesday")
+                //    {
+                //        item.TSDuration = Dur;
+                //        break;
+                //    }
+                //    if (Day == "Wednesday")
+                //    {
+                //        item.TSDuration = Dur;
+                //        break;
+                //    }
+                //    if (Day == "Thursday")
+                //    {
+                //        item.TSDuration = Dur;
+                //        break;
+                //    }
+                //    if (Day == "Friday")
+                //    {
+                //        item.TSDuration = Dur;
+                //        break;
+                //    }
+                //    if (Day == "Saturday")
+                //    {
+                //        item.TSDuration = Dur;
+                //        break;
+                //    }
+                //    if (Day == "Sunday")
+                //    {
+                //        item.TSDuration = Dur;
+                //        break;
+                //    }
+                //    continue;
+                //}
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
         }
 
+        private async Task Submit()
+        {
+            await Task.Delay(2);
+            MudDialog.Close(DialogResult.Ok<List<VMMstShiftDetail>>(oListShift));
+        }
         #endregion
 
         #region Events
@@ -79,11 +235,11 @@ namespace HCM.UI.General
                 Loading = true;
                 if (Settings.DialogFor == "Element")
                 {
-                    
+
                 }
                 else if (Settings.DialogFor == "Shifts")
                 {
-                    
+                    await CreateRows();
                 }
                 Loading = false;
             }

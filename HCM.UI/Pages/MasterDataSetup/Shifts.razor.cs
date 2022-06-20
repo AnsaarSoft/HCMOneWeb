@@ -41,11 +41,10 @@ namespace HCM.UI.Pages.MasterDataSetup
         MstShift oModel = new MstShift();
         MstShiftsDetail oDetail = new MstShiftsDetail();
         List<MstLove> oLoveList = new List<MstLove>();
-        List<MstShiftsDetail> oDetailList = new List<MstShiftsDetail>();
+        List<VMMstShiftDetail> oDetailList = new List<VMMstShiftDetail>();
         private IEnumerable<MstShift> oList = new List<MstShift>();
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
-        DialogOptions FullView = new DialogOptions() { MaxWidth = MaxWidth.Large, FullWidth = true };
-
+        DialogOptions FullView = new DialogOptions() { MaxWidth = MaxWidth.ExtraExtraLarge, FullWidth = true, CloseButton = true, DisableBackdropClick = true, CloseOnEscapeKey = true };
         #endregion
 
         #region Functions
@@ -59,10 +58,55 @@ namespace HCM.UI.Pages.MasterDataSetup
                 var result = await dialog.Result;
                 if (!result.Cancelled)
                 {
+                    oDetailList.Clear();
                     DisabledCode = true;
                     var res = (MstShift)result.Data;
                     AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
                     oModel = res;
+                    foreach (var item in oModel.MstShiftsDetails)
+                    {
+                        VMMstShiftDetail vm = new VMMstShiftDetail();
+                        vm.Id = item.Id;
+                        vm.Fkid = item.Fkid;
+                        vm.Day = item.Day;
+
+                        string[] spStartTime = item.StartTime.Split(':');
+                        TimeSpan TsStartTime = new TimeSpan(Convert.ToInt32(spStartTime[0]), Convert.ToInt32(spStartTime[1]), 0);
+                        vm.TSStartTime = TsStartTime;
+
+                        string[] spEndTime = item.EndTime.Split(':');
+                        TimeSpan TsEndTime = new TimeSpan(Convert.ToInt32(spEndTime[0]), Convert.ToInt32(spEndTime[1]), 0);
+                        vm.TSEndTime = TsEndTime;
+
+                        string[] spDurationTime = item.Duration.Split(':');
+                        TimeSpan TsDurationTime = new TimeSpan(Convert.ToInt32(spDurationTime[0]), Convert.ToInt32(spDurationTime[1]), 0);
+                        vm.TSDuration = TsDurationTime;
+
+                        string[] spBufferStartTime = item.BufferStartTime.Split(':');
+                        TimeSpan TSBufferStartTime = new TimeSpan(Convert.ToInt32(spBufferStartTime[0]), Convert.ToInt32(spBufferStartTime[1]), 0);
+                        vm.TSBufferStartTime = TSBufferStartTime;
+
+                        string[] spBufferEndTime = item.BufferEndTime.Split(':');
+                        TimeSpan TSBufferEndTime = new TimeSpan(Convert.ToInt32(spBufferEndTime[0]), Convert.ToInt32(spBufferEndTime[1]), 0);
+                        vm.TSBufferEndTime = TSBufferEndTime;
+
+                        string[] spGraceStartTime = item.StartGraceTime.Split(':');
+                        TimeSpan TSGraceStartTime = new TimeSpan(Convert.ToInt32(spGraceStartTime[0]), Convert.ToInt32(spGraceStartTime[1]), 0);
+                        vm.TSGraceStartTime = TSBufferEndTime;
+
+                        string[] spGraceEndTime = item.StartGraceTime.Split(':');
+                        TimeSpan TSGraceEndTime = new TimeSpan(Convert.ToInt32(spGraceEndTime[0]), Convert.ToInt32(spGraceEndTime[1]), 0);
+                        vm.TSGraceEndTime = TSGraceEndTime;
+
+                        string[] spBreakTime = item.BreakTime.Split(':');
+                        TimeSpan TSBreakTime = new TimeSpan(Convert.ToInt32(spBreakTime[0]), Convert.ToInt32(spBreakTime[1]), 0);
+                        vm.TSBreakTime = TSBreakTime;
+
+                        vm.FlgOutOverlap = item.FlgOutOverlap;
+                        vm.FlgExpectedIn = item.FlgExpectedIn;
+                        vm.FlgExpectedOut = item.FlgExpectedOut;
+                        oDetailList.Add(vm);
+                    }
                 }
             }
             catch (Exception ex)
@@ -71,19 +115,35 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
-        private async Task OpenProcessDialog(DialogOptions options)
+        private async Task OpenProcessDialog(DialogOptions options, List<VMMstShiftDetail> oDetailListDG)
         {
             try
             {
                 Settings.DialogFor = "Shifts";
-                var dialog = Dialog.Show<ProcessDialog>("", options);
-                var result = await dialog.Result;
-                if (!result.Cancelled)
+                if (oDetailList.Count == 0)
                 {
-                    DisabledCode = true;
-                    var res = (List<MstShiftsDetail>)result.Data;
-                    AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
-                    oDetailList = res;
+                    var dialog = Dialog.Show<ProcessDialog>("", options);
+                    var result = await dialog.Result;
+                    if (!result.Cancelled)
+                    {
+                        //DisabledCode = true;
+                        var res = (List<VMMstShiftDetail>)result.Data;
+                        AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
+                        oDetailList = res;
+                    }
+                }
+                else
+                {
+                    var parameters = new DialogParameters { ["oDetailListPara"] = oDetailListDG };
+                    var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
+                    var result = await dialog.Result;
+
+                    if (!result.Cancelled)
+                    {
+                        var res = (List<VMMstShiftDetail>)result.Data;
+                        AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
+                        oDetailList = res;
+                    }
                 }
             }
             catch (Exception ex)
@@ -91,6 +151,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Logs.GenerateLogs(ex);
             }
         }
+
         private async Task<ApiResponseModel> Save()
         {
             try
@@ -106,6 +167,26 @@ namespace HCM.UI.Pages.MasterDataSetup
                     }
                     else
                     {
+                        oModel.MstShiftsDetails = new List<MstShiftsDetail>();
+                        foreach (var item in oDetailList)
+                        {
+                            oDetail = new MstShiftsDetail();
+                            oDetail.Id = item.Id;
+                            oDetail.Fkid = item.Fkid;
+                            oDetail.Day = item.Day;
+                            oDetail.FlgOutOverlap = item.FlgOutOverlap;
+                            oDetail.FlgExpectedIn = item.FlgExpectedIn;
+                            oDetail.FlgExpectedOut = item.FlgExpectedOut;
+                            oDetail.StartTime = item.TSStartTime.ToString();
+                            oDetail.EndTime = item.TSEndTime.ToString();
+                            oDetail.Duration = item.TSDuration.ToString();
+                            oDetail.BufferStartTime = item.TSBufferStartTime.ToString();
+                            oDetail.BufferEndTime = item.TSBufferEndTime.ToString();
+                            oDetail.StartGraceTime = item.TSGraceStartTime.ToString();
+                            oDetail.EndGraceTime = item.TSGraceEndTime.ToString();
+                            oDetail.BreakTime = item.TSBreakTime.ToString();
+                            oModel.MstShiftsDetails.Add(oDetail);
+                        }
                         if (oModel.Id == 0)
                         {
                             if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
@@ -178,18 +259,6 @@ namespace HCM.UI.Pages.MasterDataSetup
             return false;
         }
 
-        private async Task GetAllShift()
-        {
-            try
-            {
-                oList = await _mstShift.GetAllData();
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-            }
-        }
-
         private async Task GetAllLove()
         {
             try
@@ -201,6 +270,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Logs.GenerateLogs(ex);
             }
         }
+
         public void EditRecord(int LineNum)
         {
             try
@@ -240,12 +310,12 @@ namespace HCM.UI.Pages.MasterDataSetup
 
                 oModel.OffDayOverTime = 0;
                 oModel.FlgOffDayOverTime = true;
-                
+
                 oModel.FlgActive = true;
                 oModel.FlgOverTime = true;
                 oModel.FlgOtwrkHrs = true;
                 await GetAllLove();
-                await GetAllShift();
+                //await GetAllShift();
                 Loading = false;
             }
             catch (Exception ex)
