@@ -39,6 +39,8 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
+                    oMstDepartment.CreatedBy = "manager";
+                    oMstDepartment.CreatedDate = DateTime.Now;
                     _DBContext.MstDepartments.Add(oMstDepartment);
                     _DBContext.SaveChanges();                    
                     response.Id = 1;
@@ -60,6 +62,8 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
+                    oMstDepartment.UpdatedBy = "manager";
+                    oMstDepartment.UpdatedDate = DateTime.Now;
                     _DBContext.MstDepartments.Update(oMstDepartment);
                     _DBContext.SaveChanges();
                     response.Id = 1;

@@ -240,8 +240,8 @@ namespace HCM.UI.Pages.MasterElement
                 oModel.FlgActive = true;
                 oModel.FlgDefault = true;
                 oModel.FlgFormula = true;
-                oModel.Hours = "0";
-                oModel.MonthDays = "0";
+                oModel.Hours = 0;
+                oModel.MonthDays = 0;
                 await GetAllLove();
                 await GetAllOverTime();
                 Loading = false;

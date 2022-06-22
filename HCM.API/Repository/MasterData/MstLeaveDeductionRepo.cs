@@ -39,6 +39,8 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
+                    oMstLeaveDeduction.CreatedBy = "manager";
+                    oMstLeaveDeduction.CreatedDate = DateTime.Now;
                     _DBContext.MstLeaveDeductions.Add(oMstLeaveDeduction);
                     _DBContext.SaveChanges();
                     response.Id = 1;
@@ -60,6 +62,8 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
+                    oMstLeaveDeduction.UpdatedBy = "manager";
+                    oMstLeaveDeduction.UpdatedDate = DateTime.Now;
                     _DBContext.MstLeaveDeductions.Update(oMstLeaveDeduction);
                     _DBContext.SaveChanges();
                     response.Id = 1;

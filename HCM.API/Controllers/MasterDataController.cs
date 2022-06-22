@@ -26,11 +26,12 @@ namespace HCM.API.Controllers
         private IMstLeaveType _mstLeaveType;
         private IMstLeaveDeduction _mstLeaveDeduction;
         private IMstDeductionRule _mstDeductionRule;
+        private IMstAttendanceRules _mstAttendanceRule;
         private IMstTaxSetup _mstTaxSetup;
 
         public MasterDataController(IMstDepartment mstDepartment, IMstDesignation mstDesignation, IMstLocation mstLocation, IMstPosition mstPosition, IMstBranch mstBranch, IMstGrading mstGrading, IMstCalendar mstCalendar,
             IMstLeaveCalendar mstLeaveCalendar, IMstEmailConfig mstEmailConfig, IMstPayrollinit mstPayrollinit, IMstLoans mstLoans, IMstShifts mstShift, IMstAdvance mstAdvance, IMstLeaveDeduction mstLeaveDeduction,
-            IMstLeaveType mstLeaveType, IMstDeductionRule mstDeductionRule, IMstTaxSetup mstTaxSetup)
+            IMstLeaveType mstLeaveType, IMstDeductionRule mstDeductionRule, IMstAttendanceRules mstAttendanceRule, IMstTaxSetup mstTaxSetup)
         {
             _mstDepartment = mstDepartment;
             _mstDesignation = mstDesignation;
@@ -48,6 +49,7 @@ namespace HCM.API.Controllers
             _mstLeaveDeduction = mstLeaveDeduction;
             _mstLeaveType = mstLeaveType;
             _mstDeductionRule = mstDeductionRule;
+            _mstAttendanceRule = mstAttendanceRule;
             _mstTaxSetup = mstTaxSetup;
         }
 
@@ -1121,53 +1123,31 @@ namespace HCM.API.Controllers
                 return BadRequest("Something went wrong.");
             }
         }
+                
+        [Route("addLeaveType")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstLeaveType pMstLeaveType)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstLeaveType.Insert(pMstLeaveType);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
         
-        [Route("addLeaveType")]
-        [HttpPost]
-        public async Task<IActionResult> Add([FromBody] MstLeaveType pMstLeaveType)
-        {
-            ApiResponseModel response = new ApiResponseModel();
-            try
-            {
-                response = await _mstLeaveType.Insert(pMstLeaveType);
-                if (response == null)
-                {
-                    return BadRequest(response);
-                }
-                else
-                {
-                    return Ok(response);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-                return BadRequest("Something went wrong.");
-            }
-        }
-        [Route("addLeaveType")]
-        [HttpPost]
-        public async Task<IActionResult> Add([FromBody] MstLeaveType pMstLeaveType)
-        {
-            ApiResponseModel response = new ApiResponseModel();
-            try
-            {
-                response = await _mstLeaveType.Insert(pMstLeaveType);
-                if (response == null)
-                {
-                    return BadRequest(response);
-                }
-                else
-                {
-                    return Ok(response);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-                return BadRequest("Something went wrong.");
-            }
-        }
         [Route("updateLeaveType")]
         [HttpPost]
         public async Task<IActionResult> Update([FromBody] MstLeaveType pMstLeaveType)
@@ -1270,7 +1250,80 @@ namespace HCM.API.Controllers
 
         #endregion
 
+        #region MST Attendance Rules
 
+        [Route("getAllAttendanceRule")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllAttendanceRules()
+        {
+            MstAttendanceRule oMstAttendanceRule = new MstAttendanceRule();
+            try
+            {
+                oMstAttendanceRule = await _mstAttendanceRule.GetAllData();
+                if (oMstAttendanceRule == null)
+                {
+                    return BadRequest(oMstAttendanceRule);
+                }
+                else
+                {
+                    return Ok(oMstAttendanceRule);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addAttendanceRule")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstAttendanceRule pMstAttendanceRule)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstAttendanceRule.Insert(pMstAttendanceRule);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+        [Route("updateAttendanceRule")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstAttendanceRule pMstAttendanceRule)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstAttendanceRule.Update(pMstAttendanceRule);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
 
         #region MST TaxSetup
 

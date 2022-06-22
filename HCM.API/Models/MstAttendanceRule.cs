@@ -19,6 +19,11 @@ namespace HCM.API.Models
         public bool FlgEarlyOut { get; set; }
         public bool? FlgSandwichLeavesDoubleSide { get; set; }
         public bool? FlgSandwichLeavesSingleSide { get; set; }
+        public string? SandwichLeaveType { get; set; }
         public string? DefaultLeaveType { get; set; }
+        public string? CreatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public string? UpdatedBy { get; set; }
+        public DateTime? UpdatedDate { get; set; }
     }
 }

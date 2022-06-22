@@ -1,2 +1,9 @@
 System.InvalidCastException: Unable to cast object of type 'System.Collections.Generic.List`1[HCM.API.Models.VMMstShiftDetail]' to type 'HCM.API.Models.MstTaxSetupDetail'.
    at HCM.UI.Pages.MasterDataSetup.TaxSetup.OpenAddDialog(DialogOptions options) in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\TaxSetup.razor.cs:line 130: 6/21/2022 7:12:01 PM
+System.InvalidCastException: Unable to cast object of type 'System.Collections.Generic.List`1[HCM.API.Models.VMMstShiftDetail]' to type 'HCM.API.Models.MstTaxSetupDetail'.
+   at HCM.UI.Pages.MasterDataSetup.TaxSetup.OpenAddDialog(DialogOptions options) in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\TaxSetup.razor.cs:line 130: 6/22/2022 11:28:37 AM
+System.InvalidCastException: Unable to cast object of type 'System.Collections.Generic.List`1[HCM.API.Models.VMMstShiftDetail]' to type 'HCM.API.Models.MstTaxSetupDetail'.
+   at HCM.UI.Pages.MasterDataSetup.TaxSetup.OpenAddDialog(DialogOptions options) in D:\Rouf\01. HCMOne Web\Source\HCMOneWeb\AnsaarSoft\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\TaxSetup.razor.cs:line 130: 6/22/2022 2:42:19 PM
+System.ArgumentNullException: Value cannot be null. (Parameter 'input')
+   at System.TimeSpan.Parse(String s)
+   at HCM.UI.Pages.MasterDataSetup.AttendanceRule.GetAttendanceRuleConfig() in D:\Rouf\01. HCMOne Web\Source\HCMOneWeb\AnsaarSoft\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\AttendanceRule.razor.cs:line 171: 6/22/2022 4:05:10 PM

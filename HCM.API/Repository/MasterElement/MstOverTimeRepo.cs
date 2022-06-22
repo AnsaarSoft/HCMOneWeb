@@ -39,6 +39,8 @@ namespace HCM.API.Repository.MasterElement
             {
                 await Task.Run(() =>
                 {
+                    oMstOverTime.CreatedBy = "manager";
+                    oMstOverTime.CreatedDate = DateTime.Now;
                     _DBContext.MstOverTimes.Add(oMstOverTime);
                     _DBContext.SaveChanges();
                     response.Id = 1;
@@ -60,6 +62,8 @@ namespace HCM.API.Repository.MasterElement
             {
                 await Task.Run(() =>
                 {
+                    oMstOverTime.UpdatedBy = "manager";
+                    oMstOverTime.UpdatedDate = DateTime.Now;
                     _DBContext.MstOverTimes.Update(oMstOverTime);
                     _DBContext.SaveChanges();
                     response.Id = 1;

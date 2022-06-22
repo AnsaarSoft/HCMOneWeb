@@ -10,21 +10,22 @@ namespace HCM.API.Repository.MasterData
         {
             _DBContext = DBContext;
         }
-        public async Task<List<MstAttendanceRule>> GetAllData()
+
+        public async Task<MstAttendanceRule> GetAllData()
         {
-            List<MstAttendanceRule> oList = new List<MstAttendanceRule>();
+            MstAttendanceRule mstAttendanceConfig = new MstAttendanceRule();
             try
             {
                 await Task.Run(() =>
-                {                    
-                    oList = _DBContext.MstAttendanceRules.ToList();
+                {
+                    mstAttendanceConfig = _DBContext.MstAttendanceRules.FirstOrDefault();
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
             }
-            return oList;
+            return mstAttendanceConfig;
 
         }
 
@@ -35,6 +36,8 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
+                    oMstAttendanceRule.CreatedBy = "manager";
+                    oMstAttendanceRule.CreatedDate = DateTime.Now;
                     _DBContext.MstAttendanceRules.Add(oMstAttendanceRule);
                     _DBContext.SaveChanges();
                     response.Id = 1;
@@ -56,6 +59,8 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
+                    oMstAttendanceRule.UpdatedBy = "manager";
+                    oMstAttendanceRule.UpdatedDate = DateTime.Now;
                     _DBContext.MstAttendanceRules.Update(oMstAttendanceRule);
                     _DBContext.SaveChanges();
                     response.Id = 1;

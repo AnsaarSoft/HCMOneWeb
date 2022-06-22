@@ -35,6 +35,8 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
+                    oMstLeaveType.CreatedBy = "manager";
+                    oMstLeaveType.CreatedDate = DateTime.Now;
                     _DBContext.MstLeaveTypes.Add(oMstLeaveType);
                     _DBContext.SaveChanges();
                     response.Id = 1;
@@ -56,6 +58,8 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
+                    oMstLeaveType.UpdatedBy = "manager";
+                    oMstLeaveType.UpdatedDate = DateTime.Now;
                     _DBContext.MstLeaveTypes.Update(oMstLeaveType);
                     _DBContext.SaveChanges();
                     response.Id = 1;
