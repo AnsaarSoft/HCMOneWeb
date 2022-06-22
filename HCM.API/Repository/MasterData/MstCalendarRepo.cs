@@ -74,5 +74,26 @@ namespace HCM.API.Repository.MasterData
             }
             return response;
         }
+        public async Task<ApiResponseModel> Insert(MstPayrollPeriod oMstPayrollPeriod)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                await Task.Run(() =>
+                {
+                    _DBContext.MstPayrollPeriods.Add(oMstPayrollPeriod);
+                    _DBContext.SaveChanges();
+                    response.Id = 1;
+                    response.Message = "Saved successfully";
+                });
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                response.Id = 0;
+                response.Message = "Failed to save successfully";
+            }
+            return response;
+        }
     }
 }

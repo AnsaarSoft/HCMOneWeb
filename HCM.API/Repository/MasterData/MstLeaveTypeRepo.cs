@@ -19,11 +19,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.MstLeaveTypes.Where(a => a.FlgActive == true).ToList();
-                    //oList = (from a in _DBContext.MstDepartments
-                    //         where a.FlgActive == true
-                    //         select a).ToList();
-                    //oList = _DBContext.MstLeaveTypes.ToList();
+                    oList = _DBContext.MstLeaveTypes.ToList();
                 });
             }
             catch (Exception ex)
@@ -32,7 +28,27 @@ namespace HCM.API.Repository.MasterData
             }
             return oList;
         }
-       
+        public async Task<ApiResponseModel> Insert(MstLeaveType oMstLeaveType)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                await Task.Run(() =>
+                {
+                    _DBContext.MstLeaveTypes.Add(oMstLeaveType);
+                    _DBContext.SaveChanges();
+                    response.Id = 1;
+                    response.Message = "Saved successfully";
+                });
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                response.Id = 0;
+                response.Message = "Failed to save successfully";
+            }
+            return response;
+        }
         public async Task<ApiResponseModel> Update(MstLeaveType oMstLeaveType)
         {
             ApiResponseModel response = new ApiResponseModel();

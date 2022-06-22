@@ -90,7 +90,7 @@
                     </MudItem>
                     <MudItem xs="4" sm="4" md="4" lg="4">
                         <MudNumericField @bind-Value="oModel.Value" Min="0" HelperText="Enter Value" Immediate="true" Clearable="true" Label="Value" Variant="Variant.Text" 
-                    Adornment="Adornment.Start" AdornmentText="%" Format="N2" Culture="@CultureInfo.InvariantCulture" />
+                        Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" />
                     </MudItem>  
                     <MudItem xs="4" sm="4" md="4" lg="4" Class="text-right">                                            
                     </MudItem>
@@ -156,8 +156,10 @@
                         </MudSelect>
                     </MudItem>
                     <MudItem xs="4" sm="4" md="4" lg="4">
-                        <MudNumericField @bind-Value="oModel.Value" Min="0" HelperText="Enter Value" Immediate="true" Clearable="true" Label="Value" Variant="Variant.Text" 
-                    Adornment="Adornment.Start" AdornmentText="%" Format="N2" Culture="@CultureInfo.InvariantCulture" />
+                        @*<MudNumericField @bind-Value="oModel.Value" Min="0" HelperText="Enter Value" Immediate="true" Clearable="true" Label="Value" Variant="Variant.Text" 
+                    Adornment="Adornment.Start" AdornmentText="%" Format="N2" Culture="@CultureInfo.InvariantCulture" />*@
+                    <MudNumericField @bind-Value="oModel.Value" Min="0" HelperText="Enter Value" Immediate="true" Clearable="true" Label="Value" Variant="Variant.Text" 
+                        Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" />
                     </MudItem>  
                     <MudItem xs="4" sm="4" md="4" lg="4" Class="text-right">                                            
                     </MudItem>
@@ -224,27 +226,27 @@
                     </MudItem>
                     <MudItem xs="4" sm="4" md="4" lg="4">
                         <MudNumericField @bind-Value="oModel.Value" Min="0" HelperText="Enter Value" Immediate="true" Clearable="true" Label="Value" Variant="Variant.Text" 
-                        Adornment="Adornment.Start" AdornmentText="%" Format="N2" Culture="@CultureInfo.InvariantCulture" />
+                        Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" />
                     </MudItem>  
                     <MudItem xs="4" sm="4" md="4" lg="4" Class="text-right"> 
                         <MudNumericField @bind-Value="oModel.ApplicableAmountMax" Min="0" HelperText="Enter Applicable Amount Max" Immediate="true" Clearable="true" Label="Applicable Amount" Variant="Variant.Text" 
-                        Adornment="Adornment.Start" AdornmentText="%" Format="N2" Culture="@CultureInfo.InvariantCulture" />
+                        Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Format="N2" Culture="@CultureInfo.InvariantCulture" />
                     </MudItem>
                     <MudItem xs="4" sm="4" md="4" lg="4" Class="text-right"> 
                         <MudNumericField @bind-Value="oModel.EmployeeContribution" Min="0" HelperText="Enter Employee Contribution" Immediate="true" Clearable="true" Label="Employee Contribution" Variant="Variant.Text" 
-                        Adornment="Adornment.Start" AdornmentText="%" Format="N2" Culture="@CultureInfo.InvariantCulture" />
+                        Adornment="Adornment.Start"AdornmentIcon="@Icons.Material.Filled.Numbers" Format="N2" Culture="@CultureInfo.InvariantCulture" />
                     </MudItem>
                     <MudItem xs="4" sm="4" md="4" lg="4" Class="text-right"> 
                         <MudNumericField @bind-Value="oModel.EmployeeContributionMax" Min="0" HelperText="Enter Employee Contribution Max" Immediate="true" Clearable="true" Label="Employee Contribution Max" Variant="Variant.Text" 
-                        Adornment="Adornment.Start" AdornmentText="%" Format="N2" Culture="@CultureInfo.InvariantCulture" />
+                        Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Format="N2" Culture="@CultureInfo.InvariantCulture" />
                     </MudItem>
                     <MudItem xs="4" sm="4" md="4" lg="4" Class="text-right"> 
                         <MudNumericField @bind-Value="oModel.EmployerContribution" Min="0" HelperText="Enter Employer Contribution" Immediate="true" Clearable="true" Label="Employer Contribution" Variant="Variant.Text" 
-                        Adornment="Adornment.Start" AdornmentText="%" Format="N2" Culture="@CultureInfo.InvariantCulture" />
+                        Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Format="N2" Culture="@CultureInfo.InvariantCulture" />
                     </MudItem>
                     <MudItem xs="4" sm="4" md="4" lg="4" Class="text-right"> 
                         <MudNumericField @bind-Value="oModel.EmployerContributionMax" Min="0" HelperText="Enter Employer Contribution Max" Immediate="true" Clearable="true" Label="Employer Contribution Max" Variant="Variant.Text" 
-                        Adornment="Adornment.Start" AdornmentText="%" Format="N2" Culture="@CultureInfo.InvariantCulture" />
+                        Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Format="N2" Culture="@CultureInfo.InvariantCulture" />
                     </MudItem>
                     <MudItem xs="8" sm="8" md="8" lg="8" Class="text-right">                         
                     </MudItem>

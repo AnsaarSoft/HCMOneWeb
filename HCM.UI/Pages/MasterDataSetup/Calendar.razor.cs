@@ -78,6 +78,10 @@ namespace HCM.UI.Pages.MasterDataSetup
 
                                 if (oModel.Id == 0)
                                 {
+                                    if(oList.Where(x => x.FlgActive == true).Count() > 0)
+                                    {
+                                        oModel.FlgActive = false;
+                                    }
                                     res = await _mstCalendar.Insert(oModel);
                                 }
                                 else
@@ -201,6 +205,78 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         }
 
+        private async Task<ApiResponseModel> VerifyPeriods()
+        {
+            try
+            {
+                Loading = true;
+                var res = new ApiResponseModel();
+                await Task.Delay(3);
+                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description))
+                {
+                    if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
+                    {
+                        Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                    }
+                    else
+                    {
+                        oModel.StartDate = _dateRange.Start;
+                        oModel.EndDate = _dateRange.End;
+                        if (oModel.Code.Length > 20)
+                        {
+                            Snackbar.Add("Code accept only 20 characters", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                        }
+                        else
+                        {
+                            var MonthDifference = DateTimeSpan.GetMonthDifference((DateTime)oModel.StartDate, (DateTime)oModel.EndDate);
+                            if (MonthDifference < 12)
+                            {
+                                Snackbar.Add("Invalid Date Selection, must be within 12 months range", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                            }
+                            else
+                            {
+
+                                if (oModel.Id == 0)
+                                {
+                                    if (oList.Where(x => x.FlgActive == true).Count() > 0)
+                                    {
+                                        oModel.FlgActive = false;
+                                    }
+                                    res = await _mstCalendar.Insert(oModel);
+                                }
+                                else
+                                {
+                                    res = await _mstCalendar.Update(oModel);
+                                }
+                            }
+                        }
+                    }
+                    if (res != null && res.Id == 1)
+                    {
+                        Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+                        await Task.Delay(3000);
+                        Navigation.NavigateTo("/Calendar", forceLoad: true);
+                    }
+                    else
+                    {
+                        Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                    }
+                    oModel.FlgActive = true;
+                }
+                else
+                {
+                    Snackbar.Add("Please fill the required field(s)", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+                Loading = false;
+                return res;
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                Loading = false;
+                return null;
+            }
+        }
         #endregion
 
         #region Events

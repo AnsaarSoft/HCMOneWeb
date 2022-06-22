@@ -41,6 +41,35 @@ namespace HCM.UI.Data.MasterData
             }
         }
 
+        public async Task<ApiResponseModel> Insert(MstLeaveType oMstLeaveType)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                var request = new RestRequest("MasterData/addLeaveType", Method.Post);
+                request.AddJsonBody(oMstLeaveType);
+                var res = await _restClient.ExecuteAsync(request);
+                if (res.IsSuccessful)
+                {
+                    response.Id = 1;
+                    response.Message = "Saved successfully";
+                    return response;
+                }
+                else
+                {
+                    response.Id = 0;
+                    response.Message = "Failed to save successfully";
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                response.Id = 0;
+                response.Message = "Failed to save successfully";
+                return response;
+            }
+        }
         public async Task<ApiResponseModel> Update(MstLeaveType oMstLeaveType)
         {
             ApiResponseModel response = new ApiResponseModel();

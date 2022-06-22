@@ -26,6 +26,9 @@ namespace HCM.UI.General
         [Inject]
         public IMstShifts _mstShift { get; set; }
 
+        [Inject]
+        public IMstTaxSetup _mstTaxSetup { get; set; }
+
         #endregion
 
         #region Variables
@@ -38,6 +41,10 @@ namespace HCM.UI.General
         VMMstShiftDetail oModelShiftDetail = new VMMstShiftDetail();
         List<VMMstShiftDetail> oListShift = new List<VMMstShiftDetail>();
 
+        [Parameter] public MstTaxSetupDetail oDetailParaTax { get; set; } = new MstTaxSetupDetail();
+        MstTaxSetupDetail oModelTaxSetupDetail = new MstTaxSetupDetail();
+
+        List<MstTaxSetupDetail> oListTaxSetup = new List<MstTaxSetupDetail>();
         #endregion
 
         #region Functions        

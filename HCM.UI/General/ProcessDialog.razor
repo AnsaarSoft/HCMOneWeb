@@ -81,7 +81,50 @@
                          <MudTablePager />
                      </PagerContent>
                  </MudTable>                     
-        }        
+        }  
+        @if(Settings.DialogFor == "TaxSetup")
+        {
+            <MudText Typo="Typo.h6">Tax Setup Detail</MudText>
+                <MudSpacer />    
+                <MudDivider />
+            <MudGrid class="search-action-block align-items-center">
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField @bind-Value="oModelTaxSetupDetail.TaxCode" T="string" MaxLength="20" Counter="20" HelperText="Enter Tax Code" Immediate="true" Clearable="true" Label="Tax Code" Variant="Variant.Text" 
+                        Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem> 
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField @bind-Value="oModelTaxSetupDetail.Description" T="string" MaxLength="50" Counter="50" HelperText="Enter Description" Immediate="true" Clearable="true" Label="Description" Variant="Variant.Text" 
+                        Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem> 
+                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                    <MudSwitch @bind-Checked="oModelTaxSetupDetail.FlgActive" ThumbIcon="@(oModelTaxSetupDetail.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModelTaxSetupDetail.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModelTaxSetupDetail.FlgActive==true ? Color.Info : Color.Error)">
+                            <span>@(oModelTaxSetupDetail.FlgActive==true ? "Active" : "In Active")</span>
+                    </MudSwitch>
+                </MudItem>
+                 <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">                    
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModelTaxSetupDetail.MinAmount" HelperText="Enter Min Amount"  Immediate="true" Clearable="true" Label="Min Amount" 
+                       Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" > </MudNumericField>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModelTaxSetupDetail.MaxAmount" HelperText="Enter Max Amount" Immediate="true" Clearable="true" Label="Max Amount" 
+                        Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" > </MudNumericField>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModelTaxSetupDetail.TaxValue" HelperText="Enter Tax Value" MaxLength="3" Counter="3" Immediate="true" Clearable="true" Label="Tax Value"
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text" > </MudNumericField>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModelTaxSetupDetail.FixTerm" HelperText="Enter Fix Term" Immediate="true" Clearable="true" Label="Fix Term" 
+                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text" > </MudNumericField>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModelTaxSetupDetail.AdditionalDisc" HelperText="Enter Additional Disc" Immediate="true" Clearable="true" Label="Additional Disc" 
+                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text" > </MudNumericField>
+                </MudItem>
+            </MudGrid>              
+        }
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>

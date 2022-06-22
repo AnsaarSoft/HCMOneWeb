@@ -59,10 +59,12 @@
                     </MudSelect>
                 </MudItem> 
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.HoliDayOverTime" HelperText="Enter Holiday Time" Immediate="true" Clearable="true" Label="Holiday Over Time" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
+                    <MudNumericField @bind-Value="oModel.HoliDayOverTime" HelperText="Enter Holiday Time" Immediate="true" Clearable="true" Label="Holiday Over Time" 
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" > </MudNumericField>
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.OffDayOverTime" HelperText="Enter Off Day Over Time" Immediate="true" Clearable="true" Label="Off Day Over Time" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
+                    <MudNumericField @bind-Value="oModel.OffDayOverTime" HelperText="Enter Off Day Over Time" Immediate="true" Clearable="true" Label="Off Day Over Time" 
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" > </MudNumericField>
                 </MudItem>
                 <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
                     <MudSwitch @bind-Checked="@oModel.FlgOverTime" ThumbIcon="@(oModel.FlgOverTime==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgOverTime==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgOverTime==true ? Color.Info : Color.Error)">

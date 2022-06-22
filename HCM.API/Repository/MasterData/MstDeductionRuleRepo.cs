@@ -32,7 +32,27 @@ namespace HCM.API.Repository.MasterData
             }
             return oList;
         }
-        
+        public async Task<ApiResponseModel> Insert(MstDeductionRule oMstDeductionRule)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                await Task.Run(() =>
+                {
+                    _DBContext.MstDeductionRules.Add(oMstDeductionRule);
+                    _DBContext.SaveChanges();
+                    response.Id = 1;
+                    response.Message = "Saved successfully";
+                });
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                response.Id = 0;
+                response.Message = "Failed to save successfully";
+            }
+            return response;
+        }
         public async Task<ApiResponseModel> Update(MstDeductionRule oMstDeductionRule)
         {
             ApiResponseModel response = new ApiResponseModel();

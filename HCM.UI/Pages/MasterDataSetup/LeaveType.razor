@@ -43,7 +43,7 @@
                 }
                 <MudItem xs="4" sm="4" md="4" lg="4">
                     <MudSelect @bind-Value="oModel.LeaveType" Label="Leave Type" HelperText="Select Leave Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
-                        @foreach (MstLove Love in oLovesList.Where(x => x.Type=="Val_Type").ToList())
+                        @foreach (MstLove Love in oLovesList.Where(x => x.Type=="LevTyp_LevType").ToList())
                         {
                                     <MudSelectItem Value="@Love.Code">@Love.Code - @Love.Value</MudSelectItem>
                         }
@@ -51,17 +51,19 @@
                 </MudItem> 
                 <MudItem xs="4" sm="4" md="4" lg="4">
                     <MudSelect @bind-Value="oModel.DeductionId" Label="Deduction ID" HelperText="Select Deduction ID" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
-                        @foreach (MstLove Love in oLovesList.Where(x => x.Type=="Val_Type").ToList())
+                        @foreach (MstLeaveDeduction LeaveDeduction in oListLeaveDeduction.Where(x => x.FlgActive== true).ToList())
                         {
-                                    <MudSelectItem Value="(int?)Love.Id">@Love.Code - @Love.Value</MudSelectItem>
+                                    <MudSelectItem Value="(int?)LeaveDeduction.Id">@LeaveDeduction.Code - @LeaveDeduction.Description</MudSelectItem>
                         }
                     </MudSelect>
                 </MudItem>   
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.MonthDays" HelperText="Enter Month Days" Immediate="true" Clearable="true" Label="Month Days" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
+                    <MudNumericField @bind-Value="oModel.MonthDays" HelperText="Enter Month Days" Immediate="true" Clearable="true" Label="Month Days" 
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" > </MudNumericField>
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.LeaveCap" HelperText="Enter Leave Cap" Immediate="true" Clearable="true" Label="Leave Cap" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
+                    <MudNumericField @bind-Value="oModel.LeaveCap" HelperText="Enter Leave Cap" Immediate="true" Clearable="true" Label="Leave Cap" 
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text" > </MudNumericField>
                 </MudItem>
                 <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
                     <MudSwitch @bind-Checked="@oModel.FlgEncash" ThumbIcon="@(oModel.FlgEncash==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgEncash==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgEncash==true ? Color.Info : Color.Error)">

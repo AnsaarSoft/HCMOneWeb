@@ -5,24 +5,24 @@ using RestSharp;
 
 namespace HCM.UI.Data.MasterData
 {
-    public class MstCalendarService : IMstCalendar
+    public class MstTaxSetupService : IMstTaxSetup
     {
         private readonly RestClient _restClient;
 
-        public MstCalendarService()
+        public MstTaxSetupService()
         {
             _restClient = new RestClient(Settings.APIBaseURL);
         }
 
-        public async Task<List<MstCalendar>> GetAllData()
+        public async Task<List<MstTaxSetup>> GetAllData()
         {
             try
             {
-                List<MstCalendar> oList = new List<MstCalendar>();
+                List<MstTaxSetup> oList = new List<MstTaxSetup>();
 
-                var request = new RestRequest("MasterData/getAllCalendar", Method.Get) { RequestFormat = DataFormat.Json };
+                var request = new RestRequest("MasterData/getAllTaxSetup", Method.Get) { RequestFormat = DataFormat.Json };
 
-                var response = await _restClient.ExecuteAsync<List<MstCalendar>>(request);
+                var response = await _restClient.ExecuteAsync<List<MstTaxSetup>>(request);
 
                 if (response.IsSuccessful)
                 {
@@ -40,43 +40,13 @@ namespace HCM.UI.Data.MasterData
             }
         }
 
-        public async Task<ApiResponseModel> Insert(MstCalendar oMstCalendar)
+        public async Task<ApiResponseModel> Insert(MstTaxSetup oMstTaxSetup)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                var request = new RestRequest("MasterData/addCalendar", Method.Post);
-                request.AddJsonBody(oMstCalendar);
-                var res= await _restClient.ExecuteAsync(request);
-                if (res.IsSuccessful)
-                {
-                    response.Id = 1;
-                    response.Message = "Saved successfully";
-                    return response;
-                }
-                else
-                {
-                    response.Id = 0;
-                    response.Message = "Failed to save successfully";
-                    return response;
-                }
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-                response.Id = 0;
-                response.Message = "Failed to save successfully";
-                return response;
-            }
-        }
-
-        public async Task<ApiResponseModel> Update(MstCalendar oMstCalendar)
-        {
-            ApiResponseModel response = new ApiResponseModel();
-            try
-            {
-                var request = new RestRequest("MasterData/updateCalendar", Method.Post);
-                request.AddJsonBody(oMstCalendar);
+                var request = new RestRequest("MasterData/addTaxSetup", Method.Post);
+                request.AddJsonBody(oMstTaxSetup);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {
@@ -100,13 +70,13 @@ namespace HCM.UI.Data.MasterData
             }
         }
 
-        public async Task<ApiResponseModel> Insert(MstPayrollPeriod oMstPayrollPeriod)
+        public async Task<ApiResponseModel> Update(MstTaxSetup oMstTaxSetup)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                var request = new RestRequest("MasterData/addPRPeriods", Method.Post);
-                request.AddJsonBody(oMstPayrollPeriod);
+                var request = new RestRequest("MasterData/updateTaxSetup", Method.Post);
+                request.AddJsonBody(oMstTaxSetup);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {

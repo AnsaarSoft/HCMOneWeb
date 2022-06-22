@@ -1,29 +1,31 @@
 ﻿using HCM.API.General;
 using HCM.API.Interfaces.MasterData;
 using HCM.API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HCM.API.Repository.MasterData
 {
-    public class MstLeaveDeductionRepo : IMstLeaveDeduction
+    public class MstTaxSetupRepo : IMstTaxSetup
     {
         private WebHCMOneContext _DBContext;
 
-        public MstLeaveDeductionRepo(WebHCMOneContext DBContext)
+        public MstTaxSetupRepo(WebHCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
-        public async Task<List<MstLeaveDeduction>> GetAllData()
+        public async Task<List<MstTaxSetup>> GetAllData()
         {
-            List<MstLeaveDeduction> oList = new List<MstLeaveDeduction>();
+            List<MstTaxSetup> oList = new List<MstTaxSetup>();
             try
             {
                 await Task.Run(() =>
                 {
-                    //oList = _DBContext.MstLeaveDeductions.Where(a => a.FlgActive == true).ToList();
-                    //oList = (from a in _DBContext.MstDepartments
-                    //         where a.FlgActive == true
-                    //         select a).ToList();
-                    oList = _DBContext.MstLeaveDeductions.ToList();
+                    oList = _DBContext.MstTaxSetups.ToList();
+
+                    foreach (var Header in oList)
+                    {
+                        var detail = _DBContext.MstTaxSetupDetails.Where(s => s.Fkid == Header.Id).ToList();                        
+                    }                   
                 });
             }
             catch (Exception ex)
@@ -32,14 +34,14 @@ namespace HCM.API.Repository.MasterData
             }
             return oList;
         }
-        public async Task<ApiResponseModel> Insert(MstLeaveDeduction oMstLeaveDeduction)
+        public async Task<ApiResponseModel> Insert(MstTaxSetup oMstTaxSetup)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    _DBContext.MstLeaveDeductions.Add(oMstLeaveDeduction);
+                    _DBContext.MstTaxSetups.Add(oMstTaxSetup);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";
@@ -53,14 +55,16 @@ namespace HCM.API.Repository.MasterData
             }
             return response;
         }
-        public async Task<ApiResponseModel> Update(MstLeaveDeduction oMstLeaveDeduction)
+        public async Task<ApiResponseModel> Update(MstTaxSetup oMstTaxSetup)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    _DBContext.MstLeaveDeductions.Update(oMstLeaveDeduction);
+                    //_DBContext.MstTaxSetups.Attach(oMstTaxSetup);
+                    //_DBContext.Entry<MstTaxSetup>(oMstTaxSetup).State = EntityState.Modified;                    
+                    _DBContext.MstTaxSetups.Update(oMstTaxSetup);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";

@@ -1,0 +1,127 @@
+﻿@page "/TaxSetup"
+@using HCM.API.Models
+@using System.Globalization
+
+<div class="container-fluid page-content-setting">
+    <div class="row">
+        <div class="col-sm-11">
+            <h3>TaxSetup Master</h3>
+            <MudDivider/>
+        </div>
+        <div class="col-sm-1">
+            <MudFab Color="Color.Primary" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Material.Filled.List" Title="View All" />
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudGrid class="search-action-block align-items-center">
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudSelect @bind-Value="oModel.SalaryYear" Label="Salary Year" HelperText="Select Salary Year" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (MstCalendar Calendar in oCalendarList.ToList())
+                        {
+                                        <MudSelectItem Value="(int?)Calendar.Id">@Calendar.Code</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem> 
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModel.MinTaxSalaryF" MaxLength="20" Counter="20" HelperText="Enter Min Tax Salary" Immediate="true" Clearable="true" 
+                    Label="Min Tax Salary" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" > </MudNumericField>
+                </MudItem>               
+                             
+                @if (Loading)
+                {
+                                    <MudItem xs="4" sm="4" md="4" lg="4">
+                                        <MudText>Loading...</MudText>
+                                        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                                    </MudItem>
+                }
+                else
+                {
+                                    <MudItem xs="4" sm="4" md="4" lg="4" class="text-right">
+                                        <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                                        <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
+                                    </MudItem>
+                }
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModel.SeniorCitizonAge" MaxLength="3" Counter="3"HelperText="Enter Senior Citizon Age" Immediate="true" Clearable="true" 
+                    Label="Senior Citizon Age" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" > </MudNumericField>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModel.MaxSalaryDisc" MaxLength="20" Counter="20" HelperText="Enter Max Salary Discount" Immediate="true" Clearable="true" 
+                    Label="Max Salary Discount" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text" > </MudNumericField>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModel.DiscountOnTotalTax" MaxLength="20" Counter="20" HelperText="Enter Discount On Total Tax" Immediate="true" Clearable="true" 
+                    Label="Discount On Total Tax" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text" > </MudNumericField>
+                </MudItem>                
+            </MudGrid>
+        </div>
+    </div>
+    <MudDivider/>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudCard Elevation="5">
+                <MudCardContent>
+                    <MudGrid class="search-action-block align-items-center">
+                        <MudItem xs="10" sm="10" md="10" lg="10" Class="pl-5">
+                            <MudText Typo="Typo.h6">Detail</MudText>
+                        </MudItem>
+                        <MudSpacer />                        
+                        <MudItem xs="1" sm="1" md="1" lg="1" Class="text-right pr-5">
+                            <MudFab Color="Color.Primary"  OnClick="@((e) => OpenAddDialog(FullView))" StartIcon="@Icons.Material.Filled.Add" Title="Add Details" IconSize="Size.Small" />
+                        </MudItem>
+                    </MudGrid>
+                    <MudSimpleTable Dense="true" Hover="true" Bordered="true" Striped="true" Style="overflow-x: auto;" Class="mt-4">
+                    <thead>
+                        <tr>
+                            <th style="font-weight:bold">Tax Code</th>
+                            <th style="font-weight:bold">Description</th>
+                            <th style="font-weight:bold">Min Amount</th>
+                            <th style="font-weight:bold">Max Amount</th>
+                            <th style="font-weight:bold">Tax Value</th>
+                            <th style="font-weight:bold">Fix Term</th>
+                            <th style="font-weight:bold">Additional Discount</th>
+                            <th style="font-weight:bold">Active</th>
+                            <th style="font-weight:bold">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in oDetailList)
+                    {
+                        <tr>
+                            <td>
+                                <MudText @bind-Value="item.TaxCode">@item.TaxCode</MudText>                                
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.Description">@item.Description</MudText>  
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.MinAmount">@item.MinAmount</MudText>  
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.MaxAmount">@item.MaxAmount</MudText>  
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.TaxValue">@item.TaxValue</MudText>  
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.FixTerm">@item.FixTerm</MudText>  
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.AdditionalDisc">@item.AdditionalDisc</MudText>  
+                            </td>
+                            <td>
+                                <MudTd DataLabel="FlgActive">@item.FlgActive</MudTd>
+                            </td>
+                            <td>
+                                <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@((e) => OpenEditDialog(FullView,@item))" Title="Edit"></MudIconButton></MudTd>
+                            </td>
+                         </tr>   
+                    }                   
+                    </tbody>                    
+                </MudSimpleTable> 
+                </MudCardContent>
+            </MudCard>
+        </div>
+    </div>    
+</div>

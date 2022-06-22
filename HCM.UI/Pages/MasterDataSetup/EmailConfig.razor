@@ -13,7 +13,7 @@
             <MudGrid class="search-action-block align-items-center">
                 <MudItem xs="4" sm="4" md="4" lg="4">
                     <MudTextField T="string" @bind-Value="oModel.FromEmail" InputMode="InputMode.email" MaxLength="50" Counter="50" HelperText="Enter From Email Address" Immediate="true" Clearable="true" Label="Email Address" Variant="Variant.Text" 
-                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Email" />
                 </MudItem> 
                 <MudItem xs="4" sm="4" md="4" lg="4">
                     <MudTextField T="string" @bind-Value="oModel.Password" InputType="PasswordInput" MaxLength="50" Counter="50" HelperText="Enter Password" Immediate="true" Clearable="true" Label="Password" Variant="Variant.Text" 
@@ -38,7 +38,8 @@
                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem> 
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.Smtport" Disabled="@DisabledCode" Mask="@AlphaNumericMask"  MaxLength="4" Counter="4" HelperText="Enter SMTP Port Number" Immediate="true" Clearable="true" Label="SMTP Port Number" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
+                    <MudNumericField @bind-Value="oModel.Smtport" Disabled="@DisabledCode" Mask="@AlphaNumericMask" MaxLength="4" Counter="4" HelperText="Enter SMTP Port Number" 
+                    Immediate="true" Clearable="true" Label="SMTP Port Number" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" > </MudNumericField>
                 </MudItem>
             </MudGrid>
         </div>

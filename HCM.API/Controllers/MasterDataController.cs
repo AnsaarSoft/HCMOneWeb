@@ -26,10 +26,11 @@ namespace HCM.API.Controllers
         private IMstLeaveType _mstLeaveType;
         private IMstLeaveDeduction _mstLeaveDeduction;
         private IMstDeductionRule _mstDeductionRule;
+        private IMstTaxSetup _mstTaxSetup;
 
         public MasterDataController(IMstDepartment mstDepartment, IMstDesignation mstDesignation, IMstLocation mstLocation, IMstPosition mstPosition, IMstBranch mstBranch, IMstGrading mstGrading, IMstCalendar mstCalendar,
             IMstLeaveCalendar mstLeaveCalendar, IMstEmailConfig mstEmailConfig, IMstPayrollinit mstPayrollinit, IMstLoans mstLoans, IMstShifts mstShift, IMstAdvance mstAdvance, IMstLeaveDeduction mstLeaveDeduction,
-            IMstLeaveType mstLeaveType, IMstDeductionRule mstDeductionRule)
+            IMstLeaveType mstLeaveType, IMstDeductionRule mstDeductionRule, IMstTaxSetup mstTaxSetup)
         {
             _mstDepartment = mstDepartment;
             _mstDesignation = mstDesignation;
@@ -47,6 +48,7 @@ namespace HCM.API.Controllers
             _mstLeaveDeduction = mstLeaveDeduction;
             _mstLeaveType = mstLeaveType;
             _mstDeductionRule = mstDeductionRule;
+            _mstTaxSetup = mstTaxSetup;
         }
 
         #region MST Department
@@ -579,6 +581,30 @@ namespace HCM.API.Controllers
             }
         }
 
+        [Route("addPRPeriods")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstPayrollPeriod pMstPayrollPeriod)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstCalendar.Insert(pMstPayrollPeriod);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
         #endregion
 
         #region MST LeaveCalendar
@@ -1095,7 +1121,31 @@ namespace HCM.API.Controllers
                 return BadRequest("Something went wrong.");
             }
         }
-
+        
+        [Route("addLeaveType")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstLeaveType pMstLeaveType)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstLeaveType.Insert(pMstLeaveType);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+       
         [Route("updateLeaveType")]
         [HttpPost]
         public async Task<IActionResult> Update([FromBody] MstLeaveType pMstLeaveType)
@@ -1148,6 +1198,30 @@ namespace HCM.API.Controllers
             }
         }
 
+        [Route("addDeductionRule")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstDeductionRule pMstDeductionRule)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstDeductionRule.Insert(pMstDeductionRule);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
         [Route("updateDeductionRule")]
         [HttpPost]
         public async Task<IActionResult> Update([FromBody] MstDeductionRule pMstDeductionRule)
@@ -1173,5 +1247,80 @@ namespace HCM.API.Controllers
         }
 
         #endregion
+
+        #region MST TaxSetup
+
+        [Route("getAllTaxSetup")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllTaxSetup()
+        {
+            List<MstTaxSetup> oMstTaxSetup = new List<MstTaxSetup>();
+            try
+            {
+                oMstTaxSetup = await _mstTaxSetup.GetAllData();
+                if (oMstTaxSetup == null)
+                {
+                    return BadRequest(oMstTaxSetup);
+                }
+                else
+                {
+                    return Ok(oMstTaxSetup);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addTaxSetup")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstTaxSetup pMstTaxSetup)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstTaxSetup.Insert(pMstTaxSetup);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateTaxSetup")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstTaxSetup pMstTaxSetup)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstTaxSetup.Update(pMstTaxSetup);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+        #endregion 
     }
 }

@@ -25,6 +25,9 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         [Inject]
         public IMstLove _mstLove { get; set; }
+
+        [Inject]
+        public IMstLeaveType _mstLeaveType { get; set; }
         #endregion
 
         #region Variables
@@ -38,6 +41,7 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         MstDeductionRule oModel = new MstDeductionRule();
         List<MstLove> oLovesList = new List<MstLove>();
+        List<MstLeaveType> oLeaveTypeList = new List<MstLeaveType>();
         private IEnumerable<MstDeductionRule> oList = new List<MstDeductionRule>();
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
@@ -86,7 +90,10 @@ namespace HCM.UI.Pages.MasterDataSetup
                             {
                                 Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                             }
-                            
+                            else
+                            {
+                                res = await _mstDeductionRule.Insert(oModel);
+                            }
                         }
                         else
                         {
@@ -184,6 +191,17 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
+        private async Task GetAllLeaveType()
+        {
+            try
+            {
+                oLeaveTypeList = await _mstLeaveType.GetAllData();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
         public void EditRecord(int LineNum)
         {
             try
@@ -225,6 +243,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = true;
                 await GetAllLove();
                 await GetAllDeductionRule();
+                await GetAllLeaveType();
                 oModel.Deduction = true;
                 Loading = false;
             }

@@ -22,8 +22,12 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         [Inject]
         public IMstLeaveType  _mstLeaveType { get; set; }
+
         [Inject]
         public IMstLove _mstLove { get; set; }
+
+        [Inject]
+        public IMstLeaveDeduction _mstLeaveDeduction { get; set; }
 
 
         #endregion
@@ -39,7 +43,8 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         MstLeaveType  oModel = new MstLeaveType ();
         List<MstLove> oLovesList = new List<MstLove>();
-        private IEnumerable<MstLeaveType > oList = new List<MstLeaveType >();
+        private IEnumerable<MstLeaveType > oList = new List<MstLeaveType>();
+        private IEnumerable<MstLeaveDeduction > oListLeaveDeduction = new List<MstLeaveDeduction>();
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
         #endregion
@@ -81,7 +86,11 @@ namespace HCM.UI.Pages.MasterDataSetup
                     }
                     else
                     {
-                        if (oModel.Id != 0)
+                        if (oModel.Id == 0)
+                        {
+                            res = await _mstLeaveType.Insert(oModel);
+                        }
+                        else
                         {
                             res = await _mstLeaveType.Update(oModel);
                         }
@@ -155,7 +164,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             return false;
         }
 
-        private async Task GetAllLeaveType ()
+        private async Task GetAllLeaveType()
         {
             try
             {
@@ -166,7 +175,17 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Logs.GenerateLogs(ex);
             }
         }
-
+        private async Task GetAllLeaveDeduction()
+        {
+            try
+            {
+                oListLeaveDeduction = await _mstLeaveDeduction.GetAllData();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
         private async Task GetAllLove()
         {
             try
@@ -220,6 +239,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             {
                 Loading = true;
                 await GetAllLove();
+                await GetAllLeaveDeduction();
                 await GetAllLeaveType();
                 oModel.FlgEncash = true;
                 oModel.FlgCarryForward = true;
