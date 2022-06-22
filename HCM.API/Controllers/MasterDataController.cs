@@ -26,6 +26,7 @@ namespace HCM.API.Controllers
         private IMstLeaveType _mstLeaveType;
         private IMstLeaveDeduction _mstLeaveDeduction;
         private IMstDeductionRule _mstDeductionRule;
+        
 
         public MasterDataController(IMstDepartment mstDepartment, IMstDesignation mstDesignation, IMstLocation mstLocation, IMstPosition mstPosition, IMstBranch mstBranch, IMstGrading mstGrading, IMstCalendar mstCalendar,
             IMstLeaveCalendar mstLeaveCalendar, IMstEmailConfig mstEmailConfig, IMstPayrollinit mstPayrollinit, IMstLoans mstLoans, IMstShifts mstShift, IMstAdvance mstAdvance, IMstLeaveDeduction mstLeaveDeduction,
@@ -47,6 +48,7 @@ namespace HCM.API.Controllers
             _mstLeaveDeduction = mstLeaveDeduction;
             _mstLeaveType = mstLeaveType;
             _mstDeductionRule = mstDeductionRule;
+            
         }
 
         #region MST Department
@@ -1173,5 +1175,7 @@ namespace HCM.API.Controllers
         }
 
         #endregion
+
+        
     }
 }

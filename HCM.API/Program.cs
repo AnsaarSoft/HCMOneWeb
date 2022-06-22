@@ -45,6 +45,7 @@ builder.Services.AddScoped<IMstLeaveType, MstLeaveTypeRepo>();
 builder.Services.AddScoped<IMstLeaveDeduction, MstLeaveDeductionRepo>();
 builder.Services.AddScoped<IMstDeductionRule, MstDeductionRuleRepo>();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
