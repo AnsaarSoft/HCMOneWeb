@@ -27,6 +27,7 @@ namespace HCM.API.Models
         public virtual DbSet<LogPosition> LogPositions { get; set; } = null!;
         public virtual DbSet<MstAdvance> MstAdvances { get; set; } = null!;
         public virtual DbSet<MstAttendanceRule> MstAttendanceRules { get; set; } = null!;
+        public virtual DbSet<MstBonu> MstBonus { get; set; } = null!;
         public virtual DbSet<MstBranch> MstBranches { get; set; } = null!;
         public virtual DbSet<MstCalendar> MstCalendars { get; set; } = null!;
         public virtual DbSet<MstDeductionRule> MstDeductionRules { get; set; } = null!;
@@ -55,6 +56,8 @@ namespace HCM.API.Models
         public virtual DbSet<MstUser> MstUsers { get; set; } = null!;
         public virtual DbSet<TrnsDeductionRule> TrnsDeductionRules { get; set; } = null!;
         public virtual DbSet<TrnsDeductionRulesDetail> TrnsDeductionRulesDetails { get; set; } = null!;
+        public virtual DbSet<TrnsEmployeeBonu> TrnsEmployeeBonus { get; set; } = null!;
+        public virtual DbSet<TrnsEmployeeBonusDetail> TrnsEmployeeBonusDetails { get; set; } = null!;
         public virtual DbSet<TrnsObloan> TrnsObloans { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -291,6 +294,27 @@ namespace HCM.API.Models
                 entity.Property(e => e.GpBeforeStartTime).HasMaxLength(50);
 
                 entity.Property(e => e.GpBeforeTimeEnd).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<MstBonu>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.BonusPercentage).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.Code).HasMaxLength(50);
+
+                entity.Property(e => e.DocCode).HasMaxLength(100);
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.MinimumMonthsDuration).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.SalaryFrom).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.SalaryTo).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.ValueType).HasMaxLength(100);
             });
 
             modelBuilder.Entity<MstBranch>(entity =>
@@ -600,9 +624,9 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.FlgFormula).HasColumnName("flgFormula");
 
-                entity.Property(e => e.Hours).HasMaxLength(10);
+                entity.Property(e => e.Hours).HasColumnType("numeric(18, 6)");
 
-                entity.Property(e => e.MonthDays).HasMaxLength(10);
+                entity.Property(e => e.MonthDays).HasColumnType("numeric(18, 6)");
 
                 entity.Property(e => e.PerDayCap).HasColumnType("numeric(19, 6)");
 
@@ -874,6 +898,55 @@ namespace HCM.API.Models
                     .WithMany(p => p.TrnsDeductionRulesDetails)
                     .HasForeignKey(d => d.Fkid)
                     .HasConstraintName("FK_TrnsDeductionRulesDetail_TrnsDeductionRules");
+            });
+
+            modelBuilder.Entity<TrnsEmployeeBonu>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CalendarId).HasColumnName("CalendarID");
+
+                entity.Property(e => e.PaymentId).HasColumnName("PaymentID");
+
+                entity.Property(e => e.PayrollId).HasColumnName("PayrollID");
+
+                entity.Property(e => e.PaysInPeriodId).HasColumnName("PaysInPeriodID");
+
+                entity.Property(e => e.Status).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<TrnsEmployeeBonusDetail>(entity =>
+            {
+                entity.ToTable("TrnsEmployeeBonusDetail");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.BasicSalary).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.CalculatedAmount).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
+
+                entity.Property(e => e.EmployeeName).HasMaxLength(500);
+
+                entity.Property(e => e.Fkid).HasColumnName("FKID");
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.GrossSalary).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.NetSalary).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.Percentage).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.SalaryRange).HasMaxLength(100);
+
+                entity.Property(e => e.SlabCode).HasMaxLength(100);
+
+                entity.HasOne(d => d.Fk)
+                    .WithMany(p => p.TrnsEmployeeBonusDetails)
+                    .HasForeignKey(d => d.Fkid)
+                    .HasConstraintName("FK_TrnsEmployeeBonusDetail_TrnsEmployeeBonus");
             });
 
             modelBuilder.Entity<TrnsObloan>(entity =>

@@ -19,7 +19,7 @@ namespace HCM.API.Models
         public string? StartGraceTime { get; set; }
         public string? EndGraceTime { get; set; }
         public string? BreakTime { get; set; }
-        
+
         public virtual MstShift? Fk { get; set; }
     }
 }

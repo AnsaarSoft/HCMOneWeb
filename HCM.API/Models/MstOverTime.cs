@@ -10,8 +10,8 @@ namespace HCM.API.Models
         public string? Description { get; set; }
         public string? ValueType { get; set; }
         public decimal? Value { get; set; }
-        public string? Hours { get; set; }
-        public string? MonthDays { get; set; }
+        public decimal? Hours { get; set; }
+        public decimal? MonthDays { get; set; }
         public bool? FlgDefault { get; set; }
         public bool? FlgFormula { get; set; }
         public string? Expression { get; set; }

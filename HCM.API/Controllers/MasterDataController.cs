@@ -1145,7 +1145,29 @@ namespace HCM.API.Controllers
                 return BadRequest("Something went wrong.");
             }
         }
-       
+        [Route("addLeaveType")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstLeaveType pMstLeaveType)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstLeaveType.Insert(pMstLeaveType);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
         [Route("updateLeaveType")]
         [HttpPost]
         public async Task<IActionResult> Update([FromBody] MstLeaveType pMstLeaveType)
@@ -1247,6 +1269,8 @@ namespace HCM.API.Controllers
         }
 
         #endregion
+
+
 
         #region MST TaxSetup
 

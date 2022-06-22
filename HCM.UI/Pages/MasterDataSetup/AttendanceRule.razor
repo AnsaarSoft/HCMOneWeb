@@ -1,0 +1,116 @@
+﻿@page "/AttendanceRule"
+@using HCM.API.Models
+@using System.Globalization
+
+<div class="container-fluid page-content-setting">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>Attendance Rule</h3>
+            <MudDivider/>
+        </div>       
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudGrid class="search-action-block align-items-center">
+                <MudItem xs="2" sm="2" md="2" lg="3">
+                    <MudTimePicker PickerVariant="PickerVariant.Dialog" Label="24 hours" @bind-Time="@GPBeforeStartTime" HelperText="Grace Period Before Shift Time Start" Variant="Variant.Text"
+                            Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Timer"/>
+                </MudItem> 
+               <MudItem xs="2" sm="2" md="2" lg="3" class="text-right">
+                    <MudSwitch @bind-Checked="@oModel.FlgDeductGpBeforeStartTime" ThumbIcon="@(oModel.FlgDeductGpBeforeStartTime==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgDeductGpBeforeStartTime==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgDeductGpBeforeStartTime==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgDeductGpBeforeStartTime==true ? "Deduct Grace Period Before Shift Time Start" : "Not Deduct Grace Period Before Shift Time Start")</span>
+                    </MudSwitch>
+                </MudItem>
+                
+                 <MudItem xs="2" sm="2" md="2" lg="3">
+                    <MudTimePicker PickerVariant="PickerVariant.Dialog" Label="24 hours" @bind-Time="@GPAfterStartTime" HelperText="Grace Period After Shift Time Start" Variant="Variant.Text"
+                            Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Timer"/>
+                </MudItem> 
+                <MudItem xs="2" sm="2" md="2" lg="3" class="text-right">
+                    <MudSwitch @bind-Checked="@oModel.FlgDeductGpAfterStartTime" ThumbIcon="@(oModel.FlgDeductGpAfterStartTime==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgDeductGpAfterStartTime==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgDeductGpAfterStartTime==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgDeductGpAfterStartTime==true ? "Deduct Grace Period After Shift Time Start" : "Not Deduct Grace Period After Shift Time Start")</span>
+                    </MudSwitch>
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="3">
+                    <MudTimePicker PickerVariant="PickerVariant.Dialog" Label="24 hours" @bind-Time="@GPBeforeTimeEnd" HelperText="Grace Period Before Shift Time End" Variant="Variant.Text"
+                            Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Timer"/>
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="3" class="text-right">
+                    <MudSwitch @bind-Checked="@oModel.FlgDeductGpBeforeTimeEnd" ThumbIcon="@(oModel.FlgDeductGpBeforeTimeEnd==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgDeductGpBeforeTimeEnd==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgDeductGpBeforeTimeEnd==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgDeductGpBeforeTimeEnd==true ? "Deduct Grace Period Before Shift Time End" : "Not Deduct Grace Period Before Shift Time End")</span>
+                    </MudSwitch>
+                </MudItem>
+                 
+                <MudItem xs="2" sm="2" md="2" lg="3">
+                    <MudTimePicker PickerVariant="PickerVariant.Dialog" Label="24 hours" @bind-Time="@GPAfterTimeEnd" HelperText="Grace Period After Shift Time End" Variant="Variant.Text"
+                            Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Timer"/>
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="3" class="text-right">
+                    <MudSwitch @bind-Checked="@oModel.FlgDeductGpAfterTimeEnd" ThumbIcon="@(oModel.FlgDeductGpAfterTimeEnd==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgDeductGpAfterTimeEnd==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgDeductGpAfterTimeEnd==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgDeductGpAfterTimeEnd==true ? "Deduct Grace Period After Shift Time End" : "Not Deduct Grace Period After Shift Time End")</span>
+                    </MudSwitch>
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="3" class="text-right">
+                    <MudSwitch @bind-Checked="@oModel.FlgGpActive" ThumbIcon="@(oModel.FlgGpActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgGpActive==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgGpActive==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgGpActive==true ? "Active Grace Period" : "In Active Grace Period")</span>
+                    </MudSwitch>
+                </MudItem>
+                 <MudItem xs="2" sm="2" md="2" lg="4" class="text-right">
+                    <MudSwitch @bind-Checked="@oModel.FlgLateIn" ThumbIcon="@(oModel.FlgLateIn==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgLateIn==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgLateIn==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgLateIn==true ? "Active Status Late In" : "In Active Status Late In")</span>
+                    </MudSwitch>
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="3" class="text-right">
+                    <MudSwitch @bind-Checked="@oModel.FlgEarlyOut" ThumbIcon="@(oModel.FlgEarlyOut==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgEarlyOut==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgEarlyOut==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgEarlyOut==true ? "Active Status Early Out" : "In Active Status Early Out")</span>
+                    </MudSwitch>
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="3" class="text-right">
+                    <MudSwitch @bind-Checked="@oModel.FlgSandwichLeavesSingleSide" ThumbIcon="@(oModel.FlgSandwichLeavesSingleSide==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgSandwichLeavesSingleSide==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgSandwichLeavesSingleSide==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgSandwichLeavesSingleSide==true ? "Active Sandwich Leaves Single Side" : "In Active  Sandwich Leaves Single Side")</span>
+                    </MudSwitch>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="3">
+                    <MudSelect @bind-Value="oModel.DefaultLeaveType" Label="Leave Type" HelperText="Select Leave Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (MstLeaveType LeaveType in oListLeaveType.ToList())
+                        {
+                                    <MudSelectItem Value="@LeaveType.Code">@LeaveType.Description </MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="3" class="text-right">
+                    <MudSwitch @bind-Checked="@oModel.FlgSandwichLeavesDoubleSide" ThumbIcon="@(oModel.FlgSandwichLeavesDoubleSide==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgSandwichLeavesDoubleSide==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgSandwichLeavesDoubleSide==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgSandwichLeavesDoubleSide==true ? "Active Sandwich Leaves Double Side" : "In Active  Sandwich Leaves Double Side")</span>
+                    </MudSwitch>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="3">
+                    <MudSelect @bind-Value="oModel.DefaultLeaveType" Label="Leave Type" HelperText="Select Leave Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (MstLeaveType LeaveType in oListLeaveType.ToList())
+                        {
+                                    <MudSelectItem Value="@LeaveType.Code">@LeaveType.Description </MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                @if (Loading)
+                {
+                                <MudItem xs="2" sm="2" md="2" lg="2">
+                                    <MudText>Loading...</MudText>
+                                    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                                </MudItem>
+                }
+                else
+                {
+                                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                                    <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                                    <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
+                                </MudItem>
+                }
+                
+                 
+                
+                
+            </MudGrid>
+
+        </div>
+    </div>      
+</div>
