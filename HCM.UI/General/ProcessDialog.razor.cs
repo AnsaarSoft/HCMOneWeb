@@ -34,7 +34,10 @@ namespace HCM.UI.General
         #region Variables
 
         bool Loading = false;
-        
+
+        bool DisabledCode = false;
+        public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
+
         void Cancel() => MudDialog.Cancel();
         [Parameter] public List<VMMstShiftDetail> oDetailListPara { get; set; } = new List<VMMstShiftDetail>();
 
@@ -43,8 +46,6 @@ namespace HCM.UI.General
 
         [Parameter] public MstTaxSetupDetail oDetailParaTax { get; set; } = new MstTaxSetupDetail();
         MstTaxSetupDetail oModelTaxSetupDetail = new MstTaxSetupDetail();
-
-        List<MstTaxSetupDetail> oListTaxSetup = new List<MstTaxSetupDetail>();
         #endregion
 
         #region Functions        
@@ -229,7 +230,21 @@ namespace HCM.UI.General
         private async Task Submit()
         {
             await Task.Delay(2);
-            MudDialog.Close(DialogResult.Ok<List<VMMstShiftDetail>>(oListShift));
+            if (Settings.DialogFor == "Shifts")
+            {
+                MudDialog.Close(DialogResult.Ok<List<VMMstShiftDetail>>(oListShift));
+            }
+            else if (Settings.DialogFor == "TaxSetup")
+            {
+                if (oModelTaxSetupDetail.TaxCode.Length > 20)
+                {
+                    Snackbar.Add("Code accept only 20 characters", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+                else
+                {
+                    MudDialog.Close(DialogResult.Ok<MstTaxSetupDetail>(oModelTaxSetupDetail));
+                }
+            }
         }
         #endregion
 
@@ -239,7 +254,7 @@ namespace HCM.UI.General
         {
             try
             {
-                Loading = true;
+                Loading = true;                
                 if (Settings.DialogFor == "Element")
                 {
 
@@ -247,6 +262,23 @@ namespace HCM.UI.General
                 else if (Settings.DialogFor == "Shifts")
                 {
                     await CreateRows();
+                }
+                else if (Settings.DialogFor == "TaxSetup")
+                {
+                    if (oDetailParaTax.TaxCode !=null)
+                    {
+                        oModelTaxSetupDetail = oDetailParaTax;
+                        DisabledCode = true;
+                    }
+                    else
+                    {
+                        oModelTaxSetupDetail.FlgActive = true;
+                        oModelTaxSetupDetail.MinAmount = 0;
+                        oModelTaxSetupDetail.MaxAmount = 0;
+                        oModelTaxSetupDetail.TaxValue = 0;
+                        oModelTaxSetupDetail.FixTerm = 0;
+                        oModelTaxSetupDetail.AdditionalDisc = 0;
+                    }
                 }
                 Loading = false;
             }

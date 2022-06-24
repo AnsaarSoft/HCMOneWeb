@@ -30,18 +30,18 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         #region Variables
 
-        bool Loading = false;
-        bool DisabledCode = false;
-        public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
+        bool Loading = false;        
 
         private string searchString1 = "";
         private bool FilterFunc(MstTaxSetupDetail element) => FilterFunc(element, searchString1);
 
         MstTaxSetup oModel = new MstTaxSetup();
-        MstTaxSetupDetail oDetail = new MstTaxSetupDetail();
         List<MstCalendar> oCalendarList = new List<MstCalendar>();
-        List<MstTaxSetupDetail> oDetailList = new List<MstTaxSetupDetail>();
+
+        private IEnumerable<MstTaxSetupDetail> oDetailList = new List<MstTaxSetupDetail>();
+        List<MstTaxSetupDetail> oDetail = new List<MstTaxSetupDetail>();
         private IEnumerable<MstTaxSetup> oList = new List<MstTaxSetup>();
+
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
         DialogOptions FullView = new DialogOptions() { MaxWidth = MaxWidth.ExtraExtraLarge, FullWidth = true, CloseButton = true, DisableBackdropClick = true, CloseOnEscapeKey = true };
         #endregion
@@ -57,27 +57,10 @@ namespace HCM.UI.Pages.MasterDataSetup
                 var result = await dialog.Result;
                 if (!result.Cancelled)
                 {
-                    oDetailList.Clear();
-                    DisabledCode = true;
                     var res = (MstTaxSetup)result.Data;
-                    AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
                     oModel = res;
-                    foreach (var item in oModel.MstTaxSetupDetails)
-                    {
-                        MstTaxSetupDetail vm = new MstTaxSetupDetail();
-                        vm.Id = item.Id;
-                        vm.Fkid = item.Fkid;
-                        vm.TaxCode = item.TaxCode;
-                        vm.MinAmount = item.MinAmount;
-                        vm.MaxAmount = item.MaxAmount;
-                        vm.TaxValue = item.TaxValue;
-                        vm.FixTerm = item.FixTerm;
-                        vm.Description = item.Description;
-                        vm.FlgActive = item.FlgActive;
-                        vm.AdditionalDisc = item.AdditionalDisc;
-                        
-                        oDetailList.Add(vm);
-                    }
+                    oDetailList = oModel.MstTaxSetupDetails;
+                    oDetail = oDetailList.ToList();
                 }
             }
             catch (Exception ex)
@@ -86,30 +69,39 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
-        private async Task OpenEditDialog(DialogOptions options, MstTaxSetupDetail oDetail)
+        private async Task OpenEditDialog(DialogOptions options, MstTaxSetupDetail oDetailPara)
         {
             try
             {
                 Settings.DialogFor = "TaxSetup";
-               
-                    var parameters = new DialogParameters { ["oDetailParaTax"] = oDetail };
-                    var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
-                    var result = await dialog.Result;
 
-                    if (!result.Cancelled)
+                var parameters = new DialogParameters { ["oDetailParaTax"] = oDetailPara };
+                var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
+                var result = await dialog.Result;
+
+                if (!result.Cancelled)
+                {
+                    var res = (MstTaxSetupDetail)result.Data;                    
+                    var update = oDetailList.Where(x => x.TaxCode == res.TaxCode).FirstOrDefault();
+                    if (update != null)
                     {
-                        var res = (MstTaxSetupDetail)result.Data;
-                        AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
-                    oDetailList.ElementAt(oDetail.Id).TaxCode = res.TaxCode;
-                    oDetailList.ElementAt(oDetail.Id).MinAmount = res.MinAmount;
-                    oDetailList.ElementAt(oDetail.Id).MaxAmount = res.MaxAmount;
-                    oDetailList.ElementAt(oDetail.Id).TaxValue = res.TaxValue;
-                    oDetailList.ElementAt(oDetail.Id).FixTerm = res.FixTerm;
-                    oDetailList.ElementAt(oDetail.Id).Description = res.Description;
-                    oDetailList.ElementAt(oDetail.Id).FlgActive = res.FlgActive;
-                    oDetailList.ElementAt(oDetail.Id).AdditionalDisc = res.AdditionalDisc;
+                        oDetail.Remove(update);
+                    }
+                    MstTaxSetupDetail oTaxDetail = new MstTaxSetupDetail();
+                    oTaxDetail.Id = res.Id;
+                    oTaxDetail.Fkid = res.Fkid;
+                    oTaxDetail.TaxCode = res.TaxCode;
+                    oTaxDetail.MinAmount = res.MinAmount;
+                    oTaxDetail.MaxAmount = res.MaxAmount;
+                    oTaxDetail.TaxValue = res.TaxValue;
+                    oTaxDetail.FixTerm = res.FixTerm;
+                    oTaxDetail.Description = res.Description;
+                    oTaxDetail.FlgActive = res.FlgActive;
+                    oTaxDetail.AdditionalDisc = res.AdditionalDisc;
+                    oDetail.Add(oTaxDetail);
+                    oDetailList = oDetail.ToList();
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -126,14 +118,17 @@ namespace HCM.UI.Pages.MasterDataSetup
                 var result = await dialog.Result;
                 if (!result.Cancelled)
                 {
-                    //DisabledCode = true;
                     var res = (MstTaxSetupDetail)result.Data;
-                    AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
-                    oDetailList.Add(res);
+                    if (oDetailList.Where(x => x.TaxCode == res.TaxCode).Count() > 0)
+                    {
+                        Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                    }
+                    else
+                    {                        
+                        oDetail.Add(res);
+                        oDetailList = oDetail;
+                    }
                 }
-                //var parameters = new DialogParameters { ["oDetailListPara"] = oDetailListDG };
-                //var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
-
             }
             catch (Exception ex)
             {
@@ -150,39 +145,17 @@ namespace HCM.UI.Pages.MasterDataSetup
                 await Task.Delay(3);
                 if ((oModel.SalaryYear != null) && (oModel.MinTaxSalaryF != null) && (oModel.SeniorCitizonAge != null) && (oModel.MaxSalaryDisc != null) && (oModel.DiscountOnTotalTax != null))
                 {
-                    
-                        oModel.MstTaxSetupDetails = new List<MstTaxSetupDetail>();
-                        foreach (var item in oDetailList)
-                        {
-                            oDetail = new MstTaxSetupDetail();
-                            oDetail.Id = item.Id;
-                            oDetail.Fkid = item.Fkid;
-                            oDetail.TaxCode = item.TaxCode;
-                            oDetail.MinAmount = item.MinAmount;
-                            oDetail.MaxAmount = item.MaxAmount;
-                            oDetail.TaxValue = item.TaxValue;
-                            oDetail.FixTerm = item.FixTerm;
-                            oDetail.Description = item.Description;
-                            oDetail.FlgActive = item.FlgActive;
-                            oDetail.AdditionalDisc = item.AdditionalDisc;
-                            oModel.MstTaxSetupDetails.Add(oDetail);
-                        }
-                        if (oModel.Id == 0)
-                        {
-                            if (oList.Where(x => x.MstTaxSetupDetails == oModel.MstTaxSetupDetails).Count() > 0)
-                            {
-                                Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                            }
-                            else
-                            {
-                                res = await _mstTaxSetup.Insert(oModel);
-                            }
-                        }
-                        else
-                        {
-                            res = await _mstTaxSetup.Update(oModel);
-                        }
-                    
+
+                    oModel.MstTaxSetupDetails = oDetailList.ToList();
+                    if (oModel.Id == 0)
+                    {
+                        res = await _mstTaxSetup.Insert(oModel);
+                    }
+                    else
+                    {
+                        res = await _mstTaxSetup.Update(oModel);
+                    }
+
                     if (res != null && res.Id == 1)
                     {
                         Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
@@ -193,7 +166,6 @@ namespace HCM.UI.Pages.MasterDataSetup
                     {
                         Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
-                    oDetail.FlgActive = true;
                 }
                 else
                 {
@@ -251,25 +223,11 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
-        public void EditRecord(int LineNum)
+        public void RemoveRecord(string TaxCode)
         {
             try
             {
-                var res = oList.Where(x => x.Id == LineNum).FirstOrDefault();
-                if (res != null)
-                {
-                    AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
-
-                    oModel.Id = res.Id;
-                    oModel.SalaryYear = res.SalaryYear;
-                    DisabledCode = true;
-                    oModel.MinTaxSalaryF = res.MinTaxSalaryF;
-                    oModel.SeniorCitizonAge = res.SeniorCitizonAge;
-                    oModel.MaxSalaryDisc = res.MaxSalaryDisc;
-                    oModel.DiscountOnTotalTax = res.DiscountOnTotalTax;
-                    oList = oList.Where(x => x.Id != LineNum);
-                    //_ = InvokeAsync(StateHasChanged);
-                }
+                oDetailList = oDetailList.Where(x => x.TaxCode != TaxCode).ToList();
             }
             catch (Exception ex)
             {

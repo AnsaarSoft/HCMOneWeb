@@ -89,7 +89,7 @@
                 <MudDivider />
             <MudGrid class="search-action-block align-items-center">
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField @bind-Value="oModelTaxSetupDetail.TaxCode" T="string" MaxLength="20" Counter="20" HelperText="Enter Tax Code" Immediate="true" Clearable="true" Label="Tax Code" Variant="Variant.Text" 
+                    <MudTextField @bind-Value="oModelTaxSetupDetail.TaxCode" T="string" Disabled="@DisabledCode" Mask="@AlphaNumericMask" MaxLength="20" Counter="20" HelperText="Enter Tax Code" Immediate="true" Clearable="true" Label="Tax Code" Variant="Variant.Text" 
                         Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem> 
                 <MudItem xs="4" sm="4" md="4" lg="4">
@@ -104,23 +104,23 @@
                  <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">                    
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModelTaxSetupDetail.MinAmount" HelperText="Enter Min Amount"  Immediate="true" Clearable="true" Label="Min Amount" 
+                    <MudNumericField @bind-Value="oModelTaxSetupDetail.MinAmount" Min="0" HelperText="Enter Min Amount"  Immediate="true" Clearable="true" Label="Min Amount" 
                        Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" > </MudNumericField>
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModelTaxSetupDetail.MaxAmount" HelperText="Enter Max Amount" Immediate="true" Clearable="true" Label="Max Amount" 
+                    <MudNumericField @bind-Value="oModelTaxSetupDetail.MaxAmount" Min="0" HelperText="Enter Max Amount" Immediate="true" Clearable="true" Label="Max Amount" 
                         Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" > </MudNumericField>
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModelTaxSetupDetail.TaxValue" HelperText="Enter Tax Value" MaxLength="3" Counter="3" Immediate="true" Clearable="true" Label="Tax Value"
+                    <MudNumericField @bind-Value="oModelTaxSetupDetail.TaxValue" Min="0" HelperText="Enter Tax Value" MaxLength="3" Counter="3" Immediate="true" Clearable="true" Label="Tax Value"
                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text" > </MudNumericField>
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModelTaxSetupDetail.FixTerm" HelperText="Enter Fix Term" Immediate="true" Clearable="true" Label="Fix Term" 
+                    <MudNumericField @bind-Value="oModelTaxSetupDetail.FixTerm" Min="0" HelperText="Enter Fix Term" Immediate="true" Clearable="true" Label="Fix Term" 
                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text" > </MudNumericField>
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModelTaxSetupDetail.AdditionalDisc" HelperText="Enter Additional Disc" Immediate="true" Clearable="true" Label="Additional Disc" 
+                    <MudNumericField @bind-Value="oModelTaxSetupDetail.AdditionalDisc" Min="0" HelperText="Enter Additional Disc" Immediate="true" Clearable="true" Label="Additional Disc" 
                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text" > </MudNumericField>
                 </MudItem>
             </MudGrid>              
