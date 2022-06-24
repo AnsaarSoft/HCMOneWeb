@@ -44,7 +44,6 @@ builder.Services.AddScoped<IMstLeaveType, MstLeaveTypeService>();
 builder.Services.AddScoped<IMstLeaveDeduction, MstLeaveDeductionService>();
 builder.Services.AddScoped<IMstDeductionRule, MstDeductionRuleService>();
 builder.Services.AddScoped<IMstTaxSetup, MstTaxSetupService>();
-builder.Services.AddScoped<IMstAttendanceRules, MstAttendanceRulesService>();
 
 
 

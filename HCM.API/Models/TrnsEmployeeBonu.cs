@@ -18,10 +18,6 @@ namespace HCM.API.Models
         public int? ElementType { get; set; }
         public string? Status { get; set; }
         public int? PaymentId { get; set; }
-        public string? CreatedBy { get; set; }
-        public DateTime? CreatedDate { get; set; }
-        public string? UpdatedBy { get; set; }
-        public DateTime? UpdatedDate { get; set; }
 
         public virtual ICollection<TrnsEmployeeBonusDetail> TrnsEmployeeBonusDetails { get; set; }
     }

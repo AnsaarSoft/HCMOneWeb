@@ -19,10 +19,6 @@ namespace HCM.API.Models
         public string? StartGraceTime { get; set; }
         public string? EndGraceTime { get; set; }
         public string? BreakTime { get; set; }
-        public string? CreatedBy { get; set; }
-        public DateTime? CreatedDate { get; set; }
-        public string? UpdatedBy { get; set; }
-        public DateTime? UpdatedDate { get; set; }
 
         public virtual MstShift? Fk { get; set; }
     }

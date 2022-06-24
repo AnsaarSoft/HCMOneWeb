@@ -15,11 +15,7 @@
         <div class="col-sm-12">
             <MudGrid class="search-action-block align-items-center">
                 <MudItem xs="8" sm="8" md="8" lg="8">
-                    <MudTextField T="string" @bind-Value="oModel.Code" MaxLength="20" Counter="20" HelperText="Enter Designation Code" Immediate="true" Label="Designation Code" Clearable="true" Variant="Variant.Text" 
-                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
-                </MudItem> 
-                <MudItem xs="8" sm="8" md="8" lg="8">
-                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="100" Counter="100" HelperText="Enter Designation Name" Immediate="true" Label="Designation Name" Clearable="true" Variant="Variant.Text" 
+                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="200" Counter="200" HelperText="Enter Designation Name" Immediate="true" Label="Designation" Clearable="true" Variant="Variant.Text" 
                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem> 
                 <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
@@ -55,13 +51,11 @@
                                 <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
                             </ToolBarContent>
                             <HeaderContent>
-                                <MudTh>Designation Code</MudTh>
                                 <MudTh>Designation Name</MudTh>
                                 <MudTh>Active</MudTh>
                                 <MudTh>Action</MudTh>
                             </HeaderContent>
                             <RowTemplate>
-                                <MudTd DataLabel="Designation Code">@context.Code</MudTd>
                                 <MudTd DataLabel="Designation Name">@context.Description</MudTd>
                                 <MudTd DataLabel="Active">@context.FlgActive</MudTd>
                                 <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id) )" Title="Edit"></MudIconButton></MudTd>

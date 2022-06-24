@@ -20,10 +20,6 @@ namespace HCM.API.Models
         public bool? FlgLeaveCollapse { get; set; }
         public DateTime? LeaveCollapseDate { get; set; }
         public bool? FlgActive { get; set; }
-        public string? CreatedBy { get; set; }
-        public DateTime? CreatedDate { get; set; }
-        public string? UpdatedBy { get; set; }
-        public DateTime? UpdatedDate { get; set; }
 
         public virtual MstLeaveType? Leave { get; set; }
     }

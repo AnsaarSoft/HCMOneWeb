@@ -47,9 +47,9 @@ namespace HCM.UI.Pages.MasterDataSetup
                 await Task.Delay(3);
                 if (!string.IsNullOrWhiteSpace(oModel.Description))
                 {
-                    if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
+                    if (oList.Where(x => x.Description == oModel.Description).Count() > 0)
                     {
-                        Snackbar.Add(oModel.Code + " : is Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                        Snackbar.Add("Description already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
                     else
                     {
@@ -66,7 +66,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     {
                         Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
                         await Task.Delay(3000);
-                        Navigation.NavigateTo("/Department", forceLoad: true);
+                        Navigation.NavigateTo("/Department", forceLoad: true);                        
                     }
                     else
                     {
@@ -115,7 +115,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             {
                 Logs.GenerateLogs(ex);
             }
-        }
+        }        
 
         private bool FilterFunc(MstDepartment element, string searchString1)
         {
@@ -153,12 +153,10 @@ namespace HCM.UI.Pages.MasterDataSetup
                 var res = oList.Where(x => x.Id == LineNum).FirstOrDefault();
                 if (res != null)
                 {
-                    //oModel.Id = res.Id;
-                    //oModel.Code
-                    //oModel.Description = res.Description;
-                    //oModel.FlgActive = res.FlgActive;
-                    oModel = res;
-                    oList = oList.Where(x => x.Id != LineNum);
+                    oModel.Id = res.Id;
+                    oModel.Description = res.Description;
+                    oModel.FlgActive = res.FlgActive;
+                   oList = oList.Where(x => x.Id != LineNum);
                 }
             }
             catch (Exception ex)

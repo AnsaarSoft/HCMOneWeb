@@ -20,10 +20,6 @@ namespace HCM.API.Models
         public string? Gltype { get; set; }
         public bool? FlgOffDaysExcludedFromSalaryPeriod { get; set; }
         public bool? FlgActive { get; set; }
-        public string? CreatedBy { get; set; }
-        public DateTime? CreatedDate { get; set; }
-        public string? UpdatedBy { get; set; }
-        public DateTime? UpdatedDate { get; set; }
 
         public virtual ICollection<MstPayrollElement> MstPayrollElements { get; set; }
         public virtual ICollection<MstPayrollPeriod> MstPayrollPeriods { get; set; }

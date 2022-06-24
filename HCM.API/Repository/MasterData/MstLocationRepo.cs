@@ -39,8 +39,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstLocation.CreatedBy = "manager";
-                    oMstLocation.CreatedDate = DateTime.Now;
                     _DBContext.MstLocations.Add(oMstLocation);
                     _DBContext.SaveChanges();
                     response.Id = 1;
@@ -62,8 +60,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstLocation.UpdatedBy = "manager";
-                    oMstLocation.UpdatedDate = DateTime.Now;
                     _DBContext.MstLocations.Update(oMstLocation);
                     _DBContext.SaveChanges();
                     response.Id = 1;

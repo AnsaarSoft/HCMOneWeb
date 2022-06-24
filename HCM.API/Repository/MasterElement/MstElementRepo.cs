@@ -39,8 +39,6 @@ namespace HCM.API.Repository.MasterElement
             {
                 await Task.Run(() =>
                 {
-                    oMstElement.CreatedBy = "manager";
-                    oMstElement.CreatedDate = DateTime.Now;
                     _DBContext.MstElements.Add(oMstElement);                   
                     _DBContext.SaveChanges();
                     response.Id = 1;
@@ -62,8 +60,6 @@ namespace HCM.API.Repository.MasterElement
             {
                 await Task.Run(() =>
                 {
-                    oMstElement.UpdatedBy = "manager";
-                    oMstElement.UpdatedDate = DateTime.Now;
                     _DBContext.MstElements.Update(oMstElement);
                     _DBContext.SaveChanges();
                     response.Id = 1;

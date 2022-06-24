@@ -39,8 +39,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstLoans.CreatedBy = "manager";
-                    oMstLoans.CreatedDate = DateTime.Now;
                     _DBContext.MstLoans.Add(oMstLoans);
                     _DBContext.SaveChanges();
                     response.Id = 1;
@@ -62,8 +60,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstLoans.UpdatedBy = "manager";
-                    oMstLoans.UpdatedDate = DateTime.Now;
                     _DBContext.MstLoans.Update(oMstLoans);
                     _DBContext.SaveChanges();
                     response.Id = 1;
