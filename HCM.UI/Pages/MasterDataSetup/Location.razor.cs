@@ -28,6 +28,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         #region Variables
 
         bool Loading = false;
+        bool DisbaledCode = false;
         private string searchString1 = "";
         private bool FilterFunc(MstLocation element) => FilterFunc(element, searchString1);
 
@@ -45,11 +46,11 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
-                if (!string.IsNullOrWhiteSpace(oModel.Description))
+                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description))
                 {
-                    if (oList.Where(x => x.Description == oModel.Description).Count() > 0)
+                    if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
                     {
-                        Snackbar.Add("Description already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                        Snackbar.Add(oModel.Code + " : is Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
                     else
                     {
@@ -153,9 +154,13 @@ namespace HCM.UI.Pages.MasterDataSetup
                 var res = oList.Where(x => x.Id == LineNum).FirstOrDefault();
                 if (res != null)
                 {
-                    oModel.Id = res.Id;
-                    oModel.Description = res.Description;
-                    oModel.FlgActive = res.FlgActive;
+                    //oModel.Id = res.Id;
+                    //oModel.Code = res.Code;
+                    //DisbaledCode = true;
+                    //oModel.Description = res.Description;
+                    //oModel.FlgActive = res.FlgActive;
+                    oModel = res;
+                    DisbaledCode = true;
                     oList = oList.Where(x => x.Id != LineNum);
                 }
             }

@@ -18,5 +18,9 @@ namespace HCM.API.Models
         public decimal MinimumMonthsDuration { get; set; }
         public int? ElementType { get; set; }
         public bool FlgActive { get; set; }
+        public string? CreatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public string? UpdatedBy { get; set; }
+        public DateTime? UpdatedDate { get; set; }
     }
 }

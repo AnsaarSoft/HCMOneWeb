@@ -78,7 +78,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
-                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description) && !string.IsNullOrWhiteSpace(oModel.LeaveType))
+                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description) && !string.IsNullOrWhiteSpace(oModel.DeductionType))
                 {
                     if (oModel.Code.Length > 20)
                     {
@@ -146,7 +146,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 return true;
             if (element.Description.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
-            if (element.LeaveType.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            if (element.DeductionType.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
             if (element.DeductionId.Equals(searchString1))
                 return true;
@@ -211,7 +211,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     oModel.Code = res.Code;
                     DisabledCode = true;
                     oModel.Description = res.Description;
-                    oModel.LeaveType = res.LeaveType;
+                    oModel.DeductionType = res.DeductionType;
                     oModel.DeductionId = res.DeductionId;
                     oModel.MonthDays = res.MonthDays;
                     oModel.LeaveCap = res.LeaveCap;

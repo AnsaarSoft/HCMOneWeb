@@ -35,6 +35,8 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
+                    oMstAttendanceRule.CreatedBy = "manager";
+                    oMstAttendanceRule.CreatedDate = DateTime.Now;
                     _DBContext.MstAttendanceRules.Add(oMstAttendanceRule);
                     _DBContext.SaveChanges();
                     response.Id = 1;
@@ -56,6 +58,8 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
+                    oMstAttendanceRule.UpdatedBy = "manager";
+                    oMstAttendanceRule.UpdatedDate = DateTime.Now;
                     _DBContext.MstAttendanceRules.Update(oMstAttendanceRule);
                     _DBContext.SaveChanges();
                     response.Id = 1;

@@ -42,7 +42,7 @@
                             </MudItem>
                 }
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudSelect @bind-Value="oModel.LeaveType" Label="Leave Type" HelperText="Select Leave Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                    <MudSelect @bind-Value="oModel.DeductionType" Label="Leave Type" HelperText="Select Deduction Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                         @foreach (MstLove Love in oLovesList.Where(x => x.Type=="LevTyp_LevType").ToList())
                         {
                                     <MudSelectItem Value="@Love.Code">@Love.Code - @Love.Value</MudSelectItem>
@@ -91,7 +91,7 @@
                                 <HeaderContent>
                                     <MudTh>Code</MudTh>
                                     <MudTh>Description</MudTh>
-                                    <MudTh>Leave Type</MudTh>
+                                    <MudTh>Deduction Type</MudTh>
                                     <MudTh>Deduction ID</MudTh>
                                     <MudTh>Month Days</MudTh>
                                     <MudTh>Leave Cap</MudTh>
@@ -103,7 +103,7 @@
                                 <RowTemplate>
                                      <MudTd DataLabel="Code">@context.Code</MudTd>                                   
                                     <MudTd DataLabel="Description">@context.Description</MudTd>
-                                    <MudTd DataLabel="LeaveType">@context.LeaveType</MudTd>
+                                    <MudTd DataLabel="LeaveType">@context.DeductionType</MudTd>
                                     <MudTd DataLabel="DeductionId">@context.DeductionId</MudTd>
                                     <MudTd DataLabel="MonthDays">@context.MonthDays</MudTd>
                                     <MudTd DataLabel="LeaveCap">@context.LeaveCap</MudTd>                                   

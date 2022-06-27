@@ -41,6 +41,8 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
+                    oMstTaxSetup.CreatedBy = "manager";
+                    oMstTaxSetup.CreatedDate = DateTime.Now;
                     _DBContext.MstTaxSetups.Add(oMstTaxSetup);
                     _DBContext.SaveChanges();
                     response.Id = 1;
@@ -63,7 +65,9 @@ namespace HCM.API.Repository.MasterData
                 await Task.Run(() =>
                 {
                     //_DBContext.MstTaxSetups.Attach(oMstTaxSetup);
-                    //_DBContext.Entry<MstTaxSetup>(oMstTaxSetup).State = EntityState.Modified;                    
+                    //_DBContext.Entry<MstTaxSetup>(oMstTaxSetup).State = EntityState.Modified;
+                    oMstTaxSetup.UpdatedBy = "manager";
+                    oMstTaxSetup.UpdatedDate = DateTime.Now;
                     _DBContext.MstTaxSetups.Update(oMstTaxSetup);
                     _DBContext.SaveChanges();
                     response.Id = 1;

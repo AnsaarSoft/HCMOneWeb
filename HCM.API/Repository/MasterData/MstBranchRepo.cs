@@ -39,6 +39,8 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
+                    oMstBranch.CreatedBy = "manager";
+                    oMstBranch.CreatedDate = DateTime.Now;
                     _DBContext.MstBranches.Add(oMstBranch);
                     _DBContext.SaveChanges();                    
                     response.Id = 1;
@@ -60,6 +62,8 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
+                    oMstBranch.UpdatedBy = "manager";
+                    oMstBranch.UpdatedDate = DateTime.Now;
                     _DBContext.MstBranches.Update(oMstBranch);
                     _DBContext.SaveChanges();
                     response.Id = 1;

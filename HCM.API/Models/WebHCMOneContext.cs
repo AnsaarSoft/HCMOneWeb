@@ -260,11 +260,19 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.Code).HasMaxLength(20);
 
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
                 entity.Property(e => e.Description).HasMaxLength(250);
 
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
 
                 entity.Property(e => e.FlgDefault).HasColumnName("flgDefault");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<MstAttendanceRule>(entity =>
@@ -272,6 +280,10 @@ namespace HCM.API.Models
                 entity.ToTable("MstAttendanceRule");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.DefaultLeaveType).HasMaxLength(50);
 
@@ -294,6 +306,12 @@ namespace HCM.API.Models
                 entity.Property(e => e.GpBeforeStartTime).HasMaxLength(50);
 
                 entity.Property(e => e.GpBeforeTimeEnd).HasMaxLength(50);
+
+                entity.Property(e => e.SandwichLeaveType).HasMaxLength(50);
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<MstBonu>(entity =>
@@ -303,6 +321,10 @@ namespace HCM.API.Models
                 entity.Property(e => e.BonusPercentage).HasColumnType("numeric(18, 6)");
 
                 entity.Property(e => e.Code).HasMaxLength(50);
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.DocCode).HasMaxLength(100);
 
@@ -314,6 +336,10 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.SalaryTo).HasColumnType("numeric(18, 6)");
 
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+
                 entity.Property(e => e.ValueType).HasMaxLength(100);
             });
 
@@ -323,9 +349,19 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.Description).HasMaxLength(200);
+                entity.Property(e => e.Code).HasMaxLength(20);
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Description).HasMaxLength(100);
 
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<MstCalendar>(entity =>
@@ -334,7 +370,11 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.Code).HasMaxLength(20);
+                entity.Property(e => e.Code).HasMaxLength(50);
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Description).HasMaxLength(250);
 
@@ -343,6 +383,10 @@ namespace HCM.API.Models
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
 
                 entity.Property(e => e.StartDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<MstDeductionRule>(entity =>
@@ -351,11 +395,19 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.Code).HasMaxLength(50);
 
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
                 entity.Property(e => e.LeaveCount).HasColumnType("numeric(19, 6)");
 
                 entity.Property(e => e.RangeFrom).HasMaxLength(10);
 
                 entity.Property(e => e.RangeTo).HasMaxLength(10);
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Value).HasMaxLength(50);
             });
@@ -366,9 +418,19 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.Description).HasMaxLength(200);
+                entity.Property(e => e.Code).HasMaxLength(20);
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Description).HasMaxLength(100);
 
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<MstDesignation>(entity =>
@@ -377,9 +439,19 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.Description).HasMaxLength(200);
+                entity.Property(e => e.Code).HasMaxLength(20);
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Description).HasMaxLength(100);
 
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<MstElement>(entity =>
@@ -389,6 +461,10 @@ namespace HCM.API.Models
                 entity.Property(e => e.ApplicableAmountMax).HasColumnType("numeric(18, 6)");
 
                 entity.Property(e => e.Code).HasMaxLength(100);
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Description).HasMaxLength(100);
 
@@ -405,6 +481,8 @@ namespace HCM.API.Models
                 entity.Property(e => e.EndDate).HasColumnType("datetime");
 
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.FlgBonus).HasColumnName("flgBonus");
 
                 entity.Property(e => e.FlgEffectOnGross).HasColumnName("flgEffectOnGross");
 
@@ -425,6 +503,10 @@ namespace HCM.API.Models
                 entity.Property(e => e.StartDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Type).HasMaxLength(10);
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Value).HasColumnType("numeric(18, 6)");
 
@@ -456,6 +538,12 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.Code).HasMaxLength(50);
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
                 entity.Property(e => e.Description).HasMaxLength(200);
 
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
@@ -463,6 +551,10 @@ namespace HCM.API.Models
                 entity.Property(e => e.MaxSalary).HasColumnType("numeric(18, 6)");
 
                 entity.Property(e => e.MinSalary).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<MstLeaveCalendar>(entity =>
@@ -473,6 +565,10 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.Code).HasMaxLength(20);
 
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
                 entity.Property(e => e.Description).HasMaxLength(250);
 
                 entity.Property(e => e.EndDate).HasColumnType("datetime");
@@ -480,6 +576,10 @@ namespace HCM.API.Models
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
 
                 entity.Property(e => e.StartDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<MstLeaveDeduction>(entity =>
@@ -490,9 +590,17 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.Code).HasMaxLength(20);
 
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
                 entity.Property(e => e.Description).HasMaxLength(250);
 
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Value).HasColumnType("numeric(18, 6)");
 
@@ -507,7 +615,13 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.Code).HasMaxLength(20);
 
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
                 entity.Property(e => e.DeductionId).HasColumnName("DeductionID");
+
+                entity.Property(e => e.DeductionType).HasMaxLength(10);
 
                 entity.Property(e => e.Description).HasMaxLength(250);
 
@@ -519,7 +633,9 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.LeaveCap).HasColumnType("numeric(18, 6)");
 
-                entity.Property(e => e.LeaveType).HasMaxLength(10);
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Deduction)
                     .WithMany(p => p.MstLeaveTypes)
@@ -536,6 +652,10 @@ namespace HCM.API.Models
                 entity.Property(e => e.CalCode).HasMaxLength(50);
 
                 entity.Property(e => e.CarryForwardDate).HasColumnType("datetime");
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.EmpId).HasColumnName("EmpID");
 
@@ -561,6 +681,10 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.ToDate).HasColumnType("datetime");
 
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+
                 entity.HasOne(d => d.Leave)
                     .WithMany(p => p.MstLeavesAllocateds)
                     .HasForeignKey(d => d.LeaveId)
@@ -573,11 +697,19 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.Code).HasMaxLength(50);
 
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
                 entity.Property(e => e.Description).HasMaxLength(250);
 
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
 
                 entity.Property(e => e.FlgDefault).HasColumnName("flgDefault");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<MstLocation>(entity =>
@@ -586,9 +718,19 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.Description).HasMaxLength(200);
+                entity.Property(e => e.Code).HasMaxLength(20);
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Description).HasMaxLength(100);
 
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<MstLove>(entity =>
@@ -614,6 +756,10 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.Code).HasMaxLength(20);
 
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
                 entity.Property(e => e.Description).HasMaxLength(250);
 
                 entity.Property(e => e.Expression).HasMaxLength(1000);
@@ -632,6 +778,10 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.PerMonthCap).HasColumnType("numeric(19, 6)");
 
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+
                 entity.Property(e => e.Value).HasColumnType("numeric(18, 6)");
 
                 entity.Property(e => e.ValueType).HasMaxLength(10);
@@ -642,6 +792,10 @@ namespace HCM.API.Models
                 entity.ToTable("MstPayroll");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.FirstPeriodEndDt).HasColumnType("datetime");
 
@@ -656,6 +810,10 @@ namespace HCM.API.Models
                 entity.Property(e => e.PayrollName).HasMaxLength(30);
 
                 entity.Property(e => e.PayrollType).HasMaxLength(10);
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.WorkHours).HasColumnType("numeric(10, 2)");
             });
@@ -741,9 +899,19 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.Description).HasMaxLength(200);
+                entity.Property(e => e.Code).HasMaxLength(20);
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Description).HasMaxLength(100);
 
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<MstShift>(entity =>
@@ -751,6 +919,10 @@ namespace HCM.API.Models
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Code).HasMaxLength(20);
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.DeductionRuleId).HasColumnName("DeductionRuleID");
 
@@ -767,6 +939,10 @@ namespace HCM.API.Models
                 entity.Property(e => e.FlgOverTime).HasColumnName("flgOverTime");
 
                 entity.Property(e => e.OverTimeId).HasColumnName("OverTimeID");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<MstShiftsDetail>(entity =>
@@ -778,6 +954,10 @@ namespace HCM.API.Models
                 entity.Property(e => e.BufferEndTime).HasMaxLength(20);
 
                 entity.Property(e => e.BufferStartTime).HasMaxLength(20);
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Day).HasMaxLength(20);
 
@@ -799,6 +979,10 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.StartTime).HasMaxLength(10);
 
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+
                 entity.HasOne(d => d.Fk)
                     .WithMany(p => p.MstShiftsDetails)
                     .HasForeignKey(d => d.Fkid)
@@ -811,11 +995,19 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
                 entity.Property(e => e.DiscountOnTotalTax).HasColumnType("numeric(18, 6)");
 
                 entity.Property(e => e.MaxSalaryDisc).HasColumnType("numeric(18, 6)");
 
                 entity.Property(e => e.MinTaxSalaryF).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<MstTaxSetupDetail>(entity =>
@@ -825,6 +1017,10 @@ namespace HCM.API.Models
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.AdditionalDisc).HasColumnType("numeric(19, 6)");
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Description).HasMaxLength(50);
 
@@ -841,6 +1037,10 @@ namespace HCM.API.Models
                 entity.Property(e => e.TaxCode).HasMaxLength(20);
 
                 entity.Property(e => e.TaxValue).HasColumnType("numeric(6, 3)");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Fk)
                     .WithMany(p => p.MstTaxSetupDetails)
@@ -874,6 +1074,14 @@ namespace HCM.API.Models
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Code).HasMaxLength(100);
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<TrnsDeductionRulesDetail>(entity =>
@@ -884,6 +1092,10 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.Code).HasMaxLength(50);
 
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
                 entity.Property(e => e.Fkid).HasColumnName("FKID");
 
                 entity.Property(e => e.LeaveCount).HasColumnType("numeric(19, 6)");
@@ -891,6 +1103,10 @@ namespace HCM.API.Models
                 entity.Property(e => e.RangeFrom).HasMaxLength(10);
 
                 entity.Property(e => e.RangeTo).HasMaxLength(10);
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Value).HasMaxLength(50);
 
@@ -906,6 +1122,10 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.CalendarId).HasColumnName("CalendarID");
 
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
                 entity.Property(e => e.PaymentId).HasColumnName("PaymentID");
 
                 entity.Property(e => e.PayrollId).HasColumnName("PayrollID");
@@ -913,6 +1133,10 @@ namespace HCM.API.Models
                 entity.Property(e => e.PaysInPeriodId).HasColumnName("PaysInPeriodID");
 
                 entity.Property(e => e.Status).HasMaxLength(50);
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<TrnsEmployeeBonusDetail>(entity =>
@@ -924,6 +1148,10 @@ namespace HCM.API.Models
                 entity.Property(e => e.BasicSalary).HasColumnType("numeric(18, 6)");
 
                 entity.Property(e => e.CalculatedAmount).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
 
@@ -942,6 +1170,10 @@ namespace HCM.API.Models
                 entity.Property(e => e.SalaryRange).HasMaxLength(100);
 
                 entity.Property(e => e.SlabCode).HasMaxLength(100);
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Fk)
                     .WithMany(p => p.TrnsEmployeeBonusDetails)

@@ -39,7 +39,7 @@ namespace HCM.API.Repository.MasterData
             try
             {
                 await Task.Run(() =>
-                {
+                {                  
                     _DBContext.MstPayrollBasicInitializations.Update(pMstPayrollinit);
                     _DBContext.SaveChanges();
                     response.Id = 1;

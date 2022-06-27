@@ -39,6 +39,8 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
+                    oMstLeaveCalendar.CreatedBy = "manager";
+                    oMstLeaveCalendar.CreatedDate = DateTime.Now;
                     _DBContext.MstLeaveCalendars.Add(oMstLeaveCalendar);
                     _DBContext.SaveChanges();                    
                     response.Id = 1;
@@ -60,6 +62,8 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
+                    oMstLeaveCalendar.UpdatedBy = "manager";
+                    oMstLeaveCalendar.UpdatedDate = DateTime.Now;
                     _DBContext.MstLeaveCalendars.Update(oMstLeaveCalendar);
                     _DBContext.SaveChanges();
                     response.Id = 1;
