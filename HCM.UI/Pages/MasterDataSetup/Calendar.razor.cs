@@ -186,14 +186,17 @@ namespace HCM.UI.Pages.MasterDataSetup
                 {
                     AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
                     DisbaledDate = true;
-                    oModel.Id = res.Id;
-                    oModel.Code = res.Code;
-                    DisbaledCode = true;
-                    oModel.Description = res.Description;
-                    oModel.StartDate = _dateRange.Start = res.StartDate;
-                    oModel.EndDate = _dateRange.End = res.EndDate;
+                    //oModel.Id = res.Id;
+                    //oModel.Code = res.Code;
+                    //DisbaledCode = true;
+                    //oModel.Description = res.Description;
+                    //oModel.StartDate = _dateRange.Start = res.StartDate;
+                    //oModel.EndDate = _dateRange.End = res.EndDate;
+                    //_dateRange = new DateRange(oModel.StartDate, oModel.EndDate);
+                    //oModel.FlgActive = res.FlgActive;
+                    oModel = res;
                     _dateRange = new DateRange(oModel.StartDate, oModel.EndDate);
-                    oModel.FlgActive = res.FlgActive;
+                    DisbaledCode = true;
                     oList = oList.Where(x => x.Id != LineNum);
                     //_ = InvokeAsync(StateHasChanged);
                 }

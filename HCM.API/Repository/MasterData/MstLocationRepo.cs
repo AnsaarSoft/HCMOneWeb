@@ -19,10 +19,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    //oList = _DBContext.MstDepartments.Where(a => a.FlgActive == true).ToList();
-                    //oList = (from a in _DBContext.MstDepartments
-                    //         where a.FlgActive == true
-                    //         select a).ToList();
                     oList = _DBContext.MstLocations.ToList();
                 });
             }
@@ -39,7 +35,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstLocation.CreatedBy = "manager";
                     oMstLocation.CreatedDate = DateTime.Now;
                     _DBContext.MstLocations.Add(oMstLocation);
                     _DBContext.SaveChanges();
@@ -62,7 +57,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstLocation.UpdatedBy = "manager";
                     oMstLocation.UpdatedDate = DateTime.Now;
                     _DBContext.MstLocations.Update(oMstLocation);
                     _DBContext.SaveChanges();

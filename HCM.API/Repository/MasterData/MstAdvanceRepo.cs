@@ -19,11 +19,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    //oList = _DBContext.MstAdvances.Where(a => a.FlgActive == true).ToList();
-                    oList = (from a in _DBContext.MstAdvances
-                            where a.FlgActive == true
-                            select a).ToList();
-                    //oList = _DBContext.MstAdvances.ToList();
+                    oList = _DBContext.MstAdvances.ToList();
                 });
             }
             catch (Exception ex)
@@ -39,7 +35,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstAdvance.CreatedBy = "manager";
                     oMstAdvance.CreatedDate = DateTime.Now;
                     _DBContext.MstAdvances.Add(oMstAdvance);
                     _DBContext.SaveChanges();
@@ -62,7 +57,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstAdvance.UpdatedBy = "manager";
                     oMstAdvance.UpdatedDate = DateTime.Now;
                     _DBContext.MstAdvances.Update(oMstAdvance);
                     _DBContext.SaveChanges();

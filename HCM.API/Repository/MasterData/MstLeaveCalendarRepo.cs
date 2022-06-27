@@ -19,10 +19,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    //oList = _DBContext.MstLeaveCalendars.Where(a => a.FlgActive == true).ToList();
-                    //oList = (from a in _DBContext.MstLeaveCalendars
-                    //         where a.FlgActive == true
-                    //         select a).ToList();
                     oList = _DBContext.MstLeaveCalendars.ToList();
                 });                
             }
@@ -39,7 +35,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstLeaveCalendar.CreatedBy = "manager";
                     oMstLeaveCalendar.CreatedDate = DateTime.Now;
                     _DBContext.MstLeaveCalendars.Add(oMstLeaveCalendar);
                     _DBContext.SaveChanges();                    
@@ -62,7 +57,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstLeaveCalendar.UpdatedBy = "manager";
                     oMstLeaveCalendar.UpdatedDate = DateTime.Now;
                     _DBContext.MstLeaveCalendars.Update(oMstLeaveCalendar);
                     _DBContext.SaveChanges();

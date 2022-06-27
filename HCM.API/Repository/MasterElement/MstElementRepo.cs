@@ -19,10 +19,6 @@ namespace HCM.API.Repository.MasterElement
             {
                 await Task.Run(() =>
                 {
-                    //oList = _DBContext.MstDepartments.Where(a => a.FlgActive == true).ToList();
-                    //oList = (from a in _DBContext.MstDepartments
-                    //         where a.FlgActive == true
-                    //         select a).ToList();
                     oList = _DBContext.MstElements.ToList();
                 });
             }
@@ -39,6 +35,7 @@ namespace HCM.API.Repository.MasterElement
             {
                 await Task.Run(() =>
                 {
+                    oMstElement.CreatedDate = DateTime.Now;
                     _DBContext.MstElements.Add(oMstElement);                   
                     _DBContext.SaveChanges();
                     response.Id = 1;
@@ -60,6 +57,7 @@ namespace HCM.API.Repository.MasterElement
             {
                 await Task.Run(() =>
                 {
+                    oMstElement.UpdatedDate = DateTime.Now;
                     _DBContext.MstElements.Update(oMstElement);
                     _DBContext.SaveChanges();
                     response.Id = 1;

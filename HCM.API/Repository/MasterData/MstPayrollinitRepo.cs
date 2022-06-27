@@ -17,15 +17,15 @@ namespace HCM.API.Repository.MasterData
         public async Task<MstPayrollBasicInitialization> GetData()
         {
             MstPayrollBasicInitialization mstPayrollinit = new MstPayrollBasicInitialization();
-        try
+            try
             {
                 await Task.Run(() =>
                 {
-                    mstPayrollinit = (MstPayrollBasicInitialization)_DBContext.MstPayrollBasicInitializations.FirstOrDefault();
+                    mstPayrollinit = _DBContext.MstPayrollBasicInitializations.FirstOrDefault();
                 });
 
             }
-        catch(Exception ex)
+            catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
             }
@@ -39,7 +39,7 @@ namespace HCM.API.Repository.MasterData
             try
             {
                 await Task.Run(() =>
-                {                  
+                {
                     _DBContext.MstPayrollBasicInitializations.Update(pMstPayrollinit);
                     _DBContext.SaveChanges();
                     response.Id = 1;
