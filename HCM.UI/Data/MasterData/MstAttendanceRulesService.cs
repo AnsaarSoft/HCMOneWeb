@@ -13,7 +13,7 @@ namespace HCM.UI.Data.MasterData
         {
             _restClient = new RestClient(Settings.APIBaseURL);
         }
-        public async Task<List<MstAttendanceRule>> GetAllData()
+        public async Task<MstAttendanceRule> GetAllData()
         {
             try
             {
@@ -21,7 +21,7 @@ namespace HCM.UI.Data.MasterData
 
                 var request = new RestRequest("MasterData/getAllAttendanceRule", Method.Get) { RequestFormat = DataFormat.Json };
 
-                var response = await _restClient.ExecuteAsync<List<MstAttendanceRule>>(request);
+                var response = await _restClient.ExecuteAsync<MstAttendanceRule>(request);
 
                 if (response.IsSuccessful)
                 {
