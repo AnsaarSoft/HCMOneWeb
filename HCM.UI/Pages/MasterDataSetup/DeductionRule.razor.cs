@@ -206,6 +206,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Logs.GenerateLogs(ex);
             }
         }
+        
         public void EditRecord(int LineNum)
         {
             try
@@ -220,7 +221,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     DisabledCode = true;
                     oModel.Value = res.Value;
                     TSRangeFrom = TimeSpan.Parse(res.RangeFrom);
-                    TSRangeFrom = TimeSpan.Parse(res.RangeTo);
+                    TSRangeTo = TimeSpan.Parse(res.RangeTo);
                     oModel.Deduction = res.Deduction;
                     oModel.LeaveType = res.LeaveType;
                     oModel.GracePeriod = res.GracePeriod;

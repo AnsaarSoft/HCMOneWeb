@@ -29,10 +29,12 @@ namespace HCM.API.Controllers
         private IMstAttendanceRules _mstAttendanceRule;
         private IMstTaxSetup _mstTaxSetup;
         private IMstPayroll _mstPayrollSetup;
+        private IMstBonus _mstBonus;
 
         public MasterDataController(IMstDepartment mstDepartment, IMstDesignation mstDesignation, IMstLocation mstLocation, IMstPosition mstPosition, IMstBranch mstBranch, IMstGrading mstGrading, IMstCalendar mstCalendar,
             IMstLeaveCalendar mstLeaveCalendar, IMstEmailConfig mstEmailConfig, IMstPayrollinit mstPayrollinit, IMstLoans mstLoans, IMstShifts mstShift, IMstAdvance mstAdvance, IMstLeaveDeduction mstLeaveDeduction,
-            IMstLeaveType mstLeaveType, IMstDeductionRule mstDeductionRule, IMstAttendanceRules mstAttendanceRule, IMstTaxSetup mstTaxSetup, IMstPayroll mstPayrollSetup)
+            IMstLeaveType mstLeaveType, IMstDeductionRule mstDeductionRule, IMstAttendanceRules mstAttendanceRule, IMstTaxSetup mstTaxSetup, 
+            IMstPayroll mstPayrollSetup, IMstBonus mstBonus)
         {
             _mstDepartment = mstDepartment;
             _mstDesignation = mstDesignation;
@@ -53,7 +55,8 @@ namespace HCM.API.Controllers
             _mstAttendanceRule = mstAttendanceRule;
             _mstTaxSetup = mstTaxSetup;
             _mstPayrollSetup = mstPayrollSetup;
-            _mstPayrollSetup=mstPayrollSetup;   
+            _mstPayrollSetup = mstPayrollSetup;
+            _mstBonus = mstBonus;   
         }
 
         #region MST Department
@@ -1401,6 +1404,82 @@ namespace HCM.API.Controllers
                 return BadRequest("Something went wrong.");
             }
         }
+        #endregion
+
+        #region MST Bonus
+
+        [Route("getAllBonus")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllBonus()
+        {
+            List<MstBonu> oMstBonus = new List<MstBonu>();
+            try
+            {
+                oMstBonus = await _mstBonus.GetAllData();
+                if (oMstBonus == null)
+                {
+                    return BadRequest(oMstBonus);
+                }
+                else
+                {
+                    return Ok(oMstBonus);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addBonus")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstBonu pMstBonus)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstBonus.Insert(pMstBonus);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateBonus")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstBonu pMstBonus)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstBonus.Update(pMstBonus);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
         #endregion
 
         #region MST PayrollSetup

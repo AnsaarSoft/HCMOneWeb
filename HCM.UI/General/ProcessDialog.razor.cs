@@ -18,10 +18,7 @@ namespace HCM.UI.General
         MudDialogInstance MudDialog { get; set; }
 
         [Inject]
-        public ISnackbar Snackbar { get; set; }
-
-        [Inject]
-        public IMstElement _mstElement { get; set; }
+        public ISnackbar Snackbar { get; set; }        
 
         [Inject]
         public IMstShifts _mstShift { get; set; }
@@ -30,10 +27,7 @@ namespace HCM.UI.General
         public IMstTaxSetup _mstTaxSetup { get; set; }
 
         [Inject]
-        public IMstBonus _mstBonus { get; set; }
-
-        [Inject]
-        public IMstLove _mstLove { get; set; }
+        public IMstBonus _mstBonus { get; set; }        
 
         #endregion
 
@@ -51,12 +45,7 @@ namespace HCM.UI.General
         List<VMMstShiftDetail> oListShift = new List<VMMstShiftDetail>();
 
         [Parameter] public MstTaxSetupDetail oDetailParaTax { get; set; } = new MstTaxSetupDetail();
-        MstTaxSetupDetail oModelTaxSetupDetail = new MstTaxSetupDetail();
-
-        [Parameter] public VMMstBonusDetail oDetailParaBonus { get; set; } = new VMMstBonusDetail();
-        VMMstBonusDetail oModelBonusDetail = new VMMstBonusDetail();
-        List<MstLove> oLoveList = new List<MstLove>();
-        List<MstElement> oElementList = new List<MstElement>();
+        MstTaxSetupDetail oModelTaxSetupDetail = new MstTaxSetupDetail();       
 
         #endregion
 
@@ -248,67 +237,23 @@ namespace HCM.UI.General
             }
             else if (Settings.DialogFor == "TaxSetup")
             {
-                if (oModelTaxSetupDetail.TaxCode.Length > 20)
+                if (!string.IsNullOrWhiteSpace(oModelTaxSetupDetail.TaxCode) && !string.IsNullOrWhiteSpace(oModelTaxSetupDetail.Description))
                 {
-                    Snackbar.Add("Code accept only 20 characters", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                    if (oModelTaxSetupDetail.TaxCode.Length > 20)
+                    {
+                        Snackbar.Add("Code accept only 20 characters", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                    }
+                    else
+                    {
+                        MudDialog.Close(DialogResult.Ok<MstTaxSetupDetail>(oModelTaxSetupDetail));
+                    }
                 }
                 else
                 {
-                    MudDialog.Close(DialogResult.Ok<MstTaxSetupDetail>(oModelTaxSetupDetail));
+                    Snackbar.Add("Fill the required field(s).", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                 }
             }
-            else if (Settings.DialogFor == "Bonus")
-            {
-                MudDialog.Close(DialogResult.Ok<VMMstBonusDetail>(oModelBonusDetail));
-            }
-        }
-
-        private async Task GetAllLove()
-        {
-            try
-            {
-                oLoveList = await _mstLove.GetAllData();
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-            }
-        }
-
-        private async Task GetAllElement()
-        {
-            try
-            {
-                oElementList = await _mstElement.GetAllData();
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-            }
-        }
-
-        private async Task CreateBonusDetailForm()
-        {
-            await Task.Delay(3);
-            if (oDetailParaBonus.Code != null)
-            {
-                oModelBonusDetail = oDetailParaBonus;
-            }
-            else
-            {
-                oModelBonusDetail = new VMMstBonusDetail();
-                oModelBonusDetail.Code = new string("");
-                oModelBonusDetail.SalaryFrom = new decimal();
-                oModelBonusDetail.SalaryTo = new decimal();
-                oModelBonusDetail.ScaleFrom = new int();
-                oModelBonusDetail.ScaleTo = new int();
-                oModelBonusDetail.BonusPercentage = new decimal();
-                oModelBonusDetail.MinimumMonthsDuration = new decimal();
-
-                oModelBonusDetail.FlgActive = true;
-
-            }
-        }
+        }        
 
         #endregion
 
@@ -343,13 +288,6 @@ namespace HCM.UI.General
                         oModelTaxSetupDetail.FixTerm = 0;
                         oModelTaxSetupDetail.AdditionalDisc = 0;
                     }
-                }
-                else if (Settings.DialogFor == "Bonus")
-                {
-                    await GetAllLove();
-                    await GetAllElement();
-                    await CreateBonusDetailForm();
-
                 }
                 Loading = false;
             }
