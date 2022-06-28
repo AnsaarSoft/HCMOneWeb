@@ -519,10 +519,6 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.CreatedBy).HasMaxLength(250);
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
                 entity.Property(e => e.FromEmail).HasMaxLength(50);
 
                 entity.Property(e => e.Password).HasMaxLength(50);
@@ -534,10 +530,7 @@ namespace HCM.API.Models
                     .HasColumnName("SMTPServer");
 
                 entity.Property(e => e.TestEmail).HasMaxLength(50);
-
-                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
-
-                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+               
             });
 
             modelBuilder.Entity<MstGrading>(entity =>
