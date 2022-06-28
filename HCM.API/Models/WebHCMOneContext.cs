@@ -36,6 +36,8 @@ namespace HCM.API.Models
         public virtual DbSet<MstElement> MstElements { get; set; } = null!;
         public virtual DbSet<MstEmailConfig> MstEmailConfigs { get; set; } = null!;
         public virtual DbSet<MstGrading> MstGradings { get; set; } = null!;
+        public virtual DbSet<MstGratuity> MstGratuities { get; set; } = null!;
+        public virtual DbSet<MstGratuityDetail> MstGratuityDetails { get; set; } = null!;
         public virtual DbSet<MstLeaveCalendar> MstLeaveCalendars { get; set; } = null!;
         public virtual DbSet<MstLeaveDeduction> MstLeaveDeductions { get; set; } = null!;
         public virtual DbSet<MstLeaveType> MstLeaveTypes { get; set; } = null!;
@@ -549,6 +551,63 @@ namespace HCM.API.Models
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
+            modelBuilder.Entity<MstGratuity>(entity =>
+            {
+                entity.ToTable("MstGratuity");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.BasedOn).HasMaxLength(50);
+
+                entity.Property(e => e.BasedOnValue).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.Code).HasMaxLength(50);
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(150);
+
+                entity.Property(e => e.FlgAbsoluteYears).HasColumnName("flgAbsoluteYears");
+
+                entity.Property(e => e.FlgEffectiveDate).HasColumnName("flgEffectiveDate");
+
+                entity.Property(e => e.FlgWopleaves).HasColumnName("flgWOPLeaves");
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(150);
+            });
+
+            modelBuilder.Entity<MstGratuityDetail>(entity =>
+            {
+                entity.ToTable("MstGratuityDetail");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(150);
+
+                entity.Property(e => e.DaysCount).HasColumnType("numeric(19, 6)");
+
+                entity.Property(e => e.Description).HasMaxLength(200);
+
+                entity.Property(e => e.Fkid).HasColumnName("FKID");
+
+                entity.Property(e => e.FromPoints).HasColumnType("numeric(19, 6)");
+
+                entity.Property(e => e.ToPoints).HasColumnType("numeric(19, 6)");
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(150);
+
+                entity.HasOne(d => d.Fk)
+                    .WithMany(p => p.MstGratuityDetails)
+                    .HasForeignKey(d => d.Fkid)
+                    .HasConstraintName("FK_MstGratuityDetail_MstGratuity");
+            });
+
             modelBuilder.Entity<MstLeaveCalendar>(entity =>
             {
                 entity.ToTable("MstLeaveCalendar");
@@ -785,7 +844,7 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+                entity.Property(e => e.CreatedBy).HasMaxLength(150);
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -803,7 +862,7 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.PayrollType).HasMaxLength(10);
 
-                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+                entity.Property(e => e.UpdatedBy).HasMaxLength(150);
 
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
 

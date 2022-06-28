@@ -35,6 +35,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
+                    oMstBonus.CreatedDate = DateTime.Now;
                     _DBContext.MstBonus.Add(oMstBonus);
                     _DBContext.SaveChanges();                    
                     response.Id = 1;
@@ -56,6 +57,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
+                    oMstBonus.UpdatedDate = DateTime.Now;
                     _DBContext.MstBonus.Update(oMstBonus);
                     _DBContext.SaveChanges();
                     response.Id = 1;

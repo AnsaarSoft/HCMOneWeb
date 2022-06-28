@@ -45,6 +45,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         private IEnumerable<MstShift> oList = new List<MstShift>();
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
         DialogOptions FullView = new DialogOptions() { MaxWidth = MaxWidth.ExtraExtraLarge, FullWidth = true, CloseButton = true, DisableBackdropClick = true, CloseOnEscapeKey = true };
+        
         #endregion
 
         #region Functions

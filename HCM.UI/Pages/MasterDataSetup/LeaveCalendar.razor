@@ -42,7 +42,8 @@
                             </MudItem>
                 }
                 <MudItem xs="8" sm="8" md="8" lg="8">
-                    <MudDateRangePicker @ref="_picker" PickerVariant="PickerVariant.Dialog" Disabled="@DisabledDate" MinDate="@MinDate" DateFormat="MM/dd/yyyy" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.CalendarMonth" Label="Start and End Date Range" @bind-DateRange="_dateRange">
+                    <MudDateRangePicker @ref="_picker" PickerVariant="PickerVariant.Dialog" Disabled="@DisabledDate" MinDate="@MinDate" 
+                    DateFormat="MM/dd/yyyy" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.CalendarMonth" Label="Start and End Date Range" @bind-DateRange="_dateRange">
                         <PickerActions>
                             <MudButton OnClick="@(() => _picker.Close(false))">Cancel</MudButton>
                             <MudButton Color="Color.Primary" OnClick="@(() => _picker.Close())">Ok</MudButton>

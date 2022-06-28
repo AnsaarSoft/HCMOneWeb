@@ -1,6 +1,6 @@
 ﻿using HCM.API.Models;
 
-namespace HCM.API.Interfaces.MasterData
+namespace HCM.UI.Interfaces.MasterData
 {
     public interface IMstPayroll
     {

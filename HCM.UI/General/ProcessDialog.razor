@@ -89,11 +89,11 @@
                     <MudDivider />
                 <MudGrid class="search-action-block align-items-center">
                     <MudItem xs="4" sm="4" md="4" lg="4">
-                        <MudTextField @bind-Value="oModelTaxSetupDetail.TaxCode" T="string" Disabled="@DisabledCode" Mask="@AlphaNumericMask" MaxLength="20" Counter="20" HelperText="Enter Tax Code" Immediate="true" Clearable="true" Label="Tax Code" Variant="Variant.Text" 
+                        <MudTextField @bind-Value="oModelTaxSetupDetail.TaxCode" Required="true" RequiredError="Code is required" T="string" Disabled="@DisabledCode" Mask="@AlphaNumericMask" MaxLength="20" Counter="20" HelperText="Enter Tax Code" Immediate="true" Clearable="true" Label="Tax Code" Variant="Variant.Text" 
                         Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                     </MudItem> 
                     <MudItem xs="4" sm="4" md="4" lg="4">
-                        <MudTextField @bind-Value="oModelTaxSetupDetail.Description" T="string" MaxLength="50" Counter="50" HelperText="Enter Description" Immediate="true" Clearable="true" Label="Description" Variant="Variant.Text" 
+                        <MudTextField @bind-Value="oModelTaxSetupDetail.Description" Required="true" RequiredError="Description is required" T="string" MaxLength="50" Counter="50" HelperText="Enter Description" Immediate="true" Clearable="true" Label="Description" Variant="Variant.Text" 
                         Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                     </MudItem> 
                     <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
@@ -124,39 +124,7 @@
                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text" > </MudNumericField>
                     </MudItem>
                 </MudGrid>              
-        }
-        @if (Settings.DialogFor == "Bonus")
-        {
-                        <MudTextField @bind-Value="oModelBonusDetail.Code" T="string" MaxLength="50" Counter="50" HelperText="Enter Code" Immediate="true" Clearable="true" Label="Code" Variant="Variant.Text" 
-                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
-
-                        <MudItem xs="4" sm="4" md="4" lg="4">
-                            <MudSelect @bind-Value="oModelBonusDetail.ValueType" Label="Value Type" HelperText="Select Value Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
-                    @foreach (MstLove Love in oLoveList.Where(x => x.Type == "Val_Type").ToList())
-                    {
-                                  <MudSelectItem Value="@Love.Code">@Love.Code - @Love.Value</MudSelectItem>
-                    }
-                        </MudSelect>
-                    </MudItem>
-                        <MudItem xs="4" sm="4" md="4" lg="4">
-                            <MudSelect @bind-Value="oModelBonusDetail.ElementType" Label="Element Type" HelperText="Select Element Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
-                    @foreach (MstElement Element in oElementList.Where(a => a.FlgBonus == true).ToList())
-                    {
-                                   <MudSelectItem Value="@Element.Id">@Element.Description</MudSelectItem>
-                    }
-                        </MudSelect>
-                    </MudItem>
-
-                        <MudNumericField @bind-Value="oModelBonusDetail.SalaryFrom" HelperText="Enter Salary From"  Immediate="true" Clearable="true" Label="Salary From" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
-
-                        <MudNumericField @bind-Value="oModelBonusDetail.SalaryTo" HelperText="Enter Salary To" Immediate="true" Clearable="true" Label="Salary To" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
-
-                        <MudNumericField @bind-Value="oModelBonusDetail.ScaleFrom" HelperText="Enter Scale From" MaxLength="3" Counter="3" Immediate="true" Clearable="true" Label="Scale From" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
-
-                        <MudNumericField @bind-Value="oModelBonusDetail.ScaleTo" HelperText="Enter Scale To" Immediate="true" Clearable="true" Label="Scale To" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
-
-                        <MudNumericField @bind-Value="oModelBonusDetail.BonusPercentage" HelperText="Enter Bonus Percentage" Immediate="true" Clearable="true" Label="Bonus Percentage" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>                                        
-        }
+        }        
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
