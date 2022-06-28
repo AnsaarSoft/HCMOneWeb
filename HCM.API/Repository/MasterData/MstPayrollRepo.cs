@@ -1,26 +1,25 @@
 ﻿using HCM.API.General;
 using HCM.API.Interfaces.MasterData;
 using HCM.API.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace HCM.API.Repository.MasterData
 {
-    public class MstTaxSetupRepo : IMstTaxSetup
+    public class MstPayrollRepo : IMstPayroll
     {
         private WebHCMOneContext _DBContext;
 
-        public MstTaxSetupRepo(WebHCMOneContext DBContext)
+        public MstPayrollRepo(WebHCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
-        public async Task<List<MstTaxSetup>> GetAllData()
+        public async Task<List<MstPayroll>> GetAllData()
         {
-            List<MstTaxSetup> oList = new List<MstTaxSetup>();
+            List<MstPayroll> oList = new List<MstPayroll>();
             try
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.MstTaxSetups.Include(c => c.MstTaxSetupDetails).ToList();
+                    oList = _DBContext.MstPayrolls.ToList();
                 });
             }
             catch (Exception ex)
@@ -29,15 +28,15 @@ namespace HCM.API.Repository.MasterData
             }
             return oList;
         }
-        public async Task<ApiResponseModel> Insert(MstTaxSetup oMstTaxSetup)
+        public async Task<ApiResponseModel> Insert(MstPayroll oMstPayroll)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    oMstTaxSetup.CreatedDate = DateTime.Now;
-                    _DBContext.MstTaxSetups.Add(oMstTaxSetup);
+                    oMstPayroll.CreatedDate = DateTime.Now;
+                    _DBContext.MstPayrolls.Add(oMstPayroll);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";
@@ -51,15 +50,15 @@ namespace HCM.API.Repository.MasterData
             }
             return response;
         }
-        public async Task<ApiResponseModel> Update(MstTaxSetup oMstTaxSetup)
+        public async Task<ApiResponseModel> Update(MstPayroll oMstPayroll)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    oMstTaxSetup.UpdatedDate = DateTime.Now;
-                    _DBContext.MstTaxSetups.Update(oMstTaxSetup);
+                    oMstPayroll.UpdatedDate = DateTime.Now;
+                    _DBContext.MstPayrolls.Update(oMstPayroll);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";

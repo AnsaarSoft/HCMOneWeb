@@ -20,6 +20,9 @@ csharp_style_throw_expression = true:suggestion
 csharp_indent_braces = false
 csharp_space_around_binary_operators = before_and_after
 
+# CS8603: Possible null reference return.
+dotnet_diagnostic.CS8603.severity = none
+
 [*.{cs,vb}]
 #### Naming styles ####
 

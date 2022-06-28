@@ -37,7 +37,7 @@ namespace HCM.API.Repository.MasterData
             try
             {
                 await Task.Run(() =>
-                {                 
+                {
                     _DBContext.MstEmailConfigs.Update(oMstEmailConfig);
                     _DBContext.SaveChanges();
                     response.Id = 1;

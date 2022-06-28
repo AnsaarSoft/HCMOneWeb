@@ -530,7 +530,6 @@ namespace HCM.API.Models
                     .HasColumnName("SMTPServer");
 
                 entity.Property(e => e.TestEmail).HasMaxLength(50);
-               
             });
 
             modelBuilder.Entity<MstGrading>(entity =>

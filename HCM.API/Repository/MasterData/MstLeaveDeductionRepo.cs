@@ -19,10 +19,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    //oList = _DBContext.MstLeaveDeductions.Where(a => a.FlgActive == true).ToList();
-                    //oList = (from a in _DBContext.MstDepartments
-                    //         where a.FlgActive == true
-                    //         select a).ToList();
                     oList = _DBContext.MstLeaveDeductions.ToList();
                 });
             }
@@ -39,7 +35,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstLeaveDeduction.CreatedBy = "manager";
                     oMstLeaveDeduction.CreatedDate = DateTime.Now;
                     _DBContext.MstLeaveDeductions.Add(oMstLeaveDeduction);
                     _DBContext.SaveChanges();
@@ -62,7 +57,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstLeaveDeduction.UpdatedBy = "manager";
                     oMstLeaveDeduction.UpdatedDate = DateTime.Now;
                     _DBContext.MstLeaveDeductions.Update(oMstLeaveDeduction);
                     _DBContext.SaveChanges();

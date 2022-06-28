@@ -22,6 +22,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         [Inject]
         public IMstCalendar _mstCalendar { get; set; }
 
+      
 
         #endregion
 
@@ -35,7 +36,11 @@ namespace HCM.UI.Pages.MasterDataSetup
         private bool FilterFunc(MstCalendar element) => FilterFunc(element, searchString1);
 
         MstCalendar oModel = new MstCalendar();
+        MstPayrollPeriod oModelPeriods = new MstPayrollPeriod();
+        MstPayroll oModelPayroll = new MstPayroll();
         private IEnumerable<MstCalendar> oList = new List<MstCalendar>();
+        private IEnumerable<MstPayroll> oListPayroll = new List<MstPayroll>();
+        private IEnumerable<MstPayrollPeriod> oListPeriods = new List<MstPayrollPeriod>();
 
         MudDateRangePicker _picker;
         DateRange _dateRange;
@@ -78,7 +83,7 @@ namespace HCM.UI.Pages.MasterDataSetup
 
                                 if (oModel.Id == 0)
                                 {
-                                    if(oList.Where(x => x.FlgActive == true).Count() > 0)
+                                    if (oList.Where(x => x.FlgActive == true).Count() > 0)
                                     {
                                         oModel.FlgActive = false;
                                     }
@@ -145,6 +150,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Logs.GenerateLogs(ex);
             }
         }
+        
 
         private bool FilterFunc(MstCalendar element, string searchString1)
         {
@@ -186,14 +192,17 @@ namespace HCM.UI.Pages.MasterDataSetup
                 {
                     AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
                     DisbaledDate = true;
-                    oModel.Id = res.Id;
-                    oModel.Code = res.Code;
-                    DisbaledCode = true;
-                    oModel.Description = res.Description;
-                    oModel.StartDate = _dateRange.Start = res.StartDate;
-                    oModel.EndDate = _dateRange.End = res.EndDate;
+                    //oModel.Id = res.Id;
+                    //oModel.Code = res.Code;
+                    //DisbaledCode = true;
+                    //oModel.Description = res.Description;
+                    //oModel.StartDate = _dateRange.Start = res.StartDate;
+                    //oModel.EndDate = _dateRange.End = res.EndDate;
+                    //_dateRange = new DateRange(oModel.StartDate, oModel.EndDate);
+                    //oModel.FlgActive = res.FlgActive;
+                    oModel = res;
                     _dateRange = new DateRange(oModel.StartDate, oModel.EndDate);
-                    oModel.FlgActive = res.FlgActive;
+                    DisbaledCode = true;
                     oList = oList.Where(x => x.Id != LineNum);
                     //_ = InvokeAsync(StateHasChanged);
                 }
@@ -212,61 +221,57 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
-                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description))
-                {
-                    if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
-                    {
-                        Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                    }
-                    else
-                    {
-                        oModel.StartDate = _dateRange.Start;
-                        oModel.EndDate = _dateRange.End;
-                        if (oModel.Code.Length > 20)
-                        {
-                            Snackbar.Add("Code accept only 20 characters", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                        }
-                        else
-                        {
-                            var MonthDifference = DateTimeSpan.GetMonthDifference((DateTime)oModel.StartDate, (DateTime)oModel.EndDate);
-                            if (MonthDifference < 12)
-                            {
-                                Snackbar.Add("Invalid Date Selection, must be within 12 months range", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                            }
-                            else
-                            {
 
-                                if (oModel.Id == 0)
-                                {
-                                    if (oList.Where(x => x.FlgActive == true).Count() > 0)
-                                    {
-                                        oModel.FlgActive = false;
-                                    }
-                                    res = await _mstCalendar.Insert(oModel);
-                                }
-                                else
-                                {
-                                    res = await _mstCalendar.Update(oModel);
-                                }
-                            }
-                        }
-                    }
-                    if (res != null && res.Id == 1)
-                    {
-                        Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
-                        await Task.Delay(3000);
-                        Navigation.NavigateTo("/Calendar", forceLoad: true);
-                    }
-                    else
-                    {
-                        Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                    }
-                    oModel.FlgActive = true;
+                bool flgActive = Convert.ToBoolean(oList.Where(x => x.FlgActive.GetValueOrDefault() == true).FirstOrDefault());
+                if (flgActive == true)
+                {
+                    Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                 }
                 else
                 {
-                    Snackbar.Add("Please fill the required field(s)", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                    oModel.StartDate = _dateRange.Start;
+                    oModel.EndDate = _dateRange.End;
+                    if (oModel.Code.Length > 20)
+                    {
+                        Snackbar.Add("Code accept only 20 characters", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                    }
+                    else
+                    {
+                        var MonthDifference = DateTimeSpan.GetMonthDifference((DateTime)oModel.StartDate, (DateTime)oModel.EndDate);
+                        if (MonthDifference < 12)
+                        {
+                            Snackbar.Add("Invalid Date Selection, must be within 12 months range", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                        }
+                        else
+                        {
+
+                            if (oModel.Id == 0)
+                            {
+                                if (oList.Where(x => x.FlgActive == true).Count() > 0)
+                                {
+                                    oModel.FlgActive = false;
+                                }
+                                res = await _mstCalendar.Insert(oModel);
+                            }
+                            else
+                            {
+                                res = await _mstCalendar.Update(oModel);
+                            }
+                        }
+                    }
                 }
+                if (res != null && res.Id == 1)
+                {
+                    Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+                    await Task.Delay(3000);
+                    Navigation.NavigateTo("/Calendar", forceLoad: true);
+                }
+                else
+                {
+                    Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+                oModel.FlgActive = true;
+
                 Loading = false;
                 return res;
             }

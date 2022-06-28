@@ -8,7 +8,7 @@ namespace HCM.API.Interfaces.MasterData
 {
     public interface IMstAttendanceRules
     {
-        Task<MstAttendanceRule> GetAllData();
+        Task<List<MstAttendanceRule>> GetAllData();
         Task<ApiResponseModel> Insert (MstAttendanceRule mstAttendanceRule);
         Task<ApiResponseModel> Update(MstAttendanceRule mstAttendanceRule);
     }

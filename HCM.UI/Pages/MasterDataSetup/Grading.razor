@@ -15,8 +15,12 @@
     <div class="row mt-5">
         <div class="col-sm-12">
             <MudGrid class="search-action-block align-items-center">
-                <MudItem xs="8" sm="8" md="8" lg="8">
-                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="200" Counter="200" HelperText="Enter Grading Name" Immediate="true" Clearable="true" Label="Grading" Variant="Variant.Text" 
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisbaledCode" MaxLength="20" Counter="20" HelperText="Enter Grading Code" Immediate="true" Label="Grading Code" Clearable="true" Variant="Variant.Text" 
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem> 
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="100" Counter="100" HelperText="Enter Grading Name" Immediate="true" Label="Grading Name" Clearable="true" Variant="Variant.Text" 
                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem> 
                 <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
@@ -38,11 +42,11 @@
                                 <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
                             </MudItem>
                 }
-                <MudItem xs="5" sm="5" md="5" lg="5">
+                <MudItem xs="4" sm="4" md="4" lg="4">
                     <MudNumericField @bind-Value="oModel.MinSalary" Min="0" HelperText="Enter Min Salary" Immediate="true" Clearable="true" Label="Min Salary" Variant="Variant.Text" 
                     Adornment="Adornment.Start" AdornmentText="Rs" Format="N2" Culture="@CultureInfo.InvariantCulture" />                    
                 </MudItem>
-                <MudItem xs="5" sm="5" md="5" lg="5">
+                <MudItem xs="4" sm="4" md="4" lg="4">
                     <MudNumericField @bind-Value="oModel.MaxSalary" Min="0" HelperText="Enter Max Salary" Immediate="true" Clearable="true" Label="Max Salary" Variant="Variant.Text" 
                     Adornment="Adornment.Start" AdornmentText="Rs" Format="N2" Culture="@CultureInfo.InvariantCulture"/> 
                 </MudItem>
@@ -60,6 +64,7 @@
                                     <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
                                 </ToolBarContent>
                                 <HeaderContent>
+                                    <MudTh>Grading Code</MudTh>
                                     <MudTh>Grading Name</MudTh>
                                     <MudTh>Min Salary</MudTh>
                                     <MudTh>Max Salary</MudTh>
@@ -67,6 +72,7 @@
                                     <MudTh>Action</MudTh>
                                 </HeaderContent>
                                 <RowTemplate>
+                                    <MudTd DataLabel="Grading Code">@context.Code</MudTd>
                                     <MudTd DataLabel="Grading Name">@context.Description</MudTd>
                                     <MudTd DataLabel="Min Salary">@context.MinSalary</MudTd>
                                     <MudTd DataLabel="Min Salary">@context.MaxSalary</MudTd>

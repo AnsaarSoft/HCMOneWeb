@@ -46,6 +46,7 @@ builder.Services.AddScoped<IMstLeaveDeduction, MstLeaveDeductionRepo>();
 builder.Services.AddScoped<IMstDeductionRule, MstDeductionRuleRepo>();
 builder.Services.AddScoped<IMstAttendanceRules, MstAttendanceRulesRepo>();
 builder.Services.AddScoped<IMstTaxSetup, MstTaxSetupRepo>();
+builder.Services.AddScoped<IMstPayroll, MstPayrollRepo>();
 
 
 var app = builder.Build();

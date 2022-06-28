@@ -7,7 +7,7 @@ using MudBlazor;
 
 namespace HCM.UI.Pages.MasterDataSetup
 {
-    public partial class LeaveType
+    public partial class LeaveType 
     {
         #region InjectService
 
@@ -21,7 +21,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         public ISnackbar Snackbar { get; set; }
 
         [Inject]
-        public IMstLeaveType _mstLeaveType { get; set; }
+        public IMstLeaveType  _mstLeaveType { get; set; }
 
         [Inject]
         public IMstLove _mstLove { get; set; }
@@ -39,12 +39,12 @@ namespace HCM.UI.Pages.MasterDataSetup
         public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
 
         private string searchString1 = "";
-        private bool FilterFunc(MstLeaveType element) => FilterFunc(element, searchString1);
+        private bool FilterFunc(MstLeaveType  element) => FilterFunc(element, searchString1);
 
-        MstLeaveType oModel = new MstLeaveType();
+        MstLeaveType  oModel = new MstLeaveType ();
         List<MstLove> oLovesList = new List<MstLove>();
-        private IEnumerable<MstLeaveType> oList = new List<MstLeaveType>();
-        private IEnumerable<MstLeaveDeduction> oListLeaveDeduction = new List<MstLeaveDeduction>();
+        private IEnumerable<MstLeaveType > oList = new List<MstLeaveType>();
+        private IEnumerable<MstLeaveDeduction > oListLeaveDeduction = new List<MstLeaveDeduction>();
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
         #endregion
@@ -60,7 +60,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (!result.Cancelled)
                 {
                     DisabledCode = true;
-                    var res = (MstLeaveType)result.Data;
+                    var res = (MstLeaveType )result.Data;
                     AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
                     oModel = res;
                 }
@@ -88,18 +88,10 @@ namespace HCM.UI.Pages.MasterDataSetup
                     {
                         if (oModel.Id == 0)
                         {
-                            if(oModel.DeductionType== "NonDed")
-                            {
-                                oModel.DeductionId = null;
-                            }
                             res = await _mstLeaveType.Insert(oModel);
                         }
                         else
                         {
-                            if (oModel.DeductionType == "NonDed")
-                            {
-                                oModel.DeductionId = null;
-                            }
                             res = await _mstLeaveType.Update(oModel);
                         }
                     }
@@ -146,7 +138,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
-        private bool FilterFunc(MstLeaveType element, string searchString1)
+        private bool FilterFunc(MstLeaveType  element, string searchString1)
         {
             if (string.IsNullOrWhiteSpace(searchString1))
                 return true;

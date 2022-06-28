@@ -19,10 +19,6 @@ namespace HCM.API.Repository.MasterElement
             {
                 await Task.Run(() =>
                 {
-                    //oList = _DBContext.MstDepartments.Where(a => a.FlgActive == true).ToList();
-                    //oList = (from a in _DBContext.MstDepartments
-                    //         where a.FlgActive == true
-                    //         select a).ToList();
                     oList = _DBContext.MstOverTimes.ToList();
                 });
             }
@@ -39,7 +35,6 @@ namespace HCM.API.Repository.MasterElement
             {
                 await Task.Run(() =>
                 {
-                    oMstOverTime.CreatedBy = "manager";
                     oMstOverTime.CreatedDate = DateTime.Now;
                     _DBContext.MstOverTimes.Add(oMstOverTime);
                     _DBContext.SaveChanges();
@@ -62,7 +57,6 @@ namespace HCM.API.Repository.MasterElement
             {
                 await Task.Run(() =>
                 {
-                    oMstOverTime.UpdatedBy = "manager";
                     oMstOverTime.UpdatedDate = DateTime.Now;
                     _DBContext.MstOverTimes.Update(oMstOverTime);
                     _DBContext.SaveChanges();

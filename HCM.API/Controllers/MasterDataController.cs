@@ -28,10 +28,11 @@ namespace HCM.API.Controllers
         private IMstDeductionRule _mstDeductionRule;
         private IMstAttendanceRules _mstAttendanceRule;
         private IMstTaxSetup _mstTaxSetup;
+        private IMstPayroll _mstPayrollSetup;
 
         public MasterDataController(IMstDepartment mstDepartment, IMstDesignation mstDesignation, IMstLocation mstLocation, IMstPosition mstPosition, IMstBranch mstBranch, IMstGrading mstGrading, IMstCalendar mstCalendar,
             IMstLeaveCalendar mstLeaveCalendar, IMstEmailConfig mstEmailConfig, IMstPayrollinit mstPayrollinit, IMstLoans mstLoans, IMstShifts mstShift, IMstAdvance mstAdvance, IMstLeaveDeduction mstLeaveDeduction,
-            IMstLeaveType mstLeaveType, IMstDeductionRule mstDeductionRule, IMstAttendanceRules mstAttendanceRule, IMstTaxSetup mstTaxSetup)
+            IMstLeaveType mstLeaveType, IMstDeductionRule mstDeductionRule, IMstAttendanceRules mstAttendanceRule, IMstTaxSetup mstTaxSetup, IMstPayroll mstPayrollSetup)
         {
             _mstDepartment = mstDepartment;
             _mstDesignation = mstDesignation;
@@ -51,6 +52,8 @@ namespace HCM.API.Controllers
             _mstDeductionRule = mstDeductionRule;
             _mstAttendanceRule = mstAttendanceRule;
             _mstTaxSetup = mstTaxSetup;
+            _mstPayrollSetup = mstPayrollSetup;
+            _mstPayrollSetup=mstPayrollSetup;   
         }
 
         #region MST Department
@@ -1256,7 +1259,7 @@ namespace HCM.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllAttendanceRules()
         {
-            MstAttendanceRule oMstAttendanceRule = new MstAttendanceRule();
+            List<MstAttendanceRule> oMstAttendanceRule = new List<MstAttendanceRule>();
             try
             {
                 oMstAttendanceRule = await _mstAttendanceRule.GetAllData();
@@ -1383,6 +1386,81 @@ namespace HCM.API.Controllers
             try
             {
                 response = await _mstTaxSetup.Update(pMstTaxSetup);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+        #endregion
+
+        #region MST PayrollSetup
+
+        [Route("getAllPayrollSetup")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllPayrollSetup()
+        {
+            List<MstPayroll> oMstPayrollSetup = new List<MstPayroll>();
+            try
+            {
+                oMstPayrollSetup = await _mstPayrollSetup.GetAllData();
+                if (oMstPayrollSetup == null)
+                {
+                    return BadRequest(oMstPayrollSetup);
+                }
+                else
+                {
+                    return Ok(oMstPayrollSetup);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addPayrollSetup")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstPayroll pMstPayrollSetup)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstPayrollSetup.Insert(pMstPayrollSetup);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updatePayrollSetup")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstPayroll pMstPayrollSetup)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstPayrollSetup.Update(pMstPayrollSetup);
                 if (response == null)
                 {
                     return BadRequest(response);

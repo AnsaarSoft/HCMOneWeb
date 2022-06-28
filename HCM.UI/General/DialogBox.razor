@@ -57,6 +57,34 @@
                      </PagerContent>
                  </MudTable>
         }
+        @if (oListTaxSetup?.Count > 0 && Settings.DialogFor == "TaxSetup")
+        {
+                <MudTable Items="@oListTaxSetup" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstTaxSetup,bool>(FilterFuncTaxSetup)"
+                    Loading="@Loading" LoadingProgressColor="Color.Primary" OnRowClick="RowClickEventTaxSetup" T="MstTaxSetup" @bind-SelectedItem="oModelTaxSetup">
+                    <ToolBarContent>
+                        <MudText Typo="Typo.h6">Tax Setup</MudText>
+                        <MudSpacer />
+                        <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                     </ToolBarContent>
+                     <HeaderContent>
+                        <MudTh>Salary Year</MudTh>
+                        <MudTh>Min Tax Salary</MudTh>
+                        <MudTh>Citizen Age</MudTh>
+                        <MudTh>Max Salary Disc</MudTh>
+                        <MudTh>Disc on Total Tax</MudTh>
+                     </HeaderContent>
+                     <RowTemplate>
+                         <MudTd DataLabel="Code">@context.SalaryYear</MudTd>                       
+                         <MudTd DataLabel="Code">@context.MinTaxSalaryF</MudTd>                       
+                         <MudTd DataLabel="Code">@context.SeniorCitizonAge</MudTd>                       
+                         <MudTd DataLabel="Code">@context.MaxSalaryDisc</MudTd>                       
+                         <MudTd DataLabel="Code">@context.DiscountOnTotalTax</MudTd>                       
+                     </RowTemplate>
+                     <PagerContent>
+                         <MudTablePager />
+                     </PagerContent>
+                 </MudTable>
+        }
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>

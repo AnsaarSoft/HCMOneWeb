@@ -13,7 +13,7 @@ namespace HCM.UI.General
         [Inject]
         public IDialogService Dialog { get; set; }
 
-        [CascadingParameter] 
+        [CascadingParameter]
         MudDialogInstance MudDialog { get; set; }
 
         [Inject]
@@ -25,6 +25,9 @@ namespace HCM.UI.General
         [Inject]
         public IMstShifts _mstShift { get; set; }
 
+        [Inject]
+        public IMstTaxSetup _mstTaxSetup { get; set; }
+
         #endregion
 
         #region Variables
@@ -34,6 +37,7 @@ namespace HCM.UI.General
 
         private bool FilterFuncElement(MstElement element) => FilterFuncElement(element, searchString1);
         private bool FilterFuncShift(MstShift element) => FilterFuncShift(element, searchString1);
+        private bool FilterFuncTaxSetup(MstTaxSetup element) => FilterFuncTaxSetup(element, searchString1);
         void Cancel() => MudDialog.Cancel();
 
         MstElement oModelElement = new MstElement();
@@ -41,6 +45,9 @@ namespace HCM.UI.General
 
         MstShift oModelShift = new MstShift();
         List<MstShift> oListShift = new List<MstShift>();
+
+        MstTaxSetup oModelTaxSetup = new MstTaxSetup();
+        List<MstTaxSetup> oListTaxSetup = new List<MstTaxSetup>();
 
         #endregion
 
@@ -93,7 +100,6 @@ namespace HCM.UI.General
                 Logs.GenerateLogs(ex);
             }
         }
-
         private bool FilterFuncShift(MstShift element, string searchString1)
         {
             if (string.IsNullOrWhiteSpace(searchString1))
@@ -101,8 +107,40 @@ namespace HCM.UI.General
             if (element.Code.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
             if (element.Description.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
-                return true;            
+                return true;
             if (element.FlgActive.Equals(searchString1))
+                return true;
+            return false;
+        }
+
+        private async Task GetAllTaxSetup()
+        {
+            try
+            {
+                oListTaxSetup = await _mstTaxSetup.GetAllData();
+                if (oListTaxSetup?.Count == 0 || oListTaxSetup == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncTaxSetup(MstTaxSetup element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.SalaryYear.Equals(searchString1))
+                return true;
+            if (element.MinTaxSalaryF.Equals(searchString1))
+                return true;
+            if (element.SeniorCitizonAge.Equals(searchString1))
+                return true;
+            if (element.MaxSalaryDisc.Equals(searchString1))
+                return true;
+            if (element.DiscountOnTotalTax.Equals(searchString1))
                 return true;
             return false;
         }
@@ -116,12 +154,17 @@ namespace HCM.UI.General
             try
             {
                 Loading = true;
-                if(Settings.DialogFor == "Element")
+                if (Settings.DialogFor == "Element")
                 {
                     await GetAllElements();
-                }else if(Settings.DialogFor == "Shifts")
+                }
+                else if (Settings.DialogFor == "Shifts")
                 {
                     await GetAllShift();
+                }
+                else if (Settings.DialogFor == "TaxSetup")
+                {
+                    await GetAllTaxSetup();
                 }
                 Loading = false;
             }
@@ -150,6 +193,19 @@ namespace HCM.UI.General
             try
             {
                 MudDialog.Close(DialogResult.Ok<MstShift>(oModelShift));
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+
+        public void RowClickEventTaxSetup(TableRowClickEventArgs<MstTaxSetup> tableRowClickEventArgs)
+        {
+            try
+            {
+                MudDialog.Close(DialogResult.Ok<MstTaxSetup>(oModelTaxSetup));
             }
             catch (Exception ex)
             {
