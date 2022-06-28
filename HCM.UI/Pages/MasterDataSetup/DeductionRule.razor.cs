@@ -34,6 +34,8 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         bool Loading = false;
         bool DisabledCode = false;
+        private TimeSpan? TSRangeFrom = new TimeSpan();
+        private TimeSpan? TSRangeTo = new TimeSpan();
         public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
 
         private string searchString1 = "";
@@ -76,7 +78,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
-                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Value) && !string.IsNullOrWhiteSpace(oModel.RangeFrom) && !string.IsNullOrWhiteSpace(oModel.RangeTo))
+                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Value))
                 {
                     if (oModel.Code.Length > 20)
                     {
@@ -84,16 +86,18 @@ namespace HCM.UI.Pages.MasterDataSetup
                     }
                     else
                     {
+                        oModel.RangeFrom = TSRangeFrom.ToString();
+                        oModel.RangeTo = TSRangeTo.ToString();
                         if (oModel.Id == 0)
                         {
-                            if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
-                            {
-                                Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                            }
-                            else
-                            {
-                                res = await _mstDeductionRule.Insert(oModel);
-                            }
+                            //if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
+                            //{
+                            //    Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                            //}
+                            //else
+                            //{
+                            //    res = await _mstDeductionRule.Insert(oModel);
+                            //}
                         }
                         else
                         {
@@ -215,8 +219,8 @@ namespace HCM.UI.Pages.MasterDataSetup
                     oModel.Code = res.Code;
                     DisabledCode = true;
                     oModel.Value = res.Value;
-                    oModel.RangeFrom = res.RangeFrom;
-                    oModel.RangeTo = res.RangeTo;
+                    TSRangeFrom = TimeSpan.Parse(res.RangeFrom);
+                    TSRangeFrom = TimeSpan.Parse(res.RangeTo);
                     oModel.Deduction = res.Deduction;
                     oModel.LeaveType = res.LeaveType;
                     oModel.GracePeriod = res.GracePeriod;

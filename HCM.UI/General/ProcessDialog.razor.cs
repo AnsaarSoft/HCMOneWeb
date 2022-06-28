@@ -29,6 +29,12 @@ namespace HCM.UI.General
         [Inject]
         public IMstTaxSetup _mstTaxSetup { get; set; }
 
+        [Inject]
+        public IMstBonus _mstBonus { get; set; }
+
+        [Inject]
+        public IMstLove _mstLove { get; set; }
+
         #endregion
 
         #region Variables
@@ -46,6 +52,12 @@ namespace HCM.UI.General
 
         [Parameter] public MstTaxSetupDetail oDetailParaTax { get; set; } = new MstTaxSetupDetail();
         MstTaxSetupDetail oModelTaxSetupDetail = new MstTaxSetupDetail();
+
+        [Parameter] public VMMstBonusDetail oDetailParaBonus { get; set; } = new VMMstBonusDetail();
+        VMMstBonusDetail oModelBonusDetail = new VMMstBonusDetail();
+        List<MstLove> oLoveList = new List<MstLove>();
+        List<MstElement> oElementList = new List<MstElement>();
+
         #endregion
 
         #region Functions        
@@ -180,7 +192,7 @@ namespace HCM.UI.General
                 var res = oListShift.Where(x => x.Day == Day).FirstOrDefault();
                 TimeSpan Dur = DateTime.ParseExact(res.TSEndTime.ToString(), "HH:mm:ss", CultureInfo.InvariantCulture).Subtract(DateTime.ParseExact(res.TSStartTime.ToString(), "HH:mm:ss", CultureInfo.InvariantCulture));
 
-               oListShift.Where(x => x.Day == Day).ToList().ForEach(s => s.TSDuration = Dur);
+                oListShift.Where(x => x.Day == Day).ToList().ForEach(s => s.TSDuration = Dur);
                 //foreach (var item in oListShift)
                 //{
                 //    if(Day == "Monday")
@@ -245,7 +257,59 @@ namespace HCM.UI.General
                     MudDialog.Close(DialogResult.Ok<MstTaxSetupDetail>(oModelTaxSetupDetail));
                 }
             }
+            else if (Settings.DialogFor == "Bonus")
+            {
+                MudDialog.Close(DialogResult.Ok<VMMstBonusDetail>(oModelBonusDetail));
+            }
         }
+
+        private async Task GetAllLove()
+        {
+            try
+            {
+                oLoveList = await _mstLove.GetAllData();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+
+        private async Task GetAllElement()
+        {
+            try
+            {
+                oElementList = await _mstElement.GetAllData();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+
+        private async Task CreateBonusDetailForm()
+        {
+            await Task.Delay(3);
+            if (oDetailParaBonus.Code != null)
+            {
+                oModelBonusDetail = oDetailParaBonus;
+            }
+            else
+            {
+                oModelBonusDetail = new VMMstBonusDetail();
+                oModelBonusDetail.Code = new string("");
+                oModelBonusDetail.SalaryFrom = new decimal();
+                oModelBonusDetail.SalaryTo = new decimal();
+                oModelBonusDetail.ScaleFrom = new int();
+                oModelBonusDetail.ScaleTo = new int();
+                oModelBonusDetail.BonusPercentage = new decimal();
+                oModelBonusDetail.MinimumMonthsDuration = new decimal();
+
+                oModelBonusDetail.FlgActive = true;
+
+            }
+        }
+
         #endregion
 
         #region Events
@@ -254,7 +318,7 @@ namespace HCM.UI.General
         {
             try
             {
-                Loading = true;                
+                Loading = true;
                 if (Settings.DialogFor == "Element")
                 {
 
@@ -265,7 +329,7 @@ namespace HCM.UI.General
                 }
                 else if (Settings.DialogFor == "TaxSetup")
                 {
-                    if (oDetailParaTax.TaxCode !=null)
+                    if (oDetailParaTax.TaxCode != null)
                     {
                         oModelTaxSetupDetail = oDetailParaTax;
                         DisabledCode = true;
@@ -279,6 +343,13 @@ namespace HCM.UI.General
                         oModelTaxSetupDetail.FixTerm = 0;
                         oModelTaxSetupDetail.AdditionalDisc = 0;
                     }
+                }
+                else if (Settings.DialogFor == "Bonus")
+                {
+                    await GetAllLove();
+                    await GetAllElement();
+                    await CreateBonusDetailForm();
+
                 }
                 Loading = false;
             }

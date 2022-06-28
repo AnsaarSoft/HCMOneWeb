@@ -1,0 +1,121 @@
+﻿@page "/Bonus"
+@using HCM.API.Models
+@using System.Globalization
+
+<div class="container-fluid page-content-setting">
+    <div class="row">
+        <div class="col-sm-11">
+            <h3>Bonus Master</h3>
+            <MudDivider/>
+        </div>
+        @*<div class="col-sm-1">
+            <MudFab Color="Color.Primary" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Material.Filled.List" Title="View All" />
+        </div>*@
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudGrid class="search-action-block align-items-center">
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModel.DocNo" Disabled=true MaxLength="20" Counter="20"  Immediate="true" Clearable="true"  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Label="Doc No." Variant="Variant.Text" > </MudNumericField>
+                </MudItem>   
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" @bind-Value="oModel.DocCode" Disabled="@DisabledCode" Mask="@AlphaNumericMask" MaxLength="100" Counter="100" HelperText="Enter DocCode" Immediate="true" Clearable="true" Label="DocCode" Variant="Variant.Text" 
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem> 
+                            
+                             
+                @if (Loading)
+                {
+                                    <MudItem xs="4" sm="4" md="4" lg="4">
+                                        <MudText>Loading...</MudText>
+                                        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                                    </MudItem>
+                }
+                else
+                {
+                                    <MudItem xs="4" sm="4" md="4" lg="4" class="text-right">
+                                        <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                                        <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
+                                    </MudItem>
+                }
+            </MudGrid>
+        </div>
+    </div>
+    <MudDivider/>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudCard Elevation="5">
+                <MudCardContent>
+                    <MudGrid class="search-action-block align-items-center">
+                        <MudItem xs="10" sm="10" md="10" lg="10" Class="pl-5">
+                            <MudText Typo="Typo.h6">Detail</MudText>
+                        </MudItem>
+                        <MudSpacer />                        
+                        <MudItem xs="1" sm="1" md="1" lg="1" Class="text-right pr-5">
+                            <MudFab Color="Color.Primary"  OnClick="@((e) => OpenAddDialog(FullView))" StartIcon="@Icons.Material.Filled.Add" Title="Add Details" IconSize="Size.Small" />
+                        </MudItem>
+                    </MudGrid>
+                    <MudSimpleTable Dense="true" Hover="true" Bordered="true" Striped="true" Style="overflow-x: auto;" Class="mt-4">
+                    <thead>
+                        <tr>
+                            <th style="font-weight:bold">Code</th>
+                            <th style="font-weight:bold">Value Type</th>
+                            <th style="font-weight:bold">Salary From</th>
+                            <th style="font-weight:bold">Salary To</th>
+                            <th style="font-weight:bold">Scale From</th>
+                            <th style="font-weight:bold">Scale To</th>
+                            <th style="font-weight:bold">Bonus Percentage</th>
+                            <th style="font-weight:bold">Minimum Months Duration</th>
+                            <th style="font-weight:bold">Element Type</th>
+                            <th style="font-weight:bold">Active</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in oDetailList)
+                    {
+                        <tr>
+                            <td>
+                                <MudText @bind-Value="item.Code">@item.Code</MudText>                                
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.ValueType">@item.ValueType</MudText>  
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.SalaryFrom">@item.SalaryFrom</MudText>  
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.SalaryTo">@item.SalaryTo</MudText>  
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.ScaleFrom">@item.ScaleFrom</MudText>  
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.ScaleTo">@item.ScaleTo</MudText>  
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.BonusPercentage">@item.BonusPercentage</MudText>  
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.MinimumMonthsDuration">@item.MinimumMonthsDuration</MudText>
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.ScaleTo">@item.ScaleTo</MudText>  
+                            </td>
+                            <td>
+                                <MudText @bind-Value="item.ElementType">@item.ElementType</MudText>  
+                            </td>
+                            <td>
+                                <MudTd DataLabel="Active">@item.FlgActive</MudTd>
+                            </td>
+                            <td>
+                                <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@((e) => OpenEditDialog(FullView,@item))" Title="Edit"></MudIconButton></MudTd>
+                            </td>
+                         </tr>   
+                    }                   
+                    </tbody>                    
+                </MudSimpleTable> 
+                </MudCardContent>
+            </MudCard>
+        </div>
+    </div>    
+</div>

@@ -44,8 +44,9 @@ builder.Services.AddScoped<IMstAdvance, MstAdvanceRepo>();
 builder.Services.AddScoped<IMstLeaveType, MstLeaveTypeRepo>();
 builder.Services.AddScoped<IMstLeaveDeduction, MstLeaveDeductionRepo>();
 builder.Services.AddScoped<IMstDeductionRule, MstDeductionRuleRepo>();
-builder.Services.AddScoped<IMstAttendanceRules, MstAttendanceRulesRepo>();
 builder.Services.AddScoped<IMstTaxSetup, MstTaxSetupRepo>();
+builder.Services.AddScoped<IMstAttendanceRules, MstAttendanceRulesRepo>();
+builder.Services.AddScoped<IMstBonus, MstBonusRepo>();
 builder.Services.AddScoped<IMstPayroll, MstPayrollRepo>();
 
 

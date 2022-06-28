@@ -16,8 +16,8 @@
                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem> 
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField @bind-Value="oModel.RangeFrom" MaxLength="10" Counter="10" HelperText="Enter Range From" Immediate="true" Clearable="true" Label="Range From" Variant="Variant.Text" 
-                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                    <MudTextField @bind-Value="oModel.Value" Disabled="@DisabledCode" MaxLength="50" Counter="50" HelperText="Enter Value" Immediate="true" Clearable="true" Label="Value" Variant="Variant.Text" 
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />                    
                 </MudItem>
                 <MudItem xs="2" sm="2" md="2" lg="2">
                     <MudSwitch @bind-Checked="@oModel.Deduction" ThumbIcon="@(oModel.Deduction==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.Deduction==true ? Color.Primary : Color.Error)" Color="@(oModel.Deduction==true ? Color.Info : Color.Error)">
@@ -40,8 +40,12 @@
                 }
                 
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField @bind-Value="oModel.RangeTo" MaxLength="10" Counter="10" HelperText="Enter Range To" Immediate="true" Clearable="true" Label="Range To" Variant="Variant.Text" 
-                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                   <MudTimePicker PickerVariant="PickerVariant.Dialog" Label="24 hours" @bind-Time="@TSRangeFrom" HelperText="Range From" Variant="Variant.Text"
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Timer"/>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTimePicker PickerVariant="PickerVariant.Dialog" Label="24 hours" @bind-Time="@TSRangeTo" HelperText="Range To" Variant="Variant.Text"
+                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Timer"/>
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
                     <MudSelect @bind-Value="oModel.LeaveType" Label="Leave Type" HelperText="Select Leave Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
@@ -58,7 +62,6 @@
                     <MudNumericField @bind-Value="oModel.LeaveCount" HelperText="Enter Leave Count" Immediate="true" Clearable="true" Label="Leave Count" 
                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" > </MudNumericField>
                 </MudItem>
-
             </MudGrid>
         </div>
     </div>

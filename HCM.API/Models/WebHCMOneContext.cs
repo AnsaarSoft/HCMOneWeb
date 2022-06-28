@@ -395,19 +395,11 @@ namespace HCM.API.Models
 
                 entity.Property(e => e.Code).HasMaxLength(50);
 
-                entity.Property(e => e.CreatedBy).HasMaxLength(250);
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
                 entity.Property(e => e.LeaveCount).HasColumnType("numeric(19, 6)");
 
                 entity.Property(e => e.RangeFrom).HasMaxLength(10);
 
                 entity.Property(e => e.RangeTo).HasMaxLength(10);
-
-                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
-
-                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Value).HasMaxLength(50);
             });
@@ -1074,14 +1066,6 @@ namespace HCM.API.Models
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Code).HasMaxLength(100);
-
-                entity.Property(e => e.CreatedBy).HasMaxLength(250);
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
-
-                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<TrnsDeductionRulesDetail>(entity =>
