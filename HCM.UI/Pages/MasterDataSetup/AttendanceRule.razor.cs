@@ -41,13 +41,52 @@ namespace HCM.UI.Pages.MasterDataSetup
         private bool FilterFunc(MstAttendanceRule element) => FilterFunc(element, searchString1);
 
         MstAttendanceRule oModel = new MstAttendanceRule();
+
         private IEnumerable<MstAttendanceRule> oList = new List<MstAttendanceRule>();
-        private IEnumerable<MstLeaveType> oListLeaveType = new List<MstLeaveType>();    
+        private IEnumerable<MstLeaveType> oListLeaveType = new List<MstLeaveType>();
 
         #endregion
         #region Functions
-
         private async Task<ApiResponseModel> Save()
+        {
+            try
+            {
+                Loading = true;
+                var res = new ApiResponseModel();
+                await Task.Delay(3);
+
+                oModel.GpAfterStartTime = GPAfterStartTime.ToString();
+                oModel.GpAfterTimeEnd = GPAfterTimeEnd.ToString();
+                oModel.GpBeforeStartTime = GPBeforeStartTime.ToString();
+                oModel.GpBeforeTimeEnd = GPBeforeTimeEnd.ToString();
+                if (oModel.Id >= 0)
+                {
+                    res = await _mstAttendanceRule.Update(oModel);
+                }
+
+                if (res != null && res.Id == 1)
+                {
+
+                    Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+                    await Task.Delay(3000);
+                    Navigation.NavigateTo("/AttendanceRule", forceLoad: true);
+                }
+                else
+                {
+                    Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+
+                Loading = false;
+                return res;
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                Loading = false;
+                return null;
+            }
+        }
+        private async Task<ApiResponseModel> Save2()
         {
             try
             {
@@ -56,40 +95,44 @@ namespace HCM.UI.Pages.MasterDataSetup
                 await Task.Delay(3);
                 //if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description))
                 //{
-                    //if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
-                    //{
-                    //    Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                    //}
-                    //else
-                    //{
-                        //if (oModel.Code.Length > 20)
-                        //{
-                        //    Snackbar.Add("Code accept only 20 characters", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                        //}
-                        //else
-                        //{
-                            if (oModel.Id == 0)
-                            {
-                                res = await _mstAttendanceRule.Insert(oModel);
-                            }
-                            else
-                            {
-                                res = await _mstAttendanceRule.Update(oModel);
-                            }
-                        //}
-                    //}
-                    if (res != null && res.Id == 1)
-                    {
-                        Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
-                        await Task.Delay(3000);
-                        Navigation.NavigateTo("/AttendanceRule", forceLoad: true);
-                    }
-                    else
-                    {
-                        Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                    }
-                    //oModel.FlgActive = true;
-                    //oModel.FlgDefault = true;
+                //if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
+                //{
+                //    Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                //}
+                //else
+                //{
+                //if (oModel.Code.Length > 20)
+                //{
+                //    Snackbar.Add("Code accept only 20 characters", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                //}
+                //else
+                //{
+                oModel.GpAfterStartTime = GPAfterStartTime.ToString();
+                oModel.GpAfterTimeEnd = GPAfterTimeEnd.ToString();
+                oModel.GpBeforeStartTime = GPBeforeStartTime.ToString();
+                oModel.GpBeforeTimeEnd = GPBeforeTimeEnd.ToString();
+                if (oModel.Id >= 0)
+                {
+                    res = await _mstAttendanceRule.Insert(oModel);
+                }
+                else
+                {
+                    res = await _mstAttendanceRule.Update(oModel);
+                }
+                //}
+                //}
+                if (res != null && res.Id == 1)
+                {
+                    Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+                    await Task.Delay(3000);
+                    Navigation.NavigateTo("/AttendanceRule", forceLoad: true);
+                }
+                else
+                {
+                    Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+                //oModel.FlgActive = true;
+                //oModel.FlgDefault = true;
                 //}
                 //else
                 //{
@@ -122,17 +165,23 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
-        private async Task GetAllAttendanceRule()
+        private async Task GetAttendanceRuleConfig()
         {
             try
             {
-                oList = await _mstAttendanceRule.GetAllData();
+                oModel = await _mstAttendanceRule.GetAllData();
+                GPAfterStartTime = TimeSpan.Parse(oModel.GpAfterStartTime);
+                GPAfterTimeEnd = TimeSpan.Parse(oModel.GpAfterTimeEnd);
+                GPBeforeStartTime = TimeSpan.Parse(oModel.GpBeforeStartTime);
+                GPBeforeTimeEnd = TimeSpan.Parse(oModel.GpBeforeTimeEnd);
+
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
             }
         }
+
         private async Task GetAllLeaveType()
         {
             try
@@ -213,7 +262,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             {
                 Loading = true;
                 //oModel.FlgActive = true;
-                await GetAllAttendanceRule();
+                await GetAttendanceRuleConfig();
                 await GetAllLeaveType();
 
                 Loading = false;
