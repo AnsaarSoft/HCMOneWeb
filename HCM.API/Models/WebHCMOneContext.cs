@@ -530,6 +530,10 @@ namespace HCM.API.Models
                     .HasColumnName("SMTPServer");
 
                 entity.Property(e => e.TestEmail).HasMaxLength(50);
+<<<<<<<<< Temporary merge branch 1
+=========
+               
+>>>>>>>>> Temporary merge branch 2
             });
 
             modelBuilder.Entity<MstGrading>(entity =>
