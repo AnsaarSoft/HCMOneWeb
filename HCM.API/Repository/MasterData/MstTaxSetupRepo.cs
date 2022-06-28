@@ -20,12 +20,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.MstTaxSetups.ToList();
-
-                    foreach (var Header in oList)
-                    {
-                        var detail = _DBContext.MstTaxSetupDetails.Where(s => s.Fkid == Header.Id).ToList();                        
-                    }                   
+                    oList = _DBContext.MstTaxSetups.Include(c => c.MstTaxSetupDetails).ToList();
                 });
             }
             catch (Exception ex)
@@ -41,7 +36,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstTaxSetup.CreatedBy = "manager";
                     oMstTaxSetup.CreatedDate = DateTime.Now;
                     _DBContext.MstTaxSetups.Add(oMstTaxSetup);
                     _DBContext.SaveChanges();
@@ -64,9 +58,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    //_DBContext.MstTaxSetups.Attach(oMstTaxSetup);
-                    //_DBContext.Entry<MstTaxSetup>(oMstTaxSetup).State = EntityState.Modified;
-                    oMstTaxSetup.UpdatedBy = "manager";
                     oMstTaxSetup.UpdatedDate = DateTime.Now;
                     _DBContext.MstTaxSetups.Update(oMstTaxSetup);
                     _DBContext.SaveChanges();

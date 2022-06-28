@@ -13,15 +13,15 @@ namespace HCM.UI.Data.MasterData
         {
             _restClient = new RestClient(Settings.APIBaseURL);
         }
-        public async Task<MstAttendanceRule> GetAllData()
+        public async Task<List<MstAttendanceRule>> GetAllData()
         {
             try
             {
-                MstAttendanceRule mstAttendanceConfig = new MstAttendanceRule();
+                List<MstAttendanceRule> oList = new List<MstAttendanceRule>();
 
                 var request = new RestRequest("MasterData/getAllAttendanceRule", Method.Get) { RequestFormat = DataFormat.Json };
 
-                var response = await _restClient.ExecuteAsync<MstAttendanceRule>(request);
+                var response = await _restClient.ExecuteAsync<List<MstAttendanceRule>>(request);
 
                 if (response.IsSuccessful)
                 {
@@ -38,6 +38,7 @@ namespace HCM.UI.Data.MasterData
                 return null;
             }
         }
+
         public async Task<ApiResponseModel> Insert(MstAttendanceRule oMstAttendanceRule)
         {
             ApiResponseModel response = new ApiResponseModel();

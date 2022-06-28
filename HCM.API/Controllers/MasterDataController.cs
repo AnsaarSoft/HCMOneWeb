@@ -1256,7 +1256,7 @@ namespace HCM.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllAttendanceRules()
         {
-            MstAttendanceRule oMstAttendanceRule = new MstAttendanceRule();
+            List<MstAttendanceRule> oMstAttendanceRule = new List<MstAttendanceRule>();
             try
             {
                 oMstAttendanceRule = await _mstAttendanceRule.GetAllData();

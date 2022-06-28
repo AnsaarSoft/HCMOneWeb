@@ -20,16 +20,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    //oList = _DBContext.MstDepartments.Where(a => a.FlgActive == true).ToList();
-                    //oList = (from a in _DBContext.MstDepartments
-                    //         where a.FlgActive == true
-                    //         select a).ToList();
-                    oList = _DBContext.MstShifts.ToList();
-
-                    foreach (var Header in oList)
-                    {
-                        var detail = _DBContext.MstShiftsDetails.Where(s => s.Fkid == Header.Id).ToList();                        
-                    }                   
+                    oList = _DBContext.MstShifts.Include(c => c.MstShiftsDetails).ToList();
                 });
             }
             catch (Exception ex)
@@ -45,7 +36,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstShift.CreatedBy = "manager";
                     oMstShift.CreatedDate = DateTime.Now;
                     _DBContext.MstShifts.Add(oMstShift);
                     _DBContext.SaveChanges();
@@ -68,10 +58,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    //_DBContext.MstShifts.Attach(oMstShift);
-                    //_DBContext.Entry<MstShift>(oMstShift).State = EntityState.Modified;
-                    
-                    oMstShift.UpdatedBy = "manager";
                     oMstShift.UpdatedDate = DateTime.Now;
                     _DBContext.MstShifts.Update(oMstShift);
                     _DBContext.SaveChanges();

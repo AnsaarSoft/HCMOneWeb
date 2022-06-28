@@ -19,10 +19,6 @@ namespace HCM.API.Repository.MasterElement
             {
                 await Task.Run(() =>
                 {
-                    //oList = _DBContext.MstDepartments.Where(a => a.FlgActive == true).ToList();
-                    //oList = (from a in _DBContext.MstDepartments
-                    //         where a.FlgActive == true
-                    //         select a).ToList();
                     oList = _DBContext.MstLoves.ToList();
                 });
             }

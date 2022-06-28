@@ -171,13 +171,15 @@ namespace HCM.UI.Pages.MasterDataSetup
                 {
                     AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
 
-                    oModel.Id = res.Id;
-                    oModel.Code = res.Code;
-                    DisabledCode = true;
-                    oModel.Description = res.Description;
+                    //oModel.Id = res.Id;
+                    //oModel.Code = res.Code;
+                    //DisabledCode = true;
+                    //oModel.Description = res.Description;
 
-                    oModel.FlgActive = res.FlgActive;
-                    oModel.FlgDefault = res.FlgDefault;
+                    //oModel.FlgActive = res.FlgActive;
+                    //oModel.FlgDefault = res.FlgDefault;
+                    oModel = res;
+                    
                     oList = oList.Where(x => x.Id != LineNum);
                 }
             }

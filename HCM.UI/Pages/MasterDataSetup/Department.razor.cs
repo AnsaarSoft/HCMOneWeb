@@ -28,6 +28,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         #region Variables
 
         bool Loading = false;
+        bool DisbaledCode = false;
         private string searchString1 = "";
         private bool FilterFunc(MstDepartment element) => FilterFunc(element, searchString1);
 
@@ -45,7 +46,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
-                if (!string.IsNullOrWhiteSpace(oModel.Description))
+                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description))
                 {
                     if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
                     {
@@ -66,7 +67,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     {
                         Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
                         await Task.Delay(3000);
-                        Navigation.NavigateTo("/Department", forceLoad: true);
+                        Navigation.NavigateTo("/Department", forceLoad: true);                        
                     }
                     else
                     {
@@ -115,7 +116,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             {
                 Logs.GenerateLogs(ex);
             }
-        }
+        }        
 
         private bool FilterFunc(MstDepartment element, string searchString1)
         {
@@ -154,10 +155,12 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (res != null)
                 {
                     //oModel.Id = res.Id;
-                    //oModel.Code
+                    //oModel.Code = res.Code;
+                    //DisbaledCode = true;
                     //oModel.Description = res.Description;
                     //oModel.FlgActive = res.FlgActive;
                     oModel = res;
+                    DisbaledCode = true;
                     oList = oList.Where(x => x.Id != LineNum);
                 }
             }

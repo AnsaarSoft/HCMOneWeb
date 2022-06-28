@@ -19,10 +19,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.MstGradings.Where(a => a.FlgActive == true).ToList();
-                    oList = (from a in _DBContext.MstGradings
-                             where a.FlgActive == true
-                             select a).ToList();
                     oList = _DBContext.MstGradings.ToList();
                 });
             }
@@ -39,7 +35,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstGrading.CreatedBy = "manager";
                     oMstGrading.CreatedDate = DateTime.Now;
                     _DBContext.MstGradings.Add(oMstGrading);
                     _DBContext.SaveChanges();
@@ -62,7 +57,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstGrading.UpdatedBy = "manager";
                     oMstGrading.UpdatedDate = DateTime.Now;
                     _DBContext.MstGradings.Update(oMstGrading);
                     _DBContext.SaveChanges();

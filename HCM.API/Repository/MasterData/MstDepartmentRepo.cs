@@ -19,17 +19,13 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    //oList = _DBContext.MstDepartments.Where(a => a.FlgActive == true).ToList();
-                    //oList = (from a in _DBContext.MstDepartments
-                    //         where a.FlgActive == true
-                    //         select a).ToList();
                     oList = _DBContext.MstDepartments.ToList();
-                });                
+                });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
-            }            
+            }
             return oList;
         }
         public async Task<ApiResponseModel> Insert(MstDepartment oMstDepartment)
@@ -39,10 +35,9 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstDepartment.CreatedBy = "manager";
                     oMstDepartment.CreatedDate = DateTime.Now;
                     _DBContext.MstDepartments.Add(oMstDepartment);
-                    _DBContext.SaveChanges();                    
+                    _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";
                 });
@@ -62,7 +57,6 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstDepartment.UpdatedBy = "manager";
                     oMstDepartment.UpdatedDate = DateTime.Now;
                     _DBContext.MstDepartments.Update(oMstDepartment);
                     _DBContext.SaveChanges();
