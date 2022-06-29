@@ -228,7 +228,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Logs.GenerateLogs(ex);
                 Loading = false;
             }
-        }
+                }
         #endregion
 
         #region Events
@@ -250,7 +250,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = false;
             }
         }
-
+       
         #endregion
     }
 }
