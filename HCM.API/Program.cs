@@ -48,6 +48,7 @@ builder.Services.AddScoped<IMstTaxSetup, MstTaxSetupRepo>();
 builder.Services.AddScoped<IMstAttendanceRules, MstAttendanceRulesRepo>();
 builder.Services.AddScoped<IMstBonus, MstBonusRepo>();
 builder.Services.AddScoped<IMstPayroll, MstPayrollRepo>();
+builder.Services.AddScoped<IMstGratuity, MstGratuityRepo>();
 
 
 var app = builder.Build();

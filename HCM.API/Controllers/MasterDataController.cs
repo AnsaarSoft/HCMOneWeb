@@ -30,11 +30,12 @@ namespace HCM.API.Controllers
         private IMstTaxSetup _mstTaxSetup;
         private IMstPayroll _mstPayrollSetup;
         private IMstBonus _mstBonus;
+        private IMstGratuity _mstGratuity;
 
         public MasterDataController(IMstDepartment mstDepartment, IMstDesignation mstDesignation, IMstLocation mstLocation, IMstPosition mstPosition, IMstBranch mstBranch, IMstGrading mstGrading, IMstCalendar mstCalendar,
             IMstLeaveCalendar mstLeaveCalendar, IMstEmailConfig mstEmailConfig, IMstPayrollinit mstPayrollinit, IMstLoans mstLoans, IMstShifts mstShift, IMstAdvance mstAdvance, IMstLeaveDeduction mstLeaveDeduction,
             IMstLeaveType mstLeaveType, IMstDeductionRule mstDeductionRule, IMstAttendanceRules mstAttendanceRule, IMstTaxSetup mstTaxSetup, 
-            IMstPayroll mstPayrollSetup, IMstBonus mstBonus)
+            IMstPayroll mstPayrollSetup, IMstBonus mstBonus,IMstGratuity mstGratuity)
         {
             _mstDepartment = mstDepartment;
             _mstDesignation = mstDesignation;
@@ -56,7 +57,8 @@ namespace HCM.API.Controllers
             _mstTaxSetup = mstTaxSetup;
             _mstPayrollSetup = mstPayrollSetup;
             _mstPayrollSetup = mstPayrollSetup;
-            _mstBonus = mstBonus;   
+            _mstBonus = mstBonus;
+            _mstGratuity = mstGratuity;
         }
 
         #region MST Department
@@ -591,7 +593,7 @@ namespace HCM.API.Controllers
 
         [Route("addPRPeriods")]
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] MstPayrollPeriod pMstPayrollPeriod)
+        public async Task<IActionResult> Add([FromBody] List<MstPayrollPeriod> pMstPayrollPeriod)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
@@ -1555,6 +1557,81 @@ namespace HCM.API.Controllers
                 return BadRequest("Something went wrong.");
             }
         }
-        #endregion 
+        #endregion
+
+        #region MST Gratuity
+
+        [Route("getAllGratuity")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllGratuity()
+        {
+            List<MstGratuity> oMstGratuity = new List<MstGratuity>();
+            try
+            {
+                oMstGratuity = await _mstGratuity.GetAllData();
+                if (oMstGratuity == null)
+                {
+                    return BadRequest(oMstGratuity);
+                }
+                else
+                {
+                    return Ok(oMstGratuity);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addGratuity")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstGratuity pMstGratuity)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstGratuity.Insert(pMstGratuity);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateGratuity")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstGratuity pMstGratuity)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstGratuity.Update(pMstGratuity);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+        #endregion
     }
 }
