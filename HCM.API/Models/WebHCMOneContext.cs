@@ -56,11 +56,14 @@ namespace HCM.API.Models
         public virtual DbSet<MstTaxSetup> MstTaxSetups { get; set; } = null!;
         public virtual DbSet<MstTaxSetupDetail> MstTaxSetupDetails { get; set; } = null!;
         public virtual DbSet<MstUser> MstUsers { get; set; } = null!;
+        public virtual DbSet<PasswordReset> PasswordResets { get; set; } = null!;
         public virtual DbSet<TrnsDeductionRule> TrnsDeductionRules { get; set; } = null!;
         public virtual DbSet<TrnsDeductionRulesDetail> TrnsDeductionRulesDetails { get; set; } = null!;
         public virtual DbSet<TrnsEmployeeBonu> TrnsEmployeeBonus { get; set; } = null!;
         public virtual DbSet<TrnsEmployeeBonusDetail> TrnsEmployeeBonusDetails { get; set; } = null!;
+        public virtual DbSet<TrnsObSalaryAdj> TrnsObSalaryAdjs { get; set; } = null!;
         public virtual DbSet<TrnsObloan> TrnsObloans { get; set; } = null!;
+        public virtual DbSet<TrnsObsalary> TrnsObsalaries { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -1120,6 +1123,21 @@ namespace HCM.API.Models
                 entity.Property(e => e.UserName).HasMaxLength(250);
             });
 
+            modelBuilder.Entity<PasswordReset>(entity =>
+            {
+                entity.ToTable("PasswordReset");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Email).HasMaxLength(250);
+
+                entity.Property(e => e.EncryptKey).HasMaxLength(250);
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.UserCode).HasMaxLength(250);
+            });
+
             modelBuilder.Entity<TrnsDeductionRule>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -1224,6 +1242,29 @@ namespace HCM.API.Models
                     .HasConstraintName("FK_TrnsEmployeeBonusDetail_TrnsEmployeeBonus");
             });
 
+            modelBuilder.Entity<TrnsObSalaryAdj>(entity =>
+            {
+                entity.ToTable("TrnsObSalaryAdj");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.CalCode).HasMaxLength(50);
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(50);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Description).HasMaxLength(500);
+
+                entity.Property(e => e.EmpId).HasColumnName("EmpID");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<TrnsObloan>(entity =>
             {
                 entity.ToTable("TrnsOBLoan");
@@ -1235,6 +1276,10 @@ namespace HCM.API.Models
                 entity.Property(e => e.CalCode).HasMaxLength(50);
 
                 entity.Property(e => e.CalId).HasColumnName("CalID");
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.EmpId).HasColumnName("EmpID");
 
@@ -1249,6 +1294,31 @@ namespace HCM.API.Models
                 entity.Property(e => e.TotalAmount)
                     .HasColumnType("numeric(19, 6)")
                     .HasComputedColumnSql("([BalanceAmount]+[RecoverdAmount])", false);
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<TrnsObsalary>(entity =>
+            {
+                entity.ToTable("TrnsOBSalary");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CalCode).HasMaxLength(50);
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.EmpId).HasColumnName("EmpID");
+
+                entity.Property(e => e.SalaryBalance).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             OnModelCreatingPartial(modelBuilder);

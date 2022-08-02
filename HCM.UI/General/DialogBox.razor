@@ -1,92 +1,126 @@
 ﻿@using HCM.API.Models
 <MudDialog>
     <DialogContent>
-        @if (Loading)
-        {
-                <center><MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" /></center>
-        }
-        @if (oListElement?.Count > 0 && Settings.DialogFor == "Element")
-        {
-                <MudTable Items="@oListElement" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstElement,bool>(FilterFuncElement)"
+        <MudContainer Style="max-height: 300px; overflow-y: scroll">
+            @if (Loading)
+            {
+                    <center><MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" /></center>
+            }
+            else
+            {
+                @if (oListElement?.Count > 0 && Settings.DialogFor == "Element")
+                {
+                        <MudTable Items="@oListElement" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstElement,bool>(FilterFuncElement)"
                     Loading="@Loading" LoadingProgressColor="Color.Primary" OnRowClick="RowClickEventElement" T="MstElement" @bind-SelectedItem="oModelElement">
-                    <ToolBarContent>
-                        <MudText Typo="Typo.h6">Elements</MudText>
-                        <MudSpacer />
-                        <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
-                     </ToolBarContent>
-                     <HeaderContent>
-                        <MudTh>Code</MudTh>
-                        <MudTh>Description</MudTh>
-                        <MudTh>Element Type</MudTh>
-                        <MudTh>Type</MudTh>
-                        <MudTh>Active</MudTh>
-                     </HeaderContent>
-                     <RowTemplate>
-                         <MudTd DataLabel="Code">@context.Code</MudTd>                       
-                         <MudTd DataLabel="Code">@context.Description</MudTd>                       
-                         <MudTd DataLabel="Code">@context.ElmtType</MudTd>                       
-                         <MudTd DataLabel="Code">@context.Type</MudTd>                       
-                         <MudTd DataLabel="Code">@context.FlgActive</MudTd>                       
-                     </RowTemplate>
-                     <PagerContent>
-                         <MudTablePager />
-                     </PagerContent>
-                 </MudTable>
-        }
-        @if (oListShift?.Count > 0 && Settings.DialogFor == "Shifts")
-        {
-                <MudTable Items="@oListShift" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstShift,bool>(FilterFuncShift)"
+                            <ToolBarContent>
+                                <MudText Typo="Typo.h6">Elements</MudText>
+                                <MudSpacer />
+                                <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                             </ToolBarContent>
+                             <HeaderContent>
+                                <MudTh>Code</MudTh>
+                                <MudTh>Description</MudTh>
+                                <MudTh>Element Type</MudTh>
+                                <MudTh>Type</MudTh>
+                                <MudTh>Active</MudTh>
+                             </HeaderContent>
+                             <RowTemplate>
+                                 <MudTd DataLabel="Code">@context.Code</MudTd>                       
+                                 <MudTd DataLabel="Code">@context.Description</MudTd>                       
+                                 <MudTd DataLabel="Code">@context.ElmtType</MudTd>                       
+                                 <MudTd DataLabel="Code">@context.Type</MudTd>                       
+                                 <MudTd DataLabel="Code">@context.FlgActive</MudTd>                       
+                             </RowTemplate>
+                             <PagerContent>
+                                 <MudTablePager />
+                             </PagerContent>
+                         </MudTable>
+                }
+                @if (oListElement?.Count > 0 && Settings.DialogFor == "PayrollElement")
+                {
+                        <MudTable Items="@oListElement" @bind-SelectedItems="@HashElement" Class="table-setting" Dense="true" MultiSelection="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstElement,bool>(FilterFuncElement)"
+                    Loading="@Loading" LoadingProgressColor="Color.Primary">
+                            <ToolBarContent>
+                                <MudText Typo="Typo.h6">Elements</MudText>
+                                <MudSpacer />
+                                <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                             </ToolBarContent>
+                             <HeaderContent>
+                                <MudTh>Code</MudTh>
+                                <MudTh>Description</MudTh>
+                                <MudTh>Element Type</MudTh>
+                                <MudTh>Type</MudTh>
+                                <MudTh>Active</MudTh>
+                             </HeaderContent>
+                             <RowTemplate>
+                                 <MudTd DataLabel="Code">@context.Code</MudTd>                       
+                                 <MudTd DataLabel="Code">@context.Description</MudTd>                       
+                                 <MudTd DataLabel="Code">@context.ElmtType</MudTd>                       
+                                 <MudTd DataLabel="Code">@context.Type</MudTd>                       
+                                 <MudTd DataLabel="Code">@context.FlgActive</MudTd>                       
+                             </RowTemplate>
+                             <PagerContent>
+                                 <MudTablePager />
+                             </PagerContent>
+                         </MudTable>
+                }
+                @if (oListShift?.Count > 0 && Settings.DialogFor == "Shifts")
+                {
+                        <MudTable Items="@oListShift" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstShift,bool>(FilterFuncShift)"
                     Loading="@Loading" LoadingProgressColor="Color.Primary" OnRowClick="RowClickEventShift" T="MstShift" @bind-SelectedItem="oModelShift">
-                    <ToolBarContent>
-                        <MudText Typo="Typo.h6">Shifts</MudText>
-                        <MudSpacer />
-                        <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
-                     </ToolBarContent>
-                     <HeaderContent>
-                        <MudTh>Code</MudTh>
-                        <MudTh>Description</MudTh>
-                        <MudTh>Active</MudTh>
-                     </HeaderContent>
-                     <RowTemplate>
-                         <MudTd DataLabel="Code">@context.Code</MudTd>                       
-                         <MudTd DataLabel="Code">@context.Description</MudTd>                       
-                         <MudTd DataLabel="Code">@context.FlgActive</MudTd>                       
-                     </RowTemplate>
-                     <PagerContent>
-                         <MudTablePager />
-                     </PagerContent>
-                 </MudTable>
-        }
-        @if (oListTaxSetup?.Count > 0 && Settings.DialogFor == "TaxSetup")
-        {
-                <MudTable Items="@oListTaxSetup" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstTaxSetup,bool>(FilterFuncTaxSetup)"
+                            <ToolBarContent>
+                                <MudText Typo="Typo.h6">Shifts</MudText>
+                                <MudSpacer />
+                                <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                             </ToolBarContent>
+                             <HeaderContent>
+                                <MudTh>Code</MudTh>
+                                <MudTh>Description</MudTh>
+                                <MudTh>Active</MudTh>
+                             </HeaderContent>
+                             <RowTemplate>
+                                 <MudTd DataLabel="Code">@context.Code</MudTd>                       
+                                 <MudTd DataLabel="Code">@context.Description</MudTd>                       
+                                 <MudTd DataLabel="Code">@context.FlgActive</MudTd>                       
+                             </RowTemplate>
+                             <PagerContent>
+                                 <MudTablePager />
+                             </PagerContent>
+                         </MudTable>
+                }
+                @if (oListTaxSetup?.Count > 0 && Settings.DialogFor == "TaxSetup")
+                {
+                        <MudTable Items="@oListTaxSetup" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstTaxSetup,bool>(FilterFuncTaxSetup)"
                     Loading="@Loading" LoadingProgressColor="Color.Primary" OnRowClick="RowClickEventTaxSetup" T="MstTaxSetup" @bind-SelectedItem="oModelTaxSetup">
-                    <ToolBarContent>
-                        <MudText Typo="Typo.h6">Tax Setup</MudText>
-                        <MudSpacer />
-                        <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
-                     </ToolBarContent>
-                     <HeaderContent>
-                        <MudTh>Salary Year</MudTh>
-                        <MudTh>Min Tax Salary</MudTh>
-                        <MudTh>Citizen Age</MudTh>
-                        <MudTh>Max Salary Disc</MudTh>
-                        <MudTh>Disc on Total Tax</MudTh>
-                     </HeaderContent>
-                     <RowTemplate>
-                         <MudTd DataLabel="Code">@context.SalaryYear</MudTd>                       
-                         <MudTd DataLabel="Code">@context.MinTaxSalaryF</MudTd>                       
-                         <MudTd DataLabel="Code">@context.SeniorCitizonAge</MudTd>                       
-                         <MudTd DataLabel="Code">@context.MaxSalaryDisc</MudTd>                       
-                         <MudTd DataLabel="Code">@context.DiscountOnTotalTax</MudTd>                       
-                     </RowTemplate>
-                     <PagerContent>
-                         <MudTablePager />
-                     </PagerContent>
-                 </MudTable>
-        }
+                            <ToolBarContent>
+                                <MudText Typo="Typo.h6">Tax Setup</MudText>
+                                <MudSpacer />
+                                <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                             </ToolBarContent>
+                             <HeaderContent>
+                                <MudTh>Salary Year</MudTh>
+                                <MudTh>Min Tax Salary</MudTh>
+                                <MudTh>Citizen Age</MudTh>
+                                <MudTh>Max Salary Disc</MudTh>
+                                <MudTh>Disc on Total Tax</MudTh>
+                             </HeaderContent>
+                             <RowTemplate>
+                                 <MudTd DataLabel="Code">@context.SalaryYear</MudTd>                       
+                                 <MudTd DataLabel="Code">@context.MinTaxSalaryF</MudTd>                       
+                                 <MudTd DataLabel="Code">@context.SeniorCitizonAge</MudTd>                       
+                                 <MudTd DataLabel="Code">@context.MaxSalaryDisc</MudTd>                       
+                                 <MudTd DataLabel="Code">@context.DiscountOnTotalTax</MudTd>                       
+                             </RowTemplate>
+                             <PagerContent>
+                                 <MudTablePager />
+                             </PagerContent>
+                         </MudTable>
+                }
+            }        
+        </MudContainer>        
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Ok">Ok</MudButton>
     </DialogActions>
 </MudDialog>

@@ -42,6 +42,7 @@ namespace HCM.UI.General
 
         MstElement oModelElement = new MstElement();
         List<MstElement> oListElement = new List<MstElement>();
+        private HashSet<MstElement> HashElement = new HashSet<MstElement>();
 
         MstShift oModelShift = new MstShift();
         List<MstShift> oListShift = new List<MstShift>();
@@ -128,6 +129,7 @@ namespace HCM.UI.General
                 Logs.GenerateLogs(ex);
             }
         }
+
         private bool FilterFuncTaxSetup(MstTaxSetup element, string searchString1)
         {
             if (string.IsNullOrWhiteSpace(searchString1))
@@ -145,6 +147,11 @@ namespace HCM.UI.General
             return false;
         }
 
+        private void Ok()
+        {
+            
+        }
+
         #endregion
 
         #region Events
@@ -154,7 +161,7 @@ namespace HCM.UI.General
             try
             {
                 Loading = true;
-                if (Settings.DialogFor == "Element")
+                if (Settings.DialogFor == "Element" || Settings.DialogFor == "PayrollElement")
                 {
                     await GetAllElements();
                 }

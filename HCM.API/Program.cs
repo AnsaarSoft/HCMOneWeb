@@ -1,9 +1,14 @@
+using HCM.API;
+using HCM.API.Interfaces.Account;
 using HCM.API.Interfaces.MasterData;
 using HCM.API.Interfaces.MasterElement;
 using HCM.API.Models;
+using HCM.API.Repository.Account;
 using HCM.API.Repository.MasterData;
 using HCM.API.Repository.MasterElement;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +25,22 @@ builder.Services.AddDbContext<WebHCMOneContext>(options =>
 options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
-
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = "JwtBearer";
+    options.DefaultChallengeScheme = "JwtBearer";
+}).AddJwtBearer("JwtBearer", JwtOptions =>
+{
+    JwtOptions.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MEPLHCMONEkiSecretKeyJWTkliyaBahutSecret")),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.FromMinutes(30)
+    };
+});
 
 builder.Services.AddControllersWithViews()
                 .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
@@ -48,8 +68,14 @@ builder.Services.AddScoped<IMstTaxSetup, MstTaxSetupRepo>();
 builder.Services.AddScoped<IMstAttendanceRules, MstAttendanceRulesRepo>();
 builder.Services.AddScoped<IMstBonus, MstBonusRepo>();
 builder.Services.AddScoped<IMstPayroll, MstPayrollRepo>();
+builder.Services.AddScoped<IMstUser, MstUserRepo>();
 
-
+Settings.TitleConfig = builder.Configuration.GetValue<string>("TitleConfig");
+Settings.EmailConfig = builder.Configuration.GetValue<string>("EmailConfig");
+Settings.PasswordConfig = builder.Configuration.GetValue<string>("PasswordConfig");
+Settings.HostConfig = builder.Configuration.GetValue<string>("HostConfig");
+Settings.PortConfig = builder.Configuration.GetValue<int>("PortConfig");
+Settings.IsSSlConfig = builder.Configuration.GetValue<bool>("IsSSlConfig");
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

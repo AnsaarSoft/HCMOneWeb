@@ -15,5 +15,9 @@ namespace HCM.API.Models
         public int? CalId { get; set; }
         public string? CalCode { get; set; }
         public DateTime? LoanDate { get; set; }
+        public string? CreatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public string? UpdatedBy { get; set; }
+        public DateTime? UpdatedDate { get; set; }
     }
 }

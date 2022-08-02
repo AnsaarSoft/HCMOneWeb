@@ -1,8 +1,13 @@
+using Blazored.LocalStorage;
+using CA.UI.Authentication;
 using HCM.UI;
+using HCM.UI.Data.Account;
 using HCM.UI.Data.MasterData;
 using HCM.UI.Data.MasterElement;
+using HCM.UI.Interfaces.Account;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
+using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
 using MudBlazor.Services;
 
@@ -12,6 +17,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddAuthorizationCore();
+builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 builder.Services.AddMudServices(config =>
 {
     config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomCenter;
@@ -47,6 +55,7 @@ builder.Services.AddScoped<IMstTaxSetup, MstTaxSetupService>();
 builder.Services.AddScoped<IMstAttendanceRules, MstAttendanceRulesService>();
 builder.Services.AddScoped<IMstBonus, MstBonusService>();
 builder.Services.AddScoped<IMstPayroll, MstPayrollService>();
+builder.Services.AddScoped<IMstUser, MstUserService>();
 
 
 
@@ -71,7 +80,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 

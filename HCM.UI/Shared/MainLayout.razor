@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using HCM.UI.Interfaces.Account
+@inherits LayoutComponentBase
 
 <MudThemeProvider />
 <MudDialogProvider />
@@ -10,6 +11,7 @@
         <MudSpacer />
         <MudIconButton Icon="@Icons.Material.Filled.Message" Color="Color.Inherit" Link="https://mudblazor.com/" Target="_blank" />
         <MudIconButton Icon="@Icons.Material.Filled.Notifications" Color="Color.Inherit" Link="https://github.com/MudBlazor/MudBlazor/" Target="_blank" />
+        <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Error" OnClick="Logout" Title="Logout" />
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1" Class="main-sidebar-nav">
         <MudDrawerHeader>
@@ -27,10 +29,27 @@
 </MudLayout>
 
 @code {
+
+    [Inject]
+    public IMstUser _mstUser { get; set; }
+
+    [Inject]
+    public NavigationManager Navigation { get; set; }
+ 
+    [Inject]
+    public ISnackbar Snackbar { get; set; }
+
     bool _drawerOpen = true;
 
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
+    }
+
+    public async Task Logout()
+{
+    await _mstUser.Logout();
+    Snackbar.Add("Logged out", Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+      Navigation.NavigateTo("/Login");
     }
 }

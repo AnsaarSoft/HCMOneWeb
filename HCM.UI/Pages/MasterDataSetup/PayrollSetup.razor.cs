@@ -75,7 +75,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         {
             try
             {
-                Settings.DialogFor = "Element";
+                Settings.DialogFor = "PayrollElement";
                 var dialog = Dialog.Show<DialogBox>("", options);
                 var result = await dialog.Result;
                 if (!result.Cancelled)
