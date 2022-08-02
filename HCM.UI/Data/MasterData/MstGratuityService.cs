@@ -1,5 +1,5 @@
 ﻿using HCM.API.General;
-using HCM.API.Interfaces.MasterData;
+using HCM.UI.Interfaces.MasterData;
 using HCM.API.Models;
 using Microsoft.EntityFrameworkCore;
 using RestSharp;

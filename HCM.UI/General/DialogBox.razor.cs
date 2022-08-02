@@ -199,7 +199,7 @@ namespace HCM.UI.General
                 }
                 else if (Settings.DialogFor == "GratuitySetup")
                 {
-                    await getall();
+                    await GetAllGratuity();
                 }
                 Loading = false;
             }

@@ -56,6 +56,7 @@ builder.Services.AddScoped<IMstAttendanceRules, MstAttendanceRulesService>();
 builder.Services.AddScoped<IMstBonus, MstBonusService>();
 builder.Services.AddScoped<IMstPayroll, MstPayrollService>();
 builder.Services.AddScoped<IMstGratuity, MstGratuityService>();
+builder.Services.AddScoped<IMstUser, MstUserService>();
 
 
 

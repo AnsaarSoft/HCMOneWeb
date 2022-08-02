@@ -69,6 +69,7 @@ builder.Services.AddScoped<IMstAttendanceRules, MstAttendanceRulesRepo>();
 builder.Services.AddScoped<IMstBonus, MstBonusRepo>();
 builder.Services.AddScoped<IMstPayroll, MstPayrollRepo>();
 builder.Services.AddScoped<IMstGratuity, MstGratuityRepo>();
+builder.Services.AddScoped<IMstUser, MstUserRepo>();
 
 
 Settings.TitleConfig = builder.Configuration.GetValue<string>("TitleConfig");
