@@ -27,6 +27,8 @@ namespace HCM.UI.General
 
         [Inject]
         public IMstTaxSetup _mstTaxSetup { get; set; }
+        [Inject]
+        public IMstGratuity _mstGratuity { get; set; }
 
         #endregion
 
@@ -49,6 +51,9 @@ namespace HCM.UI.General
 
         MstTaxSetup oModelTaxSetup = new MstTaxSetup();
         List<MstTaxSetup> oListTaxSetup = new List<MstTaxSetup>();
+
+        MstGratuity oModelGratuity= new MstGratuity();
+        List<MstGratuity> oListGratuity = new List<MstGratuity>();
 
         #endregion
 
@@ -147,9 +152,28 @@ namespace HCM.UI.General
             return false;
         }
 
-        private void Ok()
+        private async Task GetAllGratuity()
         {
-            
+            try
+            {
+                oListGratuity = await _mstGratuity.GetAllData();
+                if (oListGratuity?.Count == 0 || oListGratuity == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncGratuity(MstGratuity  Gratuity, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (Gratuity.Code.Equals(searchString1))
+                return true;            
+            return false;
         }
 
         #endregion
@@ -172,6 +196,10 @@ namespace HCM.UI.General
                 else if (Settings.DialogFor == "TaxSetup")
                 {
                     await GetAllTaxSetup();
+                }
+                else if (Settings.DialogFor == "GratuitySetup")
+                {
+                    await getall();
                 }
                 Loading = false;
             }

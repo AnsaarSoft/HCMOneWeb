@@ -4,27 +4,26 @@ using HCM.API.Models;
 using Microsoft.EntityFrameworkCore;
 using RestSharp;
 
-
 namespace HCM.UI.Data.MasterData
 {
-    public class MstTaxSetupService : IMstTaxSetup
+    public class MstGratuityService: IMstGratuity
     {
         private readonly RestClient _restClient;
 
-        public MstTaxSetupService()
+        public MstGratuityService()
         {
             _restClient = new RestClient(Settings.APIBaseURL);
         }
 
-        public async Task<List<MstTaxSetup>> GetAllData()
+        public async Task<List<IMstGratuity>> GetAllData()
         {
             try
             {
-                List<MstTaxSetup> oList = new List<MstTaxSetup>();
+                List<IMstGratuity> oList = new List<IMstGratuity>();
 
-                var request = new RestRequest("MasterData/getAllTaxSetup", Method.Get) { RequestFormat = DataFormat.Json };
+                var request = new RestRequest("MasterData/getAllGratuity", Method.Get) { RequestFormat = DataFormat.Json };
 
-                var response = await _restClient.ExecuteAsync<List<MstTaxSetup>>(request);
+                var response = await _restClient.ExecuteAsync<List<IMstGratuity>>(request);
 
                 if (response.IsSuccessful)
                 {
@@ -42,13 +41,13 @@ namespace HCM.UI.Data.MasterData
             }
         }
 
-        public async Task<ApiResponseModel> Insert(MstTaxSetup oMstTaxSetup)
+        public async Task<ApiResponseModel> Insert(IMstGratuity oMstGratuity)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                var request = new RestRequest("MasterData/addTaxSetup", Method.Post);
-                request.AddJsonBody(oMstTaxSetup);
+                var request = new RestRequest("MasterData/addGratuity", Method.Post);
+                request.AddJsonBody(oMstGratuity);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {
@@ -72,13 +71,18 @@ namespace HCM.UI.Data.MasterData
             }
         }
 
-        public async Task<ApiResponseModel> Update(MstTaxSetup oMstTaxSetup)
+        public Task<ApiResponseModel> Insert(MstGratuity pMstGratuity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<ApiResponseModel> Update(IMstGratuity oMstGratuity)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                var request = new RestRequest("MasterData/updateTaxSetup", Method.Post);
-                request.AddJsonBody(oMstTaxSetup);
+                var request = new RestRequest("MasterData/updateGratuity", Method.Post);
+                request.AddJsonBody(oMstGratuity);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {
@@ -100,6 +104,16 @@ namespace HCM.UI.Data.MasterData
                 response.Message = "Failed to save successfully";
                 return response;
             }
+        }
+
+        public Task<ApiResponseModel> Update(MstGratuity pMstGratuity)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<List<MstGratuity>> IMstGratuity.GetAllData()
+        {
+            throw new NotImplementedException();
         }
     }
 }

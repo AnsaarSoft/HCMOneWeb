@@ -8,5 +8,6 @@ namespace HCM.API.Interfaces.MasterData
         Task<ApiResponseModel> Insert(MstCalendar oMstCalendar);
         Task<ApiResponseModel> Update(MstCalendar oMstCalendar);
         Task<ApiResponseModel> Insert(MstPayrollPeriod oMstPayrollPeriod);
+        Task<ApiResponseModel> Insert(List<MstPayrollPeriod> oMstPayrollPeriod);
     }
 }

@@ -129,5 +129,34 @@ namespace HCM.UI.Data.MasterData
                 return response;
             }
         }
+        public async Task<ApiResponseModel> Insert(List<MstPayrollPeriod> oMstPayrollPeriod)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                var request = new RestRequest("MasterData/addPRPeriods", Method.Post);
+                request.AddJsonBody(oMstPayrollPeriod);
+                var res = await _restClient.ExecuteAsync(request);
+                if (res.IsSuccessful)
+                {
+                    response.Id = 1;
+                    response.Message = "Saved successfully";
+                    return response;
+                }
+                else
+                {
+                    response.Id = 0;
+                    response.Message = "Failed to save successfully";
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                response.Id = 0;
+                response.Message = "Failed to save successfully";
+                return response;
+            }
+        }
     }
 }
