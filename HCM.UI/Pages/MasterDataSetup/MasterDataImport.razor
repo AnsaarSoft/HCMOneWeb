@@ -1,0 +1,100 @@
+﻿@page "/MasterDataImport"
+@using HCM.API.Models
+
+<div class="container-fluid page-content-setting">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>Master Data Import</h3>
+            <MudDivider/>
+        </div>
+        @*<div class="col-sm-1">
+            <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.List" Title="View All" />
+        </div>*@
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudGrid class="search-action-block align-items-center">
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudSelect @bind-Value="ModuleType" Label="Module Type" HelperText="Select Module" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        <MudSelectItem Value="1">Department</MudSelectItem>
+                        <MudSelectItem Value="2">Designation</MudSelectItem>
+                        <MudSelectItem Value="3">Location</MudSelectItem>
+                        <MudSelectItem Value="4">Position</MudSelectItem>
+                        <MudSelectItem Value="5">Branch</MudSelectItem>
+                        <MudSelectItem Value="6">Grading</MudSelectItem>
+                        </MudSelect>
+                </MudItem>
+                 <MudItem xs="3" sm="3" md="3" lg="3">
+                    <InputFile id="excelFile" OnChange="UploadFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden multiple="false" />
+                    <MudFab HtmlTag="label" Color="Color.Dark" Icon="@Icons.Custom.FileFormats.FileExcel" Label="Import Excel" for="excelFile" />
+                    <MudFab HtmlTag="label" Color="Color.Primary" OnClick="GenerateTemplate" StartIcon="@Icons.Material.Filled.ImportExport" Label="Generate Template" />
+                </MudItem> 
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    @if (excelSheet != null)
+                    {
+                        @foreach (var file in excelSheet)
+                        {
+                            <MudText Icon="@Icons.Filled.AttachFile" @key="@file" Typo="@Typo.caption">Template :  @file.Name</MudText>
+                        }
+                        @if(excelSheet.Count == 0)
+                        {
+                           <MudText Icon="@Icons.Filled.AttachFile" Typo="@Typo.caption">No Template selected</MudText>
+                        }
+                    }                    
+                </MudItem>
+                @if (Loading)
+                {
+                            <MudItem xs="2" sm="2" md="2" lg="2">
+                                <MudText>Loading...</MudText>
+                                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                            </MudItem>
+                }
+                else
+                {
+                            <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                                @*<MudFab Color="Color.Primary" OnClick="GenerateTemplate" StartIcon="@Icons.Material.Filled.ImportExport" Title="Generate Template" IconSize="Size.Small" />*@
+                                <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
+                            </MudItem>
+                }
+            </MudGrid>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudCard Elevation="5">
+                <MudCardContent>
+                    @if(ModuleType == 1)
+                    {
+                        <MudTable Items="@oListDepartment" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstDepartment,bool>(FilterFuncDepartment)">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Department</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchStringDepartment" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Department Code</MudTh>
+                            <MudTh>Department Name</MudTh>
+                            <MudTh>Active</MudTh>
+                            <MudTh>Result</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Department Code">@context.Code</MudTd>
+                            <MudTd DataLabel="Department Name">@context.Description</MudTd>
+                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                            <MudTd DataLabel="Result">@context.UpdatedBy</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                    }                    
+                </MudCardContent>
+            </MudCard>
+        </div>
+    </div> 
+    <div class="row mt-5">
+        <div class="col-sm-4">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Save" Title="Save Data">Save Data</MudButton>
+        </div>
+    </div>
+</div>

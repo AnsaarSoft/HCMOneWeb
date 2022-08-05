@@ -19,7 +19,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.MstDepartments.ToList();
+                    oList = _DBContext.MstDepartments.ToList();                    
                 });
             }
             catch (Exception ex)
