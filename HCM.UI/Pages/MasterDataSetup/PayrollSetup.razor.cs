@@ -1,4 +1,5 @@
-﻿using HCM.API.Models;
+﻿using Blazored.LocalStorage;
+using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
@@ -32,6 +33,10 @@ namespace HCM.UI.Pages.MasterDataSetup
         [Inject]
         public IMstElement _mstElement { get; set; }
 
+        [Inject]
+        public ILocalStorageService _localStorage { get; set; }
+        private string LoginUser = "";
+
         #endregion
 
         #region Variables 
@@ -40,14 +45,22 @@ namespace HCM.UI.Pages.MasterDataSetup
         public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
         bool DisabledCode = false;
         private string PayrollCalendar = "";
-        private string searchString1 = "";
+        private string searchStringElement = "";
+        private string searchStringPeriods = "";
+        private bool FilterFunc(MstElement element) => FilterFuncElement(element, searchStringElement);
+        private bool FilterFuncPeriods(MstPayrollPeriod element) => FilterFuncPeriods(element, searchStringPeriods);
 
         MstPayroll oModel = new MstPayroll();
+        private IEnumerable<MstPayroll> oPayrollList = new List<MstPayroll>();
+        IEnumerable<MstPayrollPeriod> oMstPayrollPeriodList = new List<MstPayrollPeriod>();
+        IEnumerable<MstPayrollElement> oMstPayrollElementList = new List<MstPayrollElement>();
+
         List<MstLove> oLoveList = new List<MstLove>();
         List<MstCalendar> oCalendarList = new List<MstCalendar>();
 
+        MstElement oModelElement = new MstElement();
         private IEnumerable<MstElement> oElementList = new List<MstElement>();
-        private bool FilterFunc(MstElement element) => FilterFuncElement(element, searchString1);
+
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
         #endregion
@@ -58,11 +71,18 @@ namespace HCM.UI.Pages.MasterDataSetup
         {
             try
             {
-                Settings.DialogFor = "PayrollSetup";
-                var dialog = Dialog.Show<DialogBox>("", options);
+                var parameters = new DialogParameters();
+                parameters.Add("DialogFor", "PayrollSetup");
+                var dialog = Dialog.Show<DialogBox>("", parameters, options);
                 var result = await dialog.Result;
                 if (!result.Cancelled)
                 {
+                    DisabledCode = true;
+                    var res = (MstPayroll)result.Data;
+                    AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
+                    oModel = res;
+                    oMstPayrollElementList = oModel.MstPayrollElements;
+                    await GetAllElements();
                 }
             }
             catch (Exception ex)
@@ -70,19 +90,29 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Logs.GenerateLogs(ex);
             }
         }
-
         private async Task OpenDialogElement(DialogOptions options)
         {
             try
             {
-                Settings.DialogFor = "PayrollElement";
-                var dialog = Dialog.Show<DialogBox>("", options);
+                var parameters = new DialogParameters();
+                parameters.Add("DialogFor", "PayrollElement");
+                var dialog = Dialog.Show<DialogBox>("", parameters, options);
                 var result = await dialog.Result;
                 if (!result.Cancelled)
                 {
-                    var res = (MstElement)result.Data;
+                    var res = (HashSet<MstElement>)result.Data;
                     AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
-                    MstElement oModelElement = res;
+                    List<MstElement> oTempList = new List<MstElement>();
+                    oTempList = oElementList.ToList();
+                    foreach (var item in res)
+                    {
+                        var Element = oElementList.Where(x => x.Id == item.Id).FirstOrDefault();
+                        if(Element == null)
+                        {
+                            oTempList.Add(item);                            
+                        }
+                    }
+                    oElementList = oTempList;
                 }
             }
             catch (Exception ex)
@@ -106,25 +136,49 @@ namespace HCM.UI.Pages.MasterDataSetup
             try
             {
                 oCalendarList = await _mstCalendar.GetAllData();
+                oPayrollList = await _mstPayroll.GetAllData();
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
             }
         }
-
+        private async void GetAllCalendarPeriods()
+        {
+            try
+            {
+                await Task.Delay(1);
+                if (!string.IsNullOrWhiteSpace(oModel.PayrollType) && !string.IsNullOrWhiteSpace(PayrollCalendar))
+                {
+                    MstPayroll oMstPayroll = oPayrollList.Where(x => x.PayrollType == oModel.PayrollType).FirstOrDefault();
+                    oMstPayrollPeriodList = oMstPayroll.MstPayrollPeriods.Where(x => x.CalCode == PayrollCalendar && x.Fkid == oMstPayroll.Id).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+            _ = InvokeAsync(StateHasChanged);
+        }
         private async Task GetAllElements()
         {
             try
             {
-                oElementList = await _mstElement.GetAllData();
+                var TempElement = await _mstElement.GetAllData();
+                List<MstElement> oTempList = new List<MstElement>();
+                foreach (var item in oMstPayrollElementList)
+                {                    
+                    var Element = TempElement.Where(x => x.Id == item.ElementId).FirstOrDefault();
+                    Element.FlgActive = item.FlgActive;
+                    oTempList.Add(Element);
+                }
+                oElementList = oTempList;
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
             }
         }
-        
         private bool FilterFuncElement(MstElement element, string searchString1)
         {
             if (string.IsNullOrWhiteSpace(searchString1))
@@ -135,7 +189,20 @@ namespace HCM.UI.Pages.MasterDataSetup
                 return true;
             return false;
         }
-        
+        private bool FilterFuncPeriods(MstPayrollPeriod element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.PeriodName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.CalCode.Equals(searchString1))
+                return true;
+            if (element.StartDate.Equals(searchString1))
+                return true;
+            if (element.EndDate.Equals(searchString1))
+                return true;
+            return false;
+        }
         private async Task<ApiResponseModel> Save()
         {
             try
@@ -143,66 +210,62 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
-                //if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description) && oModel.OverTimeId > 0 && oModel.DeductionRuleId > 0)
-                //{
-                //    if (oModel.Code.Length > 20)
-                //    {
-                //        Snackbar.Add("Code accept only 20 characters", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                //    }
-                //    else
-                //    {
-                //        oModel.MstShiftsDetails = new List<MstShiftsDetail>();
-                //        foreach (var item in oDetailList)
-                //        {
-                //            oDetail = new MstShiftsDetail();
-                //            oDetail.Id = item.Id;
-                //            oDetail.Fkid = item.Fkid;
-                //            oDetail.Day = item.Day;
-                //            oDetail.FlgOutOverlap = item.FlgOutOverlap;
-                //            oDetail.FlgExpectedIn = item.FlgExpectedIn;
-                //            oDetail.FlgExpectedOut = item.FlgExpectedOut;
-                //            oDetail.StartTime = item.TSStartTime.ToString();
-                //            oDetail.EndTime = item.TSEndTime.ToString();
-                //            oDetail.Duration = item.TSDuration.ToString();
-                //            oDetail.BufferStartTime = item.TSBufferStartTime.ToString();
-                //            oDetail.BufferEndTime = item.TSBufferEndTime.ToString();
-                //            oDetail.StartGraceTime = item.TSGraceStartTime.ToString();
-                //            oDetail.EndGraceTime = item.TSGraceEndTime.ToString();
-                //            oDetail.BreakTime = item.TSBreakTime.ToString();
-                //            oModel.MstShiftsDetails.Add(oDetail);
-                //        }
-                //        if (oModel.Id == 0)
-                //        {
-                //            if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
-                //            {
-                //                Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                //            }
-                //            else
-                //            {
-                //                res = await _mstShift.Insert(oModel);
-                //            }
-                //        }
-                //        else
-                //        {
-                //            res = await _mstShift.Update(oModel);
-                //        }
-                //    }
-                //    if (res != null && res.Id == 1)
-                //    {
-                //        Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
-                //        await Task.Delay(3000);
-                //        Navigation.NavigateTo("/Shifts", forceLoad: true);
-                //    }
-                //    else
-                //    {
-                //        Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                //    }
-                //    oModel.FlgActive = true;
-                //}
-                //else
-                //{
-                //    Snackbar.Add("Please fill the required field(s)", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                //}
+                if (!string.IsNullOrWhiteSpace(oModel.PayrollName) && !string.IsNullOrWhiteSpace(oModel.PayrollType) && !string.IsNullOrWhiteSpace(oModel.Gltype))
+                {
+                    if (oModel.PayrollName.Length > 20)
+                    {
+                        Snackbar.Add("Code accept only 20 characters", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                    }
+                    else
+                    {
+                        if (oElementList.Count() > 0)
+                        {
+                            foreach (var Element in oElementList)
+                            {
+                                MstPayrollElement oPayrollElement = new MstPayrollElement();
+                                oPayrollElement.ElementId = Element.Id;
+                                oPayrollElement.FlgActive = Element.FlgActive;
+                                var CheckElement = oModel.MstPayrollElements.Where(x => x.ElementId == oPayrollElement.ElementId).FirstOrDefault();
+                                if(CheckElement == null)
+                                {
+                                    oModel.MstPayrollElements.Add(oPayrollElement);
+                                }
+                            }
+                        }
+                        if (oModel.Id == 0)
+                        {
+                            if (oPayrollList.Where(x => x.PayrollName == oModel.PayrollName).Count() > 0)
+                            {
+                                Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                            }
+                            else
+                            {
+                                oModel.CreatedBy = LoginUser;
+                                res = await _mstPayroll.Insert(oModel);
+                            }
+                        }
+                        else
+                        {
+                            oModel.UpdatedBy = LoginUser;
+                            res = await _mstPayroll.Update(oModel);
+                        }
+                    }
+                    if (res != null && res.Id == 1)
+                    {
+                        Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+                        await Task.Delay(3000);
+                        Navigation.NavigateTo("/PayrollSetup", forceLoad: true);
+                    }
+                    else
+                    {
+                        Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                    }
+                    oModel.FlgActive = true;
+                }
+                else
+                {
+                    Snackbar.Add("Please fill the required field(s)", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
                 Loading = false;
                 return res;
             }
@@ -228,7 +291,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Logs.GenerateLogs(ex);
                 Loading = false;
             }
-                }
+        }
         #endregion
 
         #region Events
@@ -238,10 +301,19 @@ namespace HCM.UI.Pages.MasterDataSetup
             try
             {
                 Loading = true;
-                oModel.FlgActive = true;
-                await GetAllLove();
-                await GetAllElements();
-                await GetAllCalendar();
+                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                if (Session != null)
+                {
+                    LoginUser = Session.UserCode;
+                    oModel.FlgActive = true;
+                    await GetAllLove();
+                    //await GetAllElements();
+                    await GetAllCalendar();
+                }
+                else
+                {
+                    Navigation.NavigateTo("/Login", forceLoad: true);
+                }
                 Loading = false;
             }
             catch (Exception ex)
@@ -250,7 +322,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = false;
             }
         }
-       
+
         #endregion
     }
 }

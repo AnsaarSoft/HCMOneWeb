@@ -72,5 +72,47 @@ namespace HCM.API.Repository.MasterData
             }
             return response;
         }
+        public async Task<ApiResponseModel> Insert(List<MstGrading> oMstGrading)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                await Task.Run(() =>
+                {
+                    _DBContext.MstGradings.AddRange(oMstGrading);
+                    _DBContext.SaveChanges();
+                    response.Id = 1;
+                    response.Message = "Saved successfully";
+                });
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                response.Id = 0;
+                response.Message = "Failed to save successfully";
+            }
+            return response;
+        }
+        public async Task<ApiResponseModel> Update(List<MstGrading> oMstGrading)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                await Task.Run(() =>
+                {                    
+                    _DBContext.MstGradings.UpdateRange(oMstGrading);
+                    _DBContext.SaveChanges();
+                    response.Id = 1;
+                    response.Message = "Saved successfully";
+                });
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                response.Id = 0;
+                response.Message = "Failed to save successfully";
+            }
+            return response;
+        }
     }
 }

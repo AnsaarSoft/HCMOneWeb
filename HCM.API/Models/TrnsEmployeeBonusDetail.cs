@@ -8,20 +8,20 @@ namespace HCM.API.Models
         public int Id { get; set; }
         public int? Fkid { get; set; }
         public int EmployeeId { get; set; }
-        public string EmployeeName { get; set; } = null!;
+        public string EmployeeName { get; set; }
         public decimal BasicSalary { get; set; }
         public decimal GrossSalary { get; set; }
         public decimal? NetSalary { get; set; }
-        public string? SlabCode { get; set; }
-        public string? SalaryRange { get; set; }
+        public string SlabCode { get; set; }
+        public string SalaryRange { get; set; }
         public decimal? Percentage { get; set; }
         public decimal? CalculatedAmount { get; set; }
         public bool? FlgActive { get; set; }
-        public string? CreatedBy { get; set; }
+        public string CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public string? UpdatedBy { get; set; }
+        public string UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
 
-        public virtual TrnsEmployeeBonu? Fk { get; set; }
+        public virtual TrnsEmployeeBonu Fk { get; set; }
     }
 }

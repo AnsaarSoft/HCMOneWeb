@@ -59,6 +59,8 @@ namespace HCM.API.Repository.MasterData
                 await Task.Run(() =>
                 {
                     oMstTaxSetup.UpdatedDate = DateTime.Now;
+                    var Detail = _DBContext.MstTaxSetupDetails.Where(x => x.Fkid == oMstTaxSetup.Id).ToList();
+                    _DBContext.MstTaxSetupDetails.RemoveRange(Detail);
                     _DBContext.MstTaxSetups.Update(oMstTaxSetup);
                     _DBContext.SaveChanges();
                     response.Id = 1;

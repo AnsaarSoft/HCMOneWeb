@@ -1,4 +1,5 @@
-﻿using HCM.API.Models;
+﻿using Blazored.LocalStorage;
+using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
@@ -25,7 +26,12 @@ namespace HCM.UI.Pages.MasterDataSetup
         [Inject]
         public IMstLeaveType _mstLeaveType { get; set; }
 
+        [Inject]
+        public ILocalStorageService _localStorage { get; set; }
+        private string LoginUser = "";
+
         #endregion
+
         #region Variables
 
         bool Loading = false;
@@ -61,6 +67,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 oModel.GpBeforeTimeEnd = GPBeforeTimeEnd.ToString();
                 if (oModel.Id >= 0)
                 {
+                    oModel.UpdatedBy = LoginUser;
                     res = await _mstAttendanceRule.Update(oModel);
                 }
 
@@ -261,10 +268,18 @@ namespace HCM.UI.Pages.MasterDataSetup
             try
             {
                 Loading = true;
-                //oModel.FlgActive = true;
-                await GetAttendanceRuleConfig();
-                await GetAllLeaveType();
-
+                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                if (Session != null)
+                {
+                    LoginUser = Session.UserCode;
+                    //oModel.FlgActive = true;
+                    await GetAttendanceRuleConfig();
+                    await GetAllLeaveType();
+                }
+                else
+                {
+                    Navigation.NavigateTo("/Login", forceLoad: true);
+                }
                 Loading = false;
             }
             catch (Exception ex)

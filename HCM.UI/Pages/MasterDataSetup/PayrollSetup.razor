@@ -20,7 +20,7 @@
                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem> 
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudSelect @bind-Value="oModel.PayrollType" Label="Payroll Type" HelperText="Select Payroll Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                    <MudSelect @bind-Value="oModel.PayrollType" OnClose="GetAllCalendarPeriods" Label="Payroll Type" HelperText="Select Payroll Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                         @foreach (MstLove Love in oLoveList.Where(x => x.Type == "Prd_Type").ToList())
                         {
                                                     <MudSelectItem Value="Love.Code">@Love.Code - @Love.Value</MudSelectItem>
@@ -67,7 +67,7 @@
                     </MudSelect>
                 </MudItem> 
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudSelect @bind-Value="PayrollCalendar" Title="To Filter Periods" Label="Payroll Calendar" HelperText="Select Payroll Calendar" AdornmentIcon="@Icons.Material.Filled.CalendarViewMonth" Adornment="Adornment.Start">
+                    <MudSelect @bind-Value="PayrollCalendar" OnClose="GetAllCalendarPeriods" Title="To Filter Periods" Label="Payroll Calendar" HelperText="Select Payroll Calendar" AdornmentIcon="@Icons.Material.Filled.CalendarViewMonth" Adornment="Adornment.Start">
                         @foreach (MstCalendar calendar in oCalendarList.ToList())
                         {
                                 <MudSelectItem Value="calendar.Code">@calendar.Code - @calendar.Description</MudSelectItem>
@@ -84,41 +84,61 @@
             <MudCard Elevation="5">
                 <MudCardContent>
                     <MudTabs Elevation="2" Rounded="true" Centered="true" Class="my-6" Color="Color.Dark">                        
-                        <MudTabPanel Icon="@Icons.Material.Filled.MergeType" Text="Elements" >
-                            <MudGrid class="search-action-block align-items-center">    
-                                <MudItem xs="10" sm="10" md="10" lg="10" Class="text-right pt-4 pb-4">
-                                   <MudText>Pick Elements</MudText>                                                   
-                                </MudItem>
-                                <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right pt-4 pb-4">
-                                        <MudFab Color="Color.Primary"  OnClick="@((e) => OpenDialogElement(maxWidth))" StartIcon="@Icons.Material.Filled.Add" Title="Pick Element" IconSize="Size.Small" />                                                   
-                                </MudItem>
-                        </MudGrid>
-                            <MudTable Items="@oElementList" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstElement,bool>(FilterFunc)">                        
+                        <MudTabPanel Icon="@Icons.Material.Filled.MergeType" Text="Elements" >                            
+                        <MudTable Items="@oElementList" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstElement,bool>(FilterFunc)">
+                        <ToolBarContent>
+                            <MudFab Color="Color.Primary" OnClick="@((e) => OpenDialogElement(maxWidth))" StartIcon="@Icons.Material.Filled.Add" Title="Pick Element" IconSize="Size.Small" />                                                   
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchStringElement" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                        </ToolBarContent>
                         <HeaderContent>
-                            <MudTh>Department Code</MudTh>
-                            <MudTh>Department Name</MudTh>
+                             <MudTh>Element Code</MudTh>
+                            <MudTh>Element Name</MudTh>
+                            <MudTh>Element Type</MudTh>
                             <MudTh>Active</MudTh>
-                                    @*<MudTh>Action</MudTh>*@
                         </HeaderContent>
                         <RowTemplate>
-                            <MudTd DataLabel="Department Code">@context.ElmtType</MudTd>
-                            <MudTd DataLabel="Department Name">@context.Description</MudTd>
-                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
-
+                            <MudTd DataLabel="Element Code">@context.Code</MudTd>
+                            <MudTd DataLabel="Element Name">@context.Description</MudTd>
+                            <MudTd DataLabel="Element Code">@context.ElmtType</MudTd>
+                            <MudTd DataLabel="Active">
+                                <MudSwitch @bind-Checked="@context.FlgActive" ThumbIcon="@(context.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" 
+                                    ThumbIconColor="@(context.FlgActive==true ? Color.Primary : Color.Error)" Color="@(context.FlgActive==true ? Color.Info : Color.Error)">
+                                    <span>@(context.FlgActive==true ? "Active" : "In Active")</span>
+                                </MudSwitch>
+                            </MudTd>
                         </RowTemplate>
                         <PagerContent>
                             <MudTablePager />
                         </PagerContent>
                     </MudTable>
+
                         </MudTabPanel>
                         <MudTabPanel Icon="@Icons.Material.Filled.ViewTimeline" Text="Periods">
-                            <MudSelect @bind-Value="oModel.Gltype" Label="GL Type" HelperText="Periods GL Type" Class="p-5"
-                            AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
-                                @foreach (MstLove Love in oLoveList.Where(x => x.Type == "GLType").ToList())
-                                {
-                                                    <MudSelectItem Value="Love.Code">@Love.Code - @Love.Value</MudSelectItem>
-                                }
-                    </MudSelect>
+                            <MudTable Items="@oMstPayrollPeriodList" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstPayrollPeriod,bool>(FilterFuncPeriods)">
+                        <ToolBarContent>   
+                            <MudTextField T="string" @bind-Value="searchStringPeriods" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Period Name</MudTh>
+                             <MudTh>Calendar Code</MudTh>
+                             <MudTh>Start Date</MudTh>
+                             <MudTh>End Date</MudTh>
+                            <MudTh>Locked</MudTh>
+                            <MudTh>Posted</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Element Code">@context.PeriodName</MudTd>
+                            <MudTd DataLabel="Element Name">@context.CalCode</MudTd>
+                            <MudTd DataLabel="Element Name">@Convert.ToDateTime(context.StartDate).ToString("MM/dd/yyyy")</MudTd>
+                            <MudTd DataLabel="Element Name">@Convert.ToDateTime(context.EndDate).ToString("MM/dd/yyyy")</MudTd>
+                            <MudTd DataLabel="Element Name">@context.FlgLocked</MudTd>
+                            <MudTd DataLabel="Element Name">@context.FlgPosted</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
                         </MudTabPanel>    
                     </MudTabs>
                 </MudCardContent>

@@ -7,10 +7,10 @@ namespace HCM.API.Models
     {
         public int Id { get; set; }
         public bool FlgGpActive { get; set; }
-        public string? GpAfterTimeEnd { get; set; }
-        public string? GpAfterStartTime { get; set; }
-        public string? GpBeforeTimeEnd { get; set; }
-        public string? GpBeforeStartTime { get; set; }
+        public string GpAfterTimeEnd { get; set; }
+        public string GpAfterStartTime { get; set; }
+        public string GpBeforeTimeEnd { get; set; }
+        public string GpBeforeStartTime { get; set; }
         public bool? FlgDeductGpAfterTimeEnd { get; set; }
         public bool? FlgDeductGpAfterStartTime { get; set; }
         public bool? FlgDeductGpBeforeTimeEnd { get; set; }
@@ -19,11 +19,11 @@ namespace HCM.API.Models
         public bool FlgEarlyOut { get; set; }
         public bool? FlgSandwichLeavesDoubleSide { get; set; }
         public bool? FlgSandwichLeavesSingleSide { get; set; }
-        public string? SandwichLeaveType { get; set; }
-        public string? DefaultLeaveType { get; set; }
-        public string? CreatedBy { get; set; }
+        public string SandwichLeaveType { get; set; }
+        public string DefaultLeaveType { get; set; }
+        public string CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public string? UpdatedBy { get; set; }
+        public string UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
     }
 }

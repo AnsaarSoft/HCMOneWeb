@@ -16,11 +16,11 @@ namespace HCM.API.Models
         public int? PayrollId { get; set; }
         public int? PaysInPeriodId { get; set; }
         public int? ElementType { get; set; }
-        public string? Status { get; set; }
+        public string Status { get; set; }
         public int? PaymentId { get; set; }
-        public string? CreatedBy { get; set; }
+        public string CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public string? UpdatedBy { get; set; }
+        public string UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
 
         public virtual ICollection<TrnsEmployeeBonusDetail> TrnsEmployeeBonusDetails { get; set; }

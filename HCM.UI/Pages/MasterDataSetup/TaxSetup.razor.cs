@@ -1,4 +1,5 @@
-﻿using HCM.API.Models;
+﻿using Blazored.LocalStorage;
+using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
@@ -25,6 +26,9 @@ namespace HCM.UI.Pages.MasterDataSetup
         [Inject]
         public IMstCalendar _mstCalendar { get; set; }
 
+        [Inject]
+        public ILocalStorageService _localStorage { get; set; }
+        private string LoginUser = "";
 
         #endregion
 
@@ -44,6 +48,7 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
         DialogOptions FullView = new DialogOptions() { MaxWidth = MaxWidth.ExtraExtraLarge, FullWidth = true, CloseButton = true, DisableBackdropClick = true, CloseOnEscapeKey = true };
+        
         #endregion
 
         #region Functions
@@ -52,8 +57,9 @@ namespace HCM.UI.Pages.MasterDataSetup
         {
             try
             {
-                Settings.DialogFor = "TaxSetup";
-                var dialog = Dialog.Show<DialogBox>("", options);
+                var parameters = new DialogParameters();
+                parameters.Add("DialogFor", "TaxSetup");
+                var dialog = Dialog.Show<DialogBox>("", parameters, options);
                 var result = await dialog.Result;
                 if (!result.Cancelled)
                 {
@@ -73,9 +79,9 @@ namespace HCM.UI.Pages.MasterDataSetup
         {
             try
             {
-                Settings.DialogFor = "TaxSetup";
-
-                var parameters = new DialogParameters { ["oDetailParaTax"] = oDetailPara };
+                var parameters = new DialogParameters();
+                parameters.Add("oDetailParaTax", oDetailPara);
+                parameters.Add("DialogFor", "TaxSetup");
                 var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
                 var result = await dialog.Result;
 
@@ -113,8 +119,9 @@ namespace HCM.UI.Pages.MasterDataSetup
         {
             try
             {
-                Settings.DialogFor = "TaxSetup";
-                var dialog = Dialog.Show<ProcessDialog>("", options);
+                var parameters = new DialogParameters();
+                parameters.Add("DialogFor", "TaxSetup");
+                var dialog = Dialog.Show<ProcessDialog>("", parameters,options);
                 var result = await dialog.Result;
                 if (!result.Cancelled)
                 {
@@ -149,10 +156,12 @@ namespace HCM.UI.Pages.MasterDataSetup
                     oModel.MstTaxSetupDetails = oDetailList.ToList();
                     if (oModel.Id == 0)
                     {
+                        oModel.CreatedBy = LoginUser;
                         res = await _mstTaxSetup.Insert(oModel);
                     }
                     else
                     {
+                        oModel.UpdatedBy = LoginUser;
                         res = await _mstTaxSetup.Update(oModel);
                     }
 
@@ -245,13 +254,22 @@ namespace HCM.UI.Pages.MasterDataSetup
             try
             {
                 Loading = true;
-                oModel.MinTaxSalaryF = 0;
+                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                if (Session != null)
+                {
+                    LoginUser = Session.UserCode;
+                    oModel.MinTaxSalaryF = 0;
 
-                oModel.DiscountOnTotalTax = 0;
-                oModel.MaxSalaryDisc = 0;
-                oModel.SeniorCitizonAge = 0;
-                await GetAllCalendar();
-                //await GetAllTaxSetup();
+                    oModel.DiscountOnTotalTax = 0;
+                    oModel.MaxSalaryDisc = 0;
+                    oModel.SeniorCitizonAge = 0;
+                    await GetAllCalendar();
+                    //await GetAllTaxSetup();
+                }
+                else
+                {
+                    Navigation.NavigateTo("/Login", forceLoad: true);
+                }
                 Loading = false;
             }
             catch (Exception ex)

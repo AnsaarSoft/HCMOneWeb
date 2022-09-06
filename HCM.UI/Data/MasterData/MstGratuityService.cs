@@ -15,15 +15,15 @@ namespace HCM.UI.Data.MasterData
             _restClient = new RestClient(Settings.APIBaseURL);
         }
 
-        public async Task<List<IMstGratuity>> GetAllData()
+        public async Task<List<MstGratuity>> GetAllData()
         {
             try
             {
-                List<IMstGratuity> oList = new List<IMstGratuity>();
+                List<MstGratuity> oList = new List<MstGratuity>();
 
                 var request = new RestRequest("MasterData/getAllGratuity", Method.Get) { RequestFormat = DataFormat.Json };
 
-                var response = await _restClient.ExecuteAsync<List<IMstGratuity>>(request);
+                var response = await _restClient.ExecuteAsync<List<MstGratuity>>(request);
 
                 if (response.IsSuccessful)
                 {
@@ -41,7 +41,7 @@ namespace HCM.UI.Data.MasterData
             }
         }
 
-        public async Task<ApiResponseModel> Insert(IMstGratuity oMstGratuity)
+        public async Task<ApiResponseModel> Insert(MstGratuity oMstGratuity)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
@@ -71,12 +71,7 @@ namespace HCM.UI.Data.MasterData
             }
         }
 
-        public Task<ApiResponseModel> Insert(MstGratuity pMstGratuity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<ApiResponseModel> Update(IMstGratuity oMstGratuity)
+        public async Task<ApiResponseModel> Update(MstGratuity oMstGratuity)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
@@ -104,16 +99,6 @@ namespace HCM.UI.Data.MasterData
                 response.Message = "Failed to save successfully";
                 return response;
             }
-        }
-
-        public Task<ApiResponseModel> Update(MstGratuity pMstGratuity)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<List<MstGratuity>> IMstGratuity.GetAllData()
-        {
-            throw new NotImplementedException();
         }
     }
 }

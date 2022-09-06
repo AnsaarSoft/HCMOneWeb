@@ -1,4 +1,4 @@
-﻿@page "/MasterDataImport"
+﻿@page "/MasterData"
 @using HCM.API.Models
 
 <div class="container-fluid page-content-setting">
@@ -22,6 +22,7 @@
                         <MudSelectItem Value="4">Position</MudSelectItem>
                         <MudSelectItem Value="5">Branch</MudSelectItem>
                         <MudSelectItem Value="6">Grading</MudSelectItem>
+                        <MudSelectItem Value="7">Employee Master</MudSelectItem>
                         </MudSelect>
                 </MudItem>
                  <MudItem xs="3" sm="3" md="3" lg="3">
@@ -34,13 +35,13 @@
                     {
                         @foreach (var file in excelSheet)
                         {
-                            <MudText Icon="@Icons.Filled.AttachFile" @key="@file" Typo="@Typo.caption">Template :  @file.Name</MudText>
+                            <MudText @key="@file" Typo="@Typo.caption">Template :  @file.Name</MudText>
                         }
                         @if(excelSheet.Count == 0)
                         {
-                           <MudText Icon="@Icons.Filled.AttachFile" Typo="@Typo.caption">No Template selected</MudText>
+                           <MudText Typo="@Typo.caption">No Template selected</MudText>
                         }
-                    }                    
+                    } 
                 </MudItem>
                 @if (Loading)
                 {
@@ -65,7 +66,7 @@
                 <MudCardContent>
                     @if(ModuleType == 1)
                     {
-                        <MudTable Items="@oListDepartment" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstDepartment,bool>(FilterFuncDepartment)">
+                        <MudTable Items="@oListDepartmentGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstDepartment,bool>(FilterFuncDepartment)">
                         <ToolBarContent>
                             <MudText Typo="Typo.h6">Department</MudText>
                             <MudSpacer />
@@ -75,26 +76,185 @@
                             <MudTh>Department Code</MudTh>
                             <MudTh>Department Name</MudTh>
                             <MudTh>Active</MudTh>
-                            <MudTh>Result</MudTh>
+                            @*<MudTh>Result</MudTh>*@
                         </HeaderContent>
                         <RowTemplate>
                             <MudTd DataLabel="Department Code">@context.Code</MudTd>
                             <MudTd DataLabel="Department Name">@context.Description</MudTd>
                             <MudTd DataLabel="Active">@context.FlgActive</MudTd>
-                            <MudTd DataLabel="Result">@context.UpdatedBy</MudTd>
+                            @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
                         </RowTemplate>
                         <PagerContent>
                             <MudTablePager />
                         </PagerContent>
                     </MudTable>
-                    }                    
+                    }    
+                    else if(ModuleType == 2)
+                    {
+                        <MudTable Items="@oListDesignationGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstDesignation,bool>(FilterFuncDesignation)">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Designation</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchStringDesignation" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Designation Code</MudTh>
+                            <MudTh>Designation Name</MudTh>
+                            <MudTh>Active</MudTh>
+                            @*<MudTh>Result</MudTh>*@
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Designation Code">@context.Code</MudTd>
+                            <MudTd DataLabel="Designation Name">@context.Description</MudTd>
+                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                            @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                    }       
+                    else if(ModuleType == 3)
+                    {
+                        <MudTable Items="@oListLocationGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstLocation,bool>(FilterFuncLocation)">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Location</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchStringLocation" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Location Code</MudTh>
+                            <MudTh>Location Name</MudTh>
+                            <MudTh>Active</MudTh>
+                            @*<MudTh>Result</MudTh>*@
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Location Code">@context.Code</MudTd>
+                            <MudTd DataLabel="Location Name">@context.Description</MudTd>
+                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                            @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                    }  
+                    else if(ModuleType == 4)
+                    {
+                        <MudTable Items="@oListPositionGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstPosition,bool>(FilterFuncPosition)">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Position</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchStringPosition" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Position Code</MudTh>
+                            <MudTh>Position Name</MudTh>
+                            <MudTh>Active</MudTh>
+                            @*<MudTh>Result</MudTh>*@
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Position Code">@context.Code</MudTd>
+                            <MudTd DataLabel="Position Name">@context.Description</MudTd>
+                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                            @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                    }  
+                    else if(ModuleType == 5)
+                    {
+                        <MudTable Items="@oListBranchGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstBranch,bool>(FilterFuncBranch)">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Branch</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchStringBranch" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Branch Code</MudTh>
+                            <MudTh>Branch Name</MudTh>
+                            <MudTh>Active</MudTh>
+                            @*<MudTh>Result</MudTh>*@
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Branch Code">@context.Code</MudTd>
+                            <MudTd DataLabel="Branch Name">@context.Description</MudTd>
+                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                            @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                    }  
+                    else if(ModuleType == 6)
+                    {
+                        <MudTable Items="@oListGradingGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstGrading,bool>(FilterFuncGrading)">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Grading</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchStringGrading" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Grading Code</MudTh>
+                            <MudTh>Grading Name</MudTh>
+                            <MudTh>Minimum Salary</MudTh>
+                            <MudTh>Maximum Salary</MudTh>
+                            <MudTh>Active</MudTh>
+                            @*<MudTh>Result</MudTh>*@
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Grading Code">@context.Code</MudTd>
+                            <MudTd DataLabel="Grading Name">@context.Description</MudTd>
+                            <MudTd DataLabel="Grading Name">@context.MinSalary</MudTd>
+                            <MudTd DataLabel="Grading Name">@context.MaxSalary</MudTd>
+                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                            @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                    }
+                    else if(ModuleType == 7)
+                    {
+                        <MudTable Items="@oListMstEmployeeGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstEmployee,bool>(FilterFuncMstEmployee)">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Employee</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchStringMstEmployee" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Employee Code</MudTh>
+                            <MudTh>Name</MudTh>
+                            <MudTh>Date of Joining</MudTh>
+                            <MudTh>Designation</MudTh>
+                            <MudTh>Location</MudTh>
+                            <MudTh>Active</MudTh>
+                            @*<MudTh>Result</MudTh>*@
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Grading Code">@context.EmpId</MudTd>
+                            <MudTd DataLabel="Grading Name">@context.FirstName @context.MiddleName @context.LastName</MudTd>
+                            <MudTd DataLabel="Code">@Convert.ToDateTime(context.JoiningDate).ToString("MM/dd/yyyy")</MudTd>
+                            <MudTd DataLabel="Grading Name">@context.DesignationName</MudTd>
+                            <MudTd DataLabel="Active">@context.LocationName</MudTd>
+                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                    } 
                 </MudCardContent>
             </MudCard>
         </div>
     </div> 
     <div class="row mt-5">
         <div class="col-sm-4">
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Save" Title="Save Data">Save Data</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save Data">Save Data</MudButton>
         </div>
     </div>
 </div>

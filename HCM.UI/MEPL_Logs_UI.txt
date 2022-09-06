@@ -1,0 +1,1062 @@
+System.FormatException: String '' was not recognized as a valid Boolean.
+   at System.Boolean.Parse(ReadOnlySpan`1 value)
+   at System.Boolean.Parse(String value)
+   at System.Convert.ToBoolean(String value)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.FillDesignationTemplateGrid() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 382: 8/15/2022 1:48:03 PM
+System.FormatException: String '' was not recognized as a valid Boolean.
+   at System.Boolean.Parse(ReadOnlySpan`1 value)
+   at System.Boolean.Parse(String value)
+   at System.Convert.ToBoolean(String value)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.FillDesignationTemplateGrid() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 382: 8/15/2022 1:48:26 PM
+System.FormatException: String '' was not recognized as a valid Boolean.
+   at System.Boolean.Parse(ReadOnlySpan`1 value)
+   at System.Boolean.Parse(String value)
+   at System.Convert.ToBoolean(String value)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.FillDesignationTemplateGrid() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 382: 8/15/2022 1:49:58 PM
+System.InvalidCastException: Unable to cast object of type 'System.Collections.Generic.HashSet`1[HCM.API.Models.MstElement]' to type 'HCM.API.Models.MstElement'.
+   at HCM.UI.Pages.MasterDataSetup.PayrollSetup.OpenDialogElement(DialogOptions options) in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\PayrollSetup.razor.cs:line 89: 8/15/2022 7:32:12 PM
+System.InvalidCastException: Unable to cast object of type 'System.Collections.Generic.HashSet`1[HCM.API.Models.MstElement]' to type 'HCM.API.Models.MstElement'.
+   at HCM.UI.Pages.MasterDataSetup.PayrollSetup.OpenDialogElement(DialogOptions options) in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\PayrollSetup.razor.cs:line 89: 8/15/2022 7:32:42 PM
+System.InvalidCastException: Unable to cast object of type 'SelectListIterator`2[HCM.API.Models.MstPayroll,System.Collections.Generic.List`1[HCM.API.Models.MstPayrollPeriod]]' to type 'System.Collections.Generic.IEnumerable`1[HCM.API.Models.MstPayrollPeriod]'.
+   at HCM.UI.Pages.MasterDataSetup.PayrollSetup.GetAllCalendarPeriods() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\PayrollSetup.razor.cs:line 131: 8/16/2022 11:53:23 AM
+System.NotImplementedException: The method or operation is not implemented.
+   at HCM.UI.Data.MasterData.MstGratuityService.HCM.UI.Interfaces.MasterData.IMstGratuity.GetAllData() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Data\MasterData\MstGratuityService.cs:line 116
+   at HCM.UI.Pages.MasterDataSetup.Gratuity.GetAllGratuity() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Gratuity.razor.cs:line 119: 8/22/2022 12:10:02 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Department.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Department.razor.cs:line 189: 8/22/2022 12:35:18 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Calendar.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Calendar.razor.cs:line 474: 8/22/2022 12:35:28 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.PayrollSetup.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\PayrollSetup.razor.cs:line 278: 8/22/2022 12:57:49 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.PayrollSetup.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\PayrollSetup.razor.cs:line 288: 8/22/2022 1:25:03 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.PayrollSetup.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\PayrollSetup.razor.cs:line 301: 8/22/2022 2:06:11 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.PayrollSetup.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\PayrollSetup.razor.cs:line 304: 8/22/2022 2:10:49 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.PayrollSetup.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\PayrollSetup.razor.cs:line 304: 8/22/2022 2:11:17 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.PayrollSetup.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\PayrollSetup.razor.cs:line 304: 8/22/2022 2:11:35 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Gratuity.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Gratuity.razor.cs:line 276: 8/22/2022 3:11:51 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Gratuity.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Gratuity.razor.cs:line 257: 8/22/2022 3:59:30 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Gratuity.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Gratuity.razor.cs:line 261: 8/22/2022 4:06:47 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Gratuity.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Gratuity.razor.cs:line 261: 8/22/2022 4:10:10 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Gratuity.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Gratuity.razor.cs:line 261: 8/22/2022 4:13:13 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Gratuity.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Gratuity.razor.cs:line 261: 8/22/2022 4:14:06 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Gratuity.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Gratuity.razor.cs:line 261: 8/22/2022 4:16:20 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Gratuity.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Gratuity.razor.cs:line 261: 8/22/2022 4:17:12 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.TaxSetup.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\TaxSetup.razor.cs:line 257: 8/22/2022 4:20:33 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Gratuity.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Gratuity.razor.cs:line 255: 8/22/2022 4:35:45 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Gratuity.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Gratuity.razor.cs:line 255: 8/22/2022 4:39:34 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Gratuity.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Gratuity.razor.cs:line 255: 8/22/2022 4:41:02 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.TaxSetup.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\TaxSetup.razor.cs:line 257: 8/22/2022 4:46:06 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.TaxSetup.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\TaxSetup.razor.cs:line 257: 8/22/2022 4:47:14 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.PayrollSetup.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\PayrollSetup.razor.cs:line 304: 8/22/2022 5:08:51 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.PayrollSetup.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\PayrollSetup.razor.cs:line 304: 8/22/2022 5:09:05 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Bonus.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Bonus.razor.cs:line 233: 8/22/2022 5:11:13 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Bonus.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Bonus.razor.cs:line 233: 8/22/2022 5:12:03 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Bonus.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Bonus.razor.cs:line 233: 8/22/2022 5:13:06 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Bonus.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Bonus.razor.cs:line 233: 8/22/2022 5:15:10 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Designation.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Designation.razor.cs:line 188: 8/23/2022 1:26:13 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 529: 8/25/2022 12:01:18 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 529: 8/30/2022 12:06:19 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 610: 8/30/2022 12:43:14 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 733: 8/30/2022 4:48:48 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 741: 8/30/2022 5:21:42 PM
+Microsoft.JSInterop.JSException: There is no file with ID 1. The file list may have changed.
+Error: There is no file with ID 1. The file list may have changed.
+    at Pe (https://localhost:44394/_framework/blazor.server.js:1:31704)
+    at Object.readFileData (https://localhost:44394/_framework/blazor.server.js:1:31630)
+    at https://localhost:44394/_framework/blazor.server.js:1:3501
+    at new Promise (<anonymous>)
+    at kt.beginInvokeJSFromDotNet (https://localhost:44394/_framework/blazor.server.js:1:3475)
+    at https://localhost:44394/_framework/blazor.server.js:1:72001
+    at Array.forEach (<anonymous>)
+    at kt._invokeClientMethod (https://localhost:44394/_framework/blazor.server.js:1:71987)
+    at kt._processIncomingData (https://localhost:44394/_framework/blazor.server.js:1:70029)
+    at connection.onreceive (https://localhost:44394/_framework/blazor.server.js:1:64432)
+   at Microsoft.AspNetCore.Components.Forms.BrowserFileStream.OpenReadStreamAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Components.Forms.BrowserFileStream.CopyFileDataIntoBuffer(Int64 sourceOffset, Memory`1 destination, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Components.Forms.BrowserFileStream.ReadAsync(Memory`1 buffer, CancellationToken cancellationToken)
+   at System.IO.Stream.<CopyToAsync>g__Core|29_0(Stream source, Stream destination, Int32 bufferSize, CancellationToken cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInputFileChangedEmpPicture(InputFileChangeEventArgs e) in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 606: 8/30/2022 5:39:53 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 750: 8/30/2022 5:40:11 PM
+Microsoft.JSInterop.JSException: There is no file with ID 1. The file list may have changed.
+Error: There is no file with ID 1. The file list may have changed.
+    at Pe (https://localhost:44394/_framework/blazor.server.js:1:31704)
+    at Object.readFileData (https://localhost:44394/_framework/blazor.server.js:1:31630)
+    at https://localhost:44394/_framework/blazor.server.js:1:3501
+    at new Promise (<anonymous>)
+    at kt.beginInvokeJSFromDotNet (https://localhost:44394/_framework/blazor.server.js:1:3475)
+    at https://localhost:44394/_framework/blazor.server.js:1:72001
+    at Array.forEach (<anonymous>)
+    at kt._invokeClientMethod (https://localhost:44394/_framework/blazor.server.js:1:71987)
+    at kt._processIncomingData (https://localhost:44394/_framework/blazor.server.js:1:70029)
+    at connection.onreceive (https://localhost:44394/_framework/blazor.server.js:1:64432)
+   at Microsoft.AspNetCore.Components.Forms.BrowserFileStream.OpenReadStreamAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Components.Forms.BrowserFileStream.CopyFileDataIntoBuffer(Int64 sourceOffset, Memory`1 destination, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Components.Forms.BrowserFileStream.ReadAsync(Memory`1 buffer, CancellationToken cancellationToken)
+   at System.IO.Stream.<CopyToAsync>g__Core|29_0(Stream source, Stream destination, Int32 bufferSize, CancellationToken cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInputFileChangedEmpPicture(InputFileChangeEventArgs e) in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 606: 8/30/2022 5:41:29 PM
+Microsoft.JSInterop.JSException: There is no file with ID 1. The file list may have changed.
+Error: There is no file with ID 1. The file list may have changed.
+    at Pe (https://localhost:44394/_framework/blazor.server.js:1:31704)
+    at Object.readFileData (https://localhost:44394/_framework/blazor.server.js:1:31630)
+    at https://localhost:44394/_framework/blazor.server.js:1:3501
+    at new Promise (<anonymous>)
+    at kt.beginInvokeJSFromDotNet (https://localhost:44394/_framework/blazor.server.js:1:3475)
+    at https://localhost:44394/_framework/blazor.server.js:1:72001
+    at Array.forEach (<anonymous>)
+    at kt._invokeClientMethod (https://localhost:44394/_framework/blazor.server.js:1:71987)
+    at kt._processIncomingData (https://localhost:44394/_framework/blazor.server.js:1:70029)
+    at connection.onreceive (https://localhost:44394/_framework/blazor.server.js:1:64432)
+   at Microsoft.AspNetCore.Components.Forms.BrowserFileStream.OpenReadStreamAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Components.Forms.BrowserFileStream.CopyFileDataIntoBuffer(Int64 sourceOffset, Memory`1 destination, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Components.Forms.BrowserFileStream.ReadAsync(Memory`1 buffer, CancellationToken cancellationToken)
+   at System.IO.Stream.<CopyToAsync>g__Core|29_0(Stream source, Stream destination, Int32 bufferSize, CancellationToken cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInputFileChangedEmpPicture(InputFileChangeEventArgs e) in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 605: 8/30/2022 5:54:56 PM
+Microsoft.JSInterop.JSException: There is no file with ID 1. The file list may have changed.
+Error: There is no file with ID 1. The file list may have changed.
+    at Pe (https://localhost:44394/_framework/blazor.server.js:1:31704)
+    at Object.readFileData (https://localhost:44394/_framework/blazor.server.js:1:31630)
+    at https://localhost:44394/_framework/blazor.server.js:1:3501
+    at new Promise (<anonymous>)
+    at kt.beginInvokeJSFromDotNet (https://localhost:44394/_framework/blazor.server.js:1:3475)
+    at https://localhost:44394/_framework/blazor.server.js:1:72001
+    at Array.forEach (<anonymous>)
+    at kt._invokeClientMethod (https://localhost:44394/_framework/blazor.server.js:1:71987)
+    at kt._processIncomingData (https://localhost:44394/_framework/blazor.server.js:1:70029)
+    at connection.onreceive (https://localhost:44394/_framework/blazor.server.js:1:64432)
+   at Microsoft.AspNetCore.Components.Forms.BrowserFileStream.OpenReadStreamAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Components.Forms.BrowserFileStream.CopyFileDataIntoBuffer(Int64 sourceOffset, Memory`1 destination, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Components.Forms.BrowserFileStream.ReadAsync(Memory`1 buffer, CancellationToken cancellationToken)
+   at System.IO.Stream.<CopyToAsync>g__Core|29_0(Stream source, Stream destination, Int32 bufferSize, CancellationToken cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInputFileChangedEmpPicture(InputFileChangeEventArgs e) in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 605: 8/30/2022 5:55:06 PM
+System.InvalidOperationException: More than one file was supplied. Call GetMultipleFiles to receive multiple files.
+   at Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs.get_File()
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInputFileChangedEmpPicture(InputFileChangeEventArgs e) in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 599: 8/30/2022 6:29:04 PM
+System.InvalidOperationException: More than one file was supplied. Call GetMultipleFiles to receive multiple files.
+   at Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs.get_File()
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInputFileChangedAttachment(InputFileChangeEventArgs e) in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 641: 8/30/2022 6:36:43 PM
+System.InvalidOperationException: More than one file was supplied. Call GetMultipleFiles to receive multiple files.
+   at Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs.get_File()
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInputFileChangedAttachment(InputFileChangeEventArgs e) in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 641: 8/30/2022 6:36:53 PM
+System.InvalidOperationException: More than one file was supplied. Call GetMultipleFiles to receive multiple files.
+   at Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs.get_File()
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInputFileChangedAttachment(InputFileChangeEventArgs e) in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 641: 8/30/2022 6:38:00 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 736: 8/30/2022 6:38:25 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 812: 8/31/2022 1:02:13 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 812: 8/31/2022 1:07:54 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 814: 8/31/2022 1:19:19 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 823: 8/31/2022 1:45:30 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 823: 8/31/2022 1:46:32 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 906: 8/31/2022 4:06:35 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 948: 8/31/2022 4:43:23 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 948: 8/31/2022 4:47:12 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 948: 8/31/2022 4:49:54 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 950: 8/31/2022 4:54:15 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 950: 8/31/2022 4:59:10 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 950: 8/31/2022 5:04:06 PM
+System.InvalidOperationException: More than one file was supplied. Call GetMultipleFiles to receive multiple files.
+   at Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs.get_File()
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInputFileChangedAttachment(InputFileChangeEventArgs e) in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 753: 8/31/2022 5:26:05 PM
+System.IO.IOException: Supplied file with size 3046831 bytes exceeds the maximum of 512000 bytes.
+   at Microsoft.AspNetCore.Components.Forms.BrowserFile.OpenReadStream(Int64 maxAllowedSize, CancellationToken cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInputFileChangedAttachment(InputFileChangeEventArgs e) in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 754: 8/31/2022 5:26:59 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 960: 8/31/2022 5:27:13 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 961: 8/31/2022 5:37:28 PM
+Microsoft.JSInterop.JSException: There is no file with ID 1. The file list may have changed.
+Error: There is no file with ID 1. The file list may have changed.
+    at Pe (https://localhost:44394/_framework/blazor.server.js:1:31704)
+    at Object.readFileData (https://localhost:44394/_framework/blazor.server.js:1:31630)
+    at https://localhost:44394/_framework/blazor.server.js:1:3501
+    at new Promise (<anonymous>)
+    at kt.beginInvokeJSFromDotNet (https://localhost:44394/_framework/blazor.server.js:1:3475)
+    at https://localhost:44394/_framework/blazor.server.js:1:72001
+    at Array.forEach (<anonymous>)
+    at kt._invokeClientMethod (https://localhost:44394/_framework/blazor.server.js:1:71987)
+    at kt._processIncomingData (https://localhost:44394/_framework/blazor.server.js:1:70029)
+    at connection.onreceive (https://localhost:44394/_framework/blazor.server.js:1:64432)
+   at Microsoft.AspNetCore.Components.Forms.BrowserFileStream.OpenReadStreamAsync(CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Components.Forms.BrowserFileStream.CopyFileDataIntoBuffer(Int64 sourceOffset, Memory`1 destination, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Components.Forms.BrowserFileStream.ReadAsync(Memory`1 buffer, CancellationToken cancellationToken)
+   at System.IO.Stream.<CopyToAsync>g__Core|29_0(Stream source, Stream destination, Int32 bufferSize, CancellationToken cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInputFileChangedEmpPicture(InputFileChangeEventArgs e) in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 718: 8/31/2022 5:59:57 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 981: 8/31/2022 6:01:01 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 981: 8/31/2022 6:02:34 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 986: 8/31/2022 6:18:42 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 986: 8/31/2022 6:21:10 PM
+System.NotSupportedException: Stream does not support writing.
+   at System.IO.Stream.ValidateCopyToArguments(Stream destination, Int32 bufferSize)
+   at System.IO.MemoryStream.CopyToAsync(Stream destination, Int32 bufferSize, CancellationToken cancellationToken)
+   at System.IO.Stream.CopyToAsync(Stream destination)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.Download() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 821: 8/31/2022 6:39:26 PM
+System.IO.DirectoryNotFoundException: D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\wwwroot\EmployeeAttachments\EMP101-GradingTemplate.xlsx\
+   at Microsoft.Extensions.FileProviders.PhysicalFileProvider..ctor(String root, ExclusionFilters filters)
+   at Microsoft.Extensions.FileProviders.PhysicalFileProvider..ctor(String root)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.Download() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 821: 8/31/2022 6:53:38 PM
+System.IO.DirectoryNotFoundException: D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\wwwroot\EmployeeAttachments\EMP101-GradingTemplate.xlsx\
+   at Microsoft.Extensions.FileProviders.PhysicalFileProvider..ctor(String root, ExclusionFilters filters)
+   at Microsoft.Extensions.FileProviders.PhysicalFileProvider..ctor(String root)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.Download() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 821: 8/31/2022 6:53:42 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 1015: 8/31/2022 6:53:44 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 1011: 8/31/2022 7:18:06 PM
+System.FormatException: String '' was not recognized as a valid DateTime.
+   at System.Convert.ToDateTime(String value)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.FillMstEmployeeTemplateGrid() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 1449: 9/1/2022 3:05:49 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 2157: 9/1/2022 3:12:01 PM
+System.ArgumentOutOfRangeException: Column number must be between 1 and 16384 (Parameter 'cellAddressInRange')
+   at ClosedXML.Excel.XLRangeBase.Cell(XLAddress& cellAddressInRange)
+   at ClosedXML.Excel.XLRangeBase.Cell(Int32 row, Int32 column)
+   at ClosedXML.Excel.XLWorksheet.ClosedXML.Excel.IXLWorksheet.Cell(Int32 row, Int32 column)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.MstEmployeeTemplate() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 1507: 9/1/2022 3:52:41 PM
+System.ArgumentOutOfRangeException: Column number must be between 1 and 16384 (Parameter 'cellAddressInRange')
+   at ClosedXML.Excel.XLRangeBase.Cell(XLAddress& cellAddressInRange)
+   at ClosedXML.Excel.XLRangeBase.Cell(Int32 row, Int32 column)
+   at ClosedXML.Excel.XLWorksheet.ClosedXML.Excel.IXLWorksheet.Cell(Int32 row, Int32 column)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.MstEmployeeTemplate() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 1507: 9/1/2022 3:52:46 PM
+System.ArgumentOutOfRangeException: Column number must be between 1 and 16384 (Parameter 'cellAddressInRange')
+   at ClosedXML.Excel.XLRangeBase.Cell(XLAddress& cellAddressInRange)
+   at ClosedXML.Excel.XLRangeBase.Cell(Int32 row, Int32 column)
+   at ClosedXML.Excel.XLWorksheet.ClosedXML.Excel.IXLWorksheet.Cell(Int32 row, Int32 column)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.MstEmployeeTemplate() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 1507: 9/1/2022 3:53:27 PM
+System.FormatException: String '' was not recognized as a valid DateTime.
+   at System.Convert.ToDateTime(String value)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.FillMstEmployeeTemplateGrid() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 1448: 9/1/2022 4:07:13 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 2159: 9/1/2022 4:07:41 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 2159: 9/1/2022 4:12:12 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 2159: 9/1/2022 4:14:34 PM
+System.ArgumentException: Object of type 'System.Double' cannot be converted to type 'System.Nullable`1[System.Decimal]'.
+   at System.RuntimeType.TryChangeType(Object value, Binder binder, CultureInfo culture, Boolean needsSpecialCast)
+   at System.Reflection.MethodBase.CheckArguments(StackAllocedArguments& stackArgs, ReadOnlySpan`1 parameters, Binder binder, BindingFlags invokeAttr, CultureInfo culture, Signature sig)
+   at System.Reflection.RuntimePropertyInfo.SetValue(Object obj, Object value, Object[] index)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.FillMstEmployeeTemplateGrid() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 1455: 9/1/2022 4:49:14 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 2165: 9/1/2022 4:49:26 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 2176: 9/1/2022 5:16:27 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 2176: 9/1/2022 5:17:46 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 2176: 9/1/2022 5:22:36 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 2301: 9/1/2022 5:45:49 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 2302: 9/1/2022 6:06:04 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 2302: 9/1/2022 6:06:19 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 2302: 9/1/2022 6:07:40 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 2312: 9/1/2022 6:13:28 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 2310: 9/1/2022 6:25:20 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 2310: 9/1/2022 6:28:17 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 2310: 9/1/2022 6:29:41 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 2310: 9/1/2022 6:32:36 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 2312: 9/1/2022 6:44:48 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 2309: 9/1/2022 6:59:39 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 2312: 9/1/2022 7:05:01 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 1011: 9/1/2022 7:06:37 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 1011: 9/1/2022 7:08:12 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 1011: 9/1/2022 7:08:37 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 2312: 9/1/2022 7:21:54 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 1011: 9/1/2022 7:26:23 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 1011: 9/2/2022 11:03:34 AM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Shifts.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Shifts.razor.cs:line 319: 9/2/2022 11:55:31 AM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Shifts.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Shifts.razor.cs:line 319: 9/2/2022 11:59:58 AM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Shifts.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Shifts.razor.cs:line 319: 9/2/2022 12:00:21 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Shifts.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Shifts.razor.cs:line 319: 9/2/2022 12:00:31 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 1011: 9/2/2022 3:53:09 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.ShiftManagement.ShiftScheduler.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\ShiftManagement\ShiftScheduler.razor.cs:line 472: 9/2/2022 3:55:07 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.ShiftManagement.ShiftScheduler.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\ShiftManagement\ShiftScheduler.razor.cs:line 472: 9/2/2022 3:55:47 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Designation.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Designation.razor.cs:line 188: 9/2/2022 4:07:43 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Designation.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Designation.razor.cs:line 188: 9/2/2022 4:07:50 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.ShiftManagement.ShiftScheduler.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\ShiftManagement\ShiftScheduler.razor.cs:line 516: 9/2/2022 4:07:55 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.MasterDataImport.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\MasterDataImport.razor.cs:line 2309: 9/2/2022 4:47:50 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 1011: 9/2/2022 4:50:45 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 1011: 9/2/2022 4:51:55 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 1011: 9/2/2022 4:52:35 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 1011: 9/2/2022 4:52:59 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 1011: 9/2/2022 4:53:11 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.ShiftManagement.ShiftScheduler.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\ShiftManagement\ShiftScheduler.razor.cs:line 567: 9/2/2022 4:54:00 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.ShiftManagement.ShiftScheduler.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\ShiftManagement\ShiftScheduler.razor.cs:line 567: 9/2/2022 4:56:13 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.ShiftManagement.ShiftScheduler.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\ShiftManagement\ShiftScheduler.razor.cs:line 567: 9/2/2022 4:56:22 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.ShiftManagement.ShiftScheduler.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\ShiftManagement\ShiftScheduler.razor.cs:line 567: 9/2/2022 4:57:01 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.ShiftManagement.ShiftScheduler.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\ShiftManagement\ShiftScheduler.razor.cs:line 662: 9/2/2022 6:41:32 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.ShiftManagement.ShiftScheduler.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\ShiftManagement\ShiftScheduler.razor.cs:line 662: 9/2/2022 6:42:12 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.ShiftManagement.ShiftScheduler.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\ShiftManagement\ShiftScheduler.razor.cs:line 662: 9/2/2022 6:42:19 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.ShiftManagement.ShiftScheduler.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\ShiftManagement\ShiftScheduler.razor.cs:line 662: 9/5/2022 11:34:04 AM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.EmployeeMasterSetup.EmployeeMasterData.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\EmployeeMasterSetup\EmployeeMasterData.razor.cs:line 1011: 9/5/2022 11:35:06 AM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Payrollinit.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Payrollinit.razor.cs:line 122: 9/5/2022 11:35:41 AM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.ShiftManagement.ShiftScheduler.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\ShiftManagement\ShiftScheduler.razor.cs:line 662: 9/5/2022 12:00:13 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Calendar.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Calendar.razor.cs:line 473: 9/5/2022 12:13:35 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.PayrollSetup.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\PayrollSetup.razor.cs:line 304: 9/5/2022 12:50:46 PM
+System.InvalidOperationException: JavaScript interop calls cannot be issued at this time. This is because the component is being statically rendered. When prerendering is enabled, JavaScript interop calls can only be performed during the OnAfterRenderAsync lifecycle method.
+   at Microsoft.AspNetCore.Components.Server.Circuits.RemoteJSRuntime.BeginInvokeJS(Int64 asyncHandle, String identifier, String argsJson, JSCallResultType resultType, Int64 targetInstanceId)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](Int64 targetInstanceId, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntime.InvokeAsync[TValue](String identifier, CancellationToken cancellationToken, Object[] args)
+   at Microsoft.JSInterop.JSRuntimeExtensions.InvokeAsync[TValue](IJSRuntime jsRuntime, String identifier, CancellationToken cancellationToken, Object[] args)
+   at Blazored.LocalStorage.BrowserStorageProvider.GetItemAsync(String key, Nullable`1 cancellationToken)
+   at Blazored.LocalStorage.LocalStorageService.GetItemAsync[T](String key, Nullable`1 cancellationToken)
+   at HCM.UI.Pages.MasterDataSetup.Calendar.OnInitializedAsync() in D:\Hamza Qazi\Projects\04. MEPL Web Payroll\HCMOneWeb\HCM.UI\Pages\MasterDataSetup\Calendar.razor.cs:line 473: 9/5/2022 12:50:57 PM

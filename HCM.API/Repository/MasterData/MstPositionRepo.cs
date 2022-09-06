@@ -72,5 +72,47 @@ namespace HCM.API.Repository.MasterData
             }
             return response;
         }
+        public async Task<ApiResponseModel> Insert(List<MstPosition> oMstPosition)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                await Task.Run(() =>
+                {
+                    _DBContext.MstPositions.AddRange(oMstPosition);
+                    _DBContext.SaveChanges();
+                    response.Id = 1;
+                    response.Message = "Saved successfully";
+                });
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                response.Id = 0;
+                response.Message = "Failed to save successfully";
+            }
+            return response;
+        }
+        public async Task<ApiResponseModel> Update(List<MstPosition> oMstPosition)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                await Task.Run(() =>
+                {
+                    _DBContext.MstPositions.UpdateRange(oMstPosition);
+                    _DBContext.SaveChanges();
+                    response.Id = 1;
+                    response.Message = "Saved successfully";
+                });
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                response.Id = 0;
+                response.Message = "Failed to save successfully";
+            }
+            return response;
+        }
     }
 }

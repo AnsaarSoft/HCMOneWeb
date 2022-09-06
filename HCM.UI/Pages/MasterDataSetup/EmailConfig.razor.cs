@@ -1,4 +1,5 @@
-﻿using HCM.API.Models;
+﻿using Blazored.LocalStorage;
+using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
@@ -22,6 +23,10 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         [Inject]
         public IMstEmailConfig _mstEmailConfig { get; set; }
+
+        [Inject]
+        public ILocalStorageService _localStorage { get; set; }
+        private string LoginUser = "";
 
         #endregion
 
@@ -140,9 +145,17 @@ namespace HCM.UI.Pages.MasterDataSetup
             try
             {
                 Loading = true;
+                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                if (Session != null)
+                {
+                    LoginUser = Session.UserCode;
 
-                await GetEmailConfig();
-
+                    await GetEmailConfig();
+                }
+                else
+                {
+                    Navigation.NavigateTo("/Login", forceLoad: true);
+                }
                 Loading = false;
             }
             catch (Exception ex)

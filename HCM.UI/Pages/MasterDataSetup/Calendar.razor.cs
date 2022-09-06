@@ -1,4 +1,5 @@
-﻿using HCM.API.Models;
+﻿using Blazored.LocalStorage;
+using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
@@ -25,7 +26,9 @@ namespace HCM.UI.Pages.MasterDataSetup
         [Inject]
         public IMstPayroll _mstPayroll { get; set; }
 
-
+        [Inject]
+        public ILocalStorageService _localStorage { get; set; }
+        private string LoginUser = "";
 
 
         #endregion
@@ -92,10 +95,12 @@ namespace HCM.UI.Pages.MasterDataSetup
                                     {
                                         oModel.FlgActive = false;
                                     }
+                                    oModel.CreatedBy = LoginUser;
                                     res = await _mstCalendar.Insert(oModel);
                                 }
                                 else
                                 {
+                                    oModel.UpdatedBy = LoginUser;
                                     res = await _mstCalendar.Update(oModel);
                                 }
                             }
@@ -177,7 +182,6 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Logs.GenerateLogs(ex);
             }
         }
-
 
         private bool FilterFunc(MstCalendar element, string searchString1)
         {
@@ -466,21 +470,30 @@ namespace HCM.UI.Pages.MasterDataSetup
             try
             {
                 Loading = true;
-                oModel.FlgActive = true;
-                await GetAllCalendars();
-                await GetAllPayroll();
-                if (oList.Where(x => x.FlgActive == true).Count() > 0)
+                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                if (Session != null)
                 {
-                    DisbaledDate = true;
-                    var res = oList.Where(x => x.FlgActive == true).Max(x => x.EndDate);
-                    Convert.ToDateTime(res).AddDays(1);
-                    _dateRange = new DateRange(Convert.ToDateTime(res.Value).AddDays(1), Convert.ToDateTime(res).AddMonths(12));
-                    _dateRange.Start = MinDate = Convert.ToDateTime(res).AddDays(1);
+                    LoginUser = Session.UserCode;
+                    oModel.FlgActive = true;
+                    await GetAllCalendars();
+                    await GetAllPayroll();
+                    if (oList.Where(x => x.FlgActive == true).Count() > 0)
+                    {
+                        DisbaledDate = true;
+                        var res = oList.Where(x => x.FlgActive == true).Max(x => x.EndDate);
+                        Convert.ToDateTime(res).AddDays(1);
+                        _dateRange = new DateRange(Convert.ToDateTime(res.Value).AddDays(1), Convert.ToDateTime(res).AddMonths(12));
+                        _dateRange.Start = MinDate = Convert.ToDateTime(res).AddDays(1);
+                    }
+                    else
+                    {
+                        //MinDate = DateTime.Now.Date;
+                        _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date.AddMonths(12));
+                    }
                 }
                 else
                 {
-                    //MinDate = DateTime.Now.Date;
-                    _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date.AddMonths(12));
+                    Navigation.NavigateTo("/Login", forceLoad: true);
                 }
                 Loading = false;
             }

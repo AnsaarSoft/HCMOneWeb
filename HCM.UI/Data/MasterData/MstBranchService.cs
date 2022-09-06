@@ -69,13 +69,70 @@ namespace HCM.UI.Data.MasterData
                 return response;
             }
         }
-
         public async Task<ApiResponseModel> Update(MstBranch oMstBranch)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 var request = new RestRequest("MasterData/updateBranch", Method.Post);
+                request.AddJsonBody(oMstBranch);
+                var res = await _restClient.ExecuteAsync(request);
+                if (res.IsSuccessful)
+                {
+                    response.Id = 1;
+                    response.Message = "Saved successfully";
+                    return response;
+                }
+                else
+                {
+                    response.Id = 0;
+                    response.Message = "Failed to save successfully";
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                response.Id = 0;
+                response.Message = "Failed to save successfully";
+                return response;
+            }
+        }
+        public async Task<ApiResponseModel> Insert(List<MstBranch> oMstBranch)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                var request = new RestRequest("MasterData/addBranchList", Method.Post);
+                request.AddJsonBody(oMstBranch);
+                var res= await _restClient.ExecuteAsync(request);
+                if (res.IsSuccessful)
+                {
+                    response.Id = 1;
+                    response.Message = "Saved successfully";
+                    return response;
+                }
+                else
+                {
+                    response.Id = 0;
+                    response.Message = "Failed to save successfully";
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                response.Id = 0;
+                response.Message = "Failed to save successfully";
+                return response;
+            }
+        }
+        public async Task<ApiResponseModel> Update(List<MstBranch> oMstBranch)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                var request = new RestRequest("MasterData/updateBranchList", Method.Post);
                 request.AddJsonBody(oMstBranch);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)

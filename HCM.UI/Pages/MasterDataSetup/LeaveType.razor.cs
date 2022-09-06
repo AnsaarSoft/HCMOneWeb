@@ -1,4 +1,5 @@
-﻿using HCM.API.Models;
+﻿using Blazored.LocalStorage;
+using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
@@ -29,6 +30,9 @@ namespace HCM.UI.Pages.MasterDataSetup
         [Inject]
         public IMstLeaveDeduction _mstLeaveDeduction { get; set; }
 
+        [Inject]
+        public ILocalStorageService _localStorage { get; set; }
+        private string LoginUser = "";
 
         #endregion
 
@@ -88,10 +92,12 @@ namespace HCM.UI.Pages.MasterDataSetup
                     {
                         if (oModel.Id == 0)
                         {
+                            oModel.CreatedBy = LoginUser;
                             res = await _mstLeaveType.Insert(oModel);
                         }
                         else
                         {
+                            oModel.UpdatedBy = LoginUser;
                             res = await _mstLeaveType.Update(oModel);
                         }
                     }
@@ -238,12 +244,21 @@ namespace HCM.UI.Pages.MasterDataSetup
             try
             {
                 Loading = true;
-                await GetAllLove();
-                await GetAllLeaveDeduction();
-                await GetAllLeaveType();
-                oModel.FlgEncash = true;
-                oModel.FlgCarryForward = true;
-                oModel.FlgActive = true;
+                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                if (Session != null)
+                {
+                    LoginUser = Session.UserCode;
+                    await GetAllLove();
+                    await GetAllLeaveDeduction();
+                    await GetAllLeaveType();
+                    oModel.FlgEncash = true;
+                    oModel.FlgCarryForward = true;
+                    oModel.FlgActive = true;
+                }
+                else
+                {
+                    Navigation.NavigateTo("/Login", forceLoad: true);
+                }
                 Loading = false;
             }
             catch (Exception ex)

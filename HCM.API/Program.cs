@@ -1,9 +1,11 @@
 using HCM.API;
 using HCM.API.Interfaces.Account;
+using HCM.API.Interfaces.EmployeeMasterSetup;
 using HCM.API.Interfaces.MasterData;
 using HCM.API.Interfaces.MasterElement;
 using HCM.API.Models;
 using HCM.API.Repository.Account;
+using HCM.API.Repository.EmployeeMasterSetup;
 using HCM.API.Repository.MasterData;
 using HCM.API.Repository.MasterElement;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +47,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddControllersWithViews()
                 .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
+builder.Services.AddScoped<IMstCountryStateCity, MstCountryStateCityRepo>();
 builder.Services.AddScoped<IMstDepartment, MstDepartmentRepo>();
 builder.Services.AddScoped<IMstDesignation, MstDesignationRepo>();
 builder.Services.AddScoped<IMstLocation, MstLocationRepo>();
@@ -70,6 +73,7 @@ builder.Services.AddScoped<IMstBonus, MstBonusRepo>();
 builder.Services.AddScoped<IMstPayroll, MstPayrollRepo>();
 builder.Services.AddScoped<IMstGratuity, MstGratuityRepo>();
 builder.Services.AddScoped<IMstUser, MstUserRepo>();
+builder.Services.AddScoped<IMstEmployeeMasterData, MstEmployeeMasterDataRepo>();
 
 
 Settings.TitleConfig = builder.Configuration.GetValue<string>("TitleConfig");

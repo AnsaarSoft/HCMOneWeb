@@ -10,6 +10,6 @@ namespace HCM.API.Models
         public int? ElementId { get; set; }
         public bool? FlgActive { get; set; }
 
-        public virtual MstPayroll? Fk { get; set; }
+        public virtual MstPayroll Fk { get; set; }
     }
 }

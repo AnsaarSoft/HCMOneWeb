@@ -31,11 +31,12 @@ namespace HCM.API.Controllers
         private IMstPayroll _mstPayrollSetup;
         private IMstBonus _mstBonus;
         private IMstGratuity _mstGratuity;
+        private IMstCountryStateCity _mstCountryStateCity;
 
         public MasterDataController(IMstDepartment mstDepartment, IMstDesignation mstDesignation, IMstLocation mstLocation, IMstPosition mstPosition, IMstBranch mstBranch, IMstGrading mstGrading, IMstCalendar mstCalendar,
             IMstLeaveCalendar mstLeaveCalendar, IMstEmailConfig mstEmailConfig, IMstPayrollinit mstPayrollinit, IMstLoans mstLoans, IMstShifts mstShift, IMstAdvance mstAdvance, IMstLeaveDeduction mstLeaveDeduction,
             IMstLeaveType mstLeaveType, IMstDeductionRule mstDeductionRule, IMstAttendanceRules mstAttendanceRule, IMstTaxSetup mstTaxSetup, 
-            IMstPayroll mstPayrollSetup, IMstBonus mstBonus,IMstGratuity mstGratuity)
+            IMstPayroll mstPayrollSetup, IMstBonus mstBonus,IMstGratuity mstGratuity, IMstCountryStateCity mstCountryStateCity)
         {
             _mstDepartment = mstDepartment;
             _mstDesignation = mstDesignation;
@@ -59,7 +60,36 @@ namespace HCM.API.Controllers
             _mstPayrollSetup = mstPayrollSetup;
             _mstBonus = mstBonus;
             _mstGratuity = mstGratuity;
+            _mstCountryStateCity = mstCountryStateCity;
         }
+
+        #region Mst COuntry State City
+
+        [Route("getAllCountryStateCity")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllCountryStateCity()
+        {
+            List<MstCountry> oMstCountry = new List<MstCountry>();
+            try
+            {
+                oMstCountry = await _mstCountryStateCity.GetAllData();
+                if (oMstCountry == null)
+                {
+                    return BadRequest(oMstCountry);
+                }
+                else
+                {
+                    return Ok(oMstCountry);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
 
         #region MST Department
 
@@ -114,6 +144,54 @@ namespace HCM.API.Controllers
         [Route("updateDept")]
         [HttpPost]
         public async Task<IActionResult> Update([FromBody] MstDepartment pMstDepartment)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstDepartment.Update(pMstDepartment);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addDeptList")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] List<MstDepartment> pMstDepartment)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstDepartment.Insert(pMstDepartment);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateDeptList")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] List<MstDepartment> pMstDepartment)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
@@ -211,6 +289,54 @@ namespace HCM.API.Controllers
             }
         }
 
+        [Route("addDesgList")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] List<MstDesignation> pMstDesignation)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstDesignation.Insert(pMstDesignation);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateDesgList")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] List<MstDesignation> pMstDesignation)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstDesignation.Update(pMstDesignation);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
         #endregion
 
         #region MST Location
@@ -266,6 +392,54 @@ namespace HCM.API.Controllers
         [Route("updateLoc")]
         [HttpPost]
         public async Task<IActionResult> Update([FromBody] MstLocation pMstLocation)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstLocation.Update(pMstLocation);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addLocList")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] List<MstLocation> pMstLocation)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstLocation.Insert(pMstLocation);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateLocList")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] List<MstLocation> pMstLocation)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
@@ -362,6 +536,53 @@ namespace HCM.API.Controllers
                 return BadRequest("Something went wrong.");
             }
         }
+        [Route("addPosList")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] List<MstPosition> pMstPosition)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstPosition.Insert(pMstPosition);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updatePosList")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] List<MstPosition> pMstPosition)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstPosition.Update(pMstPosition);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
 
         #endregion
 
@@ -438,6 +659,53 @@ namespace HCM.API.Controllers
                 return BadRequest("Something went wrong.");
             }
         }
+        [Route("addBranchList")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] List<MstBranch> pMstBranch)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstBranch.Insert(pMstBranch);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateBranchList")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] List<MstBranch> pMstBranch)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstBranch.Update(pMstBranch);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
 
         #endregion
 
@@ -494,6 +762,53 @@ namespace HCM.API.Controllers
         [Route("updateGrading")]
         [HttpPost]
         public async Task<IActionResult> Update([FromBody] MstGrading pMstGrading)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstGrading.Update(pMstGrading);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+        [Route("addGradingList")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] List<MstGrading> pMstGrading)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstGrading.Insert(pMstGrading);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateGradingList")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] List<MstGrading> pMstGrading)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
@@ -1632,6 +1947,7 @@ namespace HCM.API.Controllers
                 return BadRequest("Something went wrong.");
             }
         }
+        
         #endregion
     }
 }

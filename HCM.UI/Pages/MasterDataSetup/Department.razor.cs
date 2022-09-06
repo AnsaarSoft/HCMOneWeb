@@ -1,4 +1,5 @@
-﻿using HCM.API.Models;
+﻿using Blazored.LocalStorage;
+using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
@@ -22,6 +23,9 @@ namespace HCM.UI.Pages.MasterDataSetup
         [Inject]
         public IMstDepartment _mstDepartment { get; set; }
 
+        [Inject]
+        public ILocalStorageService _localStorage { get; set; }
+
 
         #endregion
 
@@ -30,6 +34,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         bool Loading = false;
         bool DisbaledCode = false;
         private string searchString1 = "";
+        private string LoginUser = "";
         private bool FilterFunc(MstDepartment element) => FilterFunc(element, searchString1);
 
         MstDepartment oModel = new MstDepartment();
@@ -45,7 +50,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             {
                 Loading = true;
                 var res = new ApiResponseModel();
-                await Task.Delay(3);
+                await Task.Delay(3);                
                 if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description))
                 {
                     if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
@@ -56,10 +61,12 @@ namespace HCM.UI.Pages.MasterDataSetup
                     {
                         if (oModel.Id == 0)
                         {
+                            oModel.CreatedBy = LoginUser;
                             res = await _mstDepartment.Insert(oModel);
                         }
                         else
                         {
+                            oModel.UpdatedBy = LoginUser;
                             res = await _mstDepartment.Update(oModel);
                         }
                     }
@@ -67,7 +74,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     {
                         Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
                         await Task.Delay(3000);
-                        Navigation.NavigateTo("/Department", forceLoad: true);                        
+                        Navigation.NavigateTo("/Department", forceLoad: true);
                     }
                     else
                     {
@@ -116,7 +123,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             {
                 Logs.GenerateLogs(ex);
             }
-        }        
+        }
 
         private bool FilterFunc(MstDepartment element, string searchString1)
         {
@@ -179,16 +186,25 @@ namespace HCM.UI.Pages.MasterDataSetup
         {
             try
             {
-                Loading = true;
-                oModel.FlgActive = true;
-                await GetAllDepartments();
-                Loading = false;
+                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                if (Session != null)
+                {
+                    LoginUser = Session.UserCode;
+                    //var res = await _administrationService.FetchUserAuth(Session.UserCode);
+                    Loading = true;
+                    oModel.FlgActive = true;
+                    await GetAllDepartments();
+                }
+                else
+                {
+                    Navigation.NavigateTo("/Login", forceLoad: true);
+                }
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
-                Loading = false;
             }
+            Loading = false;
         }
 
         #endregion

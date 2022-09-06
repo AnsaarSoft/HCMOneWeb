@@ -8,10 +8,11 @@
             }
             else
             {
-                @if (oListElement?.Count > 0 && Settings.DialogFor == "Element")
+                @if (oListElement?.Count > 0 && DialogFor == "Element")
                 {
                         <MudTable Items="@oListElement" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstElement,bool>(FilterFuncElement)"
-                    Loading="@Loading" LoadingProgressColor="Color.Primary" OnRowClick="RowClickEventElement" T="MstElement" @bind-SelectedItem="oModelElement">
+                    Loading="@Loading" RowClassFunc="@SelectedRowClassFuncElement" OnRowClick="RowClickEventElement" T="MstElement"
+                     LoadingProgressColor="Color.Primary" @ref="@_tableElement" @bind-SelectedItem="oModelElement">
                             <ToolBarContent>
                                 <MudText Typo="Typo.h6">Elements</MudText>
                                 <MudSpacer />
@@ -36,7 +37,7 @@
                              </PagerContent>
                          </MudTable>
                 }
-                @if (oListElement?.Count > 0 && Settings.DialogFor == "PayrollElement")
+                @if (oListElement?.Count > 0 && DialogFor == "PayrollElement")
                 {
                         <MudTable Items="@oListElement" @bind-SelectedItems="@HashElement" Class="table-setting" Dense="true" MultiSelection="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstElement,bool>(FilterFuncElement)"
                     Loading="@Loading" LoadingProgressColor="Color.Primary">
@@ -64,10 +65,10 @@
                              </PagerContent>
                          </MudTable>
                 }
-                @if (oListShift?.Count > 0 && Settings.DialogFor == "Shifts")
+                @if (oListShift?.Count > 0 && DialogFor == "Shifts")
                 {
                         <MudTable Items="@oListShift" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstShift,bool>(FilterFuncShift)"
-                    Loading="@Loading" LoadingProgressColor="Color.Primary" OnRowClick="RowClickEventShift" T="MstShift" @bind-SelectedItem="oModelShift">
+                    Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableShift" RowClassFunc="@SelectedRowClassFuncShift" OnRowClick="RowClickEventShift" T="MstShift" @bind-SelectedItem="oModelShift">
                             <ToolBarContent>
                                 <MudText Typo="Typo.h6">Shifts</MudText>
                                 <MudSpacer />
@@ -88,10 +89,10 @@
                              </PagerContent>
                          </MudTable>
                 }
-                @if (oListTaxSetup?.Count > 0 && Settings.DialogFor == "TaxSetup")
+                @if (oListTaxSetup?.Count > 0 && DialogFor == "TaxSetup")
                 {
                         <MudTable Items="@oListTaxSetup" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstTaxSetup,bool>(FilterFuncTaxSetup)"
-                    Loading="@Loading" LoadingProgressColor="Color.Primary" OnRowClick="RowClickEventTaxSetup" T="MstTaxSetup" @bind-SelectedItem="oModelTaxSetup">
+                    Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableTaxSetup" RowClassFunc="@SelectedRowClassFuncTaxSetup" OnRowClick="RowClickEventTaxSetup" T="MstTaxSetup" @bind-SelectedItem="oModelTaxSetup">
                             <ToolBarContent>
                                 <MudText Typo="Typo.h6">Tax Setup</MudText>
                                 <MudSpacer />
@@ -116,11 +117,91 @@
                              </PagerContent>
                          </MudTable>
                 }
+                @if (oListPayrollSetup?.Count > 0 && DialogFor == "PayrollSetup")
+                {
+                        <MudTable Items="@oListPayrollSetup" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstPayroll,bool>(FilterFuncPayrollSetup)"
+                    Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tablePayroll" RowClassFunc="@SelectedRowClassFuncPayrollSetup" OnRowClick="RowClickEventPayrollSetup" T="MstPayroll" @bind-SelectedItem="oModelPayrollSetup">
+                            <ToolBarContent>
+                                <MudText Typo="Typo.h6">Payroll Setup</MudText>
+                                <MudSpacer />
+                                <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                             </ToolBarContent>
+                             <HeaderContent>
+                                <MudTh>Payroll Name</MudTh>
+                                <MudTh>Payroll Type</MudTh>
+                                <MudTh>GL Type</MudTh>
+                                <MudTh>Active</MudTh>
+                             </HeaderContent>
+                             <RowTemplate>
+                                 <MudTd DataLabel="Code">@context.PayrollName</MudTd>                       
+                                 <MudTd DataLabel="Code">@context.PayrollType</MudTd>                       
+                                 <MudTd DataLabel="Code">@context.Gltype</MudTd>                       
+                                 <MudTd DataLabel="Code">@context.FlgActive</MudTd>                             
+                             </RowTemplate>
+                             <PagerContent>
+                                 <MudTablePager />
+                             </PagerContent>
+                         </MudTable>
+                }
+                 @if (oListGratuitySetup?.Count > 0 && DialogFor == "GratuitySetup")
+                {
+                        <MudTable Items="@oListGratuitySetup" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstGratuity,bool>(FilterFuncGratuitySetup)"
+                    Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableGratuity" RowClassFunc="@SelectedRowClassFuncGratuitySetup" OnRowClick="RowClickEventGratuitySetup" T="MstGratuity" @bind-SelectedItem="oModelGratuitySetup">
+                            <ToolBarContent>
+                                <MudText Typo="Typo.h6">Gratuity Setup</MudText>
+                                <MudSpacer />
+                                <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                             </ToolBarContent>
+                             <HeaderContent>
+                                <MudTh>Code</MudTh>
+                                <MudTh>Based On</MudTh>
+                                <MudTh>Based On Value</MudTh>                                
+                             </HeaderContent>
+                             <RowTemplate>
+                                 <MudTd DataLabel="Code">@context.Code</MudTd>                       
+                                 <MudTd DataLabel="Code">@context.BasedOn</MudTd>                       
+                                 <MudTd DataLabel="Code">@context.BasedOnValue</MudTd>                      
+                             </RowTemplate>
+                             <PagerContent>
+                                 <MudTablePager />
+                             </PagerContent>
+                         </MudTable>
+                }
+                @if (oListMstEmployee?.Count > 0 && DialogFor == "EmployeeMaster")
+                {
+                        <MudTable Items="@oListMstEmployee" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstEmployee,bool>(FilterFuncMstEmployee)"
+                    Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableMstEmployee" RowClassFunc="@SelectedRowClassFuncMstEmployee" OnRowClick="RowClickEventMstEmployee" T="MstEmployee" @bind-SelectedItem="oModelMstEmployee">
+                            <ToolBarContent>
+                                <MudText Typo="Typo.h6">Employees</MudText>
+                                <MudSpacer />
+                                <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                             </ToolBarContent>
+                             <HeaderContent>
+                                <MudTh>Image</MudTh>                                
+                                <MudTh>Employee Code</MudTh>
+                                <MudTh>Name</MudTh>
+                                <MudTh>Date of Joining</MudTh>                                
+                                <MudTh>Designation</MudTh>                                
+                                <MudTh>Location</MudTh>                                
+                             </HeaderContent>
+                             <RowTemplate>
+                                 <MudTd DataLabel="Code"><MudAvatar Image="@context.ImgPath" Style="height:70px; width:70px; font-size:2rem;"/></MudTd>                    
+                                 <MudTd DataLabel="Code">@context.EmpId</MudTd>                       
+                                 <MudTd DataLabel="Code">@context.FirstName @context.MiddleName @context.LastName</MudTd>                       
+                                 <MudTd DataLabel="Code">@Convert.ToDateTime(context.JoiningDate).ToString("MM/dd/yyyy")</MudTd>                      
+                                 <MudTd DataLabel="Code">@context.DesignationName</MudTd>                      
+                                 <MudTd DataLabel="Code">@context.LocationName</MudTd>                    
+                             </RowTemplate>
+                             <PagerContent>
+                                 <MudTablePager />
+                             </PagerContent>
+                         </MudTable>
+                }
             }        
         </MudContainer>        
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Primary">Ok</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
     </DialogActions>
 </MudDialog>

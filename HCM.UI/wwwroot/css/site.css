@@ -410,3 +410,15 @@ button.mud-button-root.mud-icon-button.mud-icon-button-color-inherit.mud-ripple.
 .process-modal-setting .mud-dialog-content .mud-table .mud-table-container tbody tr td {
         padding: 10px;
     }
+
+.selected {
+    background-color: #1E88E5 !important;
+}
+
+    .selected > td {
+        color: white !important;
+    }
+
+        .selected > td .mud-input {
+            color: white !important;
+        }

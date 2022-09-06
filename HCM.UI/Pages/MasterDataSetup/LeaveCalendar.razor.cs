@@ -1,4 +1,5 @@
-﻿using HCM.API.Models;
+﻿using Blazored.LocalStorage;
+using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
@@ -22,6 +23,10 @@ namespace HCM.UI.Pages.MasterDataSetup
         [Inject]
         public IMstLeaveCalendar _mstLeaveCalendar { get; set; }
 
+
+        [Inject]
+        public ILocalStorageService _localStorage { get; set; }
+        private string LoginUser = "";
 
         #endregion
 
@@ -78,10 +83,12 @@ namespace HCM.UI.Pages.MasterDataSetup
 
                                 if (oModel.Id == 0)
                                 {
+                                    oModel.CreatedBy = LoginUser;
                                     res = await _mstLeaveCalendar.Insert(oModel);
                                 }
                                 else
                                 {
+                                    oModel.UpdatedBy = LoginUser;
                                     res = await _mstLeaveCalendar.Update(oModel);
                                 }
                             }
@@ -209,20 +216,29 @@ namespace HCM.UI.Pages.MasterDataSetup
             try
             {
                 Loading = true;
-                oModel.FlgActive = true;
-                await GetAllLeaveCalendars();
-                if (oList.Where(x => x.FlgActive == true).Count() > 0)
+                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                if (Session != null)
                 {
-                    DisabledDate = true;
-                    var res = oList.Where(x => x.FlgActive == true).Max(x => x.EndDate);
-                    Convert.ToDateTime(res).AddDays(1);
-                    _dateRange = new DateRange(Convert.ToDateTime(res.Value).AddDays(1), Convert.ToDateTime(res).AddMonths(12));
-                    _dateRange.Start = MinDate = Convert.ToDateTime(res).AddDays(1);
+                    LoginUser = Session.UserCode;
+                    oModel.FlgActive = true;
+                    await GetAllLeaveCalendars();
+                    if (oList.Where(x => x.FlgActive == true).Count() > 0)
+                    {
+                        DisabledDate = true;
+                        var res = oList.Where(x => x.FlgActive == true).Max(x => x.EndDate);
+                        Convert.ToDateTime(res).AddDays(1);
+                        _dateRange = new DateRange(Convert.ToDateTime(res.Value).AddDays(1), Convert.ToDateTime(res).AddMonths(12));
+                        _dateRange.Start = MinDate = Convert.ToDateTime(res).AddDays(1);
+                    }
+                    else
+                    {
+                        //MinDate = DateTime.Now.Date;
+                        _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date.AddMonths(12));
+                    }
                 }
                 else
                 {
-                    //MinDate = DateTime.Now.Date;
-                    _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date.AddMonths(12));
+                    Navigation.NavigateTo("/Login", forceLoad: true);
                 }
                 Loading = false;
             }

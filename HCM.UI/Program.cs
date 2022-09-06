@@ -2,9 +2,11 @@ using Blazored.LocalStorage;
 using CA.UI.Authentication;
 using HCM.UI;
 using HCM.UI.Data.Account;
+using HCM.UI.Data.EmployeeMasterSetup;
 using HCM.UI.Data.MasterData;
 using HCM.UI.Data.MasterElement;
 using HCM.UI.Interfaces.Account;
+using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -32,6 +34,7 @@ builder.Services.AddMudServices(config =>
     config.SnackbarConfiguration.ShowTransitionDuration = 500;
     config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
 });
+builder.Services.AddScoped<IMstCountryStateCity, MstCountryStateCityService>();
 builder.Services.AddScoped<IMstDepartment, MstDepartmentService>();
 builder.Services.AddScoped<IMstDesignation, MstDesignationService>();
 builder.Services.AddScoped<IMstLocation, MstLocationService>();
@@ -57,6 +60,7 @@ builder.Services.AddScoped<IMstBonus, MstBonusService>();
 builder.Services.AddScoped<IMstPayroll, MstPayrollService>();
 builder.Services.AddScoped<IMstGratuity, MstGratuityService>();
 builder.Services.AddScoped<IMstUser, MstUserService>();
+builder.Services.AddScoped<IMstEmployeeMasterData, MstEmployeeMasterDataService>();
 
 
 

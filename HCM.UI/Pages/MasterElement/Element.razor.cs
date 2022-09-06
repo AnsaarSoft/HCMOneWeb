@@ -1,4 +1,5 @@
-﻿using HCM.API.Models;
+﻿using Blazored.LocalStorage;
+using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
@@ -26,6 +27,9 @@ namespace HCM.UI.Pages.MasterElement
         [Inject]
         public IMstLove _mstLove { get; set; }
 
+        [Inject]
+        public ILocalStorageService _localStorage { get; set; }
+        private string LoginUser = "";
 
         #endregion
 
@@ -48,8 +52,9 @@ namespace HCM.UI.Pages.MasterElement
         {
             try
             {
-                Settings.DialogFor = "Element";
-                var dialog = Dialog.Show<DialogBox>("", options);
+                var parameters = new DialogParameters();
+                parameters.Add("DialogFor", "Element");
+                var dialog = Dialog.Show<DialogBox>("", parameters, options);
                 var result = await dialog.Result;
                 if (!result.Cancelled)
                 {
@@ -88,11 +93,13 @@ namespace HCM.UI.Pages.MasterElement
                             }
                             else
                             {
+                                oModel.CreatedBy = LoginUser;
                                 res = await _mstElement.Insert(oModel);
                             }
                         }
                         else
                         {
+                            oModel.UpdatedBy = LoginUser;
                             res = await _mstElement.Update(oModel);
                         }
                     }
@@ -172,25 +179,34 @@ namespace HCM.UI.Pages.MasterElement
             try
             {
                 Loading = true;
-                oModel.Value = 0;
-                oModel.EmployeeContribution = 0;
-                oModel.EmployeeContributionMax = 0;
-                oModel.EmployerContribution = 0;
-                oModel.EmployerContributionMax = 0;
-                oModel.ApplicableAmountMax = 0;
-                oModel.FlgActive = true;
-                oModel.FlgProcessInPayroll = true;
-                oModel.FlgStandardElement = true;
-                oModel.FlgEffectOnGross = true;
-                oModel.FlgProbationApplicable = true;
-                oModel.FlgNotTaxable = false;
-                oModel.FlgEos = false;
-                oModel.FlgVariableValue = false;
-                oModel.FlgPropotionate = false;
-                oModel.StartDate = DateTime.Today;
-                oModel.EndDate = DateTime.Today;
-                await GetAllLove();
-                await GetAllElements();
+                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                if (Session != null)
+                {
+                    LoginUser = Session.UserCode;
+                    oModel.Value = 0;
+                    oModel.EmployeeContribution = 0;
+                    oModel.EmployeeContributionMax = 0;
+                    oModel.EmployerContribution = 0;
+                    oModel.EmployerContributionMax = 0;
+                    oModel.ApplicableAmountMax = 0;
+                    oModel.FlgActive = true;
+                    oModel.FlgProcessInPayroll = true;
+                    oModel.FlgStandardElement = true;
+                    oModel.FlgEffectOnGross = true;
+                    oModel.FlgProbationApplicable = true;
+                    oModel.FlgNotTaxable = false;
+                    oModel.FlgEos = false;
+                    oModel.FlgVariableValue = false;
+                    oModel.FlgPropotionate = false;
+                    oModel.StartDate = DateTime.Today;
+                    oModel.EndDate = DateTime.Today;
+                    await GetAllLove();
+                    await GetAllElements();
+                }
+                else
+                {
+                    Navigation.NavigateTo("/Login", forceLoad: true);
+                }
                 Loading = false;
             }
             catch (Exception ex)

@@ -1,4 +1,5 @@
-﻿using HCM.API.Models;
+﻿using Blazored.LocalStorage;
+using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
@@ -26,6 +27,9 @@ namespace HCM.UI.Pages.MasterElement
         [Inject]
         public IMstLove _mstLove { get; set; }
 
+        [Inject]
+        public ILocalStorageService _localStorage { get; set; }
+        private string LoginUser = "";
 
         #endregion
 
@@ -90,11 +94,13 @@ namespace HCM.UI.Pages.MasterElement
                             }
                             else
                             {
+                                oModel.CreatedBy = LoginUser;
                                 res = await _mstOverTime.Insert(oModel);
                             }
                         }
                         else
                         {
+                            oModel.UpdatedBy = LoginUser;
                             res = await _mstOverTime.Update(oModel);
                         }
                     }
@@ -234,16 +240,25 @@ namespace HCM.UI.Pages.MasterElement
             try
             {
                 Loading = true;
-                oModel.Value = 0;
-                oModel.PerDayCap = 0;
-                oModel.PerMonthCap = 0;
-                oModel.FlgActive = true;
-                oModel.FlgDefault = true;
-                oModel.FlgFormula = true;
-                oModel.Hours = 0;
-                oModel.MonthDays = 0;
-                await GetAllLove();
-                await GetAllOverTime();
+                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                if (Session != null)
+                {
+                    LoginUser = Session.UserCode;
+                    oModel.Value = 0;
+                    oModel.PerDayCap = 0;
+                    oModel.PerMonthCap = 0;
+                    oModel.FlgActive = true;
+                    oModel.FlgDefault = true;
+                    oModel.FlgFormula = true;
+                    oModel.Hours = 0;
+                    oModel.MonthDays = 0;
+                    await GetAllLove();
+                    await GetAllOverTime();
+                }
+                else
+                {
+                    Navigation.NavigateTo("/Login", forceLoad: true);
+                }
                 Loading = false;
             }
             catch (Exception ex)

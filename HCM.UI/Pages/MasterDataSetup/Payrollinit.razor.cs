@@ -3,6 +3,7 @@ using HCM.API.Models;
 using HCM.UI.General;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using Blazored.LocalStorage;
 
 namespace HCM.UI.Pages.MasterDataSetup
 {
@@ -23,6 +24,9 @@ namespace HCM.UI.Pages.MasterDataSetup
         [Inject]
         public IMstPayrollinit _mstPayrollinit { get; set; }
 
+        [Inject]
+        public ILocalStorageService _localStorage { get; set; }
+        private string LoginUser = "";
 
         #endregion
 
@@ -106,9 +110,6 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
-
-
-
         #endregion
 
         #region Events
@@ -118,8 +119,17 @@ namespace HCM.UI.Pages.MasterDataSetup
             try
             {
                 Loading = true;
+                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                if (Session != null)
+                {
+                    LoginUser = Session.UserCode;
 
-                await GetPayrollinit();
+                    await GetPayrollinit();
+                }
+                else
+                {
+                    Navigation.NavigateTo("/Login", forceLoad: true);
+                }
 
                 Loading = false;
             }

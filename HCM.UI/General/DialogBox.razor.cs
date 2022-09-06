@@ -1,4 +1,5 @@
 ﻿using HCM.API.Models;
+using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
 using Microsoft.AspNetCore.Components;
@@ -27,33 +28,61 @@ namespace HCM.UI.General
 
         [Inject]
         public IMstTaxSetup _mstTaxSetup { get; set; }
+
         [Inject]
         public IMstGratuity _mstGratuity { get; set; }
+
+        [Inject]
+        public IMstPayroll _mstPayrollSetup { get; set; }
+
+        [Inject]
+        public IMstEmployeeMasterData _mstEmployee { get; set; }
+
+        [Parameter] 
+        public string DialogFor { get; set; }
 
         #endregion
 
         #region Variables
 
+        private bool _processingTable = false;
         bool Loading = false;
         private string searchString1 = "";
+        private int selectedRowNumber = -1;
+        private List<string> clickedEvents = new();
 
         private bool FilterFuncElement(MstElement element) => FilterFuncElement(element, searchString1);
         private bool FilterFuncShift(MstShift element) => FilterFuncShift(element, searchString1);
         private bool FilterFuncTaxSetup(MstTaxSetup element) => FilterFuncTaxSetup(element, searchString1);
+        private bool FilterFuncPayrollSetup(MstPayroll element) => FilterFuncPayrollSetup(element, searchString1);
+        private bool FilterFuncGratuitySetup(MstGratuity element) => FilterFuncGratuitySetup(element, searchString1);
+        private bool FilterFuncMstEmployee(MstEmployee element) => FilterFuncMstEmployee(element, searchString1);
         void Cancel() => MudDialog.Cancel();
 
+        private MudTable<MstElement> _tableElement;
         MstElement oModelElement = new MstElement();
         List<MstElement> oListElement = new List<MstElement>();
         private HashSet<MstElement> HashElement = new HashSet<MstElement>();
 
+        private MudTable<MstShift> _tableShift;
         MstShift oModelShift = new MstShift();
         List<MstShift> oListShift = new List<MstShift>();
 
+        private MudTable<MstTaxSetup> _tableTaxSetup;
         MstTaxSetup oModelTaxSetup = new MstTaxSetup();
         List<MstTaxSetup> oListTaxSetup = new List<MstTaxSetup>();
 
-        MstGratuity oModelGratuity= new MstGratuity();
-        List<MstGratuity> oListGratuity = new List<MstGratuity>();
+        private MudTable<MstPayroll> _tablePayroll;
+        MstPayroll oModelPayrollSetup = new MstPayroll();
+        List<MstPayroll> oListPayrollSetup = new List<MstPayroll>();
+
+        private MudTable<MstGratuity> _tableGratuity;
+        MstGratuity oModelGratuitySetup = new MstGratuity();
+        List<MstGratuity> oListGratuitySetup = new List<MstGratuity>(); 
+        
+        private MudTable<MstEmployee> _tableMstEmployee;
+        MstEmployee oModelMstEmployee = new MstEmployee();
+        List<MstEmployee> oListMstEmployee = new List<MstEmployee>();
 
         #endregion
 
@@ -150,14 +179,14 @@ namespace HCM.UI.General
             if (element.DiscountOnTotalTax.Equals(searchString1))
                 return true;
             return false;
-        }
+        }        
 
-        private async Task GetAllGratuity()
+        private async Task GetAllPayrollSetup()
         {
             try
             {
-                oListGratuity = await _mstGratuity.GetAllData();
-                if (oListGratuity?.Count == 0 || oListGratuity == null)
+                oListPayrollSetup = await _mstPayrollSetup.GetAllData();
+                if (oListPayrollSetup?.Count == 0 || oListPayrollSetup == null)
                 {
                     Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
                 }
@@ -167,12 +196,78 @@ namespace HCM.UI.General
                 Logs.GenerateLogs(ex);
             }
         }
-        private bool FilterFuncGratuity(MstGratuity  Gratuity, string searchString1)
+        private bool FilterFuncPayrollSetup(MstPayroll element, string searchString1)
         {
             if (string.IsNullOrWhiteSpace(searchString1))
                 return true;
-            if (Gratuity.Code.Equals(searchString1))
+            if (element.PayrollName.Equals(searchString1))
+                return true;
+            if (element.PayrollType.Equals(searchString1))
+                return true;
+            if (element.Gltype.Equals(searchString1))
+                return true;
+            if (element.FlgActive.Equals(searchString1))
+                return true;
+            return false;
+        }
+
+        private async Task GetAllGratuitySetup()
+        {
+            try
+            {
+                oListGratuitySetup = await _mstGratuity.GetAllData();
+                if (oListGratuitySetup?.Count == 0 || oListGratuitySetup == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncGratuitySetup(MstGratuity element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.Code.Equals(searchString1))
+                return true;
+            if (element.BasedOn.Equals(searchString1))
+                return true;
+            if (element.BasedOnValue.Equals(searchString1))
                 return true;            
+            return false;
+        }
+        
+        private async Task GetAllMstEmployee()
+        {
+            try
+            {
+                oListMstEmployee = await _mstEmployee.GetAllData();
+                if (oListMstEmployee?.Count == 0 || oListMstEmployee == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncMstEmployee(MstEmployee element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.EmpId.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.FirstName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.JoiningDate.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.DesignationName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.LocationName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
             return false;
         }
 
@@ -185,21 +280,29 @@ namespace HCM.UI.General
             try
             {
                 Loading = true;
-                if (Settings.DialogFor == "Element" || Settings.DialogFor == "PayrollElement")
+                if (DialogFor == "Element" || DialogFor == "PayrollElement")
                 {
                     await GetAllElements();
                 }
-                else if (Settings.DialogFor == "Shifts")
+                else if (DialogFor == "Shifts")
                 {
                     await GetAllShift();
                 }
-                else if (Settings.DialogFor == "TaxSetup")
+                else if (DialogFor == "TaxSetup")
                 {
                     await GetAllTaxSetup();
                 }
-                else if (Settings.DialogFor == "GratuitySetup")
+                else if (DialogFor == "GratuitySetup")
                 {
-                    await GetAllGratuity();
+                    await GetAllGratuitySetup();
+                }
+                else if (DialogFor == "PayrollSetup")
+                {
+                    await GetAllPayrollSetup();
+                }
+                else if (DialogFor == "EmployeeMaster")
+                {
+                    await GetAllMstEmployee();
                 }
                 Loading = false;
             }
@@ -214,33 +317,71 @@ namespace HCM.UI.General
         {
             try
             {
-                MudDialog.Close(DialogResult.Ok<MstElement>(oModelElement));
+                clickedEvents.Add("Row has been clicked");               
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
             }
 
+        }
+        private string SelectedRowClassFuncElement(MstElement element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if(_tableElement.SelectedItem != null && _tableElement.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
         }
 
         public void RowClickEventShift(TableRowClickEventArgs<MstShift> tableRowClickEventArgs)
         {
             try
             {
-                MudDialog.Close(DialogResult.Ok<MstShift>(oModelShift));
+                clickedEvents.Add("Row has been clicked");
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
             }
 
+        }
+        private string SelectedRowClassFuncShift(MstShift element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableShift.SelectedItem != null && _tableShift.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
         }
 
         public void RowClickEventTaxSetup(TableRowClickEventArgs<MstTaxSetup> tableRowClickEventArgs)
         {
             try
             {
-                MudDialog.Close(DialogResult.Ok<MstTaxSetup>(oModelTaxSetup));
+                clickedEvents.Add("Row has been clicked");
             }
             catch (Exception ex)
             {
@@ -248,6 +389,164 @@ namespace HCM.UI.General
             }
 
         }
+        private string SelectedRowClassFuncTaxSetup(MstTaxSetup element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableTaxSetup.SelectedItem != null && _tableTaxSetup.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public void RowClickEventPayrollSetup(TableRowClickEventArgs<MstPayroll> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncPayrollSetup(MstPayroll element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tablePayroll.SelectedItem != null && _tablePayroll.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public void RowClickEventGratuitySetup(TableRowClickEventArgs<MstGratuity> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncGratuitySetup(MstGratuity element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableGratuity.SelectedItem != null && _tableGratuity.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public void RowClickEventMstEmployee(TableRowClickEventArgs<MstEmployee> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncMstEmployee(MstEmployee element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableMstEmployee.SelectedItem != null && _tableMstEmployee.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        private void Submit()
+        {
+            try
+            {
+                if (DialogFor == "Element" && oModelElement.Id > 0)
+                {
+                    MudDialog.Close(DialogResult.Ok<MstElement>(oModelElement));
+                }
+                else if (DialogFor == "Shifts" && oModelShift.Id > 0)
+                {
+                    MudDialog.Close(DialogResult.Ok<MstShift>(oModelShift));
+                }
+                else if (DialogFor == "TaxSetup" && oModelTaxSetup.Id > 0)
+                {
+                    MudDialog.Close(DialogResult.Ok<MstTaxSetup>(oModelTaxSetup));
+                }
+                else if (DialogFor == "GratuitySetup" && oModelGratuitySetup.Id > 0)
+                {
+                    MudDialog.Close(DialogResult.Ok<MstGratuity>(oModelGratuitySetup));
+                }
+                else if (DialogFor == "PayrollSetup" && oModelPayrollSetup.Id > 0)
+                {
+                    MudDialog.Close(DialogResult.Ok<MstPayroll>(oModelPayrollSetup));
+                }
+                else if (DialogFor == "PayrollElement" && HashElement.Count() > 0)
+                {
+                    MudDialog.Close(DialogResult.Ok<HashSet<MstElement>>(HashElement));
+                }
+                else if (DialogFor == "EmployeeMaster" && oModelMstEmployee.Id > 0)
+                {
+                    MudDialog.Close(DialogResult.Ok<MstEmployee>(oModelMstEmployee));
+                }
+                else
+                {
+                    Snackbar.Add("Select row first", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }        
 
         #endregion
     }

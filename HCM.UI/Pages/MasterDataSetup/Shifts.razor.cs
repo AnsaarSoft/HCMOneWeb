@@ -1,4 +1,5 @@
-﻿using HCM.API.Models;
+﻿using Blazored.LocalStorage;
+using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
@@ -26,6 +27,9 @@ namespace HCM.UI.Pages.MasterDataSetup
         [Inject]
         public IMstLove _mstLove { get; set; }
 
+        [Inject]
+        public ILocalStorageService _localStorage { get; set; }
+        private string LoginUser = "";
 
         #endregion
 
@@ -54,8 +58,9 @@ namespace HCM.UI.Pages.MasterDataSetup
         {
             try
             {
-                Settings.DialogFor = "Shifts";
-                var dialog = Dialog.Show<DialogBox>("", options);
+                var parameters = new DialogParameters();
+                parameters.Add("DialogFor", "Shifts");
+                var dialog = Dialog.Show<DialogBox>("", parameters, options);
                 var result = await dialog.Result;
                 if (!result.Cancelled)
                 {
@@ -120,10 +125,11 @@ namespace HCM.UI.Pages.MasterDataSetup
         {
             try
             {
-                Settings.DialogFor = "Shifts";
                 if (oDetailList.Count == 0)
                 {
-                    var dialog = Dialog.Show<ProcessDialog>("", options);
+                    var parameters = new DialogParameters();
+                    parameters.Add("DialogFor", "Shifts");
+                    var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
                     var result = await dialog.Result;
                     if (!result.Cancelled)
                     {
@@ -135,7 +141,9 @@ namespace HCM.UI.Pages.MasterDataSetup
                 }
                 else
                 {
-                    var parameters = new DialogParameters { ["oDetailListPara"] = oDetailListDG };
+                    var parameters = new DialogParameters();
+                    parameters.Add("oDetailListPara", oDetailListDG);
+                    parameters.Add("DialogFor", "Shifts");
                     var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
                     var result = await dialog.Result;
 
@@ -196,11 +204,13 @@ namespace HCM.UI.Pages.MasterDataSetup
                             }
                             else
                             {
+                                oModel.CreatedBy = LoginUser;
                                 res = await _mstShift.Insert(oModel);
                             }
                         }
                         else
                         {
+                            oModel.UpdatedBy = LoginUser;
                             res = await _mstShift.Update(oModel);
                         }
                     }
@@ -306,17 +316,26 @@ namespace HCM.UI.Pages.MasterDataSetup
             try
             {
                 Loading = true;
-                oModel.HoliDayOverTime = 0;
-                oModel.FlgHoliDayOverTime = true;
+                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                if (Session != null)
+                {
+                    LoginUser = Session.UserCode;
+                    oModel.HoliDayOverTime = 0;
+                    oModel.FlgHoliDayOverTime = true;
 
-                oModel.OffDayOverTime = 0;
-                oModel.FlgOffDayOverTime = true;
+                    oModel.OffDayOverTime = 0;
+                    oModel.FlgOffDayOverTime = true;
 
-                oModel.FlgActive = true;
-                oModel.FlgOverTime = true;
-                oModel.FlgOtwrkHrs = true;
-                await GetAllLove();
-                //await GetAllShift();
+                    oModel.FlgActive = true;
+                    oModel.FlgOverTime = true;
+                    oModel.FlgOtwrkHrs = true;
+                    await GetAllLove();
+                    //await GetAllShift();
+                }
+                else
+                {
+                    Navigation.NavigateTo("/Login", forceLoad: true);
+                }
                 Loading = false;
             }
             catch (Exception ex)

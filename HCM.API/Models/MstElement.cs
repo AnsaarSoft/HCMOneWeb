@@ -6,13 +6,13 @@ namespace HCM.API.Models
     public partial class MstElement
     {
         public int Id { get; set; }
-        public string Code { get; set; } = null!;
-        public string Description { get; set; } = null!;
+        public string Code { get; set; }
+        public string Description { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public string ElmtType { get; set; } = null!;
-        public string Type { get; set; } = null!;
-        public string? ValueType { get; set; }
+        public string ElmtType { get; set; }
+        public string Type { get; set; }
+        public string ValueType { get; set; }
         public decimal? Value { get; set; }
         public bool? FlgProcessInPayroll { get; set; }
         public bool? FlgStandardElement { get; set; }
@@ -29,9 +29,9 @@ namespace HCM.API.Models
         public decimal? ApplicableAmountMax { get; set; }
         public bool? FlgActive { get; set; }
         public bool? FlgBonus { get; set; }
-        public string? CreatedBy { get; set; }
+        public string CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public string? UpdatedBy { get; set; }
+        public string UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
     }
 }

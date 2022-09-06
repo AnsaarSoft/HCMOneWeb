@@ -1,4 +1,5 @@
-﻿using HCM.API.Models;
+﻿using Blazored.LocalStorage;
+using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
@@ -28,6 +29,11 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         [Inject]
         public IMstLeaveType _mstLeaveType { get; set; }
+
+        [Inject]
+        public ILocalStorageService _localStorage { get; set; }
+        private string LoginUser = "";
+
         #endregion
 
         #region Variables
@@ -100,7 +106,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                             //}
                         }
                         else
-                        {
+                        {                            
                             res = await _mstDeductionRule.Update(oModel);
                         }
                     }
@@ -246,10 +252,19 @@ namespace HCM.UI.Pages.MasterDataSetup
             try
             {
                 Loading = true;
-                await GetAllLove();
-                await GetAllDeductionRule();
-                await GetAllLeaveType();
-                oModel.Deduction = true;
+                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                if (Session != null)
+                {
+                    LoginUser = Session.UserCode;
+                    await GetAllLove();
+                    await GetAllDeductionRule();
+                    await GetAllLeaveType();
+                    oModel.Deduction = true;
+                }
+                else
+                {
+                    Navigation.NavigateTo("/Login", forceLoad: true);
+                }
                 Loading = false;
             }
             catch (Exception ex)

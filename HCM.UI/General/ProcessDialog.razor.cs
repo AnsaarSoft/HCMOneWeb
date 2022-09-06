@@ -18,7 +18,7 @@ namespace HCM.UI.General
         MudDialogInstance MudDialog { get; set; }
 
         [Inject]
-        public ISnackbar Snackbar { get; set; }        
+        public ISnackbar Snackbar { get; set; }
 
         [Inject]
         public IMstShifts _mstShift { get; set; }
@@ -27,7 +27,13 @@ namespace HCM.UI.General
         public IMstTaxSetup _mstTaxSetup { get; set; }
 
         [Inject]
-        public IMstBonus _mstBonus { get; set; }        
+        public IMstGratuity _mstGratuitySetup { get; set; }
+
+        [Inject]
+        public IMstBonus _mstBonus { get; set; }
+
+        [Parameter]
+        public string DialogFor { get; set; }
 
         #endregion
 
@@ -45,7 +51,10 @@ namespace HCM.UI.General
         List<VMMstShiftDetail> oListShift = new List<VMMstShiftDetail>();
 
         [Parameter] public MstTaxSetupDetail oDetailParaTax { get; set; } = new MstTaxSetupDetail();
-        MstTaxSetupDetail oModelTaxSetupDetail = new MstTaxSetupDetail();       
+        MstTaxSetupDetail oModelTaxSetupDetail = new MstTaxSetupDetail();
+
+        [Parameter] public MstGratuityDetail oDetailParaGratuity { get; set; } = new MstGratuityDetail();
+        MstGratuityDetail oModelGratuitySetupDetail = new MstGratuityDetail();
 
         #endregion
 
@@ -231,11 +240,11 @@ namespace HCM.UI.General
         private async Task Submit()
         {
             await Task.Delay(2);
-            if (Settings.DialogFor == "Shifts")
+            if (DialogFor == "Shifts")
             {
                 MudDialog.Close(DialogResult.Ok<List<VMMstShiftDetail>>(oListShift));
             }
-            else if (Settings.DialogFor == "TaxSetup")
+            else if (DialogFor == "TaxSetup")
             {
                 if (!string.IsNullOrWhiteSpace(oModelTaxSetupDetail.TaxCode) && !string.IsNullOrWhiteSpace(oModelTaxSetupDetail.Description))
                 {
@@ -253,7 +262,18 @@ namespace HCM.UI.General
                     Snackbar.Add("Fill the required field(s).", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                 }
             }
-        }        
+            else if (DialogFor == "GratuitySetup")
+            {
+                if (!string.IsNullOrWhiteSpace(oModelGratuitySetupDetail.Description))
+                {
+                    MudDialog.Close(DialogResult.Ok<MstGratuityDetail>(oModelGratuitySetupDetail));
+                }
+                else
+                {
+                    Snackbar.Add("Fill the required field(s).", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+        }
 
         #endregion
 
@@ -264,15 +284,15 @@ namespace HCM.UI.General
             try
             {
                 Loading = true;
-                if (Settings.DialogFor == "Element")
+                if (DialogFor == "Element")
                 {
 
                 }
-                else if (Settings.DialogFor == "Shifts")
+                else if (DialogFor == "Shifts")
                 {
                     await CreateRows();
                 }
-                else if (Settings.DialogFor == "TaxSetup")
+                else if (DialogFor == "TaxSetup")
                 {
                     if (oDetailParaTax.TaxCode != null)
                     {
@@ -287,6 +307,20 @@ namespace HCM.UI.General
                         oModelTaxSetupDetail.TaxValue = 0;
                         oModelTaxSetupDetail.FixTerm = 0;
                         oModelTaxSetupDetail.AdditionalDisc = 0;
+                    }
+                }
+                else if (DialogFor == "GratuitySetup")
+                {
+                    if (oDetailParaGratuity.Description != null)
+                    {
+                        oModelGratuitySetupDetail = oDetailParaGratuity;
+                    }
+                    else
+                    {
+                        oModelGratuitySetupDetail.Description = "";
+                        oModelGratuitySetupDetail.FromPoints = 0;
+                        oModelGratuitySetupDetail.ToPoints = 0;
+                        oModelGratuitySetupDetail.DaysCount = 0;
                     }
                 }
                 Loading = false;

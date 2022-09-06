@@ -7,23 +7,23 @@ namespace HCM.API.Models
     {
         public int Id { get; set; }
         public int? Fkid { get; set; }
-        public string Day { get; set; } = null!;
-        public string StartTime { get; set; } = null!;
-        public string EndTime { get; set; } = null!;
-        public string Duration { get; set; } = null!;
+        public string Day { get; set; }
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
+        public string Duration { get; set; }
         public bool? FlgOutOverlap { get; set; }
-        public string? BufferStartTime { get; set; }
-        public string? BufferEndTime { get; set; }
+        public string BufferStartTime { get; set; }
+        public string BufferEndTime { get; set; }
         public bool? FlgExpectedIn { get; set; }
         public bool? FlgExpectedOut { get; set; }
-        public string? StartGraceTime { get; set; }
-        public string? EndGraceTime { get; set; }
-        public string? BreakTime { get; set; }
-        public string? CreatedBy { get; set; }
+        public string StartGraceTime { get; set; }
+        public string EndGraceTime { get; set; }
+        public string BreakTime { get; set; }
+        public string CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public string? UpdatedBy { get; set; }
+        public string UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
 
-        public virtual MstShift? Fk { get; set; }
+        public virtual MstShift Fk { get; set; }
     }
 }

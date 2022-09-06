@@ -1,6 +1,7 @@
 ﻿using HCM.API.General;
 using HCM.API.Interfaces.MasterData;
 using HCM.API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HCM.API.Repository.MasterData
 {
@@ -19,7 +20,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.MstPayrolls.ToList();
+                    oList = _DBContext.MstPayrolls.Include(c => c.MstPayrollElements).Include(c => c.MstPayrollPeriods).ToList();
                 });
             }
             catch (Exception ex)
@@ -57,7 +58,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstPayroll.UpdatedDate = DateTime.Now;
+                    oMstPayroll.UpdatedDate = DateTime.Now;                    
                     _DBContext.MstPayrolls.Update(oMstPayroll);
                     _DBContext.SaveChanges();
                     response.Id = 1;

@@ -7,5 +7,7 @@ namespace HCM.API.Interfaces.MasterData
         Task<List<MstLocation>> GetAllData();
         Task<ApiResponseModel> Insert(MstLocation oMstLocation);
         Task<ApiResponseModel> Update(MstLocation oMstLocation);
+        Task<ApiResponseModel> Insert(List<MstLocation> oMstLocation);
+        Task<ApiResponseModel> Update(List<MstLocation> oMstLocation);
     }
 }

@@ -7,5 +7,7 @@ namespace HCM.UI.Interfaces.MasterData
         Task<List<MstGrading>> GetAllData();
         Task<ApiResponseModel> Insert(MstGrading oMstGrading);
         Task<ApiResponseModel> Update(MstGrading oMstGrading);
+        Task<ApiResponseModel> Insert(List<MstGrading> oMstGrading);
+        Task<ApiResponseModel> Update(List<MstGrading> oMstGrading);
     }
 }

@@ -36,7 +36,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    
+                    oMstGratuity.CreateDate = DateTime.Now;
                     _DBContext.MstGratuities.Add(oMstGratuity);
                     _DBContext.SaveChanges();
                     response.Id = 1;
@@ -57,8 +57,11 @@ namespace HCM.API.Repository.MasterData
             try
             {
                 await Task.Run(() =>
-                {                    
-                    _DBContext.MstGratuities.Update(oMstGratuity);
+                {
+                    oMstGratuity.UpdateDate = DateTime.Now;
+                    var Detail = _DBContext.MstGratuityDetails.Where(x => x.Fkid == oMstGratuity.Id).ToList();
+                    _DBContext.MstGratuityDetails.RemoveRange(Detail);
+                    _DBContext.MstGratuities.Update(oMstGratuity);                    
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";

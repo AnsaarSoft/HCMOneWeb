@@ -99,5 +99,65 @@ namespace HCM.UI.Data.MasterData
                 return response;
             }
         }
+
+        public async Task<ApiResponseModel> Insert(List<MstDepartment> oMstDepartment)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                var request = new RestRequest("MasterData/addDeptList", Method.Post);
+                request.AddJsonBody(oMstDepartment);
+                var res = await _restClient.ExecuteAsync(request);
+                if (res.IsSuccessful)
+                {
+                    response.Id = 1;
+                    response.Message = "Saved successfully";
+                    return response;
+                }
+                else
+                {
+                    response.Id = 0;
+                    response.Message = "Failed to save successfully";
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                response.Id = 0;
+                response.Message = "Failed to save successfully";
+                return response;
+            }
+        }
+
+        public async Task<ApiResponseModel> Update(List<MstDepartment> oMstDepartment)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                var request = new RestRequest("MasterData/updateDeptList", Method.Post);
+                request.AddJsonBody(oMstDepartment);
+                var res = await _restClient.ExecuteAsync(request);
+                if (res.IsSuccessful)
+                {
+                    response.Id = 1;
+                    response.Message = "Saved successfully";
+                    return response;
+                }
+                else
+                {
+                    response.Id = 0;
+                    response.Message = "Failed to save successfully";
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                response.Id = 0;
+                response.Message = "Failed to save successfully";
+                return response;
+            }
+        }
     }
 }

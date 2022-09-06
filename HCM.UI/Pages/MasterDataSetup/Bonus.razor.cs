@@ -4,6 +4,7 @@ using HCM.UI.Interfaces.MasterElement;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using Blazored.LocalStorage;
 
 namespace HCM.UI.Pages.MasterDataSetup
 {
@@ -28,6 +29,10 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         [Inject]
         public IMstElement _mstElement { get; set; }
+
+        [Inject]
+        public ILocalStorageService _localStorage { get; set; }
+        private string LoginUser = "";
 
         #endregion
 
@@ -66,11 +71,13 @@ namespace HCM.UI.Pages.MasterDataSetup
                         }
                         else
                         {
+                            oModel.CreatedBy = LoginUser;
                             res = await _mstBonus.Insert(oModel);
                         }
                     }
                     else
                     {
+                        oModel.UpdatedBy = LoginUser;
                         res = await _mstBonus.Update(oModel);
                     }
 
@@ -223,12 +230,20 @@ namespace HCM.UI.Pages.MasterDataSetup
             try
             {
                 Loading = true;
-
-                await SetDocNo();
-                await GetAllBonus();
-                await GetAllLove();
-                await GetAllElement();
-                oModel.FlgActive = true;
+                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                if (Session != null)
+                {
+                    LoginUser = Session.UserCode;
+                    await GetAllBonus();
+                    await SetDocNo();
+                    await GetAllLove();
+                    await GetAllElement();
+                    oModel.FlgActive = true;
+                }
+                else
+                {
+                    Navigation.NavigateTo("/Login", forceLoad: true);
+                }
                 Loading = false;
             }
             catch (Exception ex)

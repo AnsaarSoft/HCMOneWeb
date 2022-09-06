@@ -1,4 +1,5 @@
-﻿using HCM.API.Models;
+﻿using Blazored.LocalStorage;
+using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
@@ -22,6 +23,9 @@ namespace HCM.UI.Pages.MasterDataSetup
         [Inject]
         public IMstGrading _mstGrading { get; set; }
 
+        [Inject]
+        public ILocalStorageService _localStorage { get; set; }
+        private string LoginUser = "";
 
         #endregion
 
@@ -56,10 +60,12 @@ namespace HCM.UI.Pages.MasterDataSetup
                     {
                         if (oModel.Id == 0)
                         {
+                            oModel.CreatedBy = LoginUser;
                             res = await _mstGrading.Insert(oModel);
                         }
                         else
                         {
+                            oModel.UpdatedBy = LoginUser;
                             res = await _mstGrading.Update(oModel);
                         }
                     }
@@ -186,10 +192,19 @@ namespace HCM.UI.Pages.MasterDataSetup
             try
             {
                 Loading = true;
-                oModel.FlgActive = true;
-                oModel.MinSalary = 1;
-                oModel.MaxSalary = 1;
-                await GetAllGradings();
+                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                if (Session != null)
+                {
+                    LoginUser = Session.UserCode;
+                    oModel.FlgActive = true;
+                    oModel.MinSalary = 1;
+                    oModel.MaxSalary = 1;
+                    await GetAllGradings();
+                }
+                else
+                {
+                    Navigation.NavigateTo("/Login", forceLoad: true);
+                }
                 Loading = false;
             }
             catch (Exception ex)
