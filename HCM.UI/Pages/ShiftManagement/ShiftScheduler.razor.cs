@@ -3,6 +3,7 @@ using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.MasterData;
+using HCM.UI.Interfaces.ShiftManagement;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -47,6 +48,9 @@ namespace HCM.UI.Pages.ShiftManagement
 
         [Inject]
         public IMstShifts _mstShift { get; set; }
+
+        [Inject]
+        public ITrnsAttendanceRegister _trnsAttendanceRegister { get; set; }
 
         [Inject]
         public ILocalStorageService _localStorage { get; set; }
@@ -97,8 +101,8 @@ namespace HCM.UI.Pages.ShiftManagement
         private IEnumerable<MstEmployee> oListEmployee = new List<MstEmployee>();
         private IEnumerable<MstEmployee> oListFilteredEmployee = new List<MstEmployee>();
 
-        TrnsAttendanceRegister oModel = new TrnsAttendanceRegister();
-        List<TrnsAttendanceRegister> oListTrnsAttendanceRegister = new List<TrnsAttendanceRegister>();
+        List<TrnsAttendanceRegister> oAttendanceRegisterAddList = new List<TrnsAttendanceRegister>();
+        List<TrnsAttendanceRegister> oAttendanceRegisterUpdateList = new List<TrnsAttendanceRegister>();
         private IEnumerable<TrnsAttendanceRegister> oList = new List<TrnsAttendanceRegister>();
 
         private IEnumerable<MstShift> oListMasterShift = new List<MstShift>();
@@ -111,6 +115,18 @@ namespace HCM.UI.Pages.ShiftManagement
         #endregion
 
         #region Functions
+
+        private async Task GetAllTrnsAttendanceRegister()
+        {
+            try
+            {
+                oList = await _trnsAttendanceRegister.GetAllData();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
 
         private async Task GetAllEmployees()
         {
@@ -540,42 +556,80 @@ namespace HCM.UI.Pages.ShiftManagement
             {
                 Loading = true;
                 await Task.Delay(1);
-                if (oModelCalendar.StartDate >= _dateRange.Start && oModelCalendar.EndDate <= _dateRange.End)
+                if (_dateRange.Start >= oModelCalendar.StartDate && _dateRange.End <= oModelCalendar.EndDate)
                 {
                     foreach (var FilterEmployee in oListFilteredEmployee)
                     {
                         int SelectedShiftCount = 0;
                         if (FilterEmployee.PayrollId > 0)
                         {
-                            oModel.PayrollId = FilterEmployee.PayrollId;
                             for (DateTime x = (DateTime)_dateRange.Start; x <= (DateTime)_dateRange.End; x = x.AddDays(1))
                             {
-                                var PayrollPeriodID = oListPayroll.Where(x => x.Id == FilterEmployee.PayrollId).Select(x => x.MstPayrollPeriods.Select(x => x.Id)).FirstOrDefault();
-
-                                if (Convert.ToInt32(PayrollPeriodID) > 0)
-                                {
-                                    oModel.PeriodId = Convert.ToInt32(PayrollPeriodID);
-                                }
-                                else
+                                var PayrollPeriodID = oListPayroll.Where(x => x.Id == FilterEmployee.PayrollId).Select(b => b.MstPayrollPeriods.Where(c => c.StartDate <= x && x <= c.EndDate).Select(d => d.Id)).FirstOrDefault();
+                                if (Convert.ToInt32(PayrollPeriodID.FirstOrDefault()) == 0)
                                 {
                                     Snackbar.Add($@"Period for Selected Date Range Can't be found", Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
                                     return;
                                 }
                                 if (FilterEmployee.JoiningDate > x) continue;
                                 string DayOfWeek = Convert.ToString(x.DayOfWeek);
-
-                                var CheckPostedEmployee = oList.Where(b => b.EmpId == FilterEmployee.Id && b.Date == x).FirstOrDefault();
-                                if(CheckPostedEmployee != null && (CheckPostedEmployee.FlgProcessed == true || CheckPostedEmployee.FlgPosted == true))
+                                TrnsAttendanceRegister oModelforUpdate = oList.Where(b => b.EmpId == FilterEmployee.Id && b.Date == x).FirstOrDefault();
+                                if (oModelforUpdate != null && (oModelforUpdate.FlgProcessed == true || oModelforUpdate.FlgPosted == true))
                                 {
-                                    Snackbar.Add($@"Shift can not be changed Employee: {FilterEmployee.EmpId} has Attendance Processed/Posted on Date: {x.ToString("MM/dd/yyyy")}", Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });                                    
+                                    Snackbar.Add($@"Shift can not be changed Employee: {FilterEmployee.EmpId} has Attendance Processed/Posted on Date: {x.ToString("MM/dd/yyyy")}", Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
                                     continue;
                                 }
                                 if (SelectedShiftCount == oListSelectedShift.Count())
                                 {
                                     SelectedShiftCount = 0;
                                 }
+                                var FilterSelectedShiftRow = oListSelectedShift.ElementAt(SelectedShiftCount).MstShiftsDetails.Where(x => x.Day == DayOfWeek).FirstOrDefault();
                                 SelectedShiftCount++;
-                                var FilterSelectedShiftRow = oListSelectedShift.ElementAt(SelectedShiftCount).MstShiftsDetails.ToList();
+                                if (oModelforUpdate != null)
+                                {
+                                    oModelforUpdate.PeriodId = Convert.ToInt32(PayrollPeriodID.FirstOrDefault());
+                                    oModelforUpdate.ShiftId = (int)FilterSelectedShiftRow.Fkid;
+                                    oModelforUpdate.DateDay = DayOfWeek;
+                                    if ((string.IsNullOrEmpty(FilterSelectedShiftRow.StartTime) || FilterSelectedShiftRow.StartTime == "00:00")
+                                        && (string.IsNullOrEmpty(FilterSelectedShiftRow.EndTime) || FilterSelectedShiftRow.EndTime == "00:00"))
+                                    {
+                                        oModelforUpdate.FlgOffDay = true;
+                                    }
+                                    else if ((!string.IsNullOrEmpty(FilterSelectedShiftRow.StartTime) || FilterSelectedShiftRow.StartTime != "00:00")
+                                       && (!string.IsNullOrEmpty(FilterSelectedShiftRow.EndTime) || FilterSelectedShiftRow.EndTime != "00:00"))
+                                    {
+                                        oModelforUpdate.FlgOffDay = false;
+                                    }
+
+                                    oModelforUpdate.UpdatedDate = DateTime.Now;
+                                    oModelforUpdate.UpdatedBy = LoginUser;
+                                    oAttendanceRegisterUpdateList.Add(oModelforUpdate);
+                                }
+                                else
+                                {
+                                    TrnsAttendanceRegister oModelforAdd = new TrnsAttendanceRegister();
+                                    oModelforAdd.EmpId = FilterEmployee.Id;
+                                    oModelforAdd.PayrollId = FilterEmployee.PayrollId;
+                                    oModelforAdd.PeriodId = Convert.ToInt32(PayrollPeriodID.FirstOrDefault());
+                                    oModelforAdd.Date = x;
+                                    oModelforAdd.DateDay = DayOfWeek;
+                                    oModelforAdd.ShiftId = (int)FilterSelectedShiftRow.Fkid;
+                                    oModelforAdd.CreatedDate = DateTime.Now;
+                                    oModelforAdd.CreatedBy = LoginUser;
+                                    oModelforAdd.FlgProcessed = false;
+                                    oModelforAdd.FlgPosted = false;
+                                    if ((string.IsNullOrEmpty(FilterSelectedShiftRow.StartTime) || FilterSelectedShiftRow.StartTime == "00:00")
+                                       && (string.IsNullOrEmpty(FilterSelectedShiftRow.EndTime) || FilterSelectedShiftRow.EndTime == "00:00"))
+                                    {
+                                        oModelforAdd.FlgOffDay = true;
+                                    }
+                                    else if ((!string.IsNullOrEmpty(FilterSelectedShiftRow.StartTime) || FilterSelectedShiftRow.StartTime != "00:00")
+                                      && (!string.IsNullOrEmpty(FilterSelectedShiftRow.EndTime) || FilterSelectedShiftRow.EndTime != "00:00"))
+                                    {
+                                        oModelforAdd.FlgOffDay = false;
+                                    }
+                                    oAttendanceRegisterAddList.Add(oModelforAdd);
+                                }
                             }
                         }
                         else
@@ -612,29 +666,24 @@ namespace HCM.UI.Pages.ShiftManagement
                     if (oListSelectedShift.Count() > 0)
                     {
                         await EmployeeValidation();
-                        if (IsEmployeeValidate)
+                        if (oAttendanceRegisterAddList.Count() > 0)
                         {
-                            if (oModel.Id == 0)
-                            {
-                                oModel.CreatedBy = LoginUser;
-                                //res = await _mstEmployeeMaster.Insert(oModel);
-                            }
-                            else
-                            {
-                                oModel.UpdatedBy = LoginUser;
-                                //res = await _mstEmployeeMaster.Update(oModel);
-                            }
+                            res = await _trnsAttendanceRegister.Insert(oAttendanceRegisterAddList);
+                        }
+                        if (oAttendanceRegisterUpdateList.Count() > 0)
+                        {
+                            res = await _trnsAttendanceRegister.Update(oAttendanceRegisterUpdateList);
+                        }
 
-                            if (res != null && res.Id == 1)
-                            {
-                                Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
-                                await Task.Delay(3000);
-                                Navigation.NavigateTo("/ShiftScheduler", forceLoad: true);
-                            }
-                            else
-                            {
-                                Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                            }
+                        if (res != null && res.Id == 1)
+                        {
+                            Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+                            await Task.Delay(3000);
+                            Navigation.NavigateTo("/ShiftScheduler", forceLoad: true);
+                        }
+                        else
+                        {
+                            Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                         }
                     }
                     else
@@ -671,6 +720,7 @@ namespace HCM.UI.Pages.ShiftManagement
                 {
                     LoginUser = Session.UserCode;
                     _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date);
+                    await GetAllTrnsAttendanceRegister();
                     await GetAllEmployees();
                     await GetAllDesignation();
                     await GetAllDepartments();

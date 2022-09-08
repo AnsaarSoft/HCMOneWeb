@@ -2,13 +2,17 @@ using Blazored.LocalStorage;
 using CA.UI.Authentication;
 using HCM.UI;
 using HCM.UI.Data.Account;
+using HCM.UI.Data.Attendance;
 using HCM.UI.Data.EmployeeMasterSetup;
 using HCM.UI.Data.MasterData;
 using HCM.UI.Data.MasterElement;
+using HCM.UI.Data.ShiftManagement;
 using HCM.UI.Interfaces.Account;
+using HCM.UI.Interfaces.Attendance;
 using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
+using HCM.UI.Interfaces.ShiftManagement;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
 using MudBlazor.Services;
@@ -36,6 +40,8 @@ builder.Services.AddMudServices(config =>
 });
 builder.Services.AddScoped<IMstCountryStateCity, MstCountryStateCityService>();
 builder.Services.AddScoped<IMstDepartment, MstDepartmentService>();
+builder.Services.AddScoped<IMstContractor, MstContractorService>();
+builder.Services.AddScoped<IMstStation, MstStationService>();
 builder.Services.AddScoped<IMstDesignation, MstDesignationService>();
 builder.Services.AddScoped<IMstLocation, MstLocationService>();
 builder.Services.AddScoped<IMstPosition, MstPositionService>();
@@ -61,8 +67,8 @@ builder.Services.AddScoped<IMstPayroll, MstPayrollService>();
 builder.Services.AddScoped<IMstGratuity, MstGratuityService>();
 builder.Services.AddScoped<IMstUser, MstUserService>();
 builder.Services.AddScoped<IMstEmployeeMasterData, MstEmployeeMasterDataService>();
-
-
+builder.Services.AddScoped<ITrnsAttendanceRegister, TrnsAttendanceRegisterService>();
+builder.Services.AddScoped<ITrnsTempAttendance, TrnsTempAttendanceService>();
 
 //Configuration Start
 

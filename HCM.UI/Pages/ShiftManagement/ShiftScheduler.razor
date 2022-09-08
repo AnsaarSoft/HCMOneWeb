@@ -69,6 +69,7 @@
                             <MudTextField T="string" @bind-Value="searchStringFilteredEmployee" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
                         </ToolBarContent>
                         <HeaderContent>
+                            <MudTh>Delete</MudTh>
                             <MudTh>Employee Code</MudTh>
                             <MudTh>Employee Name</MudTh>
                             <MudTh>Payroll</MudTh>
@@ -76,9 +77,9 @@
                             <MudTh>Department</MudTh>
                             <MudTh>Location</MudTh>
                             <MudTh>Branch</MudTh>
-                            <MudTh>Delete</MudTh>
                         </HeaderContent>
                         <RowTemplate>
+                            <MudTd DataLabel="Action"><MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteFromFilter(context.Id) )" Title="Delete"></MudIconButton></MudTd>
                             <MudTd DataLabel="Department Code">@context.EmpId</MudTd>
                             <MudTd DataLabel="Department Name">@context.FirstName @context.MiddleName @context.LastName</MudTd>
                             <MudTd DataLabel="Active">@context.PayrollName</MudTd>                            
@@ -86,7 +87,6 @@
                             <MudTd DataLabel="Active">@context.DepartmentName</MudTd>                            
                             <MudTd DataLabel="Active">@context.LocationName</MudTd>                            
                             <MudTd DataLabel="Active">@context.BranchName</MudTd>     
-                            <MudTd DataLabel="Action"><MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteFromFilter(context.Id) )" Title="Delete"></MudIconButton></MudTd>
                         </RowTemplate>
                         <PagerContent>
                             <MudTablePager />

@@ -32,11 +32,13 @@ namespace HCM.API.Controllers
         private IMstBonus _mstBonus;
         private IMstGratuity _mstGratuity;
         private IMstCountryStateCity _mstCountryStateCity;
+        private IMstContractor _mstContractor;
+        private IMstStation _mstStation;
 
         public MasterDataController(IMstDepartment mstDepartment, IMstDesignation mstDesignation, IMstLocation mstLocation, IMstPosition mstPosition, IMstBranch mstBranch, IMstGrading mstGrading, IMstCalendar mstCalendar,
             IMstLeaveCalendar mstLeaveCalendar, IMstEmailConfig mstEmailConfig, IMstPayrollinit mstPayrollinit, IMstLoans mstLoans, IMstShifts mstShift, IMstAdvance mstAdvance, IMstLeaveDeduction mstLeaveDeduction,
-            IMstLeaveType mstLeaveType, IMstDeductionRule mstDeductionRule, IMstAttendanceRules mstAttendanceRule, IMstTaxSetup mstTaxSetup, 
-            IMstPayroll mstPayrollSetup, IMstBonus mstBonus,IMstGratuity mstGratuity, IMstCountryStateCity mstCountryStateCity)
+            IMstLeaveType mstLeaveType, IMstDeductionRule mstDeductionRule, IMstAttendanceRules mstAttendanceRule, IMstTaxSetup mstTaxSetup, IMstPayroll mstPayrollSetup, IMstBonus mstBonus, IMstGratuity mstGratuity,
+            IMstCountryStateCity mstCountryStateCity, IMstContractor mstContractor, IMstStation mstStation)
         {
             _mstDepartment = mstDepartment;
             _mstDesignation = mstDesignation;
@@ -61,9 +63,11 @@ namespace HCM.API.Controllers
             _mstBonus = mstBonus;
             _mstGratuity = mstGratuity;
             _mstCountryStateCity = mstCountryStateCity;
+            _mstContractor = mstContractor;
+            _mstStation = mstStation;
         }
 
-        #region Mst COuntry State City
+        #region Mst Country State City
 
         [Route("getAllCountryStateCity")]
         [HttpGet]
@@ -80,6 +84,254 @@ namespace HCM.API.Controllers
                 else
                 {
                     return Ok(oMstCountry);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
+
+        #region MST Contractor
+
+        [Route("getAllContractor")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllContractor()
+        {
+            List<MstContractor> oMstContractor = new List<MstContractor>();
+            try
+            {
+                oMstContractor = await _mstContractor.GetAllData();
+                if (oMstContractor == null)
+                {
+                    return BadRequest(oMstContractor);
+                }
+                else
+                {
+                    return Ok(oMstContractor);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addContractor")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstContractor pMstContractor)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstContractor.Insert(pMstContractor);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateContractor")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstContractor pMstContractor)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstContractor.Update(pMstContractor);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addContractorList")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] List<MstContractor> pMstContractor)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstContractor.Insert(pMstContractor);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateContractorList")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] List<MstContractor> pMstContractor)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstContractor.Update(pMstContractor);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
+
+        #region MST Station
+
+        [Route("getAllStation")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllStation()
+        {
+            List<MstStation> oMstStation = new List<MstStation>();
+            try
+            {
+                oMstStation = await _mstStation.GetAllData();
+                if (oMstStation == null)
+                {
+                    return BadRequest(oMstStation);
+                }
+                else
+                {
+                    return Ok(oMstStation);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addStation")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstStation pMstStation)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstStation.Insert(pMstStation);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateStation")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstStation pMstStation)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstStation.Update(pMstStation);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addStationList")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] List<MstStation> pMstStation)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstStation.Insert(pMstStation);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateStationList")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] List<MstStation> pMstStation)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstStation.Update(pMstStation);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
                 }
             }
             catch (Exception ex)
@@ -1446,7 +1698,7 @@ namespace HCM.API.Controllers
                 return BadRequest("Something went wrong.");
             }
         }
-                
+
         [Route("addLeaveType")]
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] MstLeaveType pMstLeaveType)
@@ -1470,7 +1722,7 @@ namespace HCM.API.Controllers
                 return BadRequest("Something went wrong.");
             }
         }
-        
+
         [Route("updateLeaveType")]
         [HttpPost]
         public async Task<IActionResult> Update([FromBody] MstLeaveType pMstLeaveType)
@@ -1947,7 +2199,7 @@ namespace HCM.API.Controllers
                 return BadRequest("Something went wrong.");
             }
         }
-        
+
         #endregion
     }
 }

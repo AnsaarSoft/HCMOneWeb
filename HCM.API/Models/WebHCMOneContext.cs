@@ -31,6 +31,7 @@ namespace HCM.API.Models
         public virtual DbSet<MstBranch> MstBranches { get; set; }
         public virtual DbSet<MstCalendar> MstCalendars { get; set; }
         public virtual DbSet<MstCity> MstCities { get; set; }
+        public virtual DbSet<MstContractor> MstContractors { get; set; }
         public virtual DbSet<MstCountry> MstCountries { get; set; }
         public virtual DbSet<MstDeductionRule> MstDeductionRules { get; set; }
         public virtual DbSet<MstDepartment> MstDepartments { get; set; }
@@ -58,6 +59,7 @@ namespace HCM.API.Models
         public virtual DbSet<MstShift> MstShifts { get; set; }
         public virtual DbSet<MstShiftsDetail> MstShiftsDetails { get; set; }
         public virtual DbSet<MstState> MstStates { get; set; }
+        public virtual DbSet<MstStation> MstStations { get; set; }
         public virtual DbSet<MstTaxSetup> MstTaxSetups { get; set; }
         public virtual DbSet<MstTaxSetupDetail> MstTaxSetupDetails { get; set; }
         public virtual DbSet<MstUser> MstUsers { get; set; }
@@ -458,6 +460,27 @@ namespace HCM.API.Models
                     .HasForeignKey(d => d.CountryId)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_MstCity_MstCountry");
+            });
+
+            modelBuilder.Entity<MstContractor>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Code).HasMaxLength(20);
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Description)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<MstCountry>(entity =>
@@ -1812,6 +1835,27 @@ namespace HCM.API.Models
                     .HasForeignKey(d => d.CountryId)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_MstStates_MstCountry");
+            });
+
+            modelBuilder.Entity<MstStation>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Code).HasMaxLength(20);
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Description)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<MstTaxSetup>(entity =>

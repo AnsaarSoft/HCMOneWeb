@@ -38,6 +38,12 @@ namespace HCM.UI.Pages.MasterDataSetup
         public IMstDepartment _mstDepartment { get; set; }
 
         [Inject]
+        public IMstContractor _mstContractor { get; set; }
+
+        [Inject]
+        public IMstStation _mstStation { get; set; }
+
+        [Inject]
         public IMstDesignation _mstDesignation { get; set; }
 
         [Inject]
@@ -77,6 +83,24 @@ namespace HCM.UI.Pages.MasterDataSetup
         List<MstDepartment> oListDepartmentGridTemp = new List<MstDepartment>();
         private IEnumerable<MstDepartment> oListDepartmentGrid = new List<MstDepartment>();
         private IEnumerable<MstDepartment> oListDepartment = new List<MstDepartment>();
+
+        private string searchStringContractor = "";
+        private bool FilterFuncContractor(MstContractor element) => FilterFuncContractor(element, searchStringContractor);
+        MstContractor oModelContractor = new MstContractor();
+        List<MstContractor> oContractorAddList = new List<MstContractor>();
+        List<MstContractor> oContractorUpdateList = new List<MstContractor>();
+        List<MstContractor> oListContractorGridTemp = new List<MstContractor>();
+        private IEnumerable<MstContractor> oListContractorGrid = new List<MstContractor>();
+        private IEnumerable<MstContractor> oListContractor = new List<MstContractor>();
+
+        private string searchStringStation = "";
+        private bool FilterFuncStation(MstStation element) => FilterFuncStation(element, searchStringStation);
+        MstStation oModelStation = new MstStation();
+        List<MstStation> oStationAddList = new List<MstStation>();
+        List<MstStation> oStationUpdateList = new List<MstStation>();
+        List<MstStation> oListStationGridTemp = new List<MstStation>();
+        private IEnumerable<MstStation> oListStationGrid = new List<MstStation>();
+        private IEnumerable<MstStation> oListStation = new List<MstStation>();
 
         private IEnumerable<MstUser> oListUser = new List<MstUser>();
         private IEnumerable<MstPayroll> oListPayroll = new List<MstPayroll>();
@@ -161,27 +185,35 @@ namespace HCM.UI.Pages.MasterDataSetup
                             {
                                 await FillDepartmentTemplateGrid();
                             }
-                            else if (ModuleType == 2)//Designation
+                            else if (ModuleType == 2)//Contractor
+                            {
+                                await FillContractorTemplateGrid();
+                            }
+                            else if (ModuleType == 3)//Station
+                            {
+                                await FillStationTemplateGrid();
+                            }
+                            else if (ModuleType == 4)//Designation
                             {
                                 await FillDesignationTemplateGrid();
                             }
-                            else if (ModuleType == 3)//Location
+                            else if (ModuleType == 5)//Location
                             {
                                 await FillLocationTemplateGrid();
                             }
-                            else if (ModuleType == 4)//Position
+                            else if (ModuleType == 6)//Position
                             {
                                 await FillPositionTemplateGrid();
                             }
-                            else if (ModuleType == 5)//Branch
+                            else if (ModuleType == 7)//Branch
                             {
                                 await FillBranchTemplateGrid();
                             }
-                            else if (ModuleType == 6)//Grading
+                            else if (ModuleType == 8)//Grading
                             {
                                 await FillGradingTemplateGrid();
                             }
-                            else if (ModuleType == 7)//Mst Employee
+                            else if (ModuleType == 9)//Mst Employee
                             {                                
                                 await FillMstEmployeeTemplateGrid();
                             }
@@ -217,27 +249,35 @@ namespace HCM.UI.Pages.MasterDataSetup
                     {
                         await DepartmentTemplate();
                     }
-                    else if (ModuleType == 2)//Designation
+                    else if (ModuleType == 2)//Contractor
+                    {
+                        await ContractorTemplate();
+                    }
+                    else if (ModuleType == 3)//Station
+                    {
+                        await StationTemplate();
+                    }
+                    else if (ModuleType == 4)//Designation
                     {
                         await DesignationTemplate();
                     }
-                    else if (ModuleType == 3)//Location
+                    else if (ModuleType == 5)//Location
                     {
                         await LocationTemplate();
                     }
-                    else if (ModuleType == 4)//Position
+                    else if (ModuleType == 6)//Position
                     {
                         await PositionTemplate();
                     }
-                    else if (ModuleType == 5)//Branch
+                    else if (ModuleType == 7)//Branch
                     {
                         await BranchTemplate();
                     }
-                    else if (ModuleType == 6)//Grading
+                    else if (ModuleType == 8)//Grading
                     {
                         await GradingTemplate();
                     }
-                    else if (ModuleType == 7)//Mst Employee
+                    else if (ModuleType == 9)//Mst Employee
                     {
                         await MstEmployeeTemplate();
                     }
@@ -435,6 +475,372 @@ namespace HCM.UI.Pages.MasterDataSetup
                 using var workBook = new XLWorkbook();
                 var ws = workBook.Worksheets.Add(FileName);
                 Type type = typeof(MstDepartment);
+
+                int NumberOfRecords = type.GetProperties().Length;
+                for (int i = 1; i <= NumberOfRecords - 1; i++)
+                {
+                    var PropertyName = type.GetProperties()[i].Name;
+                    ws.Cell(1, i).Value = PropertyName;
+                    ws.Cell(1, i).Style.Border.OutsideBorder = XLBorderStyleValues.Double;
+                }
+                //workBook.SaveAs(excelFilePath); 
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    //Save the created Excel document to MemoryStream.
+                    workBook.SaveAs(stream);
+                    await JS.SaveAs(FileName + ".xlsx", stream.ToArray());
+                }
+                Snackbar.Add("Template saved: " + excelFilePath, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+            Loading = false;
+        }
+
+        #endregion
+
+        #region Mst Contractor
+        private async Task GetAllContractors()
+        {
+            try
+            {
+                oListContractor = await _mstContractor.GetAllData();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncContractor(MstContractor element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchStringContractor))
+                return true;
+            if (element.Description.Contains(searchStringContractor, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.FlgActive.Equals(searchStringContractor))
+                return true;
+            return false;
+        }
+        private async Task FillContractorTemplateGrid()
+        {
+            try
+            {
+                Loading = true;
+                _ = InvokeAsync(StateHasChanged);
+                await Task.Delay(1);
+                bool IsForUpdate = false;
+                var TemplateFile = excelSheet.Select(x => x.Name).FirstOrDefault();
+                TemplateFile = Path.GetFullPath("wwwroot\\Templates\\" + TemplateFile);
+                if (!string.IsNullOrWhiteSpace(TemplateFile))
+                {
+                    Stream stream = excelSheet.FirstOrDefault().OpenReadStream();
+                    FileStream fs = File.Create(TemplateFile);
+                    await stream.CopyToAsync(fs);
+                    stream.Close();
+                    fs.Close();
+                    using var workBook = new XLWorkbook(TemplateFile);
+                    var ws = workBook.Worksheet("ContractorTemplate");
+
+                    Type type = typeof(MstContractor);
+                    int NumberOfRecords = type.GetProperties().Length;
+                    for (int i = 2; i <= ws.Rows().Count(); i++)
+                    {
+                        IsForUpdate = false;
+                        oModelContractor = new MstContractor();
+                        for (int j = 1; j < ws.Rows().Cells().Count(); j++)
+                        {
+                            if (NumberOfRecords == j)//Read column only based on Model Properties
+                            {
+                                break;
+                            }
+                            string PropertyName = type.GetProperties()[j].Name;
+
+                            PropertyInfo PropertyInfo = type.GetProperties()[j];
+
+                            var CreatingDynamicModel = "oModelContractor." + PropertyName;
+
+                            if (PropertyInfo.PropertyType == typeof(string))
+                            {
+                                var StringValue = ws.Cell(i, j).Value.ToString();
+                                if (StringValue == null)
+                                {
+                                    StringValue = "";
+                                }
+                                else if (string.IsNullOrWhiteSpace(StringValue) && PropertyName == "Code")
+                                {
+                                    //Skip the line if Code is Null or Empty
+                                    break;
+                                }
+                                else if (!Regex.IsMatch(StringValue, AlphanumericMask) && PropertyName == "Code")
+                                {
+                                    //Skip the line if Code has special character
+                                    break;
+                                }
+                                else if (StringValue.Contains("Null", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    //Skip the line if Code has Null String
+                                    break;
+                                }
+                                //Check for Add and Update
+                                if (!string.IsNullOrWhiteSpace(StringValue) && PropertyName == "Code")
+                                {
+                                    var CheckList = oListContractor.Where(x => x.Code == StringValue).FirstOrDefault();
+                                    if (CheckList != null)
+                                    {
+                                        oModelContractor.Id = CheckList.Id;
+                                        IsForUpdate = true;
+                                    }
+                                }
+                                oModelContractor.GetType().GetProperty(PropertyName).SetValue(oModelContractor, StringValue, null);
+                                continue;
+                            }
+                            else if (PropertyInfo.PropertyType == typeof(Nullable<bool>))
+                            {
+                                var BoolValue = Convert.ToBoolean(ws.Cell(i, j).Value.ToString());
+                                oModelContractor.GetType().GetProperty(PropertyName).SetValue(oModelContractor, BoolValue, null);
+                                continue;
+                            }
+                            else if (PropertyInfo.PropertyType == typeof(Nullable<DateTime>))
+                            {
+                                var DatetimeValue = Convert.ToDateTime(ws.Cell(i, j).Value.ToString());
+                                oModelContractor.GetType().GetProperty(PropertyName).SetValue(oModelContractor, DatetimeValue, null);
+                                continue;
+                            }
+                        }
+                        if (!string.IsNullOrWhiteSpace(oModelContractor.Code) && !IsForUpdate)
+                        {
+                            var CheckDuplicate = oContractorAddList.Where(x => x.Code == oModelContractor.Code).FirstOrDefault();
+                            if (CheckDuplicate == null)
+                            {
+                                oContractorAddList.Add(oModelContractor);
+                            }
+                        }
+                        else if (!string.IsNullOrWhiteSpace(oModelContractor.Code) && IsForUpdate)
+                        {
+                            var CheckDuplicate = oContractorUpdateList.Where(x => x.Code == oModelContractor.Code).FirstOrDefault();
+                            if (CheckDuplicate == null)
+                            {
+                                oContractorUpdateList.Add(oModelContractor);
+                            }
+                        }
+
+                    }
+                    if (oContractorUpdateList.Count >= 0 && oContractorAddList.Count >= 0)
+                    {
+                        oListContractorGridTemp.AddRange(oContractorAddList);
+                        oListContractorGridTemp.AddRange(oContractorUpdateList);
+                    }
+                    //else if(!IsForUpdate && oContractorAddList.Count > 0)
+                    //{
+                    //        oListContractorGridTemp.AddRange(oContractorAddList);
+                    //}
+                    oListContractorGrid = oListContractorGridTemp;
+                    File.Delete(TemplateFile);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+            Loading = false;
+            _ = InvokeAsync(StateHasChanged);
+        }
+        private async Task ContractorTemplate()
+        {
+            try
+            {
+                await Task.Delay(1);
+                string FileName = "ContractorTemplate";
+                //string excelFilePath = "..\\wwwroot\\Templates\\" + FileName + ".xlsx";
+                string excelFilePath = Path.GetFullPath("wwwroot\\Templates\\" + FileName + ".xlsx");
+                using var workBook = new XLWorkbook();
+                var ws = workBook.Worksheets.Add(FileName);
+                Type type = typeof(MstContractor);
+
+                int NumberOfRecords = type.GetProperties().Length;
+                for (int i = 1; i <= NumberOfRecords - 1; i++)
+                {
+                    var PropertyName = type.GetProperties()[i].Name;
+                    ws.Cell(1, i).Value = PropertyName;
+                    ws.Cell(1, i).Style.Border.OutsideBorder = XLBorderStyleValues.Double;
+                }
+                //workBook.SaveAs(excelFilePath); 
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    //Save the created Excel document to MemoryStream.
+                    workBook.SaveAs(stream);
+                    await JS.SaveAs(FileName + ".xlsx", stream.ToArray());
+                }
+                Snackbar.Add("Template saved: " + excelFilePath, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+            Loading = false;
+        }
+
+        #endregion
+
+        #region Mst Station
+        private async Task GetAllStations()
+        {
+            try
+            {
+                oListStation = await _mstStation.GetAllData();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncStation(MstStation element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchStringStation))
+                return true;
+            if (element.Description.Contains(searchStringStation, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.FlgActive.Equals(searchStringStation))
+                return true;
+            return false;
+        }
+        private async Task FillStationTemplateGrid()
+        {
+            try
+            {
+                Loading = true;
+                _ = InvokeAsync(StateHasChanged);
+                await Task.Delay(1);
+                bool IsForUpdate = false;
+                var TemplateFile = excelSheet.Select(x => x.Name).FirstOrDefault();
+                TemplateFile = Path.GetFullPath("wwwroot\\Templates\\" + TemplateFile);
+                if (!string.IsNullOrWhiteSpace(TemplateFile))
+                {
+                    Stream stream = excelSheet.FirstOrDefault().OpenReadStream();
+                    FileStream fs = File.Create(TemplateFile);
+                    await stream.CopyToAsync(fs);
+                    stream.Close();
+                    fs.Close();
+                    using var workBook = new XLWorkbook(TemplateFile);
+                    var ws = workBook.Worksheet("StationTemplate");
+
+                    Type type = typeof(MstStation);
+                    int NumberOfRecords = type.GetProperties().Length;
+                    for (int i = 2; i <= ws.Rows().Count(); i++)
+                    {
+                        IsForUpdate = false;
+                        oModelStation = new MstStation();
+                        for (int j = 1; j < ws.Rows().Cells().Count(); j++)
+                        {
+                            if (NumberOfRecords == j)//Read column only based on Model Properties
+                            {
+                                break;
+                            }
+                            string PropertyName = type.GetProperties()[j].Name;
+
+                            PropertyInfo PropertyInfo = type.GetProperties()[j];
+
+                            var CreatingDynamicModel = "oModelStation." + PropertyName;
+
+                            if (PropertyInfo.PropertyType == typeof(string))
+                            {
+                                var StringValue = ws.Cell(i, j).Value.ToString();
+                                if (StringValue == null)
+                                {
+                                    StringValue = "";
+                                }
+                                else if (string.IsNullOrWhiteSpace(StringValue) && PropertyName == "Code")
+                                {
+                                    //Skip the line if Code is Null or Empty
+                                    break;
+                                }
+                                else if (!Regex.IsMatch(StringValue, AlphanumericMask) && PropertyName == "Code")
+                                {
+                                    //Skip the line if Code has special character
+                                    break;
+                                }
+                                else if (StringValue.Contains("Null", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    //Skip the line if Code has Null String
+                                    break;
+                                }
+                                //Check for Add and Update
+                                if (!string.IsNullOrWhiteSpace(StringValue) && PropertyName == "Code")
+                                {
+                                    var CheckList = oListStation.Where(x => x.Code == StringValue).FirstOrDefault();
+                                    if (CheckList != null)
+                                    {
+                                        oModelStation.Id = CheckList.Id;
+                                        IsForUpdate = true;
+                                    }
+                                }
+                                oModelStation.GetType().GetProperty(PropertyName).SetValue(oModelStation, StringValue, null);
+                                continue;
+                            }
+                            else if (PropertyInfo.PropertyType == typeof(Nullable<bool>))
+                            {
+                                var BoolValue = Convert.ToBoolean(ws.Cell(i, j).Value.ToString());
+                                oModelStation.GetType().GetProperty(PropertyName).SetValue(oModelStation, BoolValue, null);
+                                continue;
+                            }
+                            else if (PropertyInfo.PropertyType == typeof(Nullable<DateTime>))
+                            {
+                                var DatetimeValue = Convert.ToDateTime(ws.Cell(i, j).Value.ToString());
+                                oModelStation.GetType().GetProperty(PropertyName).SetValue(oModelStation, DatetimeValue, null);
+                                continue;
+                            }
+                        }
+                        if (!string.IsNullOrWhiteSpace(oModelStation.Code) && !IsForUpdate)
+                        {
+                            var CheckDuplicate = oStationAddList.Where(x => x.Code == oModelStation.Code).FirstOrDefault();
+                            if (CheckDuplicate == null)
+                            {
+                                oStationAddList.Add(oModelStation);
+                            }
+                        }
+                        else if (!string.IsNullOrWhiteSpace(oModelStation.Code) && IsForUpdate)
+                        {
+                            var CheckDuplicate = oStationUpdateList.Where(x => x.Code == oModelStation.Code).FirstOrDefault();
+                            if (CheckDuplicate == null)
+                            {
+                                oStationUpdateList.Add(oModelStation);
+                            }
+                        }
+
+                    }
+                    if (oStationUpdateList.Count >= 0 && oStationAddList.Count >= 0)
+                    {
+                        oListStationGridTemp.AddRange(oStationAddList);
+                        oListStationGridTemp.AddRange(oStationUpdateList);
+                    }
+                    //else if(!IsForUpdate && oStationAddList.Count > 0)
+                    //{
+                    //        oListStationGridTemp.AddRange(oStationAddList);
+                    //}
+                    oListStationGrid = oListStationGridTemp;
+                    File.Delete(TemplateFile);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+            Loading = false;
+            _ = InvokeAsync(StateHasChanged);
+        }
+        private async Task StationTemplate()
+        {
+            try
+            {
+                await Task.Delay(1);
+                string FileName = "StationTemplate";
+                //string excelFilePath = "..\\wwwroot\\Templates\\" + FileName + ".xlsx";
+                string excelFilePath = Path.GetFullPath("wwwroot\\Templates\\" + FileName + ".xlsx");
+                using var workBook = new XLWorkbook();
+                var ws = workBook.Worksheets.Add(FileName);
+                Type type = typeof(MstStation);
 
                 int NumberOfRecords = type.GetProperties().Length;
                 for (int i = 1; i <= NumberOfRecords - 1; i++)
@@ -1699,7 +2105,29 @@ namespace HCM.UI.Pages.MasterDataSetup
                             res = await _mstDepartment.Update(oDepartmentUpdateList);
                         }
                     }
-                    else if (ModuleType == 2) //Designation
+                    else if (ModuleType == 2) //Contractor
+                    {
+                        if (oContractorAddList.Count > 0)
+                        {
+                            res = await _mstContractor.Insert(oContractorAddList);
+                        }
+                        if (oContractorUpdateList.Count > 0)
+                        {
+                            res = await _mstContractor.Update(oContractorUpdateList);
+                        }
+                    }
+                    else if (ModuleType == 3) //Station
+                    {
+                        if (oStationAddList.Count > 0)
+                        {
+                            res = await _mstStation.Insert(oStationAddList);
+                        }
+                        if (oStationUpdateList.Count > 0)
+                        {
+                            res = await _mstStation.Update(oStationUpdateList);
+                        }
+                    }
+                    else if (ModuleType == 4) //Designation
                     {
                         if (oDesignationAddList.Count > 0)
                         {
@@ -1710,7 +2138,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                             res = await _mstDesignation.Update(oDesignationUpdateList);
                         }
                     }
-                    else if (ModuleType == 3) //Location
+                    else if (ModuleType == 5) //Location
                     {
                         if (oLocationAddList.Count > 0)
                         {
@@ -1721,7 +2149,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                             res = await _mstLocation.Update(oLocationUpdateList);
                         }
                     }
-                    else if (ModuleType == 4) //Position
+                    else if (ModuleType == 6) //Position
                     {
                         if (oPositionAddList.Count > 0)
                         {
@@ -1732,7 +2160,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                             res = await _mstPosition.Update(oPositionUpdateList);
                         }
                     }
-                    else if (ModuleType == 5) //Branch
+                    else if (ModuleType == 7) //Branch
                     {
                         if (oBranchAddList.Count > 0)
                         {
@@ -1743,7 +2171,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                             res = await _mstBranch.Update(oBranchUpdateList);
                         }
                     }
-                    else if (ModuleType == 6) //Grading
+                    else if (ModuleType == 8) //Grading
                     {
                         if (oGradingAddList.Count > 0)
                         {
@@ -1754,7 +2182,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                             res = await _mstGrading.Update(oGradingUpdateList);
                         }
                     }
-                    else if (ModuleType == 7) //Mst Employee
+                    else if (ModuleType == 9) //Mst Employee
                     {
                         if (oMstEmployeeAddList.Count > 0)
                         {
@@ -1807,6 +2235,8 @@ namespace HCM.UI.Pages.MasterDataSetup
                     await GetAllUsers();
                     await GetAllPayroll();
                     await GetAllDepartments();
+                    await GetAllContractors();
+                    await GetAllStations();
                     await GetAllDesignation();
                     await GetAllLocation();
                     await GetAllPosition();

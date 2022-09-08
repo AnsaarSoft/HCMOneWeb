@@ -17,13 +17,15 @@
                 <MudItem xs="4" sm="4" md="4" lg="4">
                     <MudSelect @bind-Value="ModuleType" Label="Module Type" HelperText="Select Module" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                         <MudSelectItem Value="1">Department</MudSelectItem>
-                        <MudSelectItem Value="2">Designation</MudSelectItem>
-                        <MudSelectItem Value="3">Location</MudSelectItem>
-                        <MudSelectItem Value="4">Position</MudSelectItem>
-                        <MudSelectItem Value="5">Branch</MudSelectItem>
-                        <MudSelectItem Value="6">Grading</MudSelectItem>
-                        <MudSelectItem Value="7">Employee Master</MudSelectItem>
-                        </MudSelect>
+                        <MudSelectItem Value="2">Contractor</MudSelectItem>
+                        <MudSelectItem Value="3">Station</MudSelectItem>
+                        <MudSelectItem Value="4">Designation</MudSelectItem>
+                        <MudSelectItem Value="5">Location</MudSelectItem>
+                        <MudSelectItem Value="6">Position</MudSelectItem>
+                        <MudSelectItem Value="7">Branch</MudSelectItem>
+                        <MudSelectItem Value="8">Grading</MudSelectItem>
+                        <MudSelectItem Value="9">Employee Master</MudSelectItem>
+                    </MudSelect>
                 </MudItem>
                  <MudItem xs="3" sm="3" md="3" lg="3">
                     <InputFile id="excelFile" OnChange="UploadFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden multiple="false" />
@@ -91,6 +93,56 @@
                     }    
                     else if(ModuleType == 2)
                     {
+                        <MudTable Items="@oListContractorGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstContractor,bool>(FilterFuncContractor)">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Contractor</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchStringContractor" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Contractor Code</MudTh>
+                            <MudTh>Contractor Name</MudTh>
+                            <MudTh>Active</MudTh>
+                            @*<MudTh>Result</MudTh>*@
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Contractor Code">@context.Code</MudTd>
+                            <MudTd DataLabel="Contractor Name">@context.Description</MudTd>
+                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                            @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                    } 
+                    else if(ModuleType == 3)
+                    {
+                        <MudTable Items="@oListStationGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstStation,bool>(FilterFuncStation)">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Station</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchStringStation" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Station Code</MudTh>
+                            <MudTh>Station Name</MudTh>
+                            <MudTh>Active</MudTh>
+                            @*<MudTh>Result</MudTh>*@
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Station Code">@context.Code</MudTd>
+                            <MudTd DataLabel="Station Name">@context.Description</MudTd>
+                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                            @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                    } 
+                    else if(ModuleType == 4)
+                    {
                         <MudTable Items="@oListDesignationGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstDesignation,bool>(FilterFuncDesignation)">
                         <ToolBarContent>
                             <MudText Typo="Typo.h6">Designation</MudText>
@@ -114,7 +166,7 @@
                         </PagerContent>
                     </MudTable>
                     }       
-                    else if(ModuleType == 3)
+                    else if(ModuleType == 5)
                     {
                         <MudTable Items="@oListLocationGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstLocation,bool>(FilterFuncLocation)">
                         <ToolBarContent>
@@ -139,7 +191,7 @@
                         </PagerContent>
                     </MudTable>
                     }  
-                    else if(ModuleType == 4)
+                    else if(ModuleType == 6)
                     {
                         <MudTable Items="@oListPositionGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstPosition,bool>(FilterFuncPosition)">
                         <ToolBarContent>
@@ -164,7 +216,7 @@
                         </PagerContent>
                     </MudTable>
                     }  
-                    else if(ModuleType == 5)
+                    else if(ModuleType == 7)
                     {
                         <MudTable Items="@oListBranchGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstBranch,bool>(FilterFuncBranch)">
                         <ToolBarContent>
@@ -189,7 +241,7 @@
                         </PagerContent>
                     </MudTable>
                     }  
-                    else if(ModuleType == 6)
+                    else if(ModuleType == 8)
                     {
                         <MudTable Items="@oListGradingGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstGrading,bool>(FilterFuncGrading)">
                         <ToolBarContent>
@@ -218,7 +270,7 @@
                         </PagerContent>
                     </MudTable>
                     }
-                    else if(ModuleType == 7)
+                    else if(ModuleType == 9)
                     {
                         <MudTable Items="@oListMstEmployeeGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstEmployee,bool>(FilterFuncMstEmployee)">
                         <ToolBarContent>
