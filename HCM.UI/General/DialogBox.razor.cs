@@ -41,6 +41,9 @@ namespace HCM.UI.General
         public IMstEmployeeMasterData _mstEmployee { get; set; }
 
         [Inject]
+        public ITrnsEmployeeTransfer _trnsEmployeeTransfer { get; set; }
+
+        [Inject]
         public ITrnsLeaveRequest _trnsLeavesRequest { get; set; }
 
         [Inject]
@@ -68,6 +71,7 @@ namespace HCM.UI.General
         private bool FilterFuncPayrollSetup(CfgPayrollDefination element) => FilterFuncPayrollSetup(element, searchString1);
         private bool FilterFuncGratuitySetup(MstGratuity element) => FilterFuncGratuitySetup(element, searchString1);
         private bool FilterFuncMstEmployee(MstEmployee element) => FilterFuncMstEmployee(element, searchString1);
+        private bool FilterFuncTrnsEmployeeTransfer(TrnsEmployeeTransfer element) => FilterFuncTrnsEmployeeTransfer(element, searchString1);
         private bool FilterFuncTrnsLeavesRequest(TrnsLeavesRequest element) => FilterFuncTrnsLeavesRequest(element, searchString1);
         private bool FilterFuncTrnsLoanRequest(TrnsLoanRequest element) => FilterFuncTrnsLoanRequest(element, searchString1);
 
@@ -97,6 +101,10 @@ namespace HCM.UI.General
         private MudTable<MstEmployee> _tableMstEmployee;
         MstEmployee oModelMstEmployee = new MstEmployee();
         List<MstEmployee> oListMstEmployee = new List<MstEmployee>();
+
+        private MudTable<TrnsEmployeeTransfer> _tableTrnsEmployeeTransfer;
+        TrnsEmployeeTransfer oModelTrnsEmployeeTransfer = new TrnsEmployeeTransfer();
+        List<TrnsEmployeeTransfer> oListTrnsEmployeeTransfer = new List<TrnsEmployeeTransfer>();
 
         private MudTable<TrnsLeavesRequest> _tableTrnsLeavesRequest;
         TrnsLeavesRequest oModelTrnsLeavesRequest = new TrnsLeavesRequest();
@@ -302,6 +310,34 @@ namespace HCM.UI.General
             return false;
         }
 
+        private async Task GetAllTrnsEmployeeTransfer()
+        {
+            try
+            {
+                oListTrnsEmployeeTransfer = await _trnsEmployeeTransfer.GetAllData();
+                if (oListTrnsEmployeeTransfer?.Count == 0 || oListTrnsEmployeeTransfer == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncTrnsEmployeeTransfer(TrnsEmployeeTransfer element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.DoNum.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.DocStatus.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.DocDate.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
+        }
+
         private async Task GetAllTrnsLeavesRequest()
         {
             try
@@ -406,6 +442,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "EmployeeMaster")
                 {
                     await GetAllMstEmployee();
+                }
+                else if (DialogFor == "TrnsEmployeeTransfer")
+                {
+                    await GetAllTrnsEmployeeTransfer();
                 }
                 else if (DialogFor == "LeaveRequest")
                 {
@@ -616,6 +656,38 @@ namespace HCM.UI.General
             }
         }
 
+        public void RowClickEventTrnsEmployeeTransfer(TableRowClickEventArgs<TrnsEmployeeTransfer> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncTrnsEmployeeTransfer(TrnsEmployeeTransfer element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableTrnsEmployeeTransfer.SelectedItem != null && _tableTrnsEmployeeTransfer.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
         public void RowClickEventTrnsLeavesRequest(TableRowClickEventArgs<TrnsLeavesRequest> tableRowClickEventArgs)
         {
             try
@@ -679,6 +751,7 @@ namespace HCM.UI.General
                 return string.Empty;
             }
         }
+
         private void Submit()
         {
             try
@@ -714,6 +787,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "EmployeeMaster" && oModelMstEmployee.Id > 0)
                 {
                     MudDialog.Close(DialogResult.Ok<MstEmployee>(oModelMstEmployee));
+                }
+                else if (DialogFor == "TrnsEmployeeTransfer" && oModelTrnsEmployeeTransfer.Id > 0)
+                {
+                    MudDialog.Close(DialogResult.Ok<TrnsEmployeeTransfer>(oModelTrnsEmployeeTransfer));
                 }
                 else if (DialogFor == "LeaveRequest" && oModelTrnsLeavesRequest.Id > 0)
                 {

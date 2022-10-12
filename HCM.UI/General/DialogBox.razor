@@ -225,6 +225,30 @@
                         </PagerContent>
                     </MudTable>
                 }
+                @if (oListTrnsEmployeeTransfer?.Count > 0 && DialogFor == "TrnsEmployeeTransfer")
+                {
+                    <MudTable Items="@oListTrnsEmployeeTransfer" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsEmployeeTransfer,bool>(FilterFuncTrnsEmployeeTransfer)"
+                      Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableTrnsEmployeeTransfer" RowClassFunc="@SelectedRowClassFuncTrnsEmployeeTransfer" OnRowClick="RowClickEventTrnsEmployeeTransfer" T="TrnsEmployeeTransfer" @bind-SelectedItem="oModelTrnsEmployeeTransfer">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Leave Request</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Doc Num</MudTh>
+                            <MudTh>Doc Status</MudTh>
+                            <MudTh>Doc Date</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code">@context.DoNum</MudTd>
+                            <MudTd DataLabel="Code">@context.DocStatus</MudTd>
+                            <MudTd DataLabel="Code">@Convert.ToDateTime(context.DocDate).ToString("MM/dd/yyyy")</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                }
                 @if (oListTrnsLeavesRequest?.Count > 0 && DialogFor == "LeaveRequest")
                 {
                     <MudTable Items="@oListTrnsLeavesRequest" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsLeavesRequest,bool>(FilterFuncTrnsLeavesRequest)"
