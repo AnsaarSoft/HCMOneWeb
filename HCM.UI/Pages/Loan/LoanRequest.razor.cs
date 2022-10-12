@@ -61,6 +61,7 @@ namespace HCM.UI.Pages.Loan
         TrnsLoanRequest oModel = new TrnsLoanRequest();
         private IEnumerable<TrnsLoanRequest> oList = new List<TrnsLoanRequest>();
 
+        MstLoan oModelLoan = new MstLoan();
         private IEnumerable<MstLoan> oListLoanType = new List<MstLoan>();
         List<MstLove> oLoveList = new List<MstLove>();
 
@@ -301,7 +302,7 @@ namespace HCM.UI.Pages.Loan
             try
             {
                 await Task.Delay(1);
-                if(oModel.RequestedAmount > 0 && oModel.NoOfInstallments > 0)
+                if (oModel.RequestedAmount > 0 && oModel.NoOfInstallments > 0)
                 {
                     oModel.InstallmentAmount = oModel.RequestedAmount / oModel.NoOfInstallments;
                 }
@@ -311,14 +312,37 @@ namespace HCM.UI.Pages.Loan
                 Logs.GenerateLogs(ex);
             }
         }
+        private async Task SetLoan()
+        {
+            try
+            {
+                await Task.Delay(1);
+                if (!string.IsNullOrWhiteSpace(oModel.LoanCode))
+                {
+                    oModelLoan = oListLoanType.Where(x => x.Code == oModel.LoanCode).FirstOrDefault();
+                    oModel.FkloanId = oModelLoan.Id;
+                    oModel.LoanCode = oModelLoan.Code;
+                    oModel.LoanDescription = oModelLoan.Description;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+
         private async Task<ApiResponseModel> Save()
         {
             try
             {
                 Loading = true;
                 var res = new ApiResponseModel();
-                if (!string.IsNullOrWhiteSpace(oModelEmployee.EmpId))
+                if (!string.IsNullOrWhiteSpace(oModelEmployee.EmpId) && !string.IsNullOrWhiteSpace(oModel.LoanCode) && oModel.RequestedAmount > 0 && oModel.NoOfInstallments > 0)
                 {
+                    if (oModel.DocStatus == "Open" && oModel.DocAprStatus == "Approved" && !string.IsNullOrWhiteSpace(oModel.PaymentMode))
+                    {
+                        //Need code here
+                    }
                     if (oModel.Id > 0)
                     {
                         oModel.UpdateBy = LoginUser;

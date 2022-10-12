@@ -1,4 +1,6 @@
-﻿@using HCM.UI.Interfaces.Account
+﻿@using Blazored.LocalStorage
+@using HCM.UI.General
+@using HCM.UI.Interfaces.Account
 @inherits LayoutComponentBase
 
 <MudThemeProvider />
@@ -6,26 +8,30 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-    
+
     <MudAppBar Elevation="0" Class="header-bar">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudSpacer />
         <MudIconButton Icon="@Icons.Material.Filled.Message" Color="Color.Inherit" Link="https://mudblazor.com/" Target="_blank" />
         <MudIconButton Icon="@Icons.Material.Filled.Notifications" Color="Color.Inherit" Link="https://github.com/MudBlazor/MudBlazor/" Target="_blank" />
+        <MudAvatar Color="Color.Primary" Size="Size.Small">
+            <MudIcon Icon="@Icons.Material.Filled.Person" />
+        </MudAvatar>
+        <MudText Typo="Typo.subtitle1" Class="text-dark pr-2 pl-2" Style="text-decoration:underline">@LoginUser</MudText>
         <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Error" OnClick="Logout" Title="Logout" />
     </MudAppBar>
-  
+
 
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1" Class="main-sidebar-nav">
         <MudDrawerHeader>
 
-            <MudImage Src="img/logo.png" Alt="mepl logo" Elevation="25" Class=""/><MudText Typo="Typo.h6">Web Payroll</MudText>
-            <MudDivider/>
+            <MudImage Src="img/logo.png" Alt="mepl logo" Elevation="25" Class="" /><MudText Typo="Typo.h6">Web Payroll</MudText>
+            <MudDivider />
         </MudDrawerHeader>
-        
-             <NavMenu />
-       
-       
+
+        <NavMenu />
+
+
     </MudDrawer>
 
 
@@ -44,9 +50,14 @@
 
     [Inject]
     public NavigationManager Navigation { get; set; }
- 
+
     [Inject]
     public ISnackbar Snackbar { get; set; }
+
+    [Inject]
+    public ILocalStorageService _localStorage { get; set; }
+
+    private string LoginUser = "";
 
     bool _drawerOpen = true;
 
@@ -56,9 +67,25 @@
     }
 
     public async Task Logout()
-{
-    await _mstUser.Logout();
-    Snackbar.Add("Logged out", Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
-      Navigation.NavigateTo("/Login");
+    {
+        await _mstUser.Logout();
+        Snackbar.Add("Logged out", Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+        Navigation.NavigateTo("/Login");
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        try
+        {
+            var Session = await _localStorage.GetItemAsync<MstUser>("User");
+            if (Session != null)
+            {
+                LoginUser = Session.UserCode;
+            }
+        }
+        catch (Exception ex)
+        {
+            Logs.GenerateLogs(ex);
+        }
     }
 }
