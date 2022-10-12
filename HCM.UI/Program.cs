@@ -5,12 +5,14 @@ using HCM.UI;
 using HCM.UI.Data.Account;
 using HCM.UI.Data.Attendance;
 using HCM.UI.Data.EmployeeMasterSetup;
+using HCM.UI.Data.Loan;
 using HCM.UI.Data.MasterData;
 using HCM.UI.Data.MasterElement;
 using HCM.UI.Data.ShiftManagement;
 using HCM.UI.Interfaces.Account;
 using HCM.UI.Interfaces.Attendance;
 using HCM.UI.Interfaces.EmployeeMasterSetup;
+using HCM.UI.Interfaces.Loan;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
 using HCM.UI.Interfaces.ShiftManagement;
@@ -77,6 +79,7 @@ builder.Services.AddScoped<ITrnsTempAttendance, TrnsTempAttendanceService>();
 builder.Services.AddScoped<IMstEmployeeLeaves, MstEmployeeLeavesService>();
 builder.Services.AddScoped<ITrnsLeaveRequest, TrnsLeaveRequestService>();
 builder.Services.AddScoped<ITrnsElementTransaction, TrnsElementTransactionService>();
+builder.Services.AddScoped<ITrnsLoanRequest, TrnsLoanRequestService>();
 
 //Configuration Start
 

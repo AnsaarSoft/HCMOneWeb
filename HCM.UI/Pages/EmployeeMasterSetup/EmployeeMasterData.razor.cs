@@ -70,6 +70,9 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         public IMstEmployeeMasterData _mstEmployeeMaster { get; set; }
 
         [Inject]
+        public IMstDimension _mstDimension { get; set; }
+
+        [Inject]
         public ILocalStorageService _localStorage { get; set; }
 
         [Inject]
@@ -144,6 +147,8 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         MstCity oModelCityPrimary = new MstCity();
         MstCity oModelCitySecondary = new MstCity();
         private IEnumerable<MstCity> oListCity = new List<MstCity>();
+
+        private IEnumerable<MstDimension> oListDimension = new List<MstDimension>();
 
         private IEnumerable<MstEmployeeLeaf> oListLeaveAllocation = new List<MstEmployeeLeaf>();
 
@@ -683,6 +688,19 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             {
                 oListPosition = await _mstPosition.GetAllData();
                 oListPosition = oListPosition.Where(x => x.FlgActive == true).ToList();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+
+        private async Task GetAllDimension()
+        {
+            try
+            {
+                oListDimension = await _mstDimension.GetAllData();
+                oListDimension = oListDimension.Where(x => x.FlgActive == true);
             }
             catch (Exception ex)
             {
@@ -1320,11 +1338,15 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                         if (!string.IsNullOrWhiteSpace(oModelPayroll.PayrollName))
                         {
                             #region Apply payroll Standard Elements
-                            await GetAllPayrollElement();
 
-                            oModel = BusinessLogic.ApplyPayrolStdlElement(oModel, oListElement, LoginUser);                            
-                            
+                            await GetAllPayrollElement();
+                            if (oListElement.Count() > 0)
+                            {
+                                oModel = BusinessLogic.ApplyPayrolStdlElement(oModel, oListElement, LoginUser);
+                            }
+
                             #endregion
+
                             if (oModel.Id == 0)
                             {
                                 oModel.CreatedBy = LoginUser;
@@ -1383,6 +1405,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     await GetAllLove();
                     await GetAllUser();
                     await GetAllDesignation();
+                    await GetAllDimension();
                     await GetAllPosition();
                     await GetAllDepartments();
                     await GetAllLocation();

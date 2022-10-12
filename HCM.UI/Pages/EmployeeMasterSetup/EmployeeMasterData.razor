@@ -68,7 +68,7 @@
                     <MudPaper @ondragenter="@SetDragClassEmpPicture" @ondragleave="@ClearDragClassEmpPicture" @ondragend="@ClearDragClassEmpPicture" Height="150px" Outlined="true" Class="@DragClassEmpPicture">
                         @if (!ClearingEmpPicture)
                         {
-                                <InputFile OnChange="OnInputFileChangedEmpPicture" accept=".jpg, .jpeg, .png" class="absolute mud-width-full mud-height-full overflow-hidden z-2" style="opacity:0;" />
+                            <InputFile OnChange="OnInputFileChangedEmpPicture" accept=".jpg, .jpeg, .png" class="absolute mud-width-full mud-height-full overflow-hidden z-2" style="opacity:0;" />
                         }
                         <MudText Typo="Typo.caption">Drag and drop image here or click*</MudText>
                         <MudAvatar Image="@EmpImagePath" Style="height:70px; width:70px; font-size:2rem;" />
@@ -100,17 +100,17 @@
                 </MudItem>
                 @if (Loading)
                 {
-                        <MudItem xs="2" sm="2" md="2" lg="2">
-                            <MudText>Loading...</MudText>
-                            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
-                        </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2">
+                        <MudText>Loading...</MudText>
+                        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                    </MudItem>
                 }
                 else
                 {
-                        <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
-                            <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
-                            <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
-                        </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                        <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                        <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
+                    </MudItem>
                 }
             </MudGrid>
         </div>
@@ -140,7 +140,7 @@
                             <MudSelect @bind-Value="oModel.GenderId" Label="Gender*" HelperText="Select Gender" AdornmentIcon="@Icons.Material.Filled.Male" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "Gender").ToList())
                                 {
-                                        <MudSelectItem Value="@Love.Id.ToString()">@Love.Value</MudSelectItem>
+                                    <MudSelectItem Value="@Love.Id.ToString()">@Love.Value</MudSelectItem>
                                 }
                             </MudSelect>
                         </MudItem>
@@ -148,7 +148,7 @@
                             <MudSelect @bind-Value="oModel.BloodGroupId" Label="Blood Group" HelperText="Select Blood Group" AdornmentIcon="@Icons.Material.Filled.Bloodtype" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "BloodGroup").ToList())
                                 {
-                                        <MudSelectItem Value="@Love.Id.ToString()">@Love.Value</MudSelectItem>
+                                    <MudSelectItem Value="@Love.Id.ToString()">@Love.Value</MudSelectItem>
                                 }
                             </MudSelect>
                         </MudItem>
@@ -156,7 +156,7 @@
                             <MudSelect @bind-Value="oModel.MartialStatusId" Label="Marital Status*" HelperText="Select Marital Status" AdornmentIcon="@Icons.Material.Filled.People" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "Marital").ToList())
                                 {
-                                        <MudSelectItem Value="@Love.Id.ToString()">@Love.Value</MudSelectItem>
+                                    <MudSelectItem Value="@Love.Id.ToString()">@Love.Value</MudSelectItem>
                                 }
                             </MudSelect>
                         </MudItem>
@@ -164,7 +164,7 @@
                             <MudSelect @bind-Value="oModel.ReligionId" Label="Religion*" HelperText="Select Religion" AdornmentIcon="@Icons.Material.Filled.Groups" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "Religion").ToList())
                                 {
-                                        <MudSelectItem Value="@Love.Id.ToString()">@Love.Value</MudSelectItem>
+                                    <MudSelectItem Value="@Love.Id.ToString()">@Love.Value</MudSelectItem>
                                 }
                             </MudSelect>
                         </MudItem>
@@ -256,7 +256,7 @@
                             <MudSelect @bind-Value="oModel.SalaryCurrency" Label="Salary Currency*" HelperText="Select Salary Currency" AdornmentIcon="@Icons.Material.Filled.CurrencyExchange" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "SalaryCurrency").ToList())
                                 {
-                                        <MudSelectItem Value="@Love.Code">@Love.Value</MudSelectItem>
+                                    <MudSelectItem Value="@Love.Code">@Love.Value</MudSelectItem>
                                 }
                             </MudSelect>
                         </MudItem>
@@ -264,7 +264,7 @@
                             <MudSelect @bind-Value="oModel.PaymentMode" Label="Payment Mode*" HelperText="Select Payment Mode" AdornmentIcon="@Icons.Material.Filled.Payments" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "PaymentMode").ToList())
                                 {
-                                        <MudSelectItem Value="@Love.Code">@Love.Value</MudSelectItem>
+                                    <MudSelectItem Value="@Love.Code">@Love.Value</MudSelectItem>
                                 }
                             </MudSelect>
                         </MudItem>
@@ -280,7 +280,7 @@
                             <MudSelect @bind-Value="oModel.AccountType" Label="Account Type*" HelperText="Select Account Type" AdornmentIcon="@Icons.Material.Filled.AccountCircle" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "AccountType").ToList())
                                 {
-                                        <MudSelectItem Value="@Love.Code">@Love.Value</MudSelectItem>
+                                    <MudSelectItem Value="@Love.Code">@Love.Value</MudSelectItem>
                                 }
                             </MudSelect>
                         </MudItem>
@@ -296,7 +296,7 @@
                             <MudSelect @bind-Value="oModel.HolidayCalendar" Label="Calendar Type*" HelperText="Select Calendar Type" AdornmentIcon="@Icons.Material.Filled.CalendarMonth" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "AccountType").ToList())
                                 {
-                                        <MudSelectItem Value="@Love.Code">@Love.Value</MudSelectItem>
+                                    <MudSelectItem Value="@Love.Code">@Love.Value</MudSelectItem>
                                 }
                             </MudSelect>
                         </MudItem>
@@ -308,36 +308,80 @@
                             <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.JoiningDate" Label="Joining Date*" HelperText="Enter Joining Date" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
                                            Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
-                            <MudNumericField @bind-Value="oModel.PercentagePaid" Min="0" MaxLength="150" Counter="150" HelperText="Enter Percentage" Immediate="true" Clearable="true" Label="Percentage*" Variant="Variant.Text"
-                                             Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" />
-                        </MudItem>
+                        @*<MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudNumericField @bind-Value="oModel.PercentagePaid" Min="0" MaxLength="150" Counter="150" HelperText="Enter Percentage" Immediate="true" Clearable="true" Label="Percentage*" Variant="Variant.Text"
+                        Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" />
+                        </MudItem>*@
                         <MudItem xs="3" sm="3" md="3" lg="3">
                             <MudSelect @bind-Value="oModel.EmployeeContractType" Label="Contract Type*" HelperText="Select Contract Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "ContractType").ToList())
                                 {
-                                        <MudSelectItem Value="@Love.Code">@Love.Value</MudSelectItem>
+                                    <MudSelectItem Value="@Love.Code">@Love.Value</MudSelectItem>
                                 }
                             </MudSelect>
                         </MudItem>
                         <MudItem xs="3" sm="3" md="3" lg="3">
-                            <MudAutocomplete T="MstGratuity" @bind-Value="oModelGratuity" SearchFunc="@SearchGratuity" Clearable="true" Label="Select Gratuity" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
+                            <MudAutocomplete T="MstGratuity" @bind-Value="oModelGratuity" SearchFunc="@SearchGratuity" Clearable="true" Label="Gratuity" HelperText="Select Gratuity" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Code}")" />
                         </MudItem>
                         <MudItem xs="3" sm="3" md="3" lg="3">
-                            <MudAutocomplete T="MstBonu" @bind-Value="oModelBonus" SearchFunc="@SearchBonus" Clearable="true" Label="Select Bonus" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
+                            <MudAutocomplete T="MstBonu" @bind-Value="oModelBonus" SearchFunc="@SearchBonus" Clearable="true" Label="Bonus" HelperText="Select Bonus" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Code}")" />
                         </MudItem>
                         <MudItem xs="2" sm="2" md="2" lg="2" class="text-left">
                             <MudSwitch @bind-Checked="@oModel.FlgEmail" ThumbIcon="@(oModel.FlgEmail==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgEmail==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgEmail==true ? Color.Info : Color.Error)">
                                 <span>@(oModel.FlgEmail == true ? "Email Salary Slip - Yes" : "Email Salary Slip - No")</span>
                             </MudSwitch>
-                        </MudItem>
-                        <MudItem xs="2" sm="2" md="2" lg="2" class="text-left">
                             <MudSwitch @bind-Checked="@oModel.FlgSandwich" ThumbIcon="@(oModel.FlgSandwich==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgSandwich==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgSandwich==true ? Color.Info : Color.Error)">
                                 <span>@(oModel.FlgSandwich == true ? "Sandwich Leaves - Yes" : "Sandwich Leaves - No")</span>
                             </MudSwitch>
                         </MudItem>
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudSelect @bind-Value="oModel.Dimension1" Label="Dimension 1" HelperText="Select Dimension 1" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                                @foreach (var dimension in oListDimension.Where(x => x.Type == "dim1").ToList())
+                                {
+                                    <MudSelectItem T="string" Value="@dimension.Code">@dimension.Description</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudSelect @bind-Value="oModel.Dimension2" Label="Dimension 2" HelperText="Select Dimension 2" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                                @foreach (var dimension in oListDimension.Where(x => x.Type == "dim2").ToList())
+                                {
+                                    <MudSelectItem T="string" Value="@dimension.Code">@dimension.Description</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudSelect @bind-Value="oModel.Dimension3" Label="Dimension 3" HelperText="Select Dimension 3" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                                @foreach (var dimension in oListDimension.Where(x => x.Type == "dim3").ToList())
+                                {
+                                    <MudSelectItem T="string" Value="@dimension.Code">@dimension.Description</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudSelect @bind-Value="oModel.Dimension4" Label="Dimension 4" HelperText="Select Dimension 4" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                                @foreach (var dimension in oListDimension.Where(x => x.Type == "dim4").ToList())
+                                {
+                                    <MudSelectItem T="string" Value="@dimension.Code">@dimension.Description</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudSelect @bind-Value="oModel.Dimension5" Label="Dimension 5" HelperText="Select Dimension 5" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                                @foreach (var dimension in oListDimension.Where(x => x.Type == "dim5").ToList())
+                                {
+                                    <MudSelectItem T="string" Value="@dimension.Code">@dimension.Description</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+
+                        @*<MudItem xs="2" sm="2" md="2" lg="2" class="text-left">
+                        <MudSwitch @bind-Checked="@oModel.FlgSandwich" ThumbIcon="@(oModel.FlgSandwich==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgSandwich==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgSandwich==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgSandwich == true ? "Sandwich Leaves - Yes" : "Sandwich Leaves - No")</span>
+                        </MudSwitch>
+                        </MudItem>*@
                     </MudGrid>
                 </MudTabPanel>
                 <MudTabPanel Text="Contact" Icon="@Icons.Material.Filled.Contacts">
@@ -447,7 +491,7 @@
                             <MudSelect @bind-Value="oModel.PriRelationShip" Label="Primary Relationship" HelperText="Select Primary Relationship" AdornmentIcon="@Icons.Material.Filled.Male" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "Relative").ToList())
                                 {
-                                        <MudSelectItem Value="@Love.Value">@Love.Value</MudSelectItem>
+                                    <MudSelectItem Value="@Love.Value">@Love.Value</MudSelectItem>
                                 }
                             </MudSelect>
                         </MudItem>
@@ -487,7 +531,7 @@
                             <MudSelect @bind-Value="oModel.SecRelationShip" Label="Secondary Relationship" HelperText="Select Secondary Relationship" AdornmentIcon="@Icons.Material.Filled.Male" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "Relative").ToList())
                                 {
-                                        <MudSelectItem Value="@Love.Value">@Love.Value</MudSelectItem>
+                                    <MudSelectItem Value="@Love.Value">@Love.Value</MudSelectItem>
                                 }
                             </MudSelect>
                         </MudItem>
@@ -563,18 +607,18 @@
                             <MudPaper @ondragenter="@SetDragClassAttachment" @ondragleave="@ClearDragClassAttachment" @ondragend="@ClearDragClassAttachment" Height="300px" Outlined="true" Class="@DragClass">
                                 @if (!Clearing)
                                 {
-                                        <InputFile OnChange="OnInputFileChangedAttachment" multiple class="absolute mud-width-full mud-height-full overflow-hidden z-2" style="opacity:0;" />
+                                    <InputFile OnChange="OnInputFileChangedAttachment" multiple class="absolute mud-width-full mud-height-full overflow-hidden z-2" style="opacity:0;" />
                                 }
                                 <MudText Typo="Typo.caption">Drag and drop files here or click</MudText>
                                 @foreach (var file in oListEmployeeAttachment)
                                 {
-                                        <MudChip Color="Color.Dark" Text="@file.FileName" />
+                                    <MudChip Color="Color.Dark" Text="@file.FileName" />
                                 }
                             </MudPaper>
                             <MudToolBar DisableGutters="true" Class="gap-4">
                                 @if (oListEmployeeAttachment.Count > 0)
                                 {
-                                        <MudButton OnClick="@Download" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.ArrowDownward">Download</MudButton>
+                                    <MudButton OnClick="@Download" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.ArrowDownward">Download</MudButton>
                                 }
                                 <MudButton OnClick="@Clear" Disabled="@(!oListEmployeeAttachment.Any())" Color="Color.Error" Variant="Variant.Filled">Clear</MudButton>
                             </MudToolBar>

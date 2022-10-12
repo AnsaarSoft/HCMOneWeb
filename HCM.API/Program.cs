@@ -3,12 +3,14 @@ using HCM.API;
 using HCM.API.Interfaces.Account;
 using HCM.API.Interfaces.Attendance;
 using HCM.API.Interfaces.EmployeeMasterSetup;
+using HCM.API.Interfaces.Loan;
 using HCM.API.Interfaces.MasterData;
 using HCM.API.Interfaces.MasterElement;
 using HCM.API.Interfaces.ShiftManagement;
 using HCM.API.Repository.Account;
 using HCM.API.Repository.Attendance;
 using HCM.API.Repository.EmployeeMasterSetup;
+using HCM.API.Repository.Loan;
 using HCM.API.Repository.MasterData;
 using HCM.API.Repository.MasterElement;
 using HCM.API.Repository.ShiftManagement;
@@ -89,6 +91,7 @@ builder.Services.AddScoped<ITrnsTempAttendance, TrnsTempAttendanceRepo>();
 builder.Services.AddScoped<IMstEmployeeLeaves, MstEmployeeLeavesRepo>();
 builder.Services.AddScoped<ITrnsLeaveRequest, TrnsLeaveRequestRepo>();
 builder.Services.AddScoped<ITrnsElementTransaction, TrnsElementTransactionRepo>();
+builder.Services.AddScoped<ITrnsLoanRequest, TrnsLoanRequestRepo>();
 
 
 Settings.TitleConfig = builder.Configuration.GetValue<string>("TitleConfig");

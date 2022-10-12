@@ -4,8 +4,10 @@ using HCM.UI.General;
 using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
+using Microsoft.VisualBasic;
 using MudBlazor;
 using System.Collections.Immutable;
+using static MudBlazor.CategoryTypes;
 
 namespace HCM.UI.Pages.EmployeeMasterSetup
 {
@@ -18,6 +20,8 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
         [Inject]
         public ISnackbar Snackbar { get; set; }
+        [Inject]
+        public IDialogService Dialog { get; set; }
 
         [Inject]
         public IMstBranch _mstBranch { get; set; }
@@ -100,10 +104,36 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         DateRange _dateRange;
         DateTime? docdate;
 
+
+        DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
+        DialogOptions FullView = new DialogOptions() { MaxWidth = MaxWidth.ExtraExtraLarge, FullWidth = true, CloseButton = true, DisableBackdropClick = true, CloseOnEscapeKey = true };
+
         #endregion
 
 
         #region Functions
+        private async Task OpenDialog(DialogOptions options)
+        {
+            try
+            {
+                var parameters = new DialogParameters();
+                parameters.Add("DialogFor", "TrnsEmployeeTransfer");
+                var dialog = Dialog.Show<DialogBox>("", parameters, options);
+                var result = await dialog.Result;
+                if (!result.Cancelled)
+                {
+                    var res = (TrnsEmployeeTransfer)result.Data;
+                    oModel = res;
+                    docdate = oModel.DocDate;
+                    oListFilteredEmployeeTransferDetail = oModel.TrnsEmployeeTransferDetails;
+                    oListFilteredEmployeeTransferDetail = oListFilteredEmployeeTransferDetail.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
         private async Task GetAllEmpTrnsfer()
         {
             try
@@ -448,29 +478,29 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             }
         }
 
-        public void EditRecord(int LineNum)
-        {
-            try
-            {
-                var res = oList.Where(x => x.Id == LineNum).FirstOrDefault();
+        //public void EditRecord(int LineNum)
+        //{
+        //    try
+        //    {
+        //        var res = oList.Where(x => x.Id == LineNum).FirstOrDefault();
                 
-                if (res != null)
-                {
-                    oModel.Id = res.Id;
-                    oModel.DoNum = res.DoNum;
-                    oModel.DocDate= res.DocDate;
-                    oModel.TrnsEmployeeTransferDetails = res.TrnsEmployeeTransferDetails;
-                    oListFilteredEmployeeTransferDetail = res.TrnsEmployeeTransferDetails;
+        //        if (res != null)
+        //        {
+        //            oModel.Id = res.Id;
+        //            oModel.DoNum = res.DoNum;
+        //            oModel.DocDate= res.DocDate;
+        //            oModel.TrnsEmployeeTransferDetails = res.TrnsEmployeeTransferDetails;
+        //            oListFilteredEmployeeTransferDetail = res.TrnsEmployeeTransferDetails;
                     
-                    oList = oList.Where(x => x.Id != LineNum);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-            }
+        //            oList = oList.Where(x => x.Id != LineNum);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logs.GenerateLogs(ex);
+        //    }
 
-        }
+        //}
         private async Task DeleteFromFilter(int ID)
         {
             try

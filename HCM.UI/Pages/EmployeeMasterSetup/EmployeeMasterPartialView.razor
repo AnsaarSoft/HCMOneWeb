@@ -308,10 +308,10 @@
                             <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.JoiningDate" Label="Joining Date*" HelperText="Enter Joining Date" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
                                            Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        @*<MudItem xs="3" sm="3" md="3" lg="3">
                             <MudNumericField @bind-Value="oModel.PercentagePaid" Min="0" MaxLength="150" Counter="150" HelperText="Enter Percentage" Immediate="true" Clearable="true" Label="Percentage*" Variant="Variant.Text"
                                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" />
-                        </MudItem>
+                        </MudItem>*@
                         <MudItem xs="3" sm="3" md="3" lg="3">
                             <MudSelect @bind-Value="oModel.EmployeeContractType" Label="Contract Type*" HelperText="Select Contract Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "ContractType").ToList())

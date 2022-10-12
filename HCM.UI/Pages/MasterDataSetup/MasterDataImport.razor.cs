@@ -237,14 +237,14 @@ namespace HCM.UI.Pages.MasterDataSetup
                                 await FillGradingTemplateGrid();
                             }
                             else if (ModuleType == 9)//Mst Employee
-                            {                                
+                            {
                                 await FillMstEmployeeTemplateGrid();
                             }
                             else if (ModuleType == 10)//TrnsTempAttendanceTemplate
                             {
                                 await FillTrnsTempAttendanceTemplateGrid();
                             }
-                            
+
                         }
                         else
                         {
@@ -313,7 +313,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     {
                         await TrnsTempAttendanceTemplate();
                     }
-                    
+
                 }
                 else
                 {
@@ -338,24 +338,22 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Logs.GenerateLogs(ex);
             }
         }
-
-        private async Task GetAllPayroll()
+        private async Task GetPayrollinit()
         {
             try
             {
-                oListPayroll = await _CfgPayrollDefination.GetAllData();
+                oModelpayroll = await _CfgPayrollDefinationinit.GetData();
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
             }
         }
-
-        private async Task GetPayrollinit()
+        private async Task GetAllPayroll()
         {
             try
             {
-                oModelpayroll = await _CfgPayrollDefinationinit.GetData();
+                oListPayroll = await _CfgPayrollDefination.GetAllData();
             }
             catch (Exception ex)
             {
@@ -452,7 +450,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                                     //Skip the line if Code has Null String
                                     break;
                                 }
-                                
+
                                 //Check for Add and Update
                                 if (!string.IsNullOrWhiteSpace(StringValue) && PropertyName == "Code")
                                 {
@@ -462,7 +460,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                                         oModelDepartment.Id = CheckList.Id;
                                         oModelDepartment.FlgActive = true;
                                         oModelDepartment.UserId = CheckList.UserId;
-                                        oModelDepartment.CreateDate= CheckList.CreateDate;
+                                        oModelDepartment.CreateDate = CheckList.CreateDate;
                                         oModelDepartment.UpdatedBy = LoginUser;
                                         oModelDepartment.UpdateDate = DateTime.Now;
                                         IsForUpdate = true;
@@ -527,8 +525,8 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Type type = typeof(VMMasterDataImport);
 
                 int NumberOfRecords = type.GetProperties().Length;
-                for (int i = 1; i <= NumberOfRecords -1 ; i++)
-                {                    
+                for (int i = 1; i <= NumberOfRecords - 1; i++)
+                {
                     var PropertyName = type.GetProperties()[i].Name;
                     ws.Cell(1, i).Value = PropertyName;
                     ws.Cell(1, i).Style.Border.OutsideBorder = XLBorderStyleValues.Double;
@@ -641,10 +639,10 @@ namespace HCM.UI.Pages.MasterDataSetup
                                     {
                                         oModelContractor.Id = CheckList.Id;
                                         oModelContractor.FlgActive = true;
-                                        oModelContractor.CreatedBy=CheckList.CreatedBy;
-                                        oModelContractor.CreatedDate=CheckList.CreatedDate;
+                                        oModelContractor.CreatedBy = CheckList.CreatedBy;
+                                        oModelContractor.CreatedDate = CheckList.CreatedDate;
                                         oModelContractor.UpdatedBy = LoginUser;
-                                        oModelContractor.UpdatedDate= DateTime.Now;
+                                        oModelContractor.UpdatedDate = DateTime.Now;
                                         IsForUpdate = true;
                                     }
                                     else
@@ -1339,7 +1337,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                                 break;
                             }
                             string PropertyName = type.GetProperties()[j].Name;
-                            if (PropertyName=="Code")
+                            if (PropertyName == "Code")
                             {
                                 PropertyName = "Name";
                             }
@@ -1875,7 +1873,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             {
                 Loading = true;
                 _ = InvokeAsync(StateHasChanged);
-                bool IsForUpdate = false;                
+                bool IsForUpdate = false;
                 var TemplateFile = excelSheet.Select(x => x.Name).FirstOrDefault();
                 TemplateFile = Path.GetFullPath("wwwroot\\Templates\\" + TemplateFile);
                 if (!string.IsNullOrWhiteSpace(TemplateFile))
@@ -1892,6 +1890,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     int NumberOfRecords = type.GetProperties().Length;
                     for (int i = 2; i <= ws.Rows().Count() - 1; i++)
                     {
+                        var a = ws.Rows().Count();
                         IsForUpdate = false;
                         oModelMstEmployee = new MstEmployee();
                         bool IsMasterFound = true;
@@ -2033,6 +2032,8 @@ namespace HCM.UI.Pages.MasterDataSetup
                                     if (CheckList != null)
                                     {
                                         oModelMstEmployee.Id = CheckList.Id;
+                                        oModelMstEmployee.CreatedBy = CheckList.CreatedBy;
+                                        oModelMstEmployee.CreateDate = CheckList.CreateDate;
                                         IsForUpdate = true;
                                     }
                                 }
@@ -2080,35 +2081,28 @@ namespace HCM.UI.Pages.MasterDataSetup
                                 //Mentioned series exist in Document number series
                                 //No jo mention wo check kroge employee k andar  +1
                                 //Series exist but not in employee master get start no and add +1
-                                string var = oModelMstEmployee.EmpId ;
-                                string str = Regex.Replace(var, @"\d", "");
-                                string num = Regex.Replace(var, @"\D", "");
 
-                                string empcod = oModelMstEmployee.EmpId;
-                                //string a  = Regex.Replace(empcod, @"\b", "");
-                                //var array = Regex.Matches(empcod, @"\D+|\d+");
-                                string a = "";
-                                string empcodnum = "";
-                                string empcodstr = "";
+                                //string var = oModelMstEmployee.EmpId;
+                                //string str = Regex.Replace(var, @"\d", "");
+                                //string num = Regex.Replace(var, @"\D", "");
 
-                                //Empstr = array.Select(x=>x.Value.ToString()).FirstOrDefault();
-                                //empnum = array.Select(x => x.Value).LastOrDefault();
 
-                                empcod = oModelMstEmployee.Prefix;
-                                empcodnum = Regex.Replace(empcod, @"\D", "");
-                                
-                           
-                                
+                                var empcod = oModelMstEmployee.EmpId;
+                                var empstr = Regex.Replace(empcod, @"\d", "");
+                                string empnum = Regex.Replace(empcod, @"\D", "");
+
                                 var max = oListMstDocumentNumberSeries.Select(x => x.StartNo).ToList();
-                                var chkSeries = oListMstDocumentNumberSeries.Where(x => x.Prefix == empcod).FirstOrDefault();
-                                var maxemp = oListMstEmployee.Where(x => x.Prefix == empcod).OrderByDescending(x => x.EmpId).FirstOrDefault();
+                                var chkSeries = oListMstDocumentNumberSeries.Where(x => x.Prefix == empstr).FirstOrDefault();
+                                var maxemp = oListMstEmployee.Where(x => x.Prefix == empstr).OrderByDescending(x => x.EmpId).FirstOrDefault();
                                 if (chkSeries != null)
                                 {
                                     if (maxemp == null)
                                     {
-                                        empcodnum = (chkSeries.StartNo + 1).ToString();
-                                        empcod = empcod + empcodnum;
+                                        empnum = (chkSeries.StartNo + 1).ToString();
+                                        empcod = empstr + empnum;
                                         oModelMstEmployee.EmpId = empcod;
+                                        oModelMstEmployee.CreatedBy = LoginUser;
+                                        oModelMstEmployee.CreateDate = DateTime.Now;
                                         var CheckDuplicate = oMstEmployeeAddList.Where(x => x.EmpId == oModelMstEmployee.EmpId).FirstOrDefault();
                                         if (CheckDuplicate == null)
                                         {
@@ -2117,18 +2111,39 @@ namespace HCM.UI.Pages.MasterDataSetup
                                     }
                                     else
                                     {
-                                        empcodnum = Regex.Replace(maxemp.EmpId, @"\D", "");
-                                        empcodnum = (Convert.ToInt32(empcodnum) + 1).ToString();
-                                        var empcodfromlist = empcod + empcodnum;
+                                        empnum = Regex.Replace(maxemp.EmpId, @"\D", "");
+                                        empnum = (Convert.ToInt32(empnum) + 1).ToString();
+                                        var empcodfromlist = empstr + empnum;
                                         if (empcod == empcodfromlist)
                                         {
-                                            oModelMstEmployee.EmpId = empcod;
+                                            oModelMstEmployee.EmpId = empcod; 
+                                            oModelMstEmployee.CreatedBy = LoginUser;
+                                            oModelMstEmployee.CreateDate = DateTime.Now;
                                             var CheckDuplicate = oMstEmployeeAddList.Where(x => x.EmpId == oModelMstEmployee.EmpId).FirstOrDefault();
                                             if (CheckDuplicate == null)
                                             {
                                                 oMstEmployeeAddList.Add(oModelMstEmployee);
                                             }
                                         }
+                                        else if(oMstEmployeeAddList.Count > 0 && oMstEmployeeAddList != null)
+                                        {
+                                            maxemp = oMstEmployeeAddList.LastOrDefault();
+                                            empnum = Regex.Replace(maxemp.EmpId, @"\D", "");
+                                            empnum = (Convert.ToInt32(empnum) + 1).ToString();
+                                            empcodfromlist = empstr + empnum;
+                                            if (empcod == empcodfromlist)
+                                            {
+                                                oModelMstEmployee.EmpId = empcod;
+                                                oModelMstEmployee.CreatedBy = LoginUser;
+                                                oModelMstEmployee.CreateDate= DateTime.Now;
+                                                var CheckDuplicate = oMstEmployeeAddList.Where(x => x.EmpId == oModelMstEmployee.EmpId).FirstOrDefault();
+                                                if (CheckDuplicate == null)
+                                                {
+                                                    oMstEmployeeAddList.Add(oModelMstEmployee);
+                                                }
+                                            }
+                                        }
+
                                     }
 
                                 }
@@ -2149,6 +2164,10 @@ namespace HCM.UI.Pages.MasterDataSetup
                             var CheckDuplicate = oMstEmployeeUpdateList.Where(x => x.EmpId == oModelMstEmployee.EmpId).FirstOrDefault();
                             if (CheckDuplicate == null)
                             {
+                                //oModelMstEmployee.CreateDate = DateTime.Now;
+                                //oModelMstEmployee.CreateDate = oModelMstEmployee.CreateDate;
+                                oModelMstEmployee.UpdatedBy = LoginUser;
+                                oModelMstEmployee.UpdateDate = DateTime.Now;
                                 oMstEmployeeUpdateList.Add(oModelMstEmployee);
                             }
                         }
@@ -2191,7 +2210,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 {
                     var PropertyName = type.GetProperties()[i].Name;
                     ws.Cell(1, i).Value = PropertyName;
-                    ws.Cell(1, i).Style.Border.OutsideBorder = XLBorderStyleValues.Double;                    
+                    ws.Cell(1, i).Style.Border.OutsideBorder = XLBorderStyleValues.Double;
 
                 }
                 //workBook.SaveAs(excelFilePath); 
@@ -2260,7 +2279,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     Type type = typeof(VMAttendanceMasterDataImport);
                     int NumberOfRecords = type.GetProperties().Length;
                     string CustomPropertyName = "";
-                    for (int i = 2; i <= ws.Rows().Count(); i++)
+                    for (int i = 2; i <= ws.Rows().Count()-1; i++)
                     {
                         var a = ws.Rows().Count();
                         IsForUpdate = false;
@@ -2274,7 +2293,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                             }
                             string PropertyName = type.GetProperties()[j].Name;
                             PropertyInfo PropertyInfo = type.GetProperties()[j];
-                            
+
                             if (PropertyName == "FkempId")
                             {
                                 CustomPropertyName = "EmpCode";
@@ -2304,29 +2323,17 @@ namespace HCM.UI.Pages.MasterDataSetup
                                     //Skip the line if Code has Null String
                                     break;
                                 }
-                                
+
                                 else if (!string.IsNullOrWhiteSpace(StringValue) && PropertyName == "FkempId")
                                 {
                                     //Set ID of line from Mst Designation
                                     var CheckList = oListMstEmployee.Where(x => x.EmpId == StringValue).FirstOrDefault();
                                     if (CheckList != null)
                                     {
-                                        oModelTrnsTempAttendance.Id = CheckList.Id;
-                                        oModelTrnsTempAttendance.EmpId = StringValue;
-                                        oModelTrnsTempAttendance.FlgProcessed = true;
-                                        oModelTrnsTempAttendance.UserId = CheckList.CreatedBy;
-                                        oModelTrnsTempAttendance.CreatedDate = CheckList.CreateDate;
-                                        //oModelTrnsTempAttendance. = LoginUser;
-                                        oModelTrnsTempAttendance.UpdateDate = DateTime.Now;
                                         empid = CheckList.Id;
-                                        IsForUpdate = true;
+                                        oModelTrnsTempAttendance.EmpId = StringValue;
                                     }
-                                    else
-                                    {
-                                        oModelTrnsTempAttendance.FlgProcessed = true;
-                                        oModelTrnsTempAttendance.UserId = LoginUser;
-                                        oModelTrnsTempAttendance.CreatedDate = DateTime.Now;
-                                    }
+                                   
                                     oModelTrnsTempAttendance.GetType().GetProperty(PropertyName).SetValue(oModelTrnsTempAttendance, Convert.ToInt32(empid), null);
                                     continue;
                                 }
@@ -2337,16 +2344,28 @@ namespace HCM.UI.Pages.MasterDataSetup
                                 }
                                 else if (!string.IsNullOrWhiteSpace(StringValue) && PropertyName == "InOut")
                                 {
-                                    var CheckList = oListTrnsTempAttendance.Where(x => x.FkempId== empid && x.InOut == StringValue && Convert.ToDateTime(x.PunchedDate).ToString("MM/dd/yyyy") == Convert.ToDateTime(oModelTrnsTempAttendance.PunchedDate).ToString("MM/dd/yyyy")).FirstOrDefault();
+                                    var CheckList = oListTrnsTempAttendance.Where(x => x.FkempId == empid && x.InOut == StringValue && Convert.ToDateTime(x.PunchedDate).ToString("MM/dd/yyyy") == Convert.ToDateTime(oModelTrnsTempAttendance.PunchedDate).ToString("MM/dd/yyyy")).FirstOrDefault();
                                     if (CheckList != null)
                                     {
                                         oModelTrnsTempAttendance.Id = CheckList.Id;
+                                        oModelTrnsTempAttendance.UserId = CheckList.UserId;
+                                        oModelTrnsTempAttendance.CreatedDate = CheckList.CreatedDate;
+                                        oModelTrnsTempAttendance.FlgProcessed = true;
+                                        //oModelTrnsTempAttendance. = LoginUser;
+                                        oModelTrnsTempAttendance.UpdateDate = DateTime.Now;
                                         IsForUpdate = true;
+                                       
+                                    }
+                                    else
+                                    {
+                                        oModelTrnsTempAttendance.FlgProcessed = true;
+                                        oModelTrnsTempAttendance.UserId = LoginUser;
+                                        oModelTrnsTempAttendance.CreatedDate = DateTime.Now;
                                     }
                                     oModelTrnsTempAttendance.GetType().GetProperty(PropertyName).SetValue(oModelTrnsTempAttendance, StringValue, null);
                                     continue;
                                 }
-                               
+
 
 
 
@@ -2395,14 +2414,13 @@ namespace HCM.UI.Pages.MasterDataSetup
                                 //Check for Add and Update
                                 if (PropertyName == "PunchedDate")
                                 {
-                                    var DatetimeValue = Convert.ToDateTime((ws.Cell(i, j).Value));
-                                    //var CheckList = oListTrnsTempAttendance.Where(x => x.FkempId == empid && Convert.ToDateTime(x.PunchedDate).ToString("MM/dd/yyyy") == Convert.ToDateTime(DatetimeValue).ToString("MM/dd/yyyy")).FirstOrDefault();
-                                    //if (CheckList != null)
-                                    //{
-                                    ////    oModelTrnsTempAttendance.Id = CheckList.Id;
-                                    //}
-                                    oModelTrnsTempAttendance.GetType().GetProperty(PropertyName).SetValue(oModelTrnsTempAttendance, DatetimeValue, null);
-                                    continue;
+                                    var DatetimeValue = (ws.Cell(i, j).Value).ToString();
+                                    if (DatetimeValue != null && DatetimeValue != "")
+                                    {
+                                        
+                                        oModelTrnsTempAttendance.GetType().GetProperty(PropertyName).SetValue(oModelTrnsTempAttendance, Convert.ToDateTime(DatetimeValue), null);
+                                        continue;
+                                    }
                                 }
                             }
                         }
@@ -2669,6 +2687,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             try
             {
                 Loading = true;
+                oModelpayroll = await _CfgPayrollDefinationinit.GetData();
                 oListMstDocumentNumberSeries = await _mstDocumentNumberSeries.GetAllData();
                 var Session = await _localStorage.GetItemAsync<MstUser>("User");
                 if (Session != null)
