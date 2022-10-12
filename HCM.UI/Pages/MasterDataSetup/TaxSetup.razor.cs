@@ -21,7 +21,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         public ISnackbar Snackbar { get; set; }
 
         [Inject]
-        public IMstTaxSetup _mstTaxSetup { get; set; }
+        public ICfgTaxSetup _CfgTaxSetup { get; set; }
 
         [Inject]
         public IMstCalendar _mstCalendar { get; set; }
@@ -37,14 +37,14 @@ namespace HCM.UI.Pages.MasterDataSetup
         bool Loading = false;        
 
         private string searchString1 = "";
-        private bool FilterFunc(MstTaxSetupDetail element) => FilterFunc(element, searchString1);
+        private bool FilterFunc(CfgTaxDetail element) => FilterFunc(element, searchString1);
 
-        MstTaxSetup oModel = new MstTaxSetup();
+        CfgTaxSetup oModel = new CfgTaxSetup();
         List<MstCalendar> oCalendarList = new List<MstCalendar>();
 
-        private IEnumerable<MstTaxSetupDetail> oDetailList = new List<MstTaxSetupDetail>();
-        List<MstTaxSetupDetail> oDetail = new List<MstTaxSetupDetail>();
-        private IEnumerable<MstTaxSetup> oList = new List<MstTaxSetup>();
+        private IEnumerable<CfgTaxDetail> oDetailList = new List<CfgTaxDetail>();
+        List<CfgTaxDetail> oDetail = new List<CfgTaxDetail>();
+        private IEnumerable<CfgTaxSetup> oList = new List<CfgTaxSetup>();
 
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
         DialogOptions FullView = new DialogOptions() { MaxWidth = MaxWidth.ExtraExtraLarge, FullWidth = true, CloseButton = true, DisableBackdropClick = true, CloseOnEscapeKey = true };
@@ -63,9 +63,9 @@ namespace HCM.UI.Pages.MasterDataSetup
                 var result = await dialog.Result;
                 if (!result.Cancelled)
                 {
-                    var res = (MstTaxSetup)result.Data;
+                    var res = (CfgTaxSetup)result.Data;
                     oModel = res;
-                    oDetailList = oModel.MstTaxSetupDetails;
+                    oDetailList = oModel.CfgTaxDetails;
                     oDetail = oDetailList.ToList();
                 }
             }
@@ -75,7 +75,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
-        private async Task OpenEditDialog(DialogOptions options, MstTaxSetupDetail oDetailPara)
+        private async Task OpenEditDialog(DialogOptions options, CfgTaxDetail oDetailPara)
         {
             try
             {
@@ -87,15 +87,15 @@ namespace HCM.UI.Pages.MasterDataSetup
 
                 if (!result.Cancelled)
                 {
-                    var res = (MstTaxSetupDetail)result.Data;                    
+                    var res = (CfgTaxDetail)result.Data;                    
                     var update = oDetailList.Where(x => x.TaxCode == res.TaxCode).FirstOrDefault();
                     if (update != null)
                     {
                         oDetail.Remove(update);
                     }
-                    MstTaxSetupDetail oTaxDetail = new MstTaxSetupDetail();
+                    CfgTaxDetail oTaxDetail = new CfgTaxDetail();
                     oTaxDetail.Id = res.Id;
-                    oTaxDetail.Fkid = res.Fkid;
+                    oTaxDetail.Pid = res.Pid;
                     oTaxDetail.TaxCode = res.TaxCode;
                     oTaxDetail.MinAmount = res.MinAmount;
                     oTaxDetail.MaxAmount = res.MaxAmount;
@@ -125,7 +125,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 var result = await dialog.Result;
                 if (!result.Cancelled)
                 {
-                    var res = (MstTaxSetupDetail)result.Data;
+                    var res = (CfgTaxDetail)result.Data;
                     if (oDetailList.Where(x => x.TaxCode == res.TaxCode).Count() > 0)
                     {
                         Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
@@ -150,19 +150,19 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
-                if ((oModel.SalaryYear != null) && (oModel.MinTaxSalaryF != null) && (oModel.SeniorCitizonAge != null) && (oModel.MaxSalaryDisc != null) && (oModel.DiscountOnTotalTax != null))
+                if ((oModel.SalaryYear != null) && (oModel.MinTaxSalaryF != null) && (oModel.SeniorCitizonAge != null) && (oModel.MaxSalaryDisc != null) && (oModel.DiscountOnTotalTax != null) && oDetailList.Count() > 0)
                 {
 
-                    oModel.MstTaxSetupDetails = oDetailList.ToList();
+                    oModel.CfgTaxDetails = oDetailList.ToList();
                     if (oModel.Id == 0)
                     {
-                        oModel.CreatedBy = LoginUser;
-                        res = await _mstTaxSetup.Insert(oModel);
+                        oModel.UserId = LoginUser;
+                        res = await _CfgTaxSetup.Insert(oModel);
                     }
                     else
                     {
                         oModel.UpdatedBy = LoginUser;
-                        res = await _mstTaxSetup.Update(oModel);
+                        res = await _CfgTaxSetup.Update(oModel);
                     }
 
                     if (res != null && res.Id == 1)
@@ -207,7 +207,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
-        private bool FilterFunc(MstTaxSetupDetail element, string searchString1)
+        private bool FilterFunc(CfgTaxDetail element, string searchString1)
         {
             if (string.IsNullOrWhiteSpace(searchString1))
                 return true;

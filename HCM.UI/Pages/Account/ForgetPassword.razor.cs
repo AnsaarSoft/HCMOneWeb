@@ -70,8 +70,8 @@ namespace HCM.UI.Pages.Account
                 {
                     oModel.UserName = "";
                     oModel.UserCode = "";
-                    oModel.Password = "";
-                    oModel.FlgActive = true;
+                    oModel.PassCode = "";
+                    oModel.FlgActiveUser = true;
                     oModel.FlgPasswordRequest = false;
                     res = await _mstUser.GenerateOTP(oModel);
 
@@ -129,7 +129,7 @@ namespace HCM.UI.Pages.Account
                     {
                         Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
-                    oModel.FlgActive = true;
+                    oModel.FlgActiveUser = true;
                 }
                 else
                 {
@@ -153,13 +153,13 @@ namespace HCM.UI.Pages.Account
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(1);
-                if (!string.IsNullOrWhiteSpace(oModel.Password) && !string.IsNullOrWhiteSpace(ConfirmPassword))
+                if (!string.IsNullOrWhiteSpace(oModel.PassCode) && !string.IsNullOrWhiteSpace(ConfirmPassword))
                 {
-                    if (oModel.Password == ConfirmPassword)
+                    if (oModel.PassCode == ConfirmPassword)
                     {
                         oModel.UserCode = "";
                         oModel.UserName = "";
-                        oModel.FlgActive = true;
+                        oModel.FlgActiveUser = true;
                         oModel.FlgPasswordRequest = true;
                         res = await _mstUser.ChangePassword(oModel);
 

@@ -1,4 +1,5 @@
 ﻿using HCM.API.General;
+using HCM.API.HCMModels;
 using HCM.API.Interfaces.MasterData;
 using HCM.API.Models;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +11,8 @@ namespace HCM.API.Controllers
     [ApiController]
     public class MasterDataController : ControllerBase
     {
+        private IMstForm _mstForm;
+        private IMstDocumentNumberSeries _mstDocumentNumberSeries;
         private IMstDepartment _mstDepartment;
         private IMstDesignation _mstDesignation;
         private IMstLocation _mstLocation;
@@ -19,7 +22,7 @@ namespace HCM.API.Controllers
         private IMstCalendar _mstCalendar;
         private IMstLeaveCalendar _mstLeaveCalendar;
         private IMstEmailConfig _mstEmailConfig;
-        private IMstPayrollinit _mstPayrollinit;
+        private ICfgPayrollDefinationinit _CfgPayrollDefinationinit;
         private IMstLoans _mstLoans;
         private IMstShifts _mstShift;
         private IMstAdvance _mstAdvance;
@@ -27,19 +30,23 @@ namespace HCM.API.Controllers
         private IMstLeaveDeduction _mstLeaveDeduction;
         private IMstDeductionRule _mstDeductionRule;
         private IMstAttendanceRules _mstAttendanceRule;
-        private IMstTaxSetup _mstTaxSetup;
-        private IMstPayroll _mstPayrollSetup;
+        private ICfgTaxSetup _CfgTaxSetup;
+        private ICfgPayrollDefination _CfgPayrollDefinationSetup;
         private IMstBonus _mstBonus;
         private IMstGratuity _mstGratuity;
         private IMstCountryStateCity _mstCountryStateCity;
         private IMstContractor _mstContractor;
         private IMstStation _mstStation;
+        private IMstEmployeeLeaves _mstEmployeeLeaves;
+        private IMstDimension _mstDimension;
 
-        public MasterDataController(IMstDepartment mstDepartment, IMstDesignation mstDesignation, IMstLocation mstLocation, IMstPosition mstPosition, IMstBranch mstBranch, IMstGrading mstGrading, IMstCalendar mstCalendar,
-            IMstLeaveCalendar mstLeaveCalendar, IMstEmailConfig mstEmailConfig, IMstPayrollinit mstPayrollinit, IMstLoans mstLoans, IMstShifts mstShift, IMstAdvance mstAdvance, IMstLeaveDeduction mstLeaveDeduction,
-            IMstLeaveType mstLeaveType, IMstDeductionRule mstDeductionRule, IMstAttendanceRules mstAttendanceRule, IMstTaxSetup mstTaxSetup, IMstPayroll mstPayrollSetup, IMstBonus mstBonus, IMstGratuity mstGratuity,
-            IMstCountryStateCity mstCountryStateCity, IMstContractor mstContractor, IMstStation mstStation)
+        public MasterDataController(IMstForm mstForm, IMstDocumentNumberSeries mstDocumentNumberSeries, IMstDepartment mstDepartment, IMstDesignation mstDesignation, IMstLocation mstLocation, IMstPosition mstPosition, IMstBranch mstBranch, IMstGrading mstGrading, IMstCalendar mstCalendar,
+            IMstLeaveCalendar mstLeaveCalendar, IMstEmailConfig mstEmailConfig, ICfgPayrollDefinationinit CfgPayrollDefinationinit, IMstLoans mstLoans, IMstShifts mstShift, IMstAdvance mstAdvance, IMstLeaveDeduction mstLeaveDeduction,
+            IMstLeaveType mstLeaveType, IMstDeductionRule mstDeductionRule, IMstAttendanceRules mstAttendanceRule, ICfgTaxSetup CfgTaxSetup, ICfgPayrollDefination CfgPayrollDefinationSetup, IMstBonus mstBonus, IMstGratuity mstGratuity,
+            IMstCountryStateCity mstCountryStateCity, IMstContractor mstContractor, IMstStation mstStation, IMstEmployeeLeaves mstEmployeeLeaves, IMstDimension mstDimension)
         {
+            _mstForm = mstForm;
+            _mstDocumentNumberSeries = mstDocumentNumberSeries;
             _mstDepartment = mstDepartment;
             _mstDesignation = mstDesignation;
             _mstLocation = mstLocation;
@@ -49,7 +56,7 @@ namespace HCM.API.Controllers
             _mstCalendar = mstCalendar;
             _mstLeaveCalendar = mstLeaveCalendar;
             _mstEmailConfig = mstEmailConfig;
-            _mstPayrollinit = mstPayrollinit;
+            _CfgPayrollDefinationinit = CfgPayrollDefinationinit;
             _mstLoans = mstLoans;
             _mstShift = mstShift;
             _mstAdvance = mstAdvance;
@@ -57,15 +64,217 @@ namespace HCM.API.Controllers
             _mstLeaveType = mstLeaveType;
             _mstDeductionRule = mstDeductionRule;
             _mstAttendanceRule = mstAttendanceRule;
-            _mstTaxSetup = mstTaxSetup;
-            _mstPayrollSetup = mstPayrollSetup;
-            _mstPayrollSetup = mstPayrollSetup;
+            _CfgTaxSetup = CfgTaxSetup;
+            _CfgPayrollDefinationSetup = CfgPayrollDefinationSetup;
+            _CfgPayrollDefinationSetup = CfgPayrollDefinationSetup;
             _mstBonus = mstBonus;
             _mstGratuity = mstGratuity;
             _mstCountryStateCity = mstCountryStateCity;
             _mstContractor = mstContractor;
             _mstStation = mstStation;
+            _mstEmployeeLeaves = mstEmployeeLeaves;
+            _mstDimension = mstDimension;
         }
+
+        #region MST Form
+
+        [Route("getAllForm")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllForm()
+        {
+            List<MstForm> oMstForm = new List<MstForm>();
+            try
+            {
+                oMstForm = await _mstForm.GetAllData();
+                if (oMstForm == null)
+                {
+                    return BadRequest(oMstForm);
+                }
+                else
+                {
+                    return Ok(oMstForm);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addForm")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstForm pMstForm)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstForm.Insert(pMstForm);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateForm")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstForm pMstForm)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstForm.Update(pMstForm);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
+
+        #region MST DocumentNumberSeries
+
+        [Route("getAllDocumentNumberSeries")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllDocumentNumberSeries()
+        {
+            List<MstDocumentNumberSeries> oMstDocumentNumberSeries = new List<MstDocumentNumberSeries>();
+            try
+            {
+                oMstDocumentNumberSeries = await _mstDocumentNumberSeries.GetAllData();
+                if (oMstDocumentNumberSeries == null)
+                {
+                    return BadRequest(oMstDocumentNumberSeries);
+                }
+                else
+                {
+                    return Ok(oMstDocumentNumberSeries);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addDocumentNumberSeries")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstDocumentNumberSeries pMstDocumentNumberSeries)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstDocumentNumberSeries.Insert(pMstDocumentNumberSeries);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateDocumentNumberSeries")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstDocumentNumberSeries pMstDocumentNumberSeries)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstDocumentNumberSeries.Update(pMstDocumentNumberSeries);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addDocumentNumberSeriesList")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] List<MstDocumentNumberSeries> pMstDocumentNumberSeries)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstDocumentNumberSeries.Insert(pMstDocumentNumberSeries);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateDocumentNumberSeriesList")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] List<MstDocumentNumberSeries> pMstDocumentNumberSeries)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstDocumentNumberSeries.Update(pMstDocumentNumberSeries);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
 
         #region Mst Country State City
 
@@ -449,6 +658,130 @@ namespace HCM.API.Controllers
             try
             {
                 response = await _mstDepartment.Update(pMstDepartment);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
+
+        #region MST Dimension
+
+        [Route("getAllDimen")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllDim()
+        {
+            List<MstDimension> oMstDimension = new List<MstDimension>();
+            try
+            {
+                oMstDimension = await _mstDimension.GetAllData();
+                if (oMstDimension == null)
+                {
+                    return BadRequest(oMstDimension);
+                }
+                else
+                {
+                    return Ok(oMstDimension);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addDimen")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstDimension pMstDimension)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstDimension.Insert(pMstDimension);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateDimen")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstDimension pMstDimension)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstDimension.Update(pMstDimension);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addDimenList")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] List<MstDimension> pMstDimension)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstDimension.Insert(pMstDimension);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateDimenList")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] List<MstDimension> pMstDimension)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstDimension.Update(pMstDimension);
                 if (response == null)
                 {
                     return BadRequest(response);
@@ -1160,12 +1493,12 @@ namespace HCM.API.Controllers
 
         [Route("addPRPeriods")]
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] List<MstPayrollPeriod> pMstPayrollPeriod)
+        public async Task<IActionResult> Add([FromBody] List<CfgPeriodDate> pCfgPeriodDate)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                response = await _mstCalendar.Insert(pMstPayrollPeriod);
+                response = await _mstCalendar.Insert(pCfgPeriodDate);
                 if (response == null)
                 {
                     return BadRequest(response);
@@ -1320,18 +1653,18 @@ namespace HCM.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPayrollinit()
         {
-            MstPayrollBasicInitialization oMstPayrollinit = new MstPayrollBasicInitialization();
+            CfgPayrollBasicInitialization oCfgPayrollDefinationinit = new CfgPayrollBasicInitialization();
 
             try
             {
-                oMstPayrollinit = await _mstPayrollinit.GetData();
-                if (oMstPayrollinit == null)
+                oCfgPayrollDefinationinit = await _CfgPayrollDefinationinit.GetData();
+                if (oCfgPayrollDefinationinit == null)
                 {
-                    return BadRequest(oMstPayrollinit);
+                    return BadRequest(oCfgPayrollDefinationinit);
                 }
                 else
                 {
-                    return Ok(oMstPayrollinit);
+                    return Ok(oCfgPayrollDefinationinit);
                 }
             }
             catch (Exception ex)
@@ -1343,14 +1676,14 @@ namespace HCM.API.Controllers
 
         [Route("updatePayrollinit")]
         [HttpPost]
-        public async Task<IActionResult> Update([FromBody] MstPayrollBasicInitialization pMstPayrollinit)
+        public async Task<IActionResult> Update([FromBody] CfgPayrollBasicInitialization pCfgPayrollDefinationinit)
 
         {
             ApiResponseModel response = new ApiResponseModel();
 
             try
             {
-                response = await _mstPayrollinit.Update(pMstPayrollinit);
+                response = await _CfgPayrollDefinationinit.Update(pCfgPayrollDefinationinit);
                 if (response == null)
                 {
                     return BadRequest(response);
@@ -1906,17 +2239,17 @@ namespace HCM.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllTaxSetup()
         {
-            List<MstTaxSetup> oMstTaxSetup = new List<MstTaxSetup>();
+            List<CfgTaxSetup> oCfgTaxSetup = new List<CfgTaxSetup>();
             try
             {
-                oMstTaxSetup = await _mstTaxSetup.GetAllData();
-                if (oMstTaxSetup == null)
+                oCfgTaxSetup = await _CfgTaxSetup.GetAllData();
+                if (oCfgTaxSetup == null)
                 {
-                    return BadRequest(oMstTaxSetup);
+                    return BadRequest(oCfgTaxSetup);
                 }
                 else
                 {
-                    return Ok(oMstTaxSetup);
+                    return Ok(oCfgTaxSetup);
                 }
             }
             catch (Exception ex)
@@ -1928,12 +2261,12 @@ namespace HCM.API.Controllers
 
         [Route("addTaxSetup")]
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] MstTaxSetup pMstTaxSetup)
+        public async Task<IActionResult> Add([FromBody] CfgTaxSetup pCfgTaxSetup)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                response = await _mstTaxSetup.Insert(pMstTaxSetup);
+                response = await _CfgTaxSetup.Insert(pCfgTaxSetup);
                 if (response == null)
                 {
                     return BadRequest(response);
@@ -1952,12 +2285,12 @@ namespace HCM.API.Controllers
 
         [Route("updateTaxSetup")]
         [HttpPost]
-        public async Task<IActionResult> Update([FromBody] MstTaxSetup pMstTaxSetup)
+        public async Task<IActionResult> Update([FromBody] CfgTaxSetup pCfgTaxSetup)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                response = await _mstTaxSetup.Update(pMstTaxSetup);
+                response = await _CfgTaxSetup.Update(pCfgTaxSetup);
                 if (response == null)
                 {
                     return BadRequest(response);
@@ -2057,17 +2390,17 @@ namespace HCM.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllPayrollSetup()
         {
-            List<MstPayroll> oMstPayrollSetup = new List<MstPayroll>();
+            List<CfgPayrollDefination> oCfgPayrollDefinationSetup = new List<CfgPayrollDefination>();
             try
             {
-                oMstPayrollSetup = await _mstPayrollSetup.GetAllData();
-                if (oMstPayrollSetup == null)
+                oCfgPayrollDefinationSetup = await _CfgPayrollDefinationSetup.GetAllData();
+                if (oCfgPayrollDefinationSetup == null)
                 {
-                    return BadRequest(oMstPayrollSetup);
+                    return BadRequest(oCfgPayrollDefinationSetup);
                 }
                 else
                 {
-                    return Ok(oMstPayrollSetup);
+                    return Ok(oCfgPayrollDefinationSetup);
                 }
             }
             catch (Exception ex)
@@ -2079,12 +2412,12 @@ namespace HCM.API.Controllers
 
         [Route("addPayrollSetup")]
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] MstPayroll pMstPayrollSetup)
+        public async Task<IActionResult> Add([FromBody] CfgPayrollDefination pCfgPayrollDefinationSetup)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                response = await _mstPayrollSetup.Insert(pMstPayrollSetup);
+                response = await _CfgPayrollDefinationSetup.Insert(pCfgPayrollDefinationSetup);
                 if (response == null)
                 {
                     return BadRequest(response);
@@ -2103,12 +2436,12 @@ namespace HCM.API.Controllers
 
         [Route("updatePayrollSetup")]
         [HttpPost]
-        public async Task<IActionResult> Update([FromBody] MstPayroll pMstPayrollSetup)
+        public async Task<IActionResult> Update([FromBody] CfgPayrollDefination pCfgPayrollDefinationSetup)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                response = await _mstPayrollSetup.Update(pMstPayrollSetup);
+                response = await _CfgPayrollDefinationSetup.Update(pCfgPayrollDefinationSetup);
                 if (response == null)
                 {
                     return BadRequest(response);
@@ -2184,6 +2517,130 @@ namespace HCM.API.Controllers
             try
             {
                 response = await _mstGratuity.Update(pMstGratuity);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
+
+        #region MST EmployeeLeaf
+
+        [Route("getAllEmployeeLeaves")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllEmployeeLeaves()
+        {
+            List<MstEmployeeLeaf> oMstEmployeeLeaf = new List<MstEmployeeLeaf>();
+            try
+            {
+                oMstEmployeeLeaf = await _mstEmployeeLeaves.GetAllData();
+                if (oMstEmployeeLeaf == null)
+                {
+                    return BadRequest(oMstEmployeeLeaf);
+                }
+                else
+                {
+                    return Ok(oMstEmployeeLeaf);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addEmployeeLeaves")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstEmployeeLeaf pMstEmployeeLeaf)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstEmployeeLeaves.Insert(pMstEmployeeLeaf);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateEmployeeLeaves")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstEmployeeLeaf pMstEmployeeLeaf)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstEmployeeLeaves.Update(pMstEmployeeLeaf);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addEmployeeLeavesList")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] List<MstEmployeeLeaf> pMstEmployeeLeaf)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstEmployeeLeaves.Insert(pMstEmployeeLeaf);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateEmployeeLeavesList")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] List<MstEmployeeLeaf> pMstEmployeeLeaf)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstEmployeeLeaves.Update(pMstEmployeeLeaf);
                 if (response == null)
                 {
                     return BadRequest(response);

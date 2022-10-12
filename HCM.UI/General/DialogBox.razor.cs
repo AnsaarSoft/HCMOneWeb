@@ -4,6 +4,7 @@ using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using System.Collections.Generic;
 
 namespace HCM.UI.General
 {
@@ -27,19 +28,25 @@ namespace HCM.UI.General
         public IMstShifts _mstShift { get; set; }
 
         [Inject]
-        public IMstTaxSetup _mstTaxSetup { get; set; }
+        public ICfgTaxSetup _CfgTaxSetup { get; set; }
 
         [Inject]
         public IMstGratuity _mstGratuity { get; set; }
 
         [Inject]
-        public IMstPayroll _mstPayrollSetup { get; set; }
+        public ICfgPayrollDefination _CfgPayrollDefinationSetup { get; set; }
 
         [Inject]
         public IMstEmployeeMasterData _mstEmployee { get; set; }
 
-        [Parameter] 
+        [Inject]
+        public ITrnsLeaveRequest _trnsLeavesRequest { get; set; }
+
+        [Parameter]
         public string DialogFor { get; set; }
+
+        [Parameter]
+        public IEnumerable<MstElementLink> PayrollElements { get; set; }
 
         #endregion
 
@@ -53,10 +60,13 @@ namespace HCM.UI.General
 
         private bool FilterFuncElement(MstElement element) => FilterFuncElement(element, searchString1);
         private bool FilterFuncShift(MstShift element) => FilterFuncShift(element, searchString1);
-        private bool FilterFuncTaxSetup(MstTaxSetup element) => FilterFuncTaxSetup(element, searchString1);
-        private bool FilterFuncPayrollSetup(MstPayroll element) => FilterFuncPayrollSetup(element, searchString1);
+        private bool FilterFuncTaxSetup(CfgTaxSetup element) => FilterFuncTaxSetup(element, searchString1);
+        private bool FilterFuncPayrollSetup(CfgPayrollDefination element) => FilterFuncPayrollSetup(element, searchString1);
         private bool FilterFuncGratuitySetup(MstGratuity element) => FilterFuncGratuitySetup(element, searchString1);
         private bool FilterFuncMstEmployee(MstEmployee element) => FilterFuncMstEmployee(element, searchString1);
+
+        private bool FilterFuncTrnsLeavesRequest(TrnsLeavesRequest element) => FilterFuncTrnsLeavesRequest(element, searchString1);
+
         void Cancel() => MudDialog.Cancel();
 
         private MudTable<MstElement> _tableElement;
@@ -68,21 +78,25 @@ namespace HCM.UI.General
         MstShift oModelShift = new MstShift();
         List<MstShift> oListShift = new List<MstShift>();
 
-        private MudTable<MstTaxSetup> _tableTaxSetup;
-        MstTaxSetup oModelTaxSetup = new MstTaxSetup();
-        List<MstTaxSetup> oListTaxSetup = new List<MstTaxSetup>();
+        private MudTable<CfgTaxSetup> _tableTaxSetup;
+        CfgTaxSetup oModelTaxSetup = new CfgTaxSetup();
+        List<CfgTaxSetup> oListTaxSetup = new List<CfgTaxSetup>();
 
-        private MudTable<MstPayroll> _tablePayroll;
-        MstPayroll oModelPayrollSetup = new MstPayroll();
-        List<MstPayroll> oListPayrollSetup = new List<MstPayroll>();
+        private MudTable<CfgPayrollDefination> _tablePayroll;
+        CfgPayrollDefination oModelPayrollSetup = new CfgPayrollDefination();
+        List<CfgPayrollDefination> oListPayrollSetup = new List<CfgPayrollDefination>();
 
         private MudTable<MstGratuity> _tableGratuity;
         MstGratuity oModelGratuitySetup = new MstGratuity();
-        List<MstGratuity> oListGratuitySetup = new List<MstGratuity>(); 
-        
+        List<MstGratuity> oListGratuitySetup = new List<MstGratuity>();
+
         private MudTable<MstEmployee> _tableMstEmployee;
         MstEmployee oModelMstEmployee = new MstEmployee();
         List<MstEmployee> oListMstEmployee = new List<MstEmployee>();
+
+        private MudTable<TrnsLeavesRequest> _tableTrnsLeavesRequest;
+        TrnsLeavesRequest oModelTrnsLeavesRequest = new TrnsLeavesRequest();
+        List<TrnsLeavesRequest> oListTrnsLeavesRequest = new List<TrnsLeavesRequest>();
 
         #endregion
 
@@ -93,6 +107,16 @@ namespace HCM.UI.General
             try
             {
                 oListElement = await _mstElement.GetAllData();
+                if (DialogFor == "ElementTransaction")
+                {
+                    List<MstElement> oListTemp = new List<MstElement>();
+                    foreach (var PayrollElement in PayrollElements)
+                    {
+                        var SelectedElement = oListElement.Where(x => x.Id == PayrollElement.ElementId).FirstOrDefault();
+                        oListTemp.Add(SelectedElement);
+                    }
+                    oListElement = oListTemp.ToList();
+                }
                 if (oListElement?.Count == 0 || oListElement == null)
                 {
                     Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
@@ -152,7 +176,7 @@ namespace HCM.UI.General
         {
             try
             {
-                oListTaxSetup = await _mstTaxSetup.GetAllData();
+                oListTaxSetup = await _CfgTaxSetup.GetAllData();
                 if (oListTaxSetup?.Count == 0 || oListTaxSetup == null)
                 {
                     Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
@@ -163,29 +187,28 @@ namespace HCM.UI.General
                 Logs.GenerateLogs(ex);
             }
         }
-
-        private bool FilterFuncTaxSetup(MstTaxSetup element, string searchString1)
+        private bool FilterFuncTaxSetup(CfgTaxSetup element, string searchString1)
         {
             if (string.IsNullOrWhiteSpace(searchString1))
                 return true;
-            if (element.SalaryYear.Equals(searchString1))
+            if (element.SalaryYear.ToString().Contains(searchString1))
                 return true;
-            if (element.MinTaxSalaryF.Equals(searchString1))
+            if (element.MinTaxSalaryF.ToString().Contains(searchString1))
                 return true;
-            if (element.SeniorCitizonAge.Equals(searchString1))
+            if (element.SeniorCitizonAge.ToString().Contains(searchString1))
                 return true;
-            if (element.MaxSalaryDisc.Equals(searchString1))
+            if (element.MaxSalaryDisc.ToString().Contains(searchString1))
                 return true;
-            if (element.DiscountOnTotalTax.Equals(searchString1))
+            if (element.DiscountOnTotalTax.ToString().Contains(searchString1))
                 return true;
             return false;
-        }        
+        }
 
         private async Task GetAllPayrollSetup()
         {
             try
             {
-                oListPayrollSetup = await _mstPayrollSetup.GetAllData();
+                oListPayrollSetup = await _CfgPayrollDefinationSetup.GetAllData();
                 if (oListPayrollSetup?.Count == 0 || oListPayrollSetup == null)
                 {
                     Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
@@ -196,7 +219,7 @@ namespace HCM.UI.General
                 Logs.GenerateLogs(ex);
             }
         }
-        private bool FilterFuncPayrollSetup(MstPayroll element, string searchString1)
+        private bool FilterFuncPayrollSetup(CfgPayrollDefination element, string searchString1)
         {
             if (string.IsNullOrWhiteSpace(searchString1))
                 return true;
@@ -206,8 +229,8 @@ namespace HCM.UI.General
                 return true;
             if (element.Gltype.Equals(searchString1))
                 return true;
-            if (element.FlgActive.Equals(searchString1))
-                return true;
+            //if (element.FlgActive.Equals(searchString1))
+            //    return true;
             return false;
         }
 
@@ -235,10 +258,10 @@ namespace HCM.UI.General
             if (element.BasedOn.Equals(searchString1))
                 return true;
             if (element.BasedOnValue.Equals(searchString1))
-                return true;            
+                return true;
             return false;
         }
-        
+
         private async Task GetAllMstEmployee()
         {
             try
@@ -271,6 +294,40 @@ namespace HCM.UI.General
             return false;
         }
 
+        private async Task GetAllTrnsLeavesRequest()
+        {
+            try
+            {
+                oListTrnsLeavesRequest = await _trnsLeavesRequest.GetAllData();
+                if (oListTrnsLeavesRequest?.Count == 0 || oListTrnsLeavesRequest == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncTrnsLeavesRequest(TrnsLeavesRequest element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.DocNum.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.EmpName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.DocStatus.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.DocAprStatus.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.DocDate.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.LeaveType.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
+        }
+
         #endregion
 
         #region Events
@@ -281,6 +338,10 @@ namespace HCM.UI.General
             {
                 Loading = true;
                 if (DialogFor == "Element" || DialogFor == "PayrollElement")
+                {
+                    await GetAllElements();
+                }
+                else if (DialogFor == "ElementTransaction")
                 {
                     await GetAllElements();
                 }
@@ -304,6 +365,10 @@ namespace HCM.UI.General
                 {
                     await GetAllMstEmployee();
                 }
+                else if (DialogFor == "LeaveRequest")
+                {
+                    await GetAllTrnsLeavesRequest();
+                }
                 Loading = false;
             }
             catch (Exception ex)
@@ -317,7 +382,7 @@ namespace HCM.UI.General
         {
             try
             {
-                clickedEvents.Add("Row has been clicked");               
+                clickedEvents.Add("Row has been clicked");
             }
             catch (Exception ex)
             {
@@ -333,7 +398,7 @@ namespace HCM.UI.General
                 clickedEvents.Add("Selected Row: None");
                 return string.Empty;
             }
-            else if(_tableElement.SelectedItem != null && _tableElement.SelectedItem.Equals(element))
+            else if (_tableElement.SelectedItem != null && _tableElement.SelectedItem.Equals(element))
             {
                 selectedRowNumber = rowNumber;
                 clickedEvents.Add($"Selected Row: {rowNumber}");
@@ -377,7 +442,7 @@ namespace HCM.UI.General
             }
         }
 
-        public void RowClickEventTaxSetup(TableRowClickEventArgs<MstTaxSetup> tableRowClickEventArgs)
+        public void RowClickEventTaxSetup(TableRowClickEventArgs<CfgTaxSetup> tableRowClickEventArgs)
         {
             try
             {
@@ -389,7 +454,7 @@ namespace HCM.UI.General
             }
 
         }
-        private string SelectedRowClassFuncTaxSetup(MstTaxSetup element, int rowNumber)
+        private string SelectedRowClassFuncTaxSetup(CfgTaxSetup element, int rowNumber)
         {
             if (selectedRowNumber == rowNumber)
             {
@@ -409,7 +474,7 @@ namespace HCM.UI.General
             }
         }
 
-        public void RowClickEventPayrollSetup(TableRowClickEventArgs<MstPayroll> tableRowClickEventArgs)
+        public void RowClickEventPayrollSetup(TableRowClickEventArgs<CfgPayrollDefination> tableRowClickEventArgs)
         {
             try
             {
@@ -421,7 +486,7 @@ namespace HCM.UI.General
             }
 
         }
-        private string SelectedRowClassFuncPayrollSetup(MstPayroll element, int rowNumber)
+        private string SelectedRowClassFuncPayrollSetup(CfgPayrollDefination element, int rowNumber)
         {
             if (selectedRowNumber == rowNumber)
             {
@@ -505,6 +570,37 @@ namespace HCM.UI.General
             }
         }
 
+        public void RowClickEventTrnsLeavesRequest(TableRowClickEventArgs<TrnsLeavesRequest> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncTrnsLeavesRequest(TrnsLeavesRequest element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableTrnsLeavesRequest.SelectedItem != null && _tableTrnsLeavesRequest.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
         private void Submit()
         {
             try
@@ -513,13 +609,17 @@ namespace HCM.UI.General
                 {
                     MudDialog.Close(DialogResult.Ok<MstElement>(oModelElement));
                 }
+                else if (DialogFor == "ElementTransaction" && oListElement.Count() > 0)
+                {
+                    MudDialog.Close(DialogResult.Ok<HashSet<MstElement>>(HashElement));
+                }
                 else if (DialogFor == "Shifts" && oModelShift.Id > 0)
                 {
                     MudDialog.Close(DialogResult.Ok<MstShift>(oModelShift));
                 }
                 else if (DialogFor == "TaxSetup" && oModelTaxSetup.Id > 0)
                 {
-                    MudDialog.Close(DialogResult.Ok<MstTaxSetup>(oModelTaxSetup));
+                    MudDialog.Close(DialogResult.Ok<CfgTaxSetup>(oModelTaxSetup));
                 }
                 else if (DialogFor == "GratuitySetup" && oModelGratuitySetup.Id > 0)
                 {
@@ -527,7 +627,7 @@ namespace HCM.UI.General
                 }
                 else if (DialogFor == "PayrollSetup" && oModelPayrollSetup.Id > 0)
                 {
-                    MudDialog.Close(DialogResult.Ok<MstPayroll>(oModelPayrollSetup));
+                    MudDialog.Close(DialogResult.Ok<CfgPayrollDefination>(oModelPayrollSetup));
                 }
                 else if (DialogFor == "PayrollElement" && HashElement.Count() > 0)
                 {
@@ -536,6 +636,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "EmployeeMaster" && oModelMstEmployee.Id > 0)
                 {
                     MudDialog.Close(DialogResult.Ok<MstEmployee>(oModelMstEmployee));
+                }
+                else if (DialogFor == "LeaveRequest" && oModelTrnsLeavesRequest.Id > 0)
+                {
+                    MudDialog.Close(DialogResult.Ok<TrnsLeavesRequest>(oModelTrnsLeavesRequest));
                 }
                 else
                 {
@@ -546,7 +650,7 @@ namespace HCM.UI.General
             {
                 Logs.GenerateLogs(ex);
             }
-        }        
+        }
 
         #endregion
     }

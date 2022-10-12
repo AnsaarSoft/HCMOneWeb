@@ -77,7 +77,8 @@ namespace HCM.UI.Pages.MasterElement
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
-                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description) && !string.IsNullOrWhiteSpace(oModel.ElmtType) && !string.IsNullOrWhiteSpace(oModel.Type) && !string.IsNullOrWhiteSpace(oModel.ValueType))
+                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description) && !string.IsNullOrWhiteSpace(oModel.ElmtType) && !string.IsNullOrWhiteSpace(oModel.Type) &&
+                    !string.IsNullOrWhiteSpace(oModel.ValueType))
                 {
                     if (oModel.Code.Length > 20)
                     {
@@ -87,7 +88,7 @@ namespace HCM.UI.Pages.MasterElement
                     {
                         if (oModel.Id == 0)
                         {
-                            if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
+                            if (oList.Where(x => x.Code.Trim().ToLowerInvariant() == oModel.Code.Trim().ToLowerInvariant()).Count() > 0)
                             {
                                 Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                             }
@@ -194,10 +195,10 @@ namespace HCM.UI.Pages.MasterElement
                     oModel.FlgStandardElement = true;
                     oModel.FlgEffectOnGross = true;
                     oModel.FlgProbationApplicable = true;
-                    oModel.FlgNotTaxable = false;
-                    oModel.FlgEos = false;
-                    oModel.FlgVariableValue = false;
-                    oModel.FlgPropotionate = false;
+                    //oModel.FlgNotTaxable = false;
+                    //oModel.FlgEos = false;
+                    //oModel.FlgVariableValue = false;
+                    //oModel.FlgPropotionate = false;
                     oModel.StartDate = DateTime.Today;
                     oModel.EndDate = DateTime.Today;
                     await GetAllLove();

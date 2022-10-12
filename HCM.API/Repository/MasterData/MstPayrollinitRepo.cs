@@ -4,24 +4,24 @@ using HCM.API.Models;
 
 namespace HCM.API.Repository.MasterData
 {
-    public class MstPayrollinitRepo : IMstPayrollinit
+    public class CfgPayrollDefinationinitRepo : ICfgPayrollDefinationinit
     {
 
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public MstPayrollinitRepo(WebHCMOneContext DBContext)
+        public CfgPayrollDefinationinitRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
 
-        public async Task<MstPayrollBasicInitialization> GetData()
+        public async Task<CfgPayrollBasicInitialization> GetData()
         {
-            MstPayrollBasicInitialization mstPayrollinit = new MstPayrollBasicInitialization();
+            CfgPayrollBasicInitialization CfgPayrollDefinationinit = new CfgPayrollBasicInitialization();
             try
             {
                 await Task.Run(() =>
                 {
-                    mstPayrollinit = _DBContext.MstPayrollBasicInitializations.FirstOrDefault();
+                    CfgPayrollDefinationinit = _DBContext.CfgPayrollBasicInitializations.FirstOrDefault();
                 });
 
             }
@@ -29,10 +29,10 @@ namespace HCM.API.Repository.MasterData
             {
                 Logs.GenerateLogs(ex);
             }
-            return mstPayrollinit;
+            return CfgPayrollDefinationinit;
         }
 
-        public async Task<ApiResponseModel> Update(MstPayrollBasicInitialization pMstPayrollinit)
+        public async Task<ApiResponseModel> Update(CfgPayrollBasicInitialization pCfgPayrollDefinationinit)
         {
             ApiResponseModel response = new ApiResponseModel();
 
@@ -40,10 +40,10 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    _DBContext.MstPayrollBasicInitializations.Update(pMstPayrollinit);
+                    _DBContext.CfgPayrollBasicInitializations.Update(pCfgPayrollDefinationinit);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved Successfully";
+                    response.Message = "Update Successfully";
                 });
 
             }
@@ -51,7 +51,7 @@ namespace HCM.API.Repository.MasterData
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save uccessfully";
+                response.Message = "Failed to Update uccessfully";
             }
             return response;
         }

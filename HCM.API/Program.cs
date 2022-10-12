@@ -1,3 +1,4 @@
+global using HCM.API.HCMModels;
 using HCM.API;
 using HCM.API.Interfaces.Account;
 using HCM.API.Interfaces.Attendance;
@@ -5,7 +6,6 @@ using HCM.API.Interfaces.EmployeeMasterSetup;
 using HCM.API.Interfaces.MasterData;
 using HCM.API.Interfaces.MasterElement;
 using HCM.API.Interfaces.ShiftManagement;
-using HCM.API.Models;
 using HCM.API.Repository.Account;
 using HCM.API.Repository.Attendance;
 using HCM.API.Repository.EmployeeMasterSetup;
@@ -27,7 +27,7 @@ string? DBCon = builder.Configuration.GetSection("APIBaseUrl").ToString();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<WebHCMOneContext>(options =>
+builder.Services.AddDbContext<HCMOneContext>(options =>
 options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
@@ -51,6 +51,9 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddControllersWithViews()
                 .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
+builder.Services.AddScoped<IMstForm, MstFormRepo>();
+builder.Services.AddScoped<IMstDimension, MstDimensionRepo>();
+builder.Services.AddScoped<IMstDocumentNumberSeries, MstDocumentNumberSeriesRepo>();
 builder.Services.AddScoped<IMstCountryStateCity, MstCountryStateCityRepo>();
 builder.Services.AddScoped<IMstDepartment, MstDepartmentRepo>();
 builder.Services.AddScoped<IMstContractor, MstContractorRepo>();
@@ -63,7 +66,7 @@ builder.Services.AddScoped<IMstBranch, MstBranchRepo>();
 builder.Services.AddScoped<IMstCalendar, MstCalendarRepo>();
 builder.Services.AddScoped<IMstLeaveCalendar, MstLeaveCalendarRepo>();
 builder.Services.AddScoped<IMstEmailConfig, MstEmailConfigRepo>();
-builder.Services.AddScoped<IMstPayrollinit, MstPayrollinitRepo>();
+builder.Services.AddScoped<ICfgPayrollDefinationinit, CfgPayrollDefinationinitRepo>();
 builder.Services.AddScoped<IMstElement, MstElementRepo>();
 builder.Services.AddScoped<IMstLove, MstLoveRepo>();
 builder.Services.AddScoped<IMstOverTime, MstOverTimeRepo>();
@@ -73,15 +76,19 @@ builder.Services.AddScoped<IMstAdvance, MstAdvanceRepo>();
 builder.Services.AddScoped<IMstLeaveType, MstLeaveTypeRepo>();
 builder.Services.AddScoped<IMstLeaveDeduction, MstLeaveDeductionRepo>();
 builder.Services.AddScoped<IMstDeductionRule, MstDeductionRuleRepo>();
-builder.Services.AddScoped<IMstTaxSetup, MstTaxSetupRepo>();
+builder.Services.AddScoped<ICfgTaxSetup, CfgTaxSetupRepo>();
 builder.Services.AddScoped<IMstAttendanceRules, MstAttendanceRulesRepo>();
 builder.Services.AddScoped<IMstBonus, MstBonusRepo>();
-builder.Services.AddScoped<IMstPayroll, MstPayrollRepo>();
+builder.Services.AddScoped<ICfgPayrollDefination, CfgPayrollDefinationRepo>();
 builder.Services.AddScoped<IMstGratuity, MstGratuityRepo>();
 builder.Services.AddScoped<IMstUser, MstUserRepo>();
 builder.Services.AddScoped<IMstEmployeeMasterData, MstEmployeeMasterDataRepo>();
+builder.Services.AddScoped<ITrnsEmployeeTransfer, TrnsEmployeeTransferRepo>();
 builder.Services.AddScoped<ITrnsAttendanceRegister, TrnsAttendanceRegisterRepo>();
 builder.Services.AddScoped<ITrnsTempAttendance, TrnsTempAttendanceRepo>();
+builder.Services.AddScoped<IMstEmployeeLeaves, MstEmployeeLeavesRepo>();
+builder.Services.AddScoped<ITrnsLeaveRequest, TrnsLeaveRequestRepo>();
+builder.Services.AddScoped<ITrnsElementTransaction, TrnsElementTransactionRepo>();
 
 
 Settings.TitleConfig = builder.Configuration.GetValue<string>("TitleConfig");

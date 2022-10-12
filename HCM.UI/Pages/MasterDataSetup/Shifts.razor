@@ -4,175 +4,184 @@
 
 <div class="container-fluid page-content-setting">
     <div class="row">
-        <div class="col-sm-11">
+        <div class="col-sm-10">
             <h3>Shift Master</h3>
-            <MudDivider/>
+            <MudDivider />
         </div>
-        <div class="col-sm-1">
-            <MudFab Color="Color.Primary" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Material.Filled.List" Title="View All" />
+        <div class="col-sm-2 custom-btn-design text-right">
+            <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Filled.RemoveRedEye" Color="Color.Info" Size="Size.Small">View All</MudButton>
+            @*<MudFab Color="Color.Primary" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Material.Filled.List" Title="View All" />*@
         </div>
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
-            <MudGrid class="search-action-block align-items-center shift-master-page-setting">
+            <MudGrid class="search-action-block align-items-center shift-master-page-setting block-design">
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisabledCode" Mask="@AlphaNumericMask" MaxLength="20" Counter="20" HelperText="Enter Code" Immediate="true" Clearable="true" Label="Code" Variant="Variant.Text" 
-                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
-                </MudItem> 
+                    <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisabledCode" Mask="@AlphaNumericMask" MaxLength="20" Counter="20" HelperText="Enter Code" Immediate="true" Clearable="true" Label="Code*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="250" Counter="250" HelperText="Enter OverTime Description" Immediate="true" Clearable="true" Label="Description" Variant="Variant.Text" 
-                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
-                </MudItem>                
+                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="250" Counter="250" HelperText="Enter OverTime Description" Immediate="true" Clearable="true" Label="Description*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>
                 <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
                     <MudSwitch @bind-Checked="@oModel.FlgActive" ThumbIcon="@(oModel.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgActive==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgActive==true ? "Active" : "In Active")</span>
+                        <span>@(oModel.FlgActive == true ? "Active" : "In Active")</span>
                     </MudSwitch>
-                </MudItem>              
-                @if (Loading)
-                {
-                                    <MudItem xs="2" sm="2" md="2" lg="2">
-                                        <MudText>Loading...</MudText>
-                                        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
-                                    </MudItem>
-                }
-                else
-                {
-                                    <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
-                                        <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
-                                        <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
-                                    </MudItem>
-                }
+                </MudItem>
+
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudSelect @bind-Value="oModel.OverTimeId" Label="Over time Type" HelperText="Select Overtime" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                    <MudSelect @bind-Value="oModel.OverTimeId" Label="Over time Type*" HelperText="Select Overtime" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                         @foreach (MstLove Love in oLoveList.Where(x => x.Type == "Val_Type").ToList())
                         {
-                                        <MudSelectItem Value="(int?)Love.Id">@Love.Code - @Love.Value</MudSelectItem>
+                            <MudSelectItem Value="(int?)Love.Id">@Love.Code - @Love.Value</MudSelectItem>
                         }
                     </MudSelect>
-                </MudItem>   
+                </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudSelect @bind-Value="oModel.DeductionRuleId" Label="Deduction Type" HelperText="Select Deduction" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                    <MudSelect @bind-Value="oModel.DeductionRuleId" Label="Deduction Type*" HelperText="Select Deduction" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                         @foreach (MstLove Love in oLoveList.Where(x => x.Type == "Val_Type").ToList())
                         {
-                                        <MudSelectItem Value="(int?)Love.Id">@Love.Code - @Love.Value</MudSelectItem>
+                            <MudSelectItem Value="(int?)Love.Id">@Love.Code - @Love.Value</MudSelectItem>
                         }
                     </MudSelect>
-                </MudItem> 
-                <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.HoliDayOverTime" HelperText="Enter Holiday Time" Immediate="true" Clearable="true" Label="Holiday Over Time" 
-                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" > </MudNumericField>
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.OffDayOverTime" HelperText="Enter Off Day Over Time" Immediate="true" Clearable="true" Label="Off Day Over Time" 
-                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" > </MudNumericField>
+                    <MudNumericField @bind-Value="oModel.HoliDayOverTime" Min="0" HelperText="Enter Holiday Time" Immediate="true" Clearable="true" Label="Holiday Over Time*"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text"> </MudNumericField>
                 </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModel.OffDayOverTime" Min="0" HelperText="Enter Off Day Over Time" Immediate="true" Clearable="true" Label="Off Day Over Time*"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text"> </MudNumericField>
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">
                     <MudSwitch @bind-Checked="@oModel.FlgOverTime" ThumbIcon="@(oModel.FlgOverTime==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgOverTime==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgOverTime==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgOverTime==true ? "Enable Over Time" : "Disable Over Time")</span>
+                        <span>@(oModel.FlgOverTime == true ? "Enable Over Time" : "Disable Over Time")</span>
                     </MudSwitch>
-                    </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">
                     <MudSwitch @bind-Checked="@oModel.FlgOtwrkHrs" ThumbIcon="@(oModel.FlgOtwrkHrs==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgOtwrkHrs==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgOtwrkHrs==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgOtwrkHrs==true ? "Enable OT Work Hours" : "Disbale OT Work Hours")</span>
+                        <span>@(oModel.FlgOtwrkHrs == true ? "Enable OT Work Hours" : "Disbale OT Work Hours")</span>
                     </MudSwitch>
-                    </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">
                     <MudSwitch @bind-Checked="@oModel.FlgOffDayOverTime" ThumbIcon="@(oModel.FlgOffDayOverTime==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgOffDayOverTime==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgOffDayOverTime==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgOffDayOverTime==true ? "Enable Off Day OT" : "Disable Off Day OT")</span>
+                        <span>@(oModel.FlgOffDayOverTime == true ? "Enable Off Day OT" : "Disable Off Day OT")</span>
                     </MudSwitch>
-                    </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">                        
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">
                     <MudSwitch @bind-Checked="@oModel.FlgHoliDayOverTime" ThumbIcon="@(oModel.FlgHoliDayOverTime==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgHoliDayOverTime==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgHoliDayOverTime==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgHoliDayOverTime==true ? "Enable Holiday OT" : "Disbale Holiday OT")</span>
+                        <span>@(oModel.FlgHoliDayOverTime == true ? "Enable Holiday OT" : "Disbale Holiday OT")</span>
                     </MudSwitch>
-                    </MudItem>
+                </MudItem>
+                <MudItem xs="12" sm="12" md="12" lg="12">
+                    @if (Loading)
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudText>Loading...</MudText>
+                            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2" class="text-right custom-btn-design">
+                            <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small">Save</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
+
+                            @*<MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                        <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />*@
+                        </MudItem>
+                    }
+                </MudItem>
             </MudGrid>
         </div>
     </div>
-    <MudDivider/>
+    <MudDivider />
     <div class="row mt-5">
         <div class="col-sm-12">
             <MudCard Elevation="5">
                 <MudCardContent>
-                    <MudGrid class="search-action-block align-items-center">
-                        <MudItem xs="10" sm="10" md="10" lg="10" Class="pl-5">
+                    <MudGrid class="search-action-block align-items-center block-design">
+                        <MudItem xs="10" sm="10" md="10" lg="10">
                             <MudText Typo="Typo.h6">Detail</MudText>
                         </MudItem>
                         <MudSpacer />
-                        <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right pr-5">
-                            @if(oDetailList.Count == 0)
+                        <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right custom-btn-design" style="justify-content: flex-end;">
+                            @if (oDetailList.Count == 0)
                             {
-                                <MudFab Color="Color.Primary"  OnClick="@((e) => OpenProcessDialog(FullView,oDetailList))" StartIcon="@Icons.Material.Filled.Add" Title="Add Details" IconSize="Size.Small" />
+                                <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenProcessDialog(FullView,oDetailList))" StartIcon="@Icons.Material.Filled.Add" Color="Color.Success" Size="Size.Small">Add Details</MudButton>
+                                @*<MudFab Color="Color.Primary"  OnClick="@((e) => OpenProcessDialog(FullView,oDetailList))" StartIcon="@Icons.Material.Filled.Add" Title="Add Details" IconSize="Size.Small" />*@
                             }
                             else
                             {
-                                <MudFab Color="Color.Primary"  OnClick="@((e) => OpenProcessDialog(FullView,oDetailList))" StartIcon="@Icons.Material.Filled.Edit" Title="Edit Details" IconSize="Size.Small" />
-                            }                          
+                                <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenProcessDialog(FullView,oDetailList))" StartIcon="@Icons.Filled.Edit" Color="Color.Success" Size="Size.Small">Edit Details</MudButton>
+                                @*<MudFab Color="Color.Primary"  OnClick="@((e) => OpenProcessDialog(FullView,oDetailList))" StartIcon="@Icons.Material.Filled.Edit" Title="Edit Details" IconSize="Size.Small" />*@
+                            }
                         </MudItem>
                     </MudGrid>
                     <MudSimpleTable Dense="true" Hover="true" Bordered="true" Striped="true" Style="overflow-x: auto;" Class="mt-4 table-setting table-setting">
-                    <thead class="mud-table-head">
-                        <tr>
-                            <th style="font-weight:bold">Day</th>
-                            <th style="font-weight:bold">Start Time</th>
-                            <th style="font-weight:bold">End Time</th>
-                            <th style="font-weight:bold">Duration</th>
-                            <th style="font-weight:bold">Buffer Start Time</th>
-                            <th style="font-weight:bold">Buffer End Time</th>
-                            <th style="font-weight:bold">Start Grace Time</th>
-                            <th style="font-weight:bold">End Grace Time</th>
-                            <th style="font-weight:bold">Break Time</th>
-                            <th style="font-weight:bold">Out Overlap</th>
-                            <th style="font-weight:bold">Expected In</th>
-                            <th style="font-weight:bold">Expected Out</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @foreach (var item in oDetailList)
-                    {
-                        <tr>
-                            <td>
-                                <MudText @bind-Value="item.Day">@item.Day</MudText>                                
-                            </td>
-                            <td>
-                                <MudText @bind-Value="item.TSStartTime">@item.TSStartTime.ToString()</MudText>  
-                            </td>
-                            <td>
-                                <MudText @bind-Value="item.TSEndTime">@item.TSEndTime.ToString()</MudText>  
-                            </td>
-                            <td>
-                                <MudText @bind-Value="item.TSDuration">@item.TSDuration.ToString()</MudText>  
-                            </td>
-                            <td>
-                                <MudText @bind-Value="item.TSBufferStartTime">@item.TSBufferStartTime.ToString()</MudText>  
-                            </td>
-                            <td>
-                                <MudText @bind-Value="item.TSBufferEndTime">@item.TSBufferEndTime.ToString()</MudText>  
-                            </td>
-                            <td>
-                                <MudText @bind-Value="item.TSGraceStartTime">@item.TSGraceStartTime.ToString()</MudText>  
-                            </td>
-                            <td>
-                                <MudText @bind-Value="item.TSGraceEndTime">@item.TSGraceEndTime.ToString()</MudText>  
-                            </td>
-                            <td>
-                                <MudText @bind-Value="item.TSBreakTime">@item.TSBreakTime.ToString()</MudText>  
-                            </td>
-                            <td>
-                                <MudText @bind-Value="item.FlgOutOverlap">@item.FlgOutOverlap.ToString()</MudText>  
-                            </td>
-                            <td>
-                                <MudText @bind-Value="item.FlgExpectedIn">@item.FlgExpectedIn.ToString()</MudText>  
-                            </td>
-                            <td>
-                                <MudText @bind-Value="item.FlgExpectedOut">@item.FlgExpectedOut.ToString()</MudText>  
-                            </td>
-                         </tr>   
-                    }                   
-                    </tbody>                    
-                </MudSimpleTable> 
+                        <thead class="mud-table-head">
+                            <tr>
+                                <th style="font-weight:bold">Day</th>
+                                <th style="font-weight:bold">Start Time</th>
+                                <th style="font-weight:bold">End Time</th>
+                                <th style="font-weight:bold">Duration</th>
+                                <th style="font-weight:bold">Buffer Start Time</th>
+                                <th style="font-weight:bold">Buffer End Time</th>
+                                <th style="font-weight:bold">Start Grace Time</th>
+                                <th style="font-weight:bold">End Grace Time</th>
+                                <th style="font-weight:bold">Break Time</th>
+                                <th style="font-weight:bold">Out Overlap</th>
+                                <th style="font-weight:bold">Expected In</th>
+                                <th style="font-weight:bold">Expected Out</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in oDetailList)
+                            {
+                                <tr>
+                                    <td>
+                                        <MudText @bind-Value="item.Day">@item.Day</MudText>
+                                    </td>
+                                    <td>
+                                        <MudText @bind-Value="item.TSStartTime">@item.TSStartTime.ToString()</MudText>
+                                    </td>
+                                    <td>
+                                        <MudText @bind-Value="item.TSEndTime">@item.TSEndTime.ToString()</MudText>
+                                    </td>
+                                    <td>
+                                        <MudText @bind-Value="item.TSDuration">@item.TSDuration.ToString()</MudText>
+                                    </td>
+                                    <td>
+                                        <MudText @bind-Value="item.TSBufferStartTime">@item.TSBufferStartTime.ToString()</MudText>
+                                    </td>
+                                    <td>
+                                        <MudText @bind-Value="item.TSBufferEndTime">@item.TSBufferEndTime.ToString()</MudText>
+                                    </td>
+                                    <td>
+                                        <MudText @bind-Value="item.TSGraceStartTime">@item.TSGraceStartTime.ToString()</MudText>
+                                    </td>
+                                    <td>
+                                        <MudText @bind-Value="item.TSGraceEndTime">@item.TSGraceEndTime.ToString()</MudText>
+                                    </td>
+                                    <td>
+                                        <MudText @bind-Value="item.TSBreakTime">@item.TSBreakTime.ToString()</MudText>
+                                    </td>
+                                    <td>
+                                        <MudText @bind-Value="item.FlgOutOverlap">@item.FlgOutOverlap.ToString()</MudText>
+                                    </td>
+                                    <td>
+                                        <MudText @bind-Value="item.FlgExpectedIn">@item.FlgExpectedIn.ToString()</MudText>
+                                    </td>
+                                    <td>
+                                        <MudText @bind-Value="item.FlgExpectedOut">@item.FlgExpectedOut.ToString()</MudText>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </MudSimpleTable>
                 </MudCardContent>
             </MudCard>
         </div>
-    </div>    
+    </div>
 </div>

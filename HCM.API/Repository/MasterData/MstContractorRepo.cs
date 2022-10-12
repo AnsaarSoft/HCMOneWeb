@@ -6,9 +6,9 @@ namespace HCM.API.Repository.MasterData
 {
     public class MstContractorRepo : IMstContractor
     {
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public MstContractorRepo(WebHCMOneContext DBContext)
+        public MstContractorRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
@@ -61,14 +61,14 @@ namespace HCM.API.Repository.MasterData
                     _DBContext.MstContractors.Update(oMstContractor);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }
@@ -103,14 +103,14 @@ namespace HCM.API.Repository.MasterData
                     _DBContext.MstContractors.UpdateRange(oMstContractor);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }

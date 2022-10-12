@@ -1,0 +1,235 @@
+﻿@page "/EmployeeTransfer"
+@using HCM.API.Models
+
+
+<div class="container-fluid page-content-setting shift-scheduler">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>Employee Filter</h3>
+            <MudDivider />
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudGrid class="search-action-block align-items-center block-design">
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudAutocomplete T="MstEmployee" @bind-Value="oModelEmployeeFrom" SearchFunc="@SearchEmployeeFrom" Clearable="true" Label="Select Employee From" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.EmpId}")" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudAutocomplete T="MstEmployee" @bind-Value="oModelEmployeeTo" SearchFunc="@SearchEmployeeTo" Clearable="true" Label="Select Employee To" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.EmpId}")" />
+                </MudItem>
+
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudAutocomplete T="MstDesignation" @bind-Value="oModelDesignation" SearchFunc="@SearchDesignation" Clearable="true" Label="Select Designation" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true"
+                                     CoerceValue="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudAutocomplete T="MstDepartment" @bind-Value="oModelDepartment" SearchFunc="@SearchDepartment" Clearable="true" Label="Select Department" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.DeptName}")" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudAutocomplete T="MstLocation" @bind-Value="oModelLocation" SearchFunc="@SearchLocation" Clearable="true" Label="Select Location" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
+                </MudItem>
+
+                <MudItem xs="12" sm="12" md="12" lg="12">
+
+
+                    @if (Loading)
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudText>Loading...</MudText>
+                            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudItem xs="12" sm="12" md="12" lg="12" class="text-right custom-btn-design" style="justify-content: flex-end;">
+
+                            @*<MudButton Color="Color.Primary" OnClick="SearchCriteria" StartIcon="@Icons.Material.Filled.Search" Title="Search" IconSize="Size.Small">Search</MudButton>*@
+
+                            <MudButton Variant="Variant.Filled" OnClick="SearchCriteria" StartIcon="@Icons.Material.Filled.Search" Color="Color.Info" Size="Size.Small">Search</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Save</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
+
+                            @*       <MudFab Color="Color.Primary" OnClick="SearchCriteria" StartIcon="@Icons.Material.Filled.Search" Title="Search" IconSize="Size.Small" />
+                        <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                        <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />*@
+                        </MudItem>
+                    }
+                </MudItem>
+            </MudGrid>
+        </div>
+    </div>
+
+
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <h3>Employee Trnasfer</h3>
+            <MudDivider />
+        </div>
+        <div class="col-sm-12">
+            <MudGrid class="search-action-block align-items-center block-design">
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudNumericField Label="Doc Num*" @bind-Value="oModel.DoNum" Variant="Variant.Text" ReadOnly="true" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+
+                    <MudSelect @bind-Value="oModel.DocStatus" Disabled="true" Label="Doc Status*" HelperText="Doc Status" AdornmentIcon="@Icons.Material.Filled.DocumentScanner" Adornment="Adornment.Start">
+                        <MudSelectItem Value="@("Open")">Open</MudSelectItem>
+                        <MudSelectItem Value="@("Closed")">Closed</MudSelectItem>
+                        <MudSelectItem Value="@("Draft")">Draft</MudSelectItem>
+                        <MudSelectItem Value="@("Cancelled")">Cancelled</MudSelectItem>
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="docdate" MinDate="DateTime.Today" Label="Doc Date*" HelperText="Enter Doc Date" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
+                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
+                </MudItem>
+
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudAutocomplete T="MstLocation" @bind-Value="oModeltoLocation" SearchFunc="@SearchLocation" Clearable="true" Label="To Location" HelperText="Select Location" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudSelect @bind-Value="oDetail.Dimension1" Label="Dimension 1*" HelperText="Select Dimension 1" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (var dimension in oListDimension.Where(x => x.Type == "dim1").ToList())
+                        {
+                            <MudSelectItem T="string" Value="@dimension.Code">@dimension.Description</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudSelect @bind-Value="oDetail.Dimension2" Label="Dimension 2*" HelperText="Select Dimension 2" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (var dimension in oListDimension.Where(x => x.Type == "dim2").ToList())
+                        {
+                            <MudSelectItem T="string" Value="@dimension.Code">@dimension.Description</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudSelect @bind-Value="oDetail.Dimension3" Label="Dimension 3*" HelperText="Select Dimension 3" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (var dimension in oListDimension.Where(x => x.Type == "dim3").ToList())
+                        {
+                            <MudSelectItem T="string" Value="@dimension.Code">@dimension.Description</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudSelect @bind-Value="oDetail.Dimension4" Label="Dimension 4*" HelperText="Select Dimension 4" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (var dimension in oListDimension.Where(x => x.Type == "dim4").ToList())
+                        {
+                            <MudSelectItem T="string" Value="@dimension.Code">@dimension.Description</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudSelect @bind-Value="oDetail.Dimension5" Label="Dimension 5*" HelperText="Select Dimension 5" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (var dimension in oListDimension.Where(x => x.Type == "dim5").ToList())
+                        {
+                            <MudSelectItem T="string" Value="@dimension.Code">@dimension.Description</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+            </MudGrid>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudCard Elevation="5">
+                <MudCardContent>
+                    <MudTable Items="@oListFilteredEmployeeTransferDetail" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsEmployeeTransferDetail,bool>(FilterFuncFilteredEmployee)">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Employee Detail</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchStringFilteredEmployee" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Delete</MudTh>
+                            <MudTh>Edit</MudTh>
+                            <MudTh>Employee Code</MudTh>
+                            <MudTh>Employee Name</MudTh>
+                            <MudTh>Existing Location</MudTh>
+                            <MudTh>To Location</MudTh>
+                            <MudTh>Dimension 1</MudTh>
+                            <MudTh>Dimension 2</MudTh>
+                            <MudTh>Dimension 3</MudTh>
+                            <MudTh>Dimension 4</MudTh>
+                            <MudTh>Dimension 5</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Action"><MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteFromFilter(context.Id) )" Title="Delete"></MudIconButton></MudTd>
+                            <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id) )" Title="Edit"></MudIconButton></MudTd>
+                            <MudTd DataLabel="Employee Code">@context.EmpId</MudTd>
+                            <MudTd DataLabel="Employee Name">@context.EmpName</MudTd>
+                            <MudTd DataLabel="Exist Location">@context.ExistingLocation</MudTd>
+                            <MudTd DataLabel="To Location">
+                                <MudTd DataLabel="To Location">
+                                    <MudSelect T="string" Label="" HelperText="" @bind-Value="@context.ToLocation">
+                                        @foreach (var loction in oListtoLocation.ToList())
+                                        {
+                                            <MudSelectItem T="string" Value="@loction.Name">@loction.Description</MudSelectItem>
+                                        }
+                                    </MudSelect>
+                                </MudTd>
+                            </MudTd>
+                            <MudTd DataLabel="Dimension1">
+                                @*@bind-SelectedValues="options"*@
+                                <MudSelect T="string" Label="" HelperText="" @bind-Value="@context.Dimension1">
+                                    @foreach (var dimension in oListDimension.Where(x => x.Type == "dim1").ToList())
+                                    {
+                                        <MudSelectItem T="string" Value="@dimension.Code">@dimension.Description</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudTd>
+                            <MudTd DataLabel="Dimension2">
+                                @*@bind-SelectedValues="options"*@
+                                <MudSelect T="string" Label="" HelperText="" @bind-Value="@context.Dimension2">
+                                    @foreach (var dimension in oListDimension.Where(x => x.Type == "dim2").ToList())
+                                    {
+                                        <MudSelectItem T="string" Value="@dimension.Code">@dimension.Description</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudTd>
+                            <MudTd DataLabel="Dimension3">
+                                @*@bind-SelectedValues="options"*@
+                                <MudSelect T="string" Label="" HelperText="" @bind-Value="@context.Dimension3">
+                                    @foreach (var dimension in oListDimension.Where(x => x.Type == "dim3").ToList())
+                                    {
+                                        <MudSelectItem T="string" Value="@dimension.Code">@dimension.Description</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudTd>
+                            <MudTd DataLabel="Dimension4">
+                                @*@bind-SelectedValues="options"*@
+                                <MudSelect T="string" Label="" HelperText="" @bind-Value="@context.Dimension4">
+                                    @foreach (var dimension in oListDimension.Where(x => x.Type == "dim4").ToList())
+                                    {
+                                        <MudSelectItem T="string" Value="@dimension.Code">@dimension.Description</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudTd>
+                            <MudTd DataLabel="Dimension5">
+                                @*@bind-SelectedValues="options"*@
+                                <MudSelect T="string" Label="" HelperText="" @bind-Value="@context.Dimension5">
+                                    @foreach (var dimension in oListDimension.Where(x => x.Type == "dim5").ToList())
+                                    {
+                                        <MudSelectItem T="string" Value="@dimension.Code">@dimension.Description</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                </MudCardContent>
+            </MudCard>
+        </div>
+    </div>
+
+
+
+</div>

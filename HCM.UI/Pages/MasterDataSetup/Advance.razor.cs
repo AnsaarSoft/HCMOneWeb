@@ -54,15 +54,15 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
-                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description))
+                if (!string.IsNullOrWhiteSpace(oModel.AllowanceId) && !string.IsNullOrWhiteSpace(oModel.Description))
                 {
-                    if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
+                    if (oList.Where(x => x.AllowanceId.Trim().ToLowerInvariant() == oModel.AllowanceId.Trim().ToLowerInvariant()).Count() > 0)
                     {
                         Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
                     else
                     {
-                        if (oModel.Code.Length > 20)
+                        if (oModel.AllowanceId.Length > 20)
                         {
                             Snackbar.Add("Code accept only 20 characters", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                         }
@@ -70,7 +70,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                         {
                             if (oModel.Id == 0)
                             {
-                                oModel.CreatedBy = LoginUser;
+                                oModel.UserId = LoginUser;
                                 res = await _mstAdvance.Insert(oModel);
                             }
                             else
@@ -140,7 +140,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         {
             if (string.IsNullOrWhiteSpace(searchString1))
                 return true;
-            if (element.Code.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            if (element.AllowanceId.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
             if (element.Description.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;

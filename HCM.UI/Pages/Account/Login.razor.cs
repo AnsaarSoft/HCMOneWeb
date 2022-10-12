@@ -57,11 +57,11 @@ namespace HCM.UI.Pages.Account
                 Loading = true;
                 var res = new MstUser();
                 await Task.Delay(1);
-                if (!string.IsNullOrWhiteSpace(oModel.UserCode) && !string.IsNullOrWhiteSpace(oModel.Password))
+                if (!string.IsNullOrWhiteSpace(oModel.UserCode) && !string.IsNullOrWhiteSpace(oModel.PassCode))
                 {
                     oModel.UserName = "";
                     oModel.Email = "";
-                    oModel.FlgActive = true;
+                    oModel.FlgActiveUser = true;
                     oModel.FlgPasswordRequest = false;
                     res = await _mstUser.Login(oModel);
                     if (res.Id != 0 && !string.IsNullOrWhiteSpace(res.UserName))

@@ -22,7 +22,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         public ISnackbar Snackbar { get; set; }
 
         [Inject]
-        public IMstPayroll _mstPayroll { get; set; }
+        public ICfgPayrollDefination _CfgPayrollDefination { get; set; }
 
         [Inject]
         public IMstLove _mstLove { get; set; }
@@ -48,12 +48,12 @@ namespace HCM.UI.Pages.MasterDataSetup
         private string searchStringElement = "";
         private string searchStringPeriods = "";
         private bool FilterFunc(MstElement element) => FilterFuncElement(element, searchStringElement);
-        private bool FilterFuncPeriods(MstPayrollPeriod element) => FilterFuncPeriods(element, searchStringPeriods);
+        private bool FilterFuncPeriods(CfgPeriodDate element) => FilterFuncPeriods(element, searchStringPeriods);
 
-        MstPayroll oModel = new MstPayroll();
-        private IEnumerable<MstPayroll> oPayrollList = new List<MstPayroll>();
-        IEnumerable<MstPayrollPeriod> oMstPayrollPeriodList = new List<MstPayrollPeriod>();
-        IEnumerable<MstPayrollElement> oMstPayrollElementList = new List<MstPayrollElement>();
+        CfgPayrollDefination oModel = new CfgPayrollDefination();
+        private IEnumerable<CfgPayrollDefination> oPayrollList = new List<CfgPayrollDefination>();
+        IEnumerable<CfgPeriodDate> oCfgPeriodDateList = new List<CfgPeriodDate>();
+        IEnumerable<MstElementLink> oMstElementLinkList = new List<MstElementLink>();
 
         List<MstLove> oLoveList = new List<MstLove>();
         List<MstCalendar> oCalendarList = new List<MstCalendar>();
@@ -78,10 +78,10 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (!result.Cancelled)
                 {
                     DisabledCode = true;
-                    var res = (MstPayroll)result.Data;
+                    var res = (CfgPayrollDefination)result.Data;
                     AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
                     oModel = res;
-                    oMstPayrollElementList = oModel.MstPayrollElements;
+                    oMstElementLinkList = oModel.MstElementLinks;
                     await GetAllElements();
                 }
             }
@@ -136,7 +136,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             try
             {
                 oCalendarList = await _mstCalendar.GetAllData();
-                oPayrollList = await _mstPayroll.GetAllData();
+                oPayrollList = await _CfgPayrollDefination.GetAllData();
             }
             catch (Exception ex)
             {
@@ -150,8 +150,8 @@ namespace HCM.UI.Pages.MasterDataSetup
                 await Task.Delay(1);
                 if (!string.IsNullOrWhiteSpace(oModel.PayrollType) && !string.IsNullOrWhiteSpace(PayrollCalendar))
                 {
-                    MstPayroll oMstPayroll = oPayrollList.Where(x => x.PayrollType == oModel.PayrollType).FirstOrDefault();
-                    oMstPayrollPeriodList = oMstPayroll.MstPayrollPeriods.Where(x => x.CalCode == PayrollCalendar && x.Fkid == oMstPayroll.Id).ToList();
+                    CfgPayrollDefination oCfgPayrollDefination = oPayrollList.Where(x => x.PayrollType == oModel.PayrollType).FirstOrDefault();
+                    oCfgPeriodDateList = oCfgPayrollDefination.CfgPeriodDates.Where(x => x.CalCode == PayrollCalendar && x.PayrollId == oCfgPayrollDefination.Id).ToList();
                 }
             }
             catch (Exception ex)
@@ -166,7 +166,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             {
                 var TempElement = await _mstElement.GetAllData();
                 List<MstElement> oTempList = new List<MstElement>();
-                foreach (var item in oMstPayrollElementList)
+                foreach (var item in oMstElementLinkList)
                 {                    
                     var Element = TempElement.Where(x => x.Id == item.ElementId).FirstOrDefault();
                     Element.FlgActive = item.FlgActive;
@@ -189,7 +189,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 return true;
             return false;
         }
-        private bool FilterFuncPeriods(MstPayrollPeriod element, string searchString1)
+        private bool FilterFuncPeriods(CfgPeriodDate element, string searchString1)
         {
             if (string.IsNullOrWhiteSpace(searchString1))
                 return true;
@@ -222,13 +222,13 @@ namespace HCM.UI.Pages.MasterDataSetup
                         {
                             foreach (var Element in oElementList)
                             {
-                                MstPayrollElement oPayrollElement = new MstPayrollElement();
+                                MstElementLink oPayrollElement = new MstElementLink();
                                 oPayrollElement.ElementId = Element.Id;
                                 oPayrollElement.FlgActive = Element.FlgActive;
-                                var CheckElement = oModel.MstPayrollElements.Where(x => x.ElementId == oPayrollElement.ElementId).FirstOrDefault();
+                                var CheckElement = oModel.MstElementLinks.Where(x => x.ElementId == oPayrollElement.ElementId).FirstOrDefault();
                                 if(CheckElement == null)
                                 {
-                                    oModel.MstPayrollElements.Add(oPayrollElement);
+                                    oModel.MstElementLinks.Add(oPayrollElement);
                                 }
                             }
                         }
@@ -240,14 +240,14 @@ namespace HCM.UI.Pages.MasterDataSetup
                             }
                             else
                             {
-                                oModel.CreatedBy = LoginUser;
-                                res = await _mstPayroll.Insert(oModel);
+                                oModel.UserId = LoginUser;
+                                res = await _CfgPayrollDefination.Insert(oModel);
                             }
                         }
                         else
                         {
                             oModel.UpdatedBy = LoginUser;
-                            res = await _mstPayroll.Update(oModel);
+                            res = await _CfgPayrollDefination.Update(oModel);
                         }
                     }
                     if (res != null && res.Id == 1)
@@ -305,6 +305,8 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (Session != null)
                 {
                     LoginUser = Session.UserCode;
+                    oModel.WorkDays = 0;
+                    oModel.WorkHours = 0;
                     oModel.FlgActive = true;
                     await GetAllLove();
                     //await GetAllElements();

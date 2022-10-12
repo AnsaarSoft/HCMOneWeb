@@ -44,7 +44,7 @@ body, html {
 
 /*---------------------------------------------*/
 a {
-	font-family: Poppins-Regular;
+	font-family: 'Roboto';
 	font-size: 14px;
 	line-height: 1.7;
 	color: #666666;
@@ -159,7 +159,7 @@ iframe {
 
 .container-login100 {
   width: 100%;  
-  min-height: 100vh;
+  height: 100vh;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
@@ -168,16 +168,22 @@ iframe {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  padding: 15px;
-
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   position: relative;
-  z-index: 1;  
+/*  z-index: 1; */ 
 }
-
-	.container-login100::before {
+	.container-login100:after {
+		content: "";
+		position: absolute;
+		background-color: #000;
+		width: 100%;
+		height: 100%;
+		z-index: 1;
+		opacity: 0.3;
+	}
+		.container-login100::before {
 		content: "";
 		display: block;
 		position: absolute;
@@ -191,28 +197,68 @@ iframe {
 	}
 
 .wrap-login100 {
-  width: 500px;
-  border-radius: 10px;
-  overflow: hidden;
-  padding: 55px 55px 37px 55px;
-
-  background: #9152f8;
-  background: -webkit-linear-gradient(top, #7579ff, #b224ef);
-  background: -o-linear-gradient(top, #7579ff, #b224ef);
-  background: -moz-linear-gradient(top, #7579ff, #b224ef);
-  background: linear-gradient(top, #7579ff, #b224ef);
+	width: 100%;
+	max-width: 450px;
+	height:100vh;
+	margin:0 auto;
+	border-radius: 10px;
+	overflow: hidden;
+	padding: 20px;
+	background: #9152f8;
+	/*	background: -webkit-linear-gradient(top, #7579ff, #b224ef);
+	background: -o-linear-gradient(top, #7579ff, #b224ef);
+	background: -moz-linear-gradient(top, #7579ff, #b224ef);
+	background: linear-gradient(top, #7579ff, #b224ef);*/
+	background: linear-gradient(0deg, rgba(97,83,121,1) 0%, rgba(30,30,45,1) 39%);
+	display: flex;
+	align-items: center;
+}
+.forgetpass-page {
+	width: 100%;
+	max-width: 550px;
+	margin: 0 auto;
+	border-radius: 10px;
+	overflow: hidden;
+	padding: 20px;
+	background: #9152f8;
+	/*	background: -webkit-linear-gradient(top, #7579ff, #b224ef);
+	background: -o-linear-gradient(top, #7579ff, #b224ef);
+	background: -moz-linear-gradient(top, #7579ff, #b224ef);
+	background: linear-gradient(top, #7579ff, #b224ef);*/
+	background: linear-gradient(0deg, rgba(97,83,121,1) 0%, rgba(30,30,45,1) 39%);
+	display: flex;
+	align-items: center;
 }
 
-
+.forgot-pass-screen {
+	background-size: cover;
+	background-repeat: no-repeat;
+	width: 100%;
+	height: 100vh;
+}
+	.forgot-pass-screen .mud-input-control .mud-input-control > .mud-input-control-input-container > div.mud-input.mud-input-text {
+		margin-top: 26px;
+	}
+	.forgot-pass-screen .mud-input-control .mud-icon-root.mud-svg-icon{
+		fill:#fff;
+	}
+	.forgot-pass-screen .mud-input-control .mud-input-label {
+		color: #fff !important;
+		font-size: 18px;
+		font-weight: 600;
+		margin: 0 0;
+	}
+	.forgot-pass-screen .mud-input-control .mud-input-helper-text {
+		color:#fff;
+	}
 /*------------------------------------------------------------------
 [ Form ]*/
-
 .login100-form {
-  width: 100%;
+	width: 100%;
 }
 
 .login100-form-logo {
-	font-size: 60px;
+	/*	font-size: 60px;*/
 	color: #333333;
 	display: -webkit-box;
 	display: -webkit-flex;
@@ -221,23 +267,49 @@ iframe {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 120px;
+	/*	width: 120px;
 	height: 120px;
-	border-radius: 50%;
-	background-image:url('../img/logo.png');
-	background-size:cover;
+	border-radius: 50%;*/
+	background-image: url('../img/logo.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+	width: 122px;
+	height: 100px;
 	margin: 0 auto;
+	filter: brightness(0) invert(1);
+}
+.btn {
+	padding: 5px 14px;
+	display: flex;
+	color: #fff;
+	font-size: 14px;
+	font-weight: 500;
+	width: 100%;
+}
+	.btn.login-btn, .btn.btn-sendotp {
+		background-color: unset;
+		box-shadow: none;
+		border: 1px solid #fff;
+		border-radius: 40px;
+		padding: 10px 0;
+	}
+		.btn.login-btn:hover, .btn.btn-sendotp:hover {
+			background-color: #fff;
+			color: #000;
+			transition: ease all 0.8s;
+		}
+.login-page-deisgn .login-btn .mud-svg-icon {
+	margin: 0 !important;
 }
 
 .login100-form-title {
-  font-family: Poppins-Medium;
-  font-size: 30px;
-  color: #fff;
-  line-height: 1.2;
-  text-align: center;
-  text-transform: uppercase;
-
-  display: block;
+	font-size: 30px;
+	color: #fff;
+	line-height: 1.2;
+	text-align: center;
+	text-transform: uppercase;
+	display: block;
+	font-weight: 500;
 }
 
 
@@ -342,9 +414,9 @@ iframe {
 [ Restyle Checkbox ]*/
 
 .contact100-form-checkbox {
-  padding-left: 5px;
+/*  padding-left: 5px;
   padding-top: 5px;
-  padding-bottom: 35px;
+  padding-bottom: 35px;*/
 }
 
 .input-checkbox100 {
@@ -352,7 +424,6 @@ iframe {
 }
 
 .label-checkbox100 {
-  font-family: Poppins-Regular;
   font-size: 13px;
   color: #fff;
   line-height: 1.2;
@@ -363,32 +434,32 @@ iframe {
   cursor: pointer;
 }
 
-.label-checkbox100::before {
-  content: "\f26b";
-  font-family: Material-Design-Iconic-Font;
-  font-size: 13px;
-  color: transparent;
-
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  border-radius: 2px;
-  background: #fff;
-  left: 0;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  -o-transform: translateY(-50%);
-  transform: translateY(-50%);
-}
+	.label-checkbox100::before {
+		content: "\2713";
+		font-family: Material-Design-Iconic-Font;
+		font-size: 13px;
+		color: transparent;
+		display: -webkit-box;
+		display: -webkit-flex;
+		display: -moz-box;
+		display: -ms-flexbox;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: absolute;
+		width: 16px;
+		height: 16px;
+		border-radius: 2px;
+		background: #fff;
+		left: 0;
+		top: 50%;
+		-webkit-transform: translateY(-50%);
+		-moz-transform: translateY(-50%);
+		-ms-transform: translateY(-50%);
+		-o-transform: translateY(-50%);
+		transform: translateY(-50%);
+		font-weight:bold;
+	}
 
 .input-checkbox100:checked + .label-checkbox100::before {
   color: #555555;
@@ -398,14 +469,16 @@ iframe {
 /*------------------------------------------------------------------
 [ Button ]*/
 .container-login100-form-btn {
-  width: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+	width: 100%;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	max-width: 200px;
+	margin: 0 auto;
 }
 
 .login100-form-btn {

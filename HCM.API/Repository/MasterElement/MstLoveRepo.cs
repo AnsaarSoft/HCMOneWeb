@@ -6,9 +6,9 @@ namespace HCM.API.Repository.MasterElement
 {
     public class MstLoveRepo : IMstLove
     {
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public MstLoveRepo(WebHCMOneContext DBContext)
+        public MstLoveRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }

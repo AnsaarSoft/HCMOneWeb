@@ -6,9 +6,9 @@ namespace HCM.API.Repository.MasterData
 {
     public class MstDeductionRuleRepo : IMstDeductionRule
     {
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public MstDeductionRuleRepo(WebHCMOneContext DBContext)
+        public MstDeductionRuleRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
@@ -58,14 +58,14 @@ namespace HCM.API.Repository.MasterData
                 {   _DBContext.MstDeductionRules.Update(oMstDeductionRule);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }

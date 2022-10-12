@@ -2,10 +2,10 @@
 
 namespace HCM.UI.Interfaces.MasterData
 {
-    public interface IMstPayroll
+    public interface ICfgPayrollDefination
     {
-        Task<List<MstPayroll>> GetAllData();
-        Task<ApiResponseModel> Insert(MstPayroll pMstPayroll);
-        Task<ApiResponseModel> Update(MstPayroll pMstPayroll);
+        Task<List<CfgPayrollDefination>> GetAllData();
+        Task<ApiResponseModel> Insert(CfgPayrollDefination pCfgPayrollDefination);
+        Task<ApiResponseModel> Update(CfgPayrollDefination pCfgPayrollDefination);
     }
 }

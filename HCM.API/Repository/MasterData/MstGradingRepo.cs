@@ -6,9 +6,9 @@ namespace HCM.API.Repository.MasterData
 {
     public class MstGradingRepo : IMstGrading
     {
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public MstGradingRepo(WebHCMOneContext DBContext)
+        public MstGradingRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
@@ -35,7 +35,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstGrading.CreatedDate = DateTime.Now;
+                    oMstGrading.CreateDate = DateTime.Now;
                     _DBContext.MstGradings.Add(oMstGrading);
                     _DBContext.SaveChanges();
                     response.Id = 1;
@@ -57,18 +57,18 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstGrading.UpdatedDate = DateTime.Now;
+                    oMstGrading.UpdateDate = DateTime.Now;
                     _DBContext.MstGradings.Update(oMstGrading);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }
@@ -103,14 +103,14 @@ namespace HCM.API.Repository.MasterData
                     _DBContext.MstGradings.UpdateRange(oMstGrading);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }

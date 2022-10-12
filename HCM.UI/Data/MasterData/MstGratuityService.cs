@@ -3,35 +3,52 @@ using HCM.UI.Interfaces.MasterData;
 using HCM.API.Models;
 using Microsoft.EntityFrameworkCore;
 using RestSharp;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace HCM.UI.Data.MasterData
 {
     public class MstGratuityService: IMstGratuity
     {
         private readonly RestClient _restClient;
+        private readonly IMemoryCache _memoryCache;
+        private const string CacheKey = "GratuityMaster";
 
-        public MstGratuityService()
+        public MstGratuityService(IMemoryCache memoryCache)
         {
             _restClient = new RestClient(Settings.APIBaseURL);
+            _memoryCache = memoryCache;
         }
 
         public async Task<List<MstGratuity>> GetAllData()
         {
             try
             {
-                List<MstGratuity> oList = new List<MstGratuity>();
-
-                var request = new RestRequest("MasterData/getAllGratuity", Method.Get) { RequestFormat = DataFormat.Json };
-
-                var response = await _restClient.ExecuteAsync<List<MstGratuity>>(request);
-
-                if (response.IsSuccessful)
+                if (_memoryCache.TryGetValue(CacheKey, out IEnumerable<MstGratuity> oListCache))
                 {
-                    return response.Data;
+                    return oListCache.ToList();
                 }
                 else
                 {
-                    return response.Data;
+                    List<MstGratuity> oList = new List<MstGratuity>();
+
+                    var request = new RestRequest("MasterData/getAllGratuity", Method.Get) { RequestFormat = DataFormat.Json };
+
+                    var response = await _restClient.ExecuteAsync<List<MstGratuity>>(request);
+
+                    if (response.IsSuccessful)
+                    {
+                        var cacheEntryOptions = new MemoryCacheEntryOptions()
+                           .SetSlidingExpiration(TimeSpan.FromSeconds(60))
+                           .SetAbsoluteExpiration(TimeSpan.FromHours(2))
+                           .SetPriority(CacheItemPriority.Normal)
+                           .SetSize(1024);
+                        _memoryCache.Set(CacheKey, response.Data, cacheEntryOptions);
+                        return response.Data;
+                    }
+                    else
+                    {
+                        return response.Data;
+                    }
                 }
             }
             catch (Exception ex)
@@ -53,6 +70,10 @@ namespace HCM.UI.Data.MasterData
                 {
                     response.Id = 1;
                     response.Message = "Saved successfully";
+                    if (_memoryCache.TryGetValue(CacheKey, out IEnumerable<MstGratuity> oListCache))
+                    {
+                        _memoryCache.Remove(CacheKey);
+                    }
                     return response;
                 }
                 else
@@ -82,13 +103,17 @@ namespace HCM.UI.Data.MasterData
                 if (res.IsSuccessful)
                 {
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
+                    if (_memoryCache.TryGetValue(CacheKey, out IEnumerable<MstGratuity> oListCache))
+                    {
+                        _memoryCache.Remove(CacheKey);
+                    }
                     return response;
                 }
                 else
                 {
                     response.Id = 0;
-                    response.Message = "Failed to save successfully";
+                    response.Message = "Failed to Update successfully";
                     return response;
                 }
             }
@@ -96,7 +121,7 @@ namespace HCM.UI.Data.MasterData
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
                 return response;
             }
         }

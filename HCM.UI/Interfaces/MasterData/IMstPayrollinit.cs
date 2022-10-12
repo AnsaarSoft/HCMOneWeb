@@ -1,9 +1,9 @@
 ﻿using HCM.API.Models;
 namespace HCM.UI.Interfaces.MasterData
 {
-    public interface IMstPayrollinit
+    public interface ICfgPayrollDefinationinit
     {
-        Task<MstPayrollBasicInitialization> GetData();
-        Task<ApiResponseModel> Update(MstPayrollBasicInitialization pMstPayrollinit);
+        Task<CfgPayrollBasicInitialization> GetData();
+        Task<ApiResponseModel> Update(CfgPayrollBasicInitialization pCfgPayrollDefinationinit);
     }
 }

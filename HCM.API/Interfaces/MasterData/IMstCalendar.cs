@@ -7,7 +7,7 @@ namespace HCM.API.Interfaces.MasterData
         Task<List<MstCalendar>> GetAllData();
         Task<ApiResponseModel> Insert(MstCalendar oMstCalendar);
         Task<ApiResponseModel> Update(MstCalendar oMstCalendar);
-        Task<ApiResponseModel> Insert(MstPayrollPeriod oMstPayrollPeriod);
-        Task<ApiResponseModel> Insert(List<MstPayrollPeriod> oMstPayrollPeriod);
+        Task<ApiResponseModel> Insert(CfgPeriodDate oCfgPeriodDate);
+        Task<ApiResponseModel> Insert(List<CfgPeriodDate> oCfgPeriodDate);
     }
 }

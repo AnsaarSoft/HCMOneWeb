@@ -43,13 +43,13 @@ namespace HCM.UI.Pages.MasterDataSetup
         private bool FilterFunc(MstShift element) => FilterFunc(element, searchString1);
 
         MstShift oModel = new MstShift();
-        MstShiftsDetail oDetail = new MstShiftsDetail();
+        MstShiftDetail oDetail = new MstShiftDetail();
         List<MstLove> oLoveList = new List<MstLove>();
         List<VMMstShiftDetail> oDetailList = new List<VMMstShiftDetail>();
         private IEnumerable<MstShift> oList = new List<MstShift>();
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
         DialogOptions FullView = new DialogOptions() { MaxWidth = MaxWidth.ExtraExtraLarge, FullWidth = true, CloseButton = true, DisableBackdropClick = true, CloseOnEscapeKey = true };
-        
+
         #endregion
 
         #region Functions
@@ -69,11 +69,11 @@ namespace HCM.UI.Pages.MasterDataSetup
                     var res = (MstShift)result.Data;
                     AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
                     oModel = res;
-                    foreach (var item in oModel.MstShiftsDetails)
+                    foreach (var item in oModel.MstShiftDetails)
                     {
                         VMMstShiftDetail vm = new VMMstShiftDetail();
                         vm.Id = item.Id;
-                        vm.Fkid = item.Fkid;
+                        vm.Fkid = item.ShiftId;
                         vm.Day = item.Day;
 
                         string[] spStartTime = item.StartTime.Split(':');
@@ -176,12 +176,12 @@ namespace HCM.UI.Pages.MasterDataSetup
                     }
                     else
                     {
-                        oModel.MstShiftsDetails = new List<MstShiftsDetail>();
+                        oModel.MstShiftDetails = new List<MstShiftDetail>();
                         foreach (var item in oDetailList)
                         {
-                            oDetail = new MstShiftsDetail();
+                            oDetail = new MstShiftDetail();
                             oDetail.Id = item.Id;
-                            oDetail.Fkid = item.Fkid;
+                            oDetail.ShiftId = item.Fkid;
                             oDetail.Day = item.Day;
                             oDetail.FlgOutOverlap = item.FlgOutOverlap;
                             oDetail.FlgExpectedIn = item.FlgExpectedIn;
@@ -194,17 +194,17 @@ namespace HCM.UI.Pages.MasterDataSetup
                             oDetail.StartGraceTime = item.TSGraceStartTime.ToString();
                             oDetail.EndGraceTime = item.TSGraceEndTime.ToString();
                             oDetail.BreakTime = item.TSBreakTime.ToString();
-                            oModel.MstShiftsDetails.Add(oDetail);
+                            oModel.MstShiftDetails.Add(oDetail);
                         }
                         if (oModel.Id == 0)
                         {
-                            if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
+                            if (oList.Where(x => x.Code.Trim().ToLowerInvariant() == oModel.Code.Trim().ToLowerInvariant()).Count() > 0)
                             {
                                 Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                             }
                             else
                             {
-                                oModel.CreatedBy = LoginUser;
+                                oModel.UserId = LoginUser;
                                 res = await _mstShift.Insert(oModel);
                             }
                         }
@@ -327,7 +327,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     oModel.FlgOffDayOverTime = true;
 
                     oModel.FlgActive = true;
-                    oModel.FlgOverTime = true;
+                    //oModel.FlgOverTime = true;
                     oModel.FlgOtwrkHrs = true;
                     await GetAllLove();
                     //await GetAllShift();

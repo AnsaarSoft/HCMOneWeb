@@ -11,9 +11,9 @@ namespace HCM.API.Repository.Account
 {
     public class MstUserRepo : IMstUser
     {
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public MstUserRepo(WebHCMOneContext DBContext)
+        public MstUserRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
@@ -90,7 +90,7 @@ namespace HCM.API.Repository.Account
             {
                 await Task.Run(() =>
                 {
-                    oUser = _DBContext.MstUsers.Where(x => x.UserCode == oMstUsers.UserCode && x.Password == oMstUsers.Password).FirstOrDefault();
+                    oUser = _DBContext.MstUsers.Where(x => x.UserCode == oMstUsers.UserCode && x.PassCode == oMstUsers.PassCode).FirstOrDefault();
                 });
                 if (oUser is not null)
                 {
@@ -269,10 +269,10 @@ namespace HCM.API.Repository.Account
             {
                 await Task.Run(() =>
                 {
-                    oUser = _DBContext.MstUsers.Where(x => x.Email == pMstUser.Email && x.FlgActive == true).FirstOrDefault();
+                    oUser = _DBContext.MstUsers.Where(x => x.Email == pMstUser.Email && x.FlgActiveUser == true).FirstOrDefault();
                     if (oUser != null)
                     {
-                        oUser.Password = pMstUser.Password;
+                        oUser.PassCode = pMstUser.PassCode;
                         _DBContext.MstUsers.Update(oUser);
                         _DBContext.SaveChanges();
                         response.Id = 1;

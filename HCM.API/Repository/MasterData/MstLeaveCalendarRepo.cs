@@ -6,9 +6,9 @@ namespace HCM.API.Repository.MasterData
 {
     public class MstLeaveCalendarRepo : IMstLeaveCalendar
     {
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public MstLeaveCalendarRepo(WebHCMOneContext DBContext)
+        public MstLeaveCalendarRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
@@ -35,7 +35,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstLeaveCalendar.CreatedDate = DateTime.Now;
+                    oMstLeaveCalendar.CreateDate = DateTime.Now;
                     _DBContext.MstLeaveCalendars.Add(oMstLeaveCalendar);
                     _DBContext.SaveChanges();                    
                     response.Id = 1;
@@ -57,18 +57,18 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstLeaveCalendar.UpdatedDate = DateTime.Now;
+                    oMstLeaveCalendar.UpdateDate = DateTime.Now;
                     _DBContext.MstLeaveCalendars.Update(oMstLeaveCalendar);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }

@@ -6,9 +6,9 @@ namespace HCM.API.Repository.MasterElement
 {
     public class MstOverTimeRepo : IMstOverTime
     {
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public MstOverTimeRepo(WebHCMOneContext DBContext)
+        public MstOverTimeRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
@@ -35,7 +35,7 @@ namespace HCM.API.Repository.MasterElement
             {
                 await Task.Run(() =>
                 {
-                    oMstOverTime.CreatedDate = DateTime.Now;
+                    oMstOverTime.CreateDate = DateTime.Now;
                     _DBContext.MstOverTimes.Add(oMstOverTime);
                     _DBContext.SaveChanges();
                     response.Id = 1;
@@ -57,18 +57,18 @@ namespace HCM.API.Repository.MasterElement
             {
                 await Task.Run(() =>
                 {
-                    oMstOverTime.UpdatedDate = DateTime.Now;
+                    oMstOverTime.UpdateDate = DateTime.Now;
                     _DBContext.MstOverTimes.Update(oMstOverTime);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }

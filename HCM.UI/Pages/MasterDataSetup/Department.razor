@@ -5,42 +5,47 @@
     <div class="row">
         <div class="col-sm-12">
             <h3>Department Setup</h3>
-            <MudDivider/>
+            <MudDivider />
         </div>
         @*<div class="col-sm-1">
-            <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.List" Title="View All" />
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.List" Title="View All" />
         </div>*@
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
-            <MudGrid class="search-action-block align-items-center">
+            <MudGrid class="search-action-block align-items-center block-design">
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisbaledCode" MaxLength="20" Counter="20" HelperText="Enter Department Code" Immediate="true" Clearable="true" Label="Department Code" Variant="Variant.Text" 
-                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
-                </MudItem> 
-                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="100" Counter="100" HelperText="Enter Department Name" Immediate="true" Clearable="true" Label="Department Name" Variant="Variant.Text" 
-                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
-                </MudItem> 
+                    <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisbaledCode" MaxLength="20" Counter="20" HelperText="Enter Department Code" Immediate="true" Clearable="true" Label="Department Code*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" @bind-Value="oModel.DeptName" MaxLength="100" Counter="100" HelperText="Enter Department Name" Immediate="true" Clearable="true" Label="Department Name*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>
                 <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
                     <MudSwitch @bind-Checked="@oModel.FlgActive" ThumbIcon="@(oModel.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgActive==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgActive==true ? "Active" : "In Active")</span>
+                        <span>@(oModel.FlgActive == true ? "Active" : "In Active")</span>
                     </MudSwitch>
                 </MudItem>
-                @if (Loading)
-                {
-                            <MudItem xs="2" sm="2" md="2" lg="2">
-                                <MudText>Loading...</MudText>
-                                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
-                            </MudItem>
-                }
-                else
-                {
-                            <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
-                                <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
-                                <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
-                            </MudItem>
-                }
+                <MudItem xs="12" sm="12" md="12" lg="12">
+                    @if (Loading)
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudText>Loading...</MudText>
+                            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2" class="text-right custom-btn-design">
+                            <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small">Save</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
+
+                            @*<MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                        <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />*@
+                        </MudItem>
+                    }
+                </MudItem>
             </MudGrid>
         </div>
     </div>
@@ -52,7 +57,7 @@
                         <ToolBarContent>
                             <MudText Typo="Typo.h6">Departments</MudText>
                             <MudSpacer />
-                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
                         </ToolBarContent>
                         <HeaderContent>
                             <MudTh>Department Code</MudTh>
@@ -62,7 +67,7 @@
                         </HeaderContent>
                         <RowTemplate>
                             <MudTd DataLabel="Department Code">@context.Code</MudTd>
-                            <MudTd DataLabel="Department Name">@context.Description</MudTd>
+                            <MudTd DataLabel="Department Name">@context.DeptName</MudTd>
                             <MudTd DataLabel="Active">@context.FlgActive</MudTd>
                             <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id) )" Title="Edit"></MudIconButton></MudTd>
                         </RowTemplate>
@@ -73,5 +78,5 @@
                 </MudCardContent>
             </MudCard>
         </div>
-    </div>    
+    </div>
 </div>

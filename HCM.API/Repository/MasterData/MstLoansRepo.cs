@@ -6,9 +6,9 @@ namespace HCM.API.Repository.MasterData
 {
     public class MstLoansRepo : IMstLoans
     {
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public MstLoansRepo(WebHCMOneContext DBContext)
+        public MstLoansRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
@@ -35,7 +35,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstLoans.CreatedDate = DateTime.Now;
+                    oMstLoans.CreateDate = DateTime.Now;
                     _DBContext.MstLoans.Add(oMstLoans);
                     _DBContext.SaveChanges();
                     response.Id = 1;
@@ -57,18 +57,18 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstLoans.UpdatedDate = DateTime.Now;
+                    oMstLoans.UpdateDate = DateTime.Now;
                     _DBContext.MstLoans.Update(oMstLoans);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }

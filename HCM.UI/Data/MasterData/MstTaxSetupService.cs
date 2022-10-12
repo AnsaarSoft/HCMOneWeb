@@ -7,24 +7,24 @@ using RestSharp;
 
 namespace HCM.UI.Data.MasterData
 {
-    public class MstTaxSetupService : IMstTaxSetup
+    public class CfgTaxSetupService : ICfgTaxSetup
     {
         private readonly RestClient _restClient;
 
-        public MstTaxSetupService()
+        public CfgTaxSetupService()
         {
             _restClient = new RestClient(Settings.APIBaseURL);
         }
 
-        public async Task<List<MstTaxSetup>> GetAllData()
+        public async Task<List<CfgTaxSetup>> GetAllData()
         {
             try
             {
-                List<MstTaxSetup> oList = new List<MstTaxSetup>();
+                List<CfgTaxSetup> oList = new List<CfgTaxSetup>();
 
                 var request = new RestRequest("MasterData/getAllTaxSetup", Method.Get) { RequestFormat = DataFormat.Json };
 
-                var response = await _restClient.ExecuteAsync<List<MstTaxSetup>>(request);
+                var response = await _restClient.ExecuteAsync<List<CfgTaxSetup>>(request);
 
                 if (response.IsSuccessful)
                 {
@@ -42,13 +42,13 @@ namespace HCM.UI.Data.MasterData
             }
         }
 
-        public async Task<ApiResponseModel> Insert(MstTaxSetup oMstTaxSetup)
+        public async Task<ApiResponseModel> Insert(CfgTaxSetup oCfgTaxSetup)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 var request = new RestRequest("MasterData/addTaxSetup", Method.Post);
-                request.AddJsonBody(oMstTaxSetup);
+                request.AddJsonBody(oCfgTaxSetup);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {
@@ -72,24 +72,24 @@ namespace HCM.UI.Data.MasterData
             }
         }
 
-        public async Task<ApiResponseModel> Update(MstTaxSetup oMstTaxSetup)
+        public async Task<ApiResponseModel> Update(CfgTaxSetup oCfgTaxSetup)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 var request = new RestRequest("MasterData/updateTaxSetup", Method.Post);
-                request.AddJsonBody(oMstTaxSetup);
+                request.AddJsonBody(oCfgTaxSetup);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                     return response;
                 }
                 else
                 {
                     response.Id = 0;
-                    response.Message = "Failed to save successfully";
+                    response.Message = "Failed to Update successfully";
                     return response;
                 }
             }
@@ -97,7 +97,7 @@ namespace HCM.UI.Data.MasterData
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
                 return response;
             }
         }

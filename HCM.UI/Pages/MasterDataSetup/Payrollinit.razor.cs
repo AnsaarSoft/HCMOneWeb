@@ -22,7 +22,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         public ISnackbar Snackbar { get; set; }
 
         [Inject]
-        public IMstPayrollinit _mstPayrollinit { get; set; }
+        public ICfgPayrollDefinationinit _CfgPayrollDefinationinit { get; set; }
 
         [Inject]
         public ILocalStorageService _localStorage { get; set; }
@@ -40,7 +40,7 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         private bool FilterFunc(MstEmailConfig element) => FilterFunc(element);
 
-        MstPayrollBasicInitialization oModel = new MstPayrollBasicInitialization();
+        CfgPayrollBasicInitialization oModel = new CfgPayrollBasicInitialization();
         #endregion
 
         #region Functions
@@ -56,7 +56,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 
                     if (oModel.Id >= 0)
                     {
-                        res = await _mstPayrollinit.Update(oModel);
+                        res = await _CfgPayrollDefinationinit.Update(oModel);
                     }
 
                     if (res != null && res.Id == 1)
@@ -102,7 +102,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         {
             try
             {
-                oModel = await _mstPayrollinit.GetData();
+                oModel = await _CfgPayrollDefinationinit.GetData();
             }
             catch (Exception ex)
             {

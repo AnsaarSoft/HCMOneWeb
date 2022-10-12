@@ -1,0 +1,159 @@
+﻿@page "/LeaveAllocation"
+@using HCM.API.Models
+
+<div class="container-fluid page-content-setting shift-scheduler">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>Leave Allocation</h3>
+            <MudDivider />
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudGrid class="search-action-block align-items-center block-design">
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudAutocomplete T="MstEmployee" @bind-Value="oModelEmployeeFrom" SearchFunc="@SearchEmployeeFrom" Clearable="true" Label="Select Employee From" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.EmpId}")" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudAutocomplete T="MstEmployee" @bind-Value="oModelEmployeeTo" SearchFunc="@SearchEmployeeTo" Clearable="true" Label="Select Employee To" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.EmpId}")" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudAutocomplete T="CfgPayrollDefination" @bind-Value="oModelPayroll" SearchFunc="@SearchPayroll" Clearable="true" Label="Select Payroll" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.PayrollName}")" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudAutocomplete T="MstDesignation" @bind-Value="oModelDesignation" SearchFunc="@SearchDesignation" Clearable="true" Label="Select Designation" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true"
+                                     CoerceValue="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudAutocomplete T="MstDepartment" @bind-Value="oModelDepartment" SearchFunc="@SearchDepartment" Clearable="true" Label="Select Department" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.DeptName}")" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudAutocomplete T="MstLocation" @bind-Value="oModelLocation" SearchFunc="@SearchLocation" Clearable="true" Label="Select Location" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudAutocomplete T="MstBranch" @bind-Value="oModelBranch" SearchFunc="@SearchBranch" Clearable="true" Label="Select Branch" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
+                </MudItem>
+                @if (ShowLeaveCalendar)
+                {
+                    <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudTextField T="string" @bind-Value="oModelLeaveCalendar.Code" Disabled="true" Immediate="true" Clearable="true" Label="Calendar Code*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                    </MudItem>
+                }
+                else
+                {
+                    <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudTextField T="string" @bind-Value="oModelCalendar.Code" Disabled="true" Immediate="true" Clearable="true" Label="Calendar Code*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                    </MudItem>
+                }
+                <MudItem xs="12" sm="12" md="12" lg="12">
+
+
+                    @if (Loading)
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudText>Loading...</MudText>
+                            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudItem xs="12" sm="12" md="12" lg="12" class="text-right custom-btn-design" style="justify-content: flex-end;">
+
+                            @*<MudButton Color="Color.Primary" OnClick="SearchCriteria" StartIcon="@Icons.Material.Filled.Search" Title="Search" IconSize="Size.Small">Search</MudButton>*@
+
+                            <MudButton Variant="Variant.Filled" OnClick="SearchCriteria" StartIcon="@Icons.Material.Filled.Search" Color="Color.Info" Size="Size.Small">Search</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Save</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
+
+                            @*       <MudFab Color="Color.Primary" OnClick="SearchCriteria" StartIcon="@Icons.Material.Filled.Search" Title="Search" IconSize="Size.Small" />
+                        <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                        <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />*@
+                        </MudItem>
+                    }
+                </MudItem>
+            </MudGrid>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudCard Elevation="5">
+                <MudCardContent>
+                    <MudTable Items="@oListFilteredEmployee" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstEmployee,bool>(FilterFuncFilteredEmployee)">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Selected Employees</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchStringFilteredEmployee" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Delete</MudTh>
+                            <MudTh>Employee Code</MudTh>
+                            <MudTh>Employee Name</MudTh>
+                            <MudTh>Payroll</MudTh>
+                            <MudTh>Designation</MudTh>
+                            <MudTh>Department</MudTh>
+                            <MudTh>Location</MudTh>
+                            <MudTh>Branch</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Action"><MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteFromFilter(context.Id) )" Title="Delete"></MudIconButton></MudTd>
+                            <MudTd DataLabel="Department Code">@context.EmpId</MudTd>
+                            <MudTd DataLabel="Department Name">@context.FirstName @context.MiddleName @context.LastName</MudTd>
+                            <MudTd DataLabel="Active">@context.PayrollName</MudTd>
+                            <MudTd DataLabel="Active">@context.DesignationName</MudTd>
+                            <MudTd DataLabel="Active">@context.DepartmentName</MudTd>
+                            <MudTd DataLabel="Active">@context.LocationName</MudTd>
+                            <MudTd DataLabel="Active">@context.BranchName</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                </MudCardContent>
+            </MudCard>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudCard Elevation="5">
+                <MudCardContent>
+                    <MudTable Items="@oListFilteredLeaveType" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstLeaveType ,bool>(FilterFuncLeaveType)">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6" Class="pr-3">Leave Type</MudText>
+                            <MudIconButton Color="Color.Info" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Refresh" OnClick="@(() => ResetLeaveTypes() )" Title="Refresh"></MudIconButton>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchStringLeaveType" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Delete</MudTh>
+                            <MudTh>Code</MudTh>
+                            <MudTh>Description</MudTh>
+                            <MudTh>Leave Days</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Action"><MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteLeaveType(context.Id) )" Title="Delete"></MudIconButton></MudTd>
+                            <MudTd DataLabel="Code">@context.Code</MudTd>
+                            <MudTd DataLabel="Description">@context.Description</MudTd>
+                            <MudTd DataLabel="LeaveCap">
+                                <MudNumericField @bind-Value="@context.LeaveCap" Min="0" Immediate="true" Clearable="true" Label="Enter Leave Days" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers"
+                                                 Variant="Variant.Text"> </MudNumericField>
+                            </MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                </MudCardContent>
+            </MudCard>
+        </div>
+    </div>
+</div>

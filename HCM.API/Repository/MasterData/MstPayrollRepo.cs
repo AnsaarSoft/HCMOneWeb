@@ -5,22 +5,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HCM.API.Repository.MasterData
 {
-    public class MstPayrollRepo : IMstPayroll
+    public class CfgPayrollDefinationRepo : ICfgPayrollDefination
     {
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public MstPayrollRepo(WebHCMOneContext DBContext)
+        public CfgPayrollDefinationRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
-        public async Task<List<MstPayroll>> GetAllData()
+        public async Task<List<CfgPayrollDefination>> GetAllData()
         {
-            List<MstPayroll> oList = new List<MstPayroll>();
+            List<CfgPayrollDefination> oList = new List<CfgPayrollDefination>();
             try
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.MstPayrolls.Include(c => c.MstPayrollElements).Include(c => c.MstPayrollPeriods).ToList();
+                    oList = _DBContext.CfgPayrollDefinations.Include(c => c.MstElementLinks).Include(c => c.CfgPeriodDates).ToList();
                 });
             }
             catch (Exception ex)
@@ -29,15 +29,15 @@ namespace HCM.API.Repository.MasterData
             }
             return oList;
         }
-        public async Task<ApiResponseModel> Insert(MstPayroll oMstPayroll)
+        public async Task<ApiResponseModel> Insert(CfgPayrollDefination oCfgPayrollDefination)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    oMstPayroll.CreatedDate = DateTime.Now;
-                    _DBContext.MstPayrolls.Add(oMstPayroll);
+                    oCfgPayrollDefination.CreateDate = DateTime.Now;
+                    _DBContext.CfgPayrollDefinations.Add(oCfgPayrollDefination);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";
@@ -51,25 +51,25 @@ namespace HCM.API.Repository.MasterData
             }
             return response;
         }
-        public async Task<ApiResponseModel> Update(MstPayroll oMstPayroll)
+        public async Task<ApiResponseModel> Update(CfgPayrollDefination oCfgPayrollDefination)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    oMstPayroll.UpdatedDate = DateTime.Now;                    
-                    _DBContext.MstPayrolls.Update(oMstPayroll);
+                    oCfgPayrollDefination.UpdateDate = DateTime.Now;                    
+                    _DBContext.CfgPayrollDefinations.Update(oCfgPayrollDefination);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }

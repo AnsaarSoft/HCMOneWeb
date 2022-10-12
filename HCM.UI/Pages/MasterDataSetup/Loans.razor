@@ -4,87 +4,150 @@
 <div class="container-fluid page-content-setting">
     <div class="row">
         <div class="col-sm-12">
-            <h3>Loans Master</h3>
-            <MudDivider/>
+            <h3>Loan Master</h3>
+            <MudDivider />
         </div>
         @*<div class="col-sm-1">
-            <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.List" Title="View All" />
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.List" Title="View All" />
         </div>*@
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
-            <MudGrid class="search-action-block align-items-center">
+            <MudGrid class="search-action-block align-items-center block-design">
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisabledCode" Mask="@AlphaNumericMask" MaxLength="50" Counter="50" HelperText="Enter Code" Immediate="true" Clearable="true" Label="Code" Variant="Variant.Text" 
-                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
-                </MudItem> 
+                    <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisabledCode" Mask="@AlphaNumericMask" MaxLength="50" Counter="50" HelperText="Enter Code" Immediate="true" Clearable="true" Label="Code*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="250" Counter="250" HelperText="Enter Description" Immediate="true" Clearable="true" Label="Description" Variant="Variant.Text" 
-                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
-                </MudItem> 
-                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="250" Counter="250" HelperText="Enter Description" Immediate="true" Clearable="true" Label="Description*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4" class="text-left">
                     <MudSwitch @bind-Checked="@oModel.FlgActive" ThumbIcon="@(oModel.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgActive==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgActive==true ? "Active" : "In Active")</span>
+                        <span>@(oModel.FlgActive == true ? "Active" : "In Active")</span>
+                    </MudSwitch>
+                    <MudSwitch @bind-Checked="@oModel.FlgMultiple" ThumbIcon="@(oModel.FlgMultiple==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgMultiple==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgMultiple==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgMultiple == true ? "Multiple - Yes" : "Multiple - No")</span>
+                    </MudSwitch>
+                    <MudSwitch @bind-Checked="@oModel.FlgPf" ThumbIcon="@(oModel.FlgPf==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgPf==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgPf==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgPf == true ? "PF - Yes" : "PF - No")</span>
+                    </MudSwitch>
+                    <MudSwitch @bind-Checked="@oModel.FlgGratuity" ThumbIcon="@(oModel.FlgGratuity==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgGratuity==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgGratuity==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgGratuity == true ? "Gratuity - Yes" : "Gratuity - No")</span>
                     </MudSwitch>
                 </MudItem>
-                @if (Loading)
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModel.LoanValue" Min="0" HelperText="Enter Loan Cap" Immediate="true" Clearable="true" Label="Loan Cap*"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text"> </MudNumericField>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModel.TotalLoanCap" Min="0" HelperText="Enter Total Loan Cap" Immediate="true" Clearable="true" Label="Total Loan Cap*"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text"> </MudNumericField>
+                </MudItem>
+                @if (oModel.FlgPf == true)
                 {
-                            <MudItem xs="2" sm="2" md="2" lg="2">
-                                <MudText>Loading...</MudText>
-                                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
-                            </MudItem>
+                    <MudItem xs="4" sm="4" md="4" lg="4">
+                        <MudSelect @bind-Value="oModel.ElementCode" Label="PF Element*" HelperText="Select PF Element" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                            @foreach (MstElement Element in oListElement.Where(x => x.ElmtType == "Con").ToList())
+                            {
+                                <MudSelectItem Value="@Element.Code">@Element.Code - @Element.Description</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem xs="4" sm="4" md="4" lg="4">
+                        <MudNumericField @bind-Value="oModel.Pfcap" Min="0" HelperText="Enter PF Cap" Immediate="true" Clearable="true" Label="PF Cap*"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text"> </MudNumericField>
+                    </MudItem>
+                    oModel.FlgGratuity = false;
+                    oModel.GratuityCode = "";
                 }
-                else
+                @if (oModel.FlgGratuity == true)
                 {
-                            <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
-                                <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
-                                <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
-                            </MudItem>
+                    <MudItem xs="4" sm="4" md="4" lg="4">
+                        <MudSelect @bind-Value="oModel.GratuityCode" Label="Gratuity*" HelperText="Select Gratuity" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                            @foreach (MstGratuity Gratuity in oListGratuity)
+                            {
+                                <MudSelectItem Value="@Gratuity.GrtCode">@Gratuity.GrtCode</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                    oModel.FlgPf = false;
+                    oModel.ElementCode = "";
+                    oModel.Pfcap = 0;
                 }
+                <MudItem xs="12" sm="12" md="12" lg="12">
+                    @if (Loading)
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudText>Loading...</MudText>
+                            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2" class="text-right custom-btn-design">
+                            <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small">Save</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
+
+                            @*    <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                        <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />*@
+                        </MudItem>
+                    }
+                </MudItem>
             </MudGrid>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <MudGrid class="toggle-btn-setting align-items-center">
-                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right offset-8">
-                     <MudSwitch @bind-Checked="@oModel.FlgDefault" ThumbIcon="@(oModel.FlgDefault==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgDefault==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgDefault==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgDefault==true ? "Default" : "Custom")</span>
-                    </MudSwitch>
-                </MudItem>
-            </MudGrid>
-        </div>
+    @*   <div class="row">
+    <div class="col-sm-12">
+    <MudGrid class="toggle-btn-setting align-items-center">
+
+    </MudGrid>
     </div>
+    </div>*@
     <div class="row mt-5">
         <div class="col-sm-12">
             <MudCard Elevation="5">
-                        <MudCardContent>
-                            <MudTable Items="@oList" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstLoan,bool>(FilterFunc)">
-                                <ToolBarContent>
-                                    <MudText Typo="Typo.h6">Loans</MudText>
-                                    <MudSpacer />
-                                    <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
-                                </ToolBarContent>
-                                <HeaderContent>
-                                    <MudTh>Code</MudTh>
-                                    <MudTh>Description</MudTh>
-                                    <MudTh>Default</MudTh>
-                                    <MudTh>Active</MudTh>
-                                    <MudTh>Action</MudTh>
-                                </HeaderContent>
-                                <RowTemplate>
-                                    <MudTd DataLabel="Code">@context.Code</MudTd>
-                                    <MudTd DataLabel="Loans Name">@context.Description</MudTd>
-                                    <MudTd DataLabel="Default">@context.FlgDefault</MudTd>
-                                    <MudTd DataLabel="Active">@context.FlgActive</MudTd>
-                                    <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id) )" Title="Edit"></MudIconButton></MudTd>
-                                </RowTemplate>
-                                <PagerContent>
-                                    <MudTablePager />
-                                </PagerContent>
-                            </MudTable>
-                        </MudCardContent>
+                <MudCardContent>
+                    <MudTable Items="@oList" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstLoan,bool>(FilterFunc)">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Loans</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Code</MudTh>
+                            <MudTh>Description</MudTh>
+                            <MudTh>Loan Cap</MudTh>
+                            <MudTh>Total Loan Cap</MudTh>
+                            <MudTh>Multiple</MudTh>
+                            <MudTh>PF</MudTh>
+                            <MudTh>Element Code</MudTh>
+                            <MudTh>PF Cap</MudTh>
+                            <MudTh>Gratuity</MudTh>
+                            <MudTh>Gratuity Code</MudTh>
+                            <MudTh>Active</MudTh>
+                            <MudTh>Action</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code">@context.Code</MudTd>
+                            <MudTd DataLabel="Loans Name">@context.Description</MudTd>
+                            <MudTd DataLabel="Loans Name">@context.LoanValue</MudTd>
+                            <MudTd DataLabel="Loans Name">@context.TotalLoanCap</MudTd>
+                            <MudTd DataLabel="Default">@context.FlgMultiple</MudTd>
+                            <MudTd DataLabel="Default">@context.FlgPf</MudTd>
+                            <MudTd DataLabel="Default">@context.ElementCode</MudTd>
+                            <MudTd DataLabel="Default">@context.Pfcap</MudTd>
+                            <MudTd DataLabel="Default">@context.FlgGratuity</MudTd>
+                            <MudTd DataLabel="Default">@context.GratuityCode</MudTd>
+                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                            <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id) )" Title="Edit"></MudIconButton></MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                </MudCardContent>
             </MudCard>
         </div>
-    </div>    
+    </div>
 </div>

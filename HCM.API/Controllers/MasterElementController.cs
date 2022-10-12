@@ -13,12 +13,14 @@ namespace HCM.API.Controllers
         private IMstElement _mstElement;
         private IMstLove _mstLove;
         private IMstOverTime _mstOverTime;
+        private ITrnsElementTransaction _trnsElementTransaction;
 
-        public MasterElementController(IMstElement mstElement, IMstLove mstLove, IMstOverTime mstOverTime)
+        public MasterElementController(IMstElement mstElement, IMstLove mstLove, IMstOverTime mstOverTime, ITrnsElementTransaction trnsElementTransaction)
         {
             _mstElement = mstElement;
             _mstLove = mstLove;
             _mstOverTime = mstOverTime;
+            _trnsElementTransaction = trnsElementTransaction;
         }
 
         #region MST Element
@@ -79,6 +81,82 @@ namespace HCM.API.Controllers
             try
             {
                 response = await _mstElement.Update(pMstElement);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
+
+        #region Trns Employee Element
+
+        [Route("getAllElementTrans")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllElementTrans()
+        {
+            List<TrnsEmployeeElement> oTrnsEmployeeElement = new List<TrnsEmployeeElement>();
+            try
+            {
+                oTrnsEmployeeElement = await _trnsElementTransaction.GetAllData();
+                if (oTrnsEmployeeElement == null)
+                {
+                    return BadRequest(oTrnsEmployeeElement);
+                }
+                else
+                {
+                    return Ok(oTrnsEmployeeElement);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addElementTrans")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] TrnsEmployeeElement pTrnsEmployeeElement)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _trnsElementTransaction.Insert(pTrnsEmployeeElement);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateElementTrans")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] TrnsEmployeeElement pTrnsEmployeeElement)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _trnsElementTransaction.Update(pTrnsEmployeeElement);
                 if (response == null)
                 {
                     return BadRequest(response);

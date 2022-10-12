@@ -6,9 +6,9 @@ namespace HCM.API.Repository.MasterData
 {
     public class MstLeaveTypeRepo : IMstLeaveType
     {
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public MstLeaveTypeRepo(WebHCMOneContext DBContext)
+        public MstLeaveTypeRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
@@ -61,14 +61,14 @@ namespace HCM.API.Repository.MasterData
                     _DBContext.MstLeaveTypes.Update(oMstLeaveType);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }

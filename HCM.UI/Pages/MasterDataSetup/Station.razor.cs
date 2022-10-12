@@ -3,6 +3,7 @@ using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Caching.Memory;
 using MudBlazor;
 
 namespace HCM.UI.Pages.MasterDataSetup
@@ -25,8 +26,6 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         [Inject]
         public ILocalStorageService _localStorage { get; set; }
-
-
         #endregion
 
         #region Variables
@@ -53,7 +52,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 await Task.Delay(3);
                 if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description))
                 {
-                    if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
+                    if (oList.Where(x => x.Code.Trim().ToLowerInvariant() == oModel.Code.Trim().ToLowerInvariant()).Count() > 0)
                     {
                         Snackbar.Add(oModel.Code + " : is Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
@@ -161,12 +160,10 @@ namespace HCM.UI.Pages.MasterDataSetup
                 var res = oList.Where(x => x.Id == LineNum).FirstOrDefault();
                 if (res != null)
                 {
-                    //oModel.Id = res.Id;
-                    //oModel.Code = res.Code;
-                    //DisbaledCode = true;
-                    //oModel.Description = res.Description;
-                    //oModel.FlgActive = res.FlgActive;
-                    oModel = res;
+                    oModel.Id = res.Id;
+                    oModel.Code = res.Code;
+                    oModel.Description = res.Description;
+                    oModel.FlgActive = res.FlgActive;                    
                     DisbaledCode = true;
                     oList = oList.Where(x => x.Id != LineNum);
                 }

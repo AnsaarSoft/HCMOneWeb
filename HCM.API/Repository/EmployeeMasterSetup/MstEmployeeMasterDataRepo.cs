@@ -7,9 +7,9 @@ namespace HCM.API.Repository.EmployeeMasterSetup
 {
     public class MstEmployeeMasterDataRepo : IMstEmployeeMasterData
     {
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public MstEmployeeMasterDataRepo(WebHCMOneContext DBContext)
+        public MstEmployeeMasterDataRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
@@ -20,7 +20,7 @@ namespace HCM.API.Repository.EmployeeMasterSetup
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.MstEmployees.Include(x => x.MstEmployeeAttachments).ToList();
+                    oList = _DBContext.MstEmployees.Include(x => x.MstEmployeeAttachments).Include(x => x.MstEmployeeLeaves).Include(x => x.TrnsEmployeeElements).ThenInclude(x=> x.TrnsEmployeeElementDetails).ToList();
                 });
             }
             catch (Exception ex)
@@ -64,14 +64,14 @@ namespace HCM.API.Repository.EmployeeMasterSetup
                     _DBContext.MstEmployees.Update(oMstEmployee);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }
@@ -106,14 +106,14 @@ namespace HCM.API.Repository.EmployeeMasterSetup
                     _DBContext.MstEmployees.UpdateRange(oMstEmployee);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }

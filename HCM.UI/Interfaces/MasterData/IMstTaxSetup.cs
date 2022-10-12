@@ -2,10 +2,10 @@
 
 namespace HCM.UI.Interfaces.MasterData
 {
-    public interface IMstTaxSetup
+    public interface ICfgTaxSetup
     {
-        Task<List<MstTaxSetup>> GetAllData();
-        Task<ApiResponseModel> Insert(MstTaxSetup pMstTaxSetup);
-        Task<ApiResponseModel> Update(MstTaxSetup pMstTaxSetup);
+        Task<List<CfgTaxSetup>> GetAllData();
+        Task<ApiResponseModel> Insert(CfgTaxSetup pCfgTaxSetup);
+        Task<ApiResponseModel> Update(CfgTaxSetup pCfgTaxSetup);
     }
 }

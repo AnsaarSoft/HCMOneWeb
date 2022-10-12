@@ -6,9 +6,9 @@ namespace HCM.API.Repository.MasterElement
 {
     public class MstElementRepo : IMstElement
     {
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public MstElementRepo(WebHCMOneContext DBContext)
+        public MstElementRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
@@ -35,7 +35,7 @@ namespace HCM.API.Repository.MasterElement
             {
                 await Task.Run(() =>
                 {
-                    oMstElement.CreatedDate = DateTime.Now;
+                    oMstElement.CreateDate = DateTime.Now;
                     _DBContext.MstElements.Add(oMstElement);                   
                     _DBContext.SaveChanges();
                     response.Id = 1;
@@ -57,18 +57,18 @@ namespace HCM.API.Repository.MasterElement
             {
                 await Task.Run(() =>
                 {
-                    oMstElement.UpdatedDate = DateTime.Now;
+                    oMstElement.UpdateDate = DateTime.Now;
                     _DBContext.MstElements.Update(oMstElement);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }

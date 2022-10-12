@@ -81,13 +81,13 @@ namespace HCM.UI.Data.MasterElement
                 if (res.IsSuccessful)
                 {
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                     return response;
                 }
                 else
                 {
                     response.Id = 0;
-                    response.Message = "Failed to save successfully";
+                    response.Message = "Failed to Update successfully";
                     return response;
                 }
             }
@@ -95,7 +95,7 @@ namespace HCM.UI.Data.MasterElement
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
                 return response;
             }
         }

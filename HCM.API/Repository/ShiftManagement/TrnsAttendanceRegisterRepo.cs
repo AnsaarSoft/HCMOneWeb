@@ -6,9 +6,9 @@ namespace HCM.API.Repository.ShiftManagement
 {
     public class TrnsAttendanceRegisterRepo : ITrnsAttendanceRegister
     {
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public TrnsAttendanceRegisterRepo(WebHCMOneContext DBContext)
+        public TrnsAttendanceRegisterRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
@@ -101,14 +101,14 @@ namespace HCM.API.Repository.ShiftManagement
                     _DBContext.TrnsAttendanceRegisters.UpdateRange(oTrnsAttendanceRegister);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }

@@ -6,9 +6,9 @@ namespace HCM.API.Repository.MasterData
 {
     public class MstAdvanceRepo : IMstAdvance
     {
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public MstAdvanceRepo(WebHCMOneContext DBContext)
+        public MstAdvanceRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
@@ -35,7 +35,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstAdvance.CreatedDate = DateTime.Now;
+                    oMstAdvance.CreateDate = DateTime.Now;
                     _DBContext.MstAdvances.Add(oMstAdvance);
                     _DBContext.SaveChanges();
                     response.Id = 1;
@@ -57,18 +57,18 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstAdvance.UpdatedDate = DateTime.Now;
+                    oMstAdvance.UpdateDate = DateTime.Now;
                     _DBContext.MstAdvances.Update(oMstAdvance);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }

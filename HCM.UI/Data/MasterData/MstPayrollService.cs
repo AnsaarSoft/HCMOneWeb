@@ -5,23 +5,23 @@ using RestSharp;
 
 namespace HCM.UI.Data.MasterData
 {
-    public class MstPayrollService : IMstPayroll
+    public class CfgPayrollDefinationService : ICfgPayrollDefination
     {
         private readonly RestClient _restClient;
 
-        public MstPayrollService()
+        public CfgPayrollDefinationService()
         {
             _restClient = new RestClient(Settings.APIBaseURL);
         }
-        public async Task<List<MstPayroll>> GetAllData()
+        public async Task<List<CfgPayrollDefination>> GetAllData()
         {
             try
             {
-                List<MstPayroll> oList = new List<MstPayroll>();
+                List<CfgPayrollDefination> oList = new List<CfgPayrollDefination>();
 
                 var request = new RestRequest("MasterData/getAllPayrollSetup", Method.Get) { RequestFormat = DataFormat.Json };
 
-                var response = await _restClient.ExecuteAsync<List<MstPayroll>>(request);
+                var response = await _restClient.ExecuteAsync<List<CfgPayrollDefination>>(request);
 
                 if (response.IsSuccessful)
                 {
@@ -38,13 +38,13 @@ namespace HCM.UI.Data.MasterData
                 return null;
             }
         }
-        public async Task<ApiResponseModel> Insert(MstPayroll oMstPayroll)
+        public async Task<ApiResponseModel> Insert(CfgPayrollDefination oCfgPayrollDefination)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 var request = new RestRequest("MasterData/addPayrollSetup", Method.Post);
-                request.AddJsonBody(oMstPayroll);
+                request.AddJsonBody(oCfgPayrollDefination);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {
@@ -67,24 +67,24 @@ namespace HCM.UI.Data.MasterData
                 return response;
             }
         }
-        public async Task<ApiResponseModel> Update(MstPayroll oMstPayroll)
+        public async Task<ApiResponseModel> Update(CfgPayrollDefination oCfgPayrollDefination)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 var request = new RestRequest("MasterData/updatePayrollSetup", Method.Post);
-                request.AddJsonBody(oMstPayroll);
+                request.AddJsonBody(oCfgPayrollDefination);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                     return response;
                 }
                 else
                 {
                     response.Id = 0;
-                    response.Message = "Failed to save successfully";
+                    response.Message = "Failed to Update successfully";
                     return response;
                 }
             }
@@ -92,7 +92,7 @@ namespace HCM.UI.Data.MasterData
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
                 return response;
             }
         }

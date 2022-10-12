@@ -24,7 +24,7 @@ namespace HCM.UI.General
         public IMstShifts _mstShift { get; set; }
 
         [Inject]
-        public IMstTaxSetup _mstTaxSetup { get; set; }
+        public ICfgTaxSetup _CfgTaxSetup { get; set; }
 
         [Inject]
         public IMstGratuity _mstGratuitySetup { get; set; }
@@ -50,8 +50,8 @@ namespace HCM.UI.General
         VMMstShiftDetail oModelShiftDetail = new VMMstShiftDetail();
         List<VMMstShiftDetail> oListShift = new List<VMMstShiftDetail>();
 
-        [Parameter] public MstTaxSetupDetail oDetailParaTax { get; set; } = new MstTaxSetupDetail();
-        MstTaxSetupDetail oModelTaxSetupDetail = new MstTaxSetupDetail();
+        [Parameter] public CfgTaxDetail oDetailParaTax { get; set; } = new CfgTaxDetail();
+        CfgTaxDetail oModelTaxSetupDetail = new CfgTaxDetail();
 
         [Parameter] public MstGratuityDetail oDetailParaGratuity { get; set; } = new MstGratuityDetail();
         MstGratuityDetail oModelGratuitySetupDetail = new MstGratuityDetail();
@@ -254,7 +254,7 @@ namespace HCM.UI.General
                     }
                     else
                     {
-                        MudDialog.Close(DialogResult.Ok<MstTaxSetupDetail>(oModelTaxSetupDetail));
+                        MudDialog.Close(DialogResult.Ok<CfgTaxDetail>(oModelTaxSetupDetail));
                     }
                 }
                 else

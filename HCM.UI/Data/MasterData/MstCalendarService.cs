@@ -81,13 +81,13 @@ namespace HCM.UI.Data.MasterData
                 if (res.IsSuccessful)
                 {
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                     return response;
                 }
                 else
                 {
                     response.Id = 0;
-                    response.Message = "Failed to save successfully";
+                    response.Message = "Failed to Update successfully";
                     return response;
                 }
             }
@@ -95,18 +95,18 @@ namespace HCM.UI.Data.MasterData
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
                 return response;
             }
         }
 
-        public async Task<ApiResponseModel> Insert(MstPayrollPeriod oMstPayrollPeriod)
+        public async Task<ApiResponseModel> Insert(CfgPeriodDate oCfgPeriodDate)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 var request = new RestRequest("MasterData/addPRPeriods", Method.Post);
-                request.AddJsonBody(oMstPayrollPeriod);
+                request.AddJsonBody(oCfgPeriodDate);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {
@@ -129,13 +129,13 @@ namespace HCM.UI.Data.MasterData
                 return response;
             }
         }
-        public async Task<ApiResponseModel> Insert(List<MstPayrollPeriod> oMstPayrollPeriod)
+        public async Task<ApiResponseModel> Insert(List<CfgPeriodDate> oCfgPeriodDate)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 var request = new RestRequest("MasterData/addPRPeriods", Method.Post);
-                request.AddJsonBody(oMstPayrollPeriod);
+                request.AddJsonBody(oCfgPeriodDate);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {

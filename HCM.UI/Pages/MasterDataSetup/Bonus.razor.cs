@@ -65,13 +65,13 @@ namespace HCM.UI.Pages.MasterDataSetup
                 {
                     if (oModel.Id == 0)
                     {
-                        if (oList.Where(x => x.DocCode == oModel.DocCode).Count() > 0)
+                        if (oList.Where(x => x.DocCode.Trim().ToLowerInvariant() == oModel.DocCode.Trim().ToLowerInvariant()).Count() > 0)
                         {
                             Snackbar.Add(oModel.DocCode +" is Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                         }
                         else
                         {
-                            oModel.CreatedBy = LoginUser;
+                            oModel.UserId = LoginUser;
                             res = await _mstBonus.Insert(oModel);
                         }
                     }
@@ -198,6 +198,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     AlphaNumericMask2 = new RegexMask(@"^[a-zA-Z0-9_]*$");
 
                     oModel.Id = res.Id;
+                    oModel.DocNo = res.DocNo;
                     oModel.Code = res.Code;
                     DisabledCode = true;
                     oModel.DocCode = res.DocCode;

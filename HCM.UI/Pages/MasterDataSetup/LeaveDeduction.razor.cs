@@ -78,7 +78,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
-                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description) && !string.IsNullOrWhiteSpace(oModel.ValueType))
+                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description) && !string.IsNullOrWhiteSpace(oModel.TypeofDeduction))
                 {
                     if (oModel.Code.Length > 20)
                     {
@@ -88,19 +88,19 @@ namespace HCM.UI.Pages.MasterDataSetup
                     {
                         if (oModel.Id == 0)
                         {
-                            if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
+                            if (oList.Where(x => x.Code.Trim().ToLowerInvariant() == oModel.Code.Trim().ToLowerInvariant()).Count() > 0)
                             {
                                 Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                             }
                             else
                             {
-                                oModel.CreatedBy = LoginUser;
+                                oModel.UserId = LoginUser;
                                 res = await _mstLeaveDeduction.Insert(oModel);
                             }
                         }
                         else
                         {
-                            oModel.UpdatedBy = LoginUser;
+                            oModel.UpdateBy = LoginUser;
                             res = await _mstLeaveDeduction.Update(oModel);
                         }
                     }
@@ -114,7 +114,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     {
                         Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
-                    oModel.FlgActive = true;
+                    //oModel.FlgActive = true;
                 }
                 else
                 {
@@ -155,12 +155,12 @@ namespace HCM.UI.Pages.MasterDataSetup
                 return true;
             if (element.Description.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
-            if (element.ValueType.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            if (element.TypeofDeduction.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
-            if (element.Value.Equals(searchString1))
+            if (element.DeductionValue.Equals(searchString1))
                 return true;
-            if (element.FlgActive.Equals(searchString1))
-                return true;
+            //if (element.FlgActive.Equals(searchString1))
+            //    return true;
 
             return false;
         }
@@ -202,8 +202,8 @@ namespace HCM.UI.Pages.MasterDataSetup
                     oModel.Code = res.Code;
                     DisabledCode = true;
                     oModel.Description = res.Description;
-                    oModel.ValueType = res.ValueType;
-                    oModel.Value = res.Value;
+                    oModel.TypeofDeduction = res.TypeofDeduction;
+                    oModel.DeductionValue = res.DeductionValue;
                     oModel.FlgActive = res.FlgActive;
                     oList = oList.Where(x => x.Id != LineNum);
                     //_ = InvokeAsync(StateHasChanged);
@@ -232,6 +232,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     await GetAllLove();
                     await GetAllLeaveDeduction();
                     oModel.FlgActive = true;
+                    oModel.DeductionValue = 0;
                 }
                 else
                 {

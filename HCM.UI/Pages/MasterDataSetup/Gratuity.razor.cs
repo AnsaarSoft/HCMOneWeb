@@ -3,6 +3,7 @@ using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Caching.Memory;
 using MudBlazor;
 
 namespace HCM.UI.Pages.MasterDataSetup
@@ -25,8 +26,6 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         [Inject]
         public ILocalStorageService _localStorage { get; set; }
-
-
         #endregion
 
         #region Variables
@@ -63,8 +62,15 @@ namespace HCM.UI.Pages.MasterDataSetup
                     DisabledCode = true;
                     var res = (MstGratuity)result.Data;
                     AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
-                    oModel = res;
-                    oDetailList = oModel.MstGratuityDetails;
+                    //oModel = res;
+                    oModel.Id = res.Id;
+                    oModel.GrtCode = res.GrtCode;
+                    oModel.BasedOn = res.BasedOn;
+                    oModel.BasedOnValue = res.BasedOnValue;
+                    oModel.FlgAbsoluteYears = res.FlgAbsoluteYears;
+                    oModel.FlgWopleaves = res.FlgWopleaves;
+                    oModel.FlgEffectiveDate = res.FlgEffectiveDate;
+                    oDetailList = res.MstGratuityDetails;
                     oDetail = oDetailList.ToList();
                 }
             }
@@ -93,12 +99,12 @@ namespace HCM.UI.Pages.MasterDataSetup
                     }
                     MstGratuityDetail oGratuityDetail = new MstGratuityDetail();
                     oGratuityDetail.Id = res.Id;
-                    oGratuityDetail.Fkid = res.Fkid;
+                    oGratuityDetail.GratId = res.GratId;
                     oGratuityDetail.Description = res.Description;
                     oGratuityDetail.FromPoints = res.FromPoints;
                     oGratuityDetail.ToPoints = res.ToPoints;
                     oGratuityDetail.DaysCount = res.DaysCount;
-                    oGratuityDetail.UpdatedBy = LoginUser;
+                    //oGratuityDetail.UpdateBy = LoginUser;
                     oDetail.Add(oGratuityDetail);
                     oDetailList = oDetail.ToList();
                 }
@@ -121,7 +127,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 {
                     var res = (MstGratuityDetail)result.Data;
 
-                    res.CreatedBy = LoginUser;
+                    //res.UserId = LoginUser;
                     oDetail.Add(res);
                     oDetailList = oDetail;
                 }
@@ -139,18 +145,18 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
-                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.BasedOn))
+                if (!string.IsNullOrWhiteSpace(oModel.GrtCode) && !string.IsNullOrWhiteSpace(oModel.BasedOn) && oDetailList.Count() > 0)
                 {
-                    if (oList.Where(x => x.Code == oModel.Code).Count() > 0 && oModel.Id == 0)
+                    if (oList.Where(x => x.GrtCode.Trim().ToLowerInvariant() == oModel.GrtCode.Trim().ToLowerInvariant()).Count() > 0 && oModel.Id == 0)
                     {
-                        Snackbar.Add(oModel.Code + " : is Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                        Snackbar.Add(oModel.Code + " : Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
                     else
                     {
                         oModel.MstGratuityDetails = oDetailList.ToList();
                         if (oModel.Id == 0)
                         {
-                            oModel.CreatedBy = LoginUser;
+                            oModel.UserId = LoginUser;
                             res = await _mstGratuity.Insert(oModel);
                         }
                         else
@@ -217,7 +223,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         {
             if (string.IsNullOrWhiteSpace(searchString1))
                 return true;
-            if (element.Code.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            if (element.GrtCode.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
             if (element.BasedOn.Equals(searchString1))
                 return true;
@@ -258,6 +264,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     LoginUser = Session.UserCode;
                     //var res = await _administrationService.FetchUserAuth(Session.UserCode);
                     Loading = true;
+                    oModel.BasedOnValue = 0;
                     oModel.FlgWopleaves = true;
                     oModel.FlgAbsoluteYears = true;
                     oModel.FlgEffectiveDate = true;

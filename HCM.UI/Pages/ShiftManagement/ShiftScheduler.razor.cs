@@ -17,9 +17,6 @@ namespace HCM.UI.Pages.ShiftManagement
         public NavigationManager Navigation { get; set; }
 
         [Inject]
-        public IDialogService Dialog { get; set; }
-
-        [Inject]
         public ISnackbar Snackbar { get; set; }
 
         [Inject]
@@ -35,13 +32,10 @@ namespace HCM.UI.Pages.ShiftManagement
         public IMstBranch _mstBranch { get; set; }
 
         [Inject]
-        public IMstPayroll _mstPayroll { get; set; }
+        public ICfgPayrollDefination _CfgPayrollDefination { get; set; }
 
         [Inject]
         public IMstCalendar _mstCalendar { get; set; }
-
-        [Inject]
-        public IMstCountryStateCity _mstCountryStateCity { get; set; }
 
         [Inject]
         public IMstEmployeeMasterData _mstEmployeeMaster { get; set; }
@@ -86,8 +80,8 @@ namespace HCM.UI.Pages.ShiftManagement
         MstBranch oModelBranch = new MstBranch();
         private IEnumerable<MstBranch> oListBranch = new List<MstBranch>();
 
-        MstPayroll oModelPayroll = new MstPayroll();
-        private IEnumerable<MstPayroll> oListPayroll = new List<MstPayroll>();
+        CfgPayrollDefination oModelPayroll = new CfgPayrollDefination();
+        private IEnumerable<CfgPayrollDefination> oListPayroll = new List<CfgPayrollDefination>();
 
         MstCalendar oModelCalendar = new MstCalendar();
         private IEnumerable<MstCalendar> oListCalendar = new List<MstCalendar>();
@@ -197,7 +191,7 @@ namespace HCM.UI.Pages.ShiftManagement
         {
             try
             {
-                oListPayroll = await _mstPayroll.GetAllData();
+                oListPayroll = await _CfgPayrollDefination.GetAllData();
                 oListPayroll = oListPayroll.Where(x => x.FlgActive == true).ToList();
             }
             catch (Exception ex)
@@ -311,13 +305,13 @@ namespace HCM.UI.Pages.ShiftManagement
                     return oListDepartment.Select(o => new MstDepartment
                     {
                         Id = o.Id,
-                        Description = o.Description,
+                        DeptName = o.DeptName,
                     }).ToList();
-                var res = oListDepartment.Where(x => x.Description.ToUpper().Contains(value.ToUpper())).ToList();
+                var res = oListDepartment.Where(x => x.DeptName.ToUpper().Contains(value.ToUpper())).ToList();
                 return res.Select(x => new MstDepartment
                 {
                     Id = x.Id,
-                    Description = x.Description,
+                    DeptName = x.DeptName,
                 }).ToList();
             }
             catch (Exception ex)
@@ -374,19 +368,19 @@ namespace HCM.UI.Pages.ShiftManagement
                 return null;
             }
         }
-        private async Task<IEnumerable<MstPayroll>> SearchPayroll(string value)
+        private async Task<IEnumerable<CfgPayrollDefination>> SearchPayroll(string value)
         {
             try
             {
                 await Task.Delay(1);
                 if (string.IsNullOrWhiteSpace(value))
-                    return oListPayroll.Select(o => new MstPayroll
+                    return oListPayroll.Select(o => new CfgPayrollDefination
                     {
                         Id = o.Id,
                         PayrollName = o.PayrollName,
                     }).ToList();
                 var res = oListPayroll.Where(x => x.PayrollName.ToUpper().Contains(value.ToUpper())).ToList();
-                return res.Select(x => new MstPayroll
+                return res.Select(x => new CfgPayrollDefination
                 {
                     Id = x.Id,
                     PayrollName = x.PayrollName,
@@ -463,14 +457,14 @@ namespace HCM.UI.Pages.ShiftManagement
                 if ((!string.IsNullOrWhiteSpace(oModelEmployeeFrom.EmpId) && !string.IsNullOrWhiteSpace(oModelEmployeeTo.EmpId))
                     || !string.IsNullOrWhiteSpace(oModelPayroll.PayrollName)
                     || !string.IsNullOrWhiteSpace(oModelDesignation.Description)
-                    || !string.IsNullOrWhiteSpace(oModelDepartment.Description)
+                    || !string.IsNullOrWhiteSpace(oModelDepartment.DeptName)
                     || !string.IsNullOrWhiteSpace(oModelLocation.Description)
                     || !string.IsNullOrWhiteSpace(oModelBranch.Description))
                 {
                     oListFilteredEmployee = oListEmployee.Where(x => String.Compare(x.EmpId, oModelEmployeeFrom.EmpId) >= 0 && String.Compare(x.EmpId, oModelEmployeeTo.EmpId) <= 0
                                                                 || x.PayrollName == oModelPayroll.PayrollName
                                                                 || x.DesignationName == oModelDesignation.Description
-                                                                || x.DepartmentName == oModelDepartment.Description
+                                                                || x.DepartmentName == oModelDepartment.DeptName
                                                                 || x.LocationName == oModelLocation.Description
                                                                 || x.BranchName == oModelBranch.Description).ToList();
                 }
@@ -565,7 +559,7 @@ namespace HCM.UI.Pages.ShiftManagement
                         {
                             for (DateTime x = (DateTime)_dateRange.Start; x <= (DateTime)_dateRange.End; x = x.AddDays(1))
                             {
-                                var PayrollPeriodID = oListPayroll.Where(x => x.Id == FilterEmployee.PayrollId).Select(b => b.MstPayrollPeriods.Where(c => c.StartDate <= x && x <= c.EndDate).Select(d => d.Id)).FirstOrDefault();
+                                var PayrollPeriodID = oListPayroll.Where(x => x.Id == FilterEmployee.PayrollId).Select(b => b.CfgPeriodDates.Where(c => c.StartDate <= x && x <= c.EndDate).Select(d => d.Id)).FirstOrDefault();
                                 if (Convert.ToInt32(PayrollPeriodID.FirstOrDefault()) == 0)
                                 {
                                     Snackbar.Add($@"Period for Selected Date Range Can't be found", Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
@@ -583,12 +577,12 @@ namespace HCM.UI.Pages.ShiftManagement
                                 {
                                     SelectedShiftCount = 0;
                                 }
-                                var FilterSelectedShiftRow = oListSelectedShift.ElementAt(SelectedShiftCount).MstShiftsDetails.Where(x => x.Day == DayOfWeek).FirstOrDefault();
+                                var FilterSelectedShiftRow = oListSelectedShift.ElementAt(SelectedShiftCount).MstShiftDetails.Where(x => x.Day == DayOfWeek).FirstOrDefault();
                                 SelectedShiftCount++;
                                 if (oModelforUpdate != null)
                                 {
                                     oModelforUpdate.PeriodId = Convert.ToInt32(PayrollPeriodID.FirstOrDefault());
-                                    oModelforUpdate.ShiftId = (int)FilterSelectedShiftRow.Fkid;
+                                    oModelforUpdate.ShiftId = (int)FilterSelectedShiftRow.ShiftId;
                                     oModelforUpdate.DateDay = DayOfWeek;
                                     if ((string.IsNullOrEmpty(FilterSelectedShiftRow.StartTime) || FilterSelectedShiftRow.StartTime == "00:00")
                                         && (string.IsNullOrEmpty(FilterSelectedShiftRow.EndTime) || FilterSelectedShiftRow.EndTime == "00:00"))
@@ -601,7 +595,7 @@ namespace HCM.UI.Pages.ShiftManagement
                                         oModelforUpdate.FlgOffDay = false;
                                     }
 
-                                    oModelforUpdate.UpdatedDate = DateTime.Now;
+                                    oModelforUpdate.UpdateDate = DateTime.Now;
                                     oModelforUpdate.UpdatedBy = LoginUser;
                                     oAttendanceRegisterUpdateList.Add(oModelforUpdate);
                                 }
@@ -609,13 +603,13 @@ namespace HCM.UI.Pages.ShiftManagement
                                 {
                                     TrnsAttendanceRegister oModelforAdd = new TrnsAttendanceRegister();
                                     oModelforAdd.EmpId = FilterEmployee.Id;
-                                    oModelforAdd.PayrollId = FilterEmployee.PayrollId;
+                                    oModelforAdd.FkpayrollId = (int)FilterEmployee.PayrollId;
                                     oModelforAdd.PeriodId = Convert.ToInt32(PayrollPeriodID.FirstOrDefault());
                                     oModelforAdd.Date = x;
                                     oModelforAdd.DateDay = DayOfWeek;
-                                    oModelforAdd.ShiftId = (int)FilterSelectedShiftRow.Fkid;
-                                    oModelforAdd.CreatedDate = DateTime.Now;
-                                    oModelforAdd.CreatedBy = LoginUser;
+                                    oModelforAdd.ShiftId = (int)FilterSelectedShiftRow.ShiftId;
+                                    oModelforAdd.CreateDate = DateTime.Now;
+                                    oModelforAdd.UserId = LoginUser;
                                     oModelforAdd.FlgProcessed = false;
                                     oModelforAdd.FlgPosted = false;
                                     if ((string.IsNullOrEmpty(FilterSelectedShiftRow.StartTime) || FilterSelectedShiftRow.StartTime == "00:00")

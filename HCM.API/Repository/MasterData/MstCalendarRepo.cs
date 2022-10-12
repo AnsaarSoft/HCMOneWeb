@@ -6,9 +6,9 @@ namespace HCM.API.Repository.MasterData
 {
     public class MstCalendarRepo : IMstCalendar
     {
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public MstCalendarRepo(WebHCMOneContext DBContext)
+        public MstCalendarRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
@@ -35,7 +35,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstCalendar.CreatedDate = DateTime.Now;
+                    oMstCalendar.CreateDate = DateTime.Now;
                     _DBContext.MstCalendars.Add(oMstCalendar);
                     _DBContext.SaveChanges();                    
                     response.Id = 1;
@@ -57,29 +57,29 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstCalendar.UpdatedDate = DateTime.Now;
+                    oMstCalendar.UpdateDate = DateTime.Now;
                     _DBContext.MstCalendars.Update(oMstCalendar);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }
-        public async Task<ApiResponseModel> Insert(MstPayrollPeriod oMstPayrollPeriod)
+        public async Task<ApiResponseModel> Insert(CfgPeriodDate oCfgPeriodDate)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    _DBContext.MstPayrollPeriods.Add(oMstPayrollPeriod);
+                    _DBContext.CfgPeriodDates.Add(oCfgPeriodDate);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";
@@ -93,14 +93,14 @@ namespace HCM.API.Repository.MasterData
             }
             return response;
         }
-        public async Task<ApiResponseModel> Insert(List<MstPayrollPeriod> oMstPayrollPeriod)
+        public async Task<ApiResponseModel> Insert(List<CfgPeriodDate> oCfgPeriodDate)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    _DBContext.MstPayrollPeriods.AddRange(oMstPayrollPeriod);
+                    _DBContext.CfgPeriodDates.AddRange(oCfgPeriodDate);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";

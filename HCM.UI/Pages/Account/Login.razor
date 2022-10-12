@@ -1,51 +1,56 @@
 ﻿@page "/Login"
 @using HCM.API.Models
 @layout UserLayout
+<div class="limiter login-page-deisgn" style="margin-top:-64px;">
+    <div class="row" style="margin:0;">
 
-<div class="limiter" style="margin-top:-64px;">
-        <div class="container-login100" style="background-image: url('img/bg-01.jpg');">
-            <MudCard Elevation="5">
-            <div class="wrap-login100" style="background: transparent !important;">
-                <form class="login100-form validate-form">
-                    <span class="login100-form-logo">
-                        <i class="zmdi zmdi-landscape"></i>
-                    </span>
-                    <span class="login100-form-title p-b-34 p-t-27 text-dark">
-                        Log in
-                    </span>
-
-                        <MudTextField T="string" @bind-Value="oModel.UserCode" MaxLength="100" Counter="100" HelperText="Enter Usercode" Immediate="true" Clearable="true" Label="User code" Variant="Variant.Text" 
-                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Email" />
-
-                        <MudTextField T="string" @bind-Value="oModel.Password" MaxLength="100" Counter="100" HelperText="Enter Password" Immediate="true" Clearable="true" Label="Password" Variant="Variant.Text"
-                        InputType="@PasswordInput" Adornment="Adornment.Start" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="VisiblePassword" AdornmentAriaLabel="Show Password" />
-
-                    <div class="contact100-form-checkbox">
-                        <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
-                        <label class="label-checkbox100" for="ckb1">
-                            Remember me
-                        </label>
-                    </div>
-
-                    <div class="container-login100-form-btn">
-                        @if (Loading)
-                        {
-                                    <MudText>Loading...</MudText>
-                                    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
-                        }
-                        else
-                        {
-                                    <MudButton Variant="Variant.Filled" OnClick="ValidateLogin" Color="Color.Dark" StartIcon="@Icons.Material.Filled.Login" Title="Login" IconSize="Size.Small"> Login</MudButton>
-                        }
-                    </div>
-
-                    <div class="text-center p-t-90">
-                        <a class="txt1 text-dark" href="ForgetPassword">
-                            Forgot Password?
-                        </a>
-                    </div>
-                </form>
+        <div class="col-md-7" style="padding:0;">
+            <div class="container-login100" style="background-image: url('img/lg-bg-03.jpg');">
+                <div class="login-info-content">
+                    <h2>Welcome to MEPL</h2>
+                    <p>Manufacturer of auto parts for Japanese 2 and 4 wheelers OEM’S in Pakistan.</p>
+                </div>
             </div>
+        </div>
+
+        <div class="col-md-5" style="padding:0;">
+            <MudCard Elevation="5">
+                <div class="wrap-login100" style="background: transparent !important;">
+                    <form class="login100-form validate-form">
+                        <span class="login100-form-logo">
+                            <i class="zmdi zmdi-landscape"></i>
+                        </span>
+                        <span class="login100-form-title p-b-10 p-t-27">
+                            Log in
+                        </span>
+
+                        <MudTextField T="string" @bind-Value="oModel.UserCode" MaxLength="100" Counter="100" HelperText="Enter Usercode*" Immediate="true" Clearable="true" Variant="Variant.Text"
+                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Email" />
+
+                        <MudTextField T="string" @bind-Value="oModel.PassCode" MaxLength="100" Counter="100" HelperText="Enter Password*" Immediate="true" Clearable="true" Variant="Variant.Text"
+                                      InputType="@PasswordInput" Adornment="Adornment.Start" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="VisiblePassword" AdornmentAriaLabel="Show Password" />
+                        <div class="forgot-pass-block">
+                            <div class="text-center">
+                                <a class="" href="ForgetPassword" style="color:#fff;">
+                                    Forgot Password?
+                                </a>
+                            </div>
+                        </div>
+                        <div class="container-login100-form-btn">
+                            @if (Loading)
+                            {
+                                <MudText Class="text-white">Loading...</MudText>
+                                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                            }
+                            else
+                            {
+                                <MudButton class="btn login-btn" Variant="Variant.Filled" OnClick="ValidateLogin" Color="Color.Dark" StartIcon="@Icons.Material.Filled.Login" Title="Login" IconSize="Size.Small" style="margin:0;"> Login</MudButton>
+                            }
+                        </div>
+                    </form>
+                </div>
             </MudCard>
         </div>
     </div>
+
+</div>

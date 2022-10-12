@@ -5,90 +5,98 @@
     <div class="row">
         <div class="col-sm-12">
             <h3>Calendar Setup</h3>
-            <MudDivider/>
+            <MudDivider />
         </div>
         @*<div class="col-sm-1">
-            <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.List" Title="View All" />
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.List" Title="View All" />
         </div>*@
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
-            <MudGrid class="search-action-block align-items-center">
+            <MudGrid class="search-action-block align-items-center block-design">
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisbaledCode" Mask="@AlphaNumericMask" MaxLength="20" Counter="20" HelperText="Enter Code" Immediate="true" Clearable="true" Label="Code" Variant="Variant.Text" 
-                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
-                </MudItem> 
+                    <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisbaledCode" Mask="@AlphaNumericMask" MaxLength="20" Counter="20" HelperText="Enter Code" Immediate="true" Clearable="true" Label="Code*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="200" Counter="200" HelperText="Enter Calendar Name" Immediate="true" Clearable="true" Label="Calendar Name" Variant="Variant.Text" 
-                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
-                </MudItem> 
+                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="200" Counter="200" HelperText="Enter Calendar Name" Immediate="true" Clearable="true" Label="Calendar Name*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>
                 <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
                     <MudSwitch @bind-Checked="@oModel.FlgActive" ThumbIcon="@(oModel.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgActive==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgActive==true ? "Active" : "In Active")</span>
+                        <span>@(oModel.FlgActive == true ? "Active" : "In Active")</span>
                     </MudSwitch>
                 </MudItem>
-                @if (Loading)
-                {
-                            <MudItem xs="2" sm="2" md="2" lg="2">
-                                <MudText>Loading...</MudText>
-                                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
-                            </MudItem>
-                }
-                else
-                {
-                            <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
-                                <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
-                                <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
-                            </MudItem>
-                }
+
                 <MudItem xs="8" sm="8" md="8" lg="8">
-                    <MudDateRangePicker @ref="_picker" PickerVariant="PickerVariant.Dialog" Disabled="@DisbaledDate" MinDate="@MinDate" DateFormat="MM/dd/yyyy" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.CalendarMonth" Label="Start and End Date Range" @bind-DateRange="_dateRange">
+                    <MudDateRangePicker @ref="_picker" PickerVariant="PickerVariant.Dialog" Disabled="@DisbaledDate" MinDate="@MinDate" DateFormat="MM/dd/yyyy" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.CalendarMonth" Label="Start and End Date Range*" @bind-DateRange="_dateRange">
                         <PickerActions>
                             <MudButton OnClick="@(() => _picker.Close(false))">Cancel</MudButton>
                             <MudButton Color="Color.Primary" OnClick="@(() => _picker.Close())">Ok</MudButton>
                         </PickerActions>
                     </MudDateRangePicker>
                 </MudItem>
+
+                <MudItem xs="12" sm="12" md="12" lg="12">
+                    @if (Loading)
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudText>Loading...</MudText>
+                            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2" class="text-right custom-btn-design">
+                            <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small">Save</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
+
+                            @*<MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                        <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />*@
+                        </MudItem>
+                    }
+                </MudItem>
             </MudGrid>
+
         </div>
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
             <MudCard Elevation="5">
-                        <MudCardContent>
-                            <MudTable Items="@oList" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstCalendar,bool>(FilterFunc)">
-                                <ToolBarContent>
-                                    <MudText Typo="Typo.h6">Calendars</MudText>
-                                    <MudSpacer />
-                                    <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
-                                </ToolBarContent>
-                                <HeaderContent>
-                                    <MudTh>Code</MudTh>
-                                    <MudTh>Calendar Name</MudTh>
-                                    <MudTh>Start Date</MudTh>
-                                    <MudTh>End Date</MudTh>
-                                    <MudTh>Active</MudTh>
-                                    <MudTh>Action</MudTh>
-                                </HeaderContent>
-                                <RowTemplate>
-                                    <MudTd DataLabel="Code">@context.Code</MudTd>
-                                    <MudTd DataLabel="Calendar Name">@context.Description</MudTd>
-                                    <MudTd DataLabel="Start Date">@Convert.ToDateTime(context.StartDate).ToString("MM/dd/yyyy")</MudTd>
-                                    <MudTd DataLabel="End Date">@Convert.ToDateTime(context.EndDate).ToString("MM/dd/yyyy")</MudTd>
-                                    <MudTd DataLabel="Active">@context.FlgActive</MudTd>
-                                    <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id) )" Title="Edit"></MudIconButton></MudTd>
-                                </RowTemplate>
-                                <PagerContent>
-                                    <MudTablePager />
-                                </PagerContent>
-                            </MudTable>
-                        </MudCardContent>
+                <MudCardContent>
+                    <MudTable Items="@oList" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstCalendar,bool>(FilterFunc)">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Calendars</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Code</MudTh>
+                            <MudTh>Calendar Name</MudTh>
+                            <MudTh>Start Date</MudTh>
+                            <MudTh>End Date</MudTh>
+                            <MudTh>Active</MudTh>
+                            <MudTh>Action</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code">@context.Code</MudTd>
+                            <MudTd DataLabel="Calendar Name">@context.Description</MudTd>
+                            <MudTd DataLabel="Start Date">@Convert.ToDateTime(context.StartDate).ToString("MM/dd/yyyy")</MudTd>
+                            <MudTd DataLabel="End Date">@Convert.ToDateTime(context.EndDate).ToString("MM/dd/yyyy")</MudTd>
+                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                            <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id) )" Title="Edit"></MudIconButton></MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                </MudCardContent>
             </MudCard>
         </div>
-    </div>   
-    <div class="row mt-5">
-        <div class="col-sm-3">
-            <MudButton Variant="Variant.Filled" Title="Active Calendar Periods" OnClick="VerifyPeriods" StartIcon="@Icons.Material.Filled.Verified" Color="Color.Primary">Verify Periods</MudButton>
+    </div>
+    <div class="row mt-5 custom-btn-design" style="margin: 0 0 0 auto; justify-content: flex-end;">
+        <div class="">
+            <MudButton style="margin: 0;" Variant="Variant.Filled" Title="Active Calendar Periods" OnClick="VerifyPeriods" StartIcon="@Icons.Material.Filled.Verified" Color="Color.Primary">Verify Periods</MudButton>
         </div>
     </div>
 </div>

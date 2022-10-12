@@ -5,17 +5,17 @@
     <div class="row">
         <div class="col-sm-12">
             <h3>Master Data Import</h3>
-            <MudDivider/>
+            <MudDivider />
         </div>
         @*<div class="col-sm-1">
-            <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.List" Title="View All" />
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.List" Title="View All" />
         </div>*@
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
-            <MudGrid class="search-action-block align-items-center">
+            <MudGrid class="search-action-block align-items-center block-design">
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudSelect @bind-Value="ModuleType" Label="Module Type" HelperText="Select Module" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                    <MudSelect @bind-Value="ModuleType" Label="Module Type*" HelperText="Select Module" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                         <MudSelectItem Value="1">Department</MudSelectItem>
                         <MudSelectItem Value="2">Contractor</MudSelectItem>
                         <MudSelectItem Value="3">Station</MudSelectItem>
@@ -25,40 +25,45 @@
                         <MudSelectItem Value="7">Branch</MudSelectItem>
                         <MudSelectItem Value="8">Grading</MudSelectItem>
                         <MudSelectItem Value="9">Employee Master</MudSelectItem>
+                        <MudSelectItem Value="10">Attendance</MudSelectItem>
                     </MudSelect>
                 </MudItem>
-                 <MudItem xs="3" sm="3" md="3" lg="3">
+                <MudItem xs="5" sm="5" md="5" lg="5" class="input-btns">
                     <InputFile id="excelFile" OnChange="UploadFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden multiple="false" />
                     <MudFab HtmlTag="label" Color="Color.Dark" Icon="@Icons.Custom.FileFormats.FileExcel" Label="Import Excel" for="excelFile" />
                     <MudFab HtmlTag="label" Color="Color.Primary" OnClick="GenerateTemplate" StartIcon="@Icons.Material.Filled.ImportExport" Label="Generate Template" />
-                </MudItem> 
-                <MudItem xs="2" sm="2" md="2" lg="2">
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
                     @if (excelSheet != null)
                     {
                         @foreach (var file in excelSheet)
                         {
                             <MudText @key="@file" Typo="@Typo.caption">Template :  @file.Name</MudText>
                         }
-                        @if(excelSheet.Count == 0)
+                        @if (excelSheet.Count == 0)
                         {
-                           <MudText Typo="@Typo.caption">No Template selected</MudText>
+                            <MudText Typo="@Typo.caption">No Template selected</MudText>
                         }
-                    } 
+                    }
                 </MudItem>
-                @if (Loading)
-                {
-                            <MudItem xs="2" sm="2" md="2" lg="2">
-                                <MudText>Loading...</MudText>
-                                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
-                            </MudItem>
-                }
-                else
-                {
-                            <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
-                                @*<MudFab Color="Color.Primary" OnClick="GenerateTemplate" StartIcon="@Icons.Material.Filled.ImportExport" Title="Generate Template" IconSize="Size.Small" />*@
-                                <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
-                            </MudItem>
-                }
+                <MudItem xs="12" sm="12" md="12" lg="12">
+
+
+                    @if (Loading)
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudText>Loading...</MudText>
+                            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2" class="text-right custom-btn-design" style="justify-content: flex-end;">
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save Data">Save</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
+                        </MudItem>
+                    }
+                </MudItem>
             </MudGrid>
         </div>
     </div>
@@ -66,247 +71,271 @@
         <div class="col-sm-12">
             <MudCard Elevation="5">
                 <MudCardContent>
-                    @if(ModuleType == 1)
+                    @if (ModuleType == 1)
                     {
                         <MudTable Items="@oListDepartmentGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstDepartment,bool>(FilterFuncDepartment)">
-                        <ToolBarContent>
-                            <MudText Typo="Typo.h6">Department</MudText>
-                            <MudSpacer />
-                            <MudTextField T="string" @bind-Value="searchStringDepartment" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
-                        </ToolBarContent>
-                        <HeaderContent>
-                            <MudTh>Department Code</MudTh>
-                            <MudTh>Department Name</MudTh>
-                            <MudTh>Active</MudTh>
-                            @*<MudTh>Result</MudTh>*@
-                        </HeaderContent>
-                        <RowTemplate>
-                            <MudTd DataLabel="Department Code">@context.Code</MudTd>
-                            <MudTd DataLabel="Department Name">@context.Description</MudTd>
-                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
-                            @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
-                        </RowTemplate>
-                        <PagerContent>
-                            <MudTablePager />
-                        </PagerContent>
-                    </MudTable>
-                    }    
-                    else if(ModuleType == 2)
+                            <ToolBarContent>
+                                <MudText Typo="Typo.h6">Department</MudText>
+                                <MudSpacer />
+                                <MudTextField T="string" @bind-Value="searchStringDepartment" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                            </ToolBarContent>
+                            <HeaderContent>
+                                <MudTh>Department Code</MudTh>
+                                <MudTh>Department Name</MudTh>
+                                <MudTh>Active</MudTh>
+                                @*<MudTh>Result</MudTh>*@
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="Department Code">@context.Code</MudTd>
+                                <MudTd DataLabel="Department Name">@context.DeptName</MudTd>
+                                <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                                @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
+                            </RowTemplate>
+                            <PagerContent>
+                                <MudTablePager />
+                            </PagerContent>
+                        </MudTable>
+                    }
+                    else if (ModuleType == 2)
                     {
                         <MudTable Items="@oListContractorGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstContractor,bool>(FilterFuncContractor)">
-                        <ToolBarContent>
-                            <MudText Typo="Typo.h6">Contractor</MudText>
-                            <MudSpacer />
-                            <MudTextField T="string" @bind-Value="searchStringContractor" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
-                        </ToolBarContent>
-                        <HeaderContent>
-                            <MudTh>Contractor Code</MudTh>
-                            <MudTh>Contractor Name</MudTh>
-                            <MudTh>Active</MudTh>
-                            @*<MudTh>Result</MudTh>*@
-                        </HeaderContent>
-                        <RowTemplate>
-                            <MudTd DataLabel="Contractor Code">@context.Code</MudTd>
-                            <MudTd DataLabel="Contractor Name">@context.Description</MudTd>
-                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
-                            @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
-                        </RowTemplate>
-                        <PagerContent>
-                            <MudTablePager />
-                        </PagerContent>
-                    </MudTable>
-                    } 
-                    else if(ModuleType == 3)
+                            <ToolBarContent>
+                                <MudText Typo="Typo.h6">Contractor</MudText>
+                                <MudSpacer />
+                                <MudTextField T="string" @bind-Value="searchStringContractor" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                            </ToolBarContent>
+                            <HeaderContent>
+                                <MudTh>Contractor Code</MudTh>
+                                <MudTh>Contractor Name</MudTh>
+                                <MudTh>Active</MudTh>
+                                @*<MudTh>Result</MudTh>*@
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="Contractor Code">@context.Code</MudTd>
+                                <MudTd DataLabel="Contractor Name">@context.Description</MudTd>
+                                <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                                @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
+                            </RowTemplate>
+                            <PagerContent>
+                                <MudTablePager />
+                            </PagerContent>
+                        </MudTable>
+                    }
+                    else if (ModuleType == 3)
                     {
                         <MudTable Items="@oListStationGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstStation,bool>(FilterFuncStation)">
-                        <ToolBarContent>
-                            <MudText Typo="Typo.h6">Station</MudText>
-                            <MudSpacer />
-                            <MudTextField T="string" @bind-Value="searchStringStation" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
-                        </ToolBarContent>
-                        <HeaderContent>
-                            <MudTh>Station Code</MudTh>
-                            <MudTh>Station Name</MudTh>
-                            <MudTh>Active</MudTh>
-                            @*<MudTh>Result</MudTh>*@
-                        </HeaderContent>
-                        <RowTemplate>
-                            <MudTd DataLabel="Station Code">@context.Code</MudTd>
-                            <MudTd DataLabel="Station Name">@context.Description</MudTd>
-                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
-                            @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
-                        </RowTemplate>
-                        <PagerContent>
-                            <MudTablePager />
-                        </PagerContent>
-                    </MudTable>
-                    } 
-                    else if(ModuleType == 4)
+                            <ToolBarContent>
+                                <MudText Typo="Typo.h6">Station</MudText>
+                                <MudSpacer />
+                                <MudTextField T="string" @bind-Value="searchStringStation" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                            </ToolBarContent>
+                            <HeaderContent>
+                                <MudTh>Station Code</MudTh>
+                                <MudTh>Station Name</MudTh>
+                                <MudTh>Active</MudTh>
+                                @*<MudTh>Result</MudTh>*@
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="Station Code">@context.Code</MudTd>
+                                <MudTd DataLabel="Station Name">@context.Description</MudTd>
+                                <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                                @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
+                            </RowTemplate>
+                            <PagerContent>
+                                <MudTablePager />
+                            </PagerContent>
+                        </MudTable>
+                    }
+                    else if (ModuleType == 4)
                     {
                         <MudTable Items="@oListDesignationGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstDesignation,bool>(FilterFuncDesignation)">
-                        <ToolBarContent>
-                            <MudText Typo="Typo.h6">Designation</MudText>
-                            <MudSpacer />
-                            <MudTextField T="string" @bind-Value="searchStringDesignation" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
-                        </ToolBarContent>
-                        <HeaderContent>
-                            <MudTh>Designation Code</MudTh>
-                            <MudTh>Designation Name</MudTh>
-                            <MudTh>Active</MudTh>
-                            @*<MudTh>Result</MudTh>*@
-                        </HeaderContent>
-                        <RowTemplate>
-                            <MudTd DataLabel="Designation Code">@context.Code</MudTd>
-                            <MudTd DataLabel="Designation Name">@context.Description</MudTd>
-                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
-                            @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
-                        </RowTemplate>
-                        <PagerContent>
-                            <MudTablePager />
-                        </PagerContent>
-                    </MudTable>
-                    }       
-                    else if(ModuleType == 5)
+                            <ToolBarContent>
+                                <MudText Typo="Typo.h6">Designation</MudText>
+                                <MudSpacer />
+                                <MudTextField T="string" @bind-Value="searchStringDesignation" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                            </ToolBarContent>
+                            <HeaderContent>
+                                <MudTh>Designation Code</MudTh>
+                                <MudTh>Designation Name</MudTh>
+                                <MudTh>Active</MudTh>
+                                @*<MudTh>Result</MudTh>*@
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="Designation Code">@context.Name</MudTd>
+                                <MudTd DataLabel="Designation Name">@context.Description</MudTd>
+                                <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                                @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
+                            </RowTemplate>
+                            <PagerContent>
+                                <MudTablePager />
+                            </PagerContent>
+                        </MudTable>
+                    }
+                    else if (ModuleType == 5)
                     {
                         <MudTable Items="@oListLocationGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstLocation,bool>(FilterFuncLocation)">
-                        <ToolBarContent>
-                            <MudText Typo="Typo.h6">Location</MudText>
-                            <MudSpacer />
-                            <MudTextField T="string" @bind-Value="searchStringLocation" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
-                        </ToolBarContent>
-                        <HeaderContent>
-                            <MudTh>Location Code</MudTh>
-                            <MudTh>Location Name</MudTh>
-                            <MudTh>Active</MudTh>
-                            @*<MudTh>Result</MudTh>*@
-                        </HeaderContent>
-                        <RowTemplate>
-                            <MudTd DataLabel="Location Code">@context.Code</MudTd>
-                            <MudTd DataLabel="Location Name">@context.Description</MudTd>
-                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
-                            @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
-                        </RowTemplate>
-                        <PagerContent>
-                            <MudTablePager />
-                        </PagerContent>
-                    </MudTable>
-                    }  
-                    else if(ModuleType == 6)
+                            <ToolBarContent>
+                                <MudText Typo="Typo.h6">Location</MudText>
+                                <MudSpacer />
+                                <MudTextField T="string" @bind-Value="searchStringLocation" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                            </ToolBarContent>
+                            <HeaderContent>
+                                <MudTh>Location Code</MudTh>
+                                <MudTh>Location Name</MudTh>
+                                <MudTh>Active</MudTh>
+                                @*<MudTh>Result</MudTh>*@
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="Location Code">@context.Name</MudTd>
+                                <MudTd DataLabel="Location Name">@context.Description</MudTd>
+                                <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                                @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
+                            </RowTemplate>
+                            <PagerContent>
+                                <MudTablePager />
+                            </PagerContent>
+                        </MudTable>
+                    }
+                    else if (ModuleType == 6)
                     {
                         <MudTable Items="@oListPositionGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstPosition,bool>(FilterFuncPosition)">
-                        <ToolBarContent>
-                            <MudText Typo="Typo.h6">Position</MudText>
-                            <MudSpacer />
-                            <MudTextField T="string" @bind-Value="searchStringPosition" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
-                        </ToolBarContent>
-                        <HeaderContent>
-                            <MudTh>Position Code</MudTh>
-                            <MudTh>Position Name</MudTh>
-                            <MudTh>Active</MudTh>
-                            @*<MudTh>Result</MudTh>*@
-                        </HeaderContent>
-                        <RowTemplate>
-                            <MudTd DataLabel="Position Code">@context.Code</MudTd>
-                            <MudTd DataLabel="Position Name">@context.Description</MudTd>
-                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
-                            @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
-                        </RowTemplate>
-                        <PagerContent>
-                            <MudTablePager />
-                        </PagerContent>
-                    </MudTable>
-                    }  
-                    else if(ModuleType == 7)
+                            <ToolBarContent>
+                                <MudText Typo="Typo.h6">Position</MudText>
+                                <MudSpacer />
+                                <MudTextField T="string" @bind-Value="searchStringPosition" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                            </ToolBarContent>
+                            <HeaderContent>
+                                <MudTh>Position Code</MudTh>
+                                <MudTh>Position Name</MudTh>
+                                <MudTh>Active</MudTh>
+                                @*<MudTh>Result</MudTh>*@
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="Position Code">@context.Name</MudTd>
+                                <MudTd DataLabel="Position Name">@context.Description</MudTd>
+                                <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                                @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
+                            </RowTemplate>
+                            <PagerContent>
+                                <MudTablePager />
+                            </PagerContent>
+                        </MudTable>
+                    }
+                    else if (ModuleType == 7)
                     {
                         <MudTable Items="@oListBranchGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstBranch,bool>(FilterFuncBranch)">
-                        <ToolBarContent>
-                            <MudText Typo="Typo.h6">Branch</MudText>
-                            <MudSpacer />
-                            <MudTextField T="string" @bind-Value="searchStringBranch" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
-                        </ToolBarContent>
-                        <HeaderContent>
-                            <MudTh>Branch Code</MudTh>
-                            <MudTh>Branch Name</MudTh>
-                            <MudTh>Active</MudTh>
-                            @*<MudTh>Result</MudTh>*@
-                        </HeaderContent>
-                        <RowTemplate>
-                            <MudTd DataLabel="Branch Code">@context.Code</MudTd>
-                            <MudTd DataLabel="Branch Name">@context.Description</MudTd>
-                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
-                            @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
-                        </RowTemplate>
-                        <PagerContent>
-                            <MudTablePager />
-                        </PagerContent>
-                    </MudTable>
-                    }  
-                    else if(ModuleType == 8)
+                            <ToolBarContent>
+                                <MudText Typo="Typo.h6">Branch</MudText>
+                                <MudSpacer />
+                                <MudTextField T="string" @bind-Value="searchStringBranch" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                            </ToolBarContent>
+                            <HeaderContent>
+                                <MudTh>Branch Code</MudTh>
+                                <MudTh>Branch Name</MudTh>
+                                <MudTh>Active</MudTh>
+                                @*<MudTh>Result</MudTh>*@
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="Branch Code">@context.Name</MudTd>
+                                <MudTd DataLabel="Branch Name">@context.Description</MudTd>
+                                <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                                @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
+                            </RowTemplate>
+                            <PagerContent>
+                                <MudTablePager />
+                            </PagerContent>
+                        </MudTable>
+                    }
+                    else if (ModuleType == 8)
                     {
                         <MudTable Items="@oListGradingGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstGrading,bool>(FilterFuncGrading)">
-                        <ToolBarContent>
-                            <MudText Typo="Typo.h6">Grading</MudText>
-                            <MudSpacer />
-                            <MudTextField T="string" @bind-Value="searchStringGrading" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
-                        </ToolBarContent>
-                        <HeaderContent>
-                            <MudTh>Grading Code</MudTh>
-                            <MudTh>Grading Name</MudTh>
-                            <MudTh>Minimum Salary</MudTh>
-                            <MudTh>Maximum Salary</MudTh>
-                            <MudTh>Active</MudTh>
-                            @*<MudTh>Result</MudTh>*@
-                        </HeaderContent>
-                        <RowTemplate>
-                            <MudTd DataLabel="Grading Code">@context.Code</MudTd>
-                            <MudTd DataLabel="Grading Name">@context.Description</MudTd>
-                            <MudTd DataLabel="Grading Name">@context.MinSalary</MudTd>
-                            <MudTd DataLabel="Grading Name">@context.MaxSalary</MudTd>
-                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
-                            @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
-                        </RowTemplate>
-                        <PagerContent>
-                            <MudTablePager />
-                        </PagerContent>
-                    </MudTable>
+                            <ToolBarContent>
+                                <MudText Typo="Typo.h6">Grading</MudText>
+                                <MudSpacer />
+                                <MudTextField T="string" @bind-Value="searchStringGrading" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                            </ToolBarContent>
+                            <HeaderContent>
+                                <MudTh>Grading Code</MudTh>
+                                <MudTh>Grading Name</MudTh>
+                                <MudTh>Minimum Salary</MudTh>
+                                <MudTh>Maximum Salary</MudTh>
+                                <MudTh>Active</MudTh>
+                                @*<MudTh>Result</MudTh>*@
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="Grading Code">@context.Code</MudTd>
+                                <MudTd DataLabel="Grading Name">@context.Description</MudTd>
+                                <MudTd DataLabel="Grading Name">@context.MinSalary</MudTd>
+                                <MudTd DataLabel="Grading Name">@context.MaxSalary</MudTd>
+                                <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                                @*<MudTd DataLabel="Result">@context.UpdatedBy</MudTd>*@
+                            </RowTemplate>
+                            <PagerContent>
+                                <MudTablePager />
+                            </PagerContent>
+                        </MudTable>
                     }
-                    else if(ModuleType == 9)
+                    else if (ModuleType == 9)
                     {
                         <MudTable Items="@oListMstEmployeeGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstEmployee,bool>(FilterFuncMstEmployee)">
-                        <ToolBarContent>
-                            <MudText Typo="Typo.h6">Employee</MudText>
-                            <MudSpacer />
-                            <MudTextField T="string" @bind-Value="searchStringMstEmployee" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
-                        </ToolBarContent>
-                        <HeaderContent>
-                            <MudTh>Employee Code</MudTh>
-                            <MudTh>Name</MudTh>
-                            <MudTh>Date of Joining</MudTh>
-                            <MudTh>Designation</MudTh>
-                            <MudTh>Location</MudTh>
-                            <MudTh>Active</MudTh>
-                            @*<MudTh>Result</MudTh>*@
-                        </HeaderContent>
-                        <RowTemplate>
-                            <MudTd DataLabel="Grading Code">@context.EmpId</MudTd>
-                            <MudTd DataLabel="Grading Name">@context.FirstName @context.MiddleName @context.LastName</MudTd>
-                            <MudTd DataLabel="Code">@Convert.ToDateTime(context.JoiningDate).ToString("MM/dd/yyyy")</MudTd>
-                            <MudTd DataLabel="Grading Name">@context.DesignationName</MudTd>
-                            <MudTd DataLabel="Active">@context.LocationName</MudTd>
-                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
-                        </RowTemplate>
-                        <PagerContent>
-                            <MudTablePager />
-                        </PagerContent>
-                    </MudTable>
-                    } 
+                            <ToolBarContent>
+                                <MudText Typo="Typo.h6">Employee</MudText>
+                                <MudSpacer />
+                                <MudTextField T="string" @bind-Value="searchStringMstEmployee" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                            </ToolBarContent>
+                            <HeaderContent>
+                                <MudTh>Employee Code</MudTh>
+                                <MudTh>Name</MudTh>
+                                <MudTh>Date of Joining</MudTh>
+                                <MudTh>Designation</MudTh>
+                                <MudTh>Location</MudTh>
+                                <MudTh>Active</MudTh>
+                                @*<MudTh>Result</MudTh>*@
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="Grading Code">@context.EmpId</MudTd>
+                                <MudTd DataLabel="Grading Name">@context.FirstName @context.MiddleName @context.LastName</MudTd>
+                                <MudTd DataLabel="Code">@Convert.ToDateTime(context.JoiningDate).ToString("MM/dd/yyyy")</MudTd>
+                                <MudTd DataLabel="Grading Name">@context.DesignationName</MudTd>
+                                <MudTd DataLabel="Active">@context.LocationName</MudTd>
+                                <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                            </RowTemplate>
+                            <PagerContent>
+                                <MudTablePager />
+                            </PagerContent>
+                        </MudTable>
+                    }
+                    else if (ModuleType == 10)
+                    {
+                        <MudTable Items="@oListTrnsTempAttendanceGrid" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsTempAttendance,bool>(FilterFuncTrnsTempAttendance)">
+                            <ToolBarContent>
+                                <MudText Typo="Typo.h6">Attendance</MudText>
+                                <MudSpacer />
+                                <MudTextField T="string" @bind-Value="searchStringTrnsTempAttendance" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                            </ToolBarContent>
+                            <HeaderContent>
+                                <MudTh>Code</MudTh>
+                                <MudTh>PunchedDate</MudTh>
+                                <MudTh>PunchedTime</MudTh>
+                                <MudTh>InOut</MudTh>
+                                @*<MudTh>Active</MudTh>*@
+                                @*<MudTh>Result</MudTh>*@
+                            </HeaderContent>
+                            <RowTemplate>
+                                @* <MudTd DataLabel="Code">@empcode</MudTd>*@
+                                <MudTd DataLabel="Code">@context.EmpId</MudTd>
+                                <MudTd DataLabel="PunchedDate">@Convert.ToDateTime(context.PunchedDate).ToString("MM/dd/yyyy")</MudTd>
+                                <MudTd DataLabel="PunchedTime">@context.PunchedTime</MudTd>
+                                <MudTd DataLabel="InOut">@context.InOut</MudTd>
+                                @* <MudTd DataLabel="Active">@context.FlgProcessed</MudTd>*@
+                            </RowTemplate>
+                            <PagerContent>
+                                <MudTablePager />
+                            </PagerContent>
+                        </MudTable>
+                    }
                 </MudCardContent>
             </MudCard>
-        </div>
-    </div> 
-    <div class="row mt-5">
-        <div class="col-sm-4">
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save Data">Save Data</MudButton>
         </div>
     </div>
 </div>

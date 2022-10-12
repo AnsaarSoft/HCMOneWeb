@@ -14,7 +14,7 @@
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
-            <MudGrid class="search-action-block align-items-center">
+            <MudGrid class="search-action-block align-items-center block-design">
                 <MudItem xs="3" sm="3" md="3" lg="3">
                     <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisabledCode" Mask="@AlphaNumericMask" MaxLength="20" Counter="20" HelperText="Enter Code" Immediate="true" Clearable="true" Label="Code" Variant="Variant.Text" 
                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
@@ -34,20 +34,7 @@
                         <span>@(oModel.FlgDefault==true ? "Default" : "Custom")</span>
                     </MudSwitch>
                 </MudItem>
-                 @if (Loading)
-                {
-                                <MudItem xs="2" sm="2" md="2" lg="2">
-                                    <MudText>Loading...</MudText>
-                                    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
-                                </MudItem>
-                }
-                else
-                {
-                                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
-                                    <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
-                                    <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
-                                </MudItem>
-                }
+                 
                 <MudItem xs="4" sm="4" md="4" lg="4">
                     <MudSelect @bind-Value="oModel.ValueType" Label="Value Type" HelperText="Select Value Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                         @foreach (MstLove Love in oLoveList.Where(x => x.Type == "Val_Type").ToList())
@@ -57,29 +44,47 @@
                     </MudSelect>
                 </MudItem>            
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.Value" HelperText="Enter Value" Immediate="true" Clearable="true" Label="Value" Adornment="Adornment.Start" 
+                    <MudNumericField @bind-Value="oModel.Value" Min="0" HelperText="Enter Value" Immediate="true" Clearable="true" Label="Value" Adornment="Adornment.Start" 
                     AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text" > </MudNumericField>
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.Hours" HelperText="Enter Number of Hours" Immediate="true" Clearable="true" Label="Hours" Adornment="Adornment.Start" 
+                    <MudNumericField @bind-Value="oModel.Hour" Min="0" HelperText="Enter Number of Hours" Immediate="true" Clearable="true" Label="Hours" Adornment="Adornment.Start"
+                                     AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" > </MudNumericField>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModel.MonthDays" Min="0" HelperText="Enter Month Days " Immediate="true" Clearable="true" Label="Month Days" Adornment="Adornment.Start" 
                     AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" > </MudNumericField>
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.MonthDays" HelperText="Enter Month Days " Immediate="true" Clearable="true" Label="Month Days" Adornment="Adornment.Start" 
-                    AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" > </MudNumericField>
-                </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.PerDayCap" HelperText="Enter Per Day Cap " Immediate="true" Clearable="true" Label="Per Day Cap " Adornment="Adornment.Start" 
+                    <MudNumericField @bind-Value="oModel.PerDayCap" Min="0" HelperText="Enter Per Day Cap " Immediate="true" Clearable="true" Label="Per Day Cap " Adornment="Adornment.Start" 
                     AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text" > </MudNumericField>
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.PerMonthCap" HelperText="Enter Per Month Cap " Immediate="true" Clearable="true" Label="Per Month Cap " Adornment="Adornment.Start" 
+                    <MudNumericField @bind-Value="oModel.PerMonthCap" Min="0" HelperText="Enter Per Month Cap " Immediate="true" Clearable="true" Label="Per Month Cap " Adornment="Adornment.Start" 
                     AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text" > </MudNumericField>
                 </MudItem>
                 @*<MudItem xs="4" sm="4" md="4" lg="4">
                     <MudNumericField @bind-Value="oModel.Expression" HelperText="Enter Expression Number" Immediate="true" Clearable="true" Label="Expression Number" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" Variant="Variant.Text" > </MudNumericField>
                 </MudItem>*@
-                
+                <MudItem xs="12" sm="12" md="12" lg="12">
+                    @if (Loading)
+                {
+                                <MudItem xs="2" sm="2" md="2" lg="2">
+                                    <MudText>Loading...</MudText>
+                                    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                                </MudItem>
+                }
+                else
+                {
+                                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right custom-btn-design">
+                                <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info"  Size="Size.Small">Save</MudButton>
+                                <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
+
+                                    @*<MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                                    <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />*@
+                                </MudItem>
+                }
+                </MudItem>
             </MudGrid>
         </div>
     </div>
@@ -111,7 +116,7 @@
                                     <MudTd DataLabel="OverTime Description">@context.Description</MudTd>
                                     <MudTd DataLabel="ValueType">@context.ValueType</MudTd>
                                     <MudTd DataLabel="Value">@context.Value</MudTd>
-                                    <MudTd DataLabel="Hours">@context.Hours</MudTd>
+                                    <MudTd DataLabel="Hours">@context.Hour</MudTd>
                                     <MudTd DataLabel="MonthDays">@context.MonthDays</MudTd>
                                     <MudTd DataLabel="PerDayCap">@context.PerDayCap</MudTd>
                                     <MudTd DataLabel="PerMonthCap">@context.PerMonthCap</MudTd>                                    

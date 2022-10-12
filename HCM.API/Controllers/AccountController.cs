@@ -114,6 +114,7 @@ namespace HCM.API.Controllers
                 return BadRequest("Something went wrong.");
             }
         }
+
         [Route("changePassword")]
         [HttpGet]
         public async Task<IActionResult> ChangePassword([FromBody] MstUser pMstUser)

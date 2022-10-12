@@ -1,0 +1,142 @@
+﻿@page "/ElementTransaction"
+@using HCM.API.Models
+@using System.Globalization
+
+<div class="container-fluid page-content-setting block-design">
+    <div class="row">
+        <div class="col-sm-10">
+            <h3>Element Transaction</h3>
+            <MudDivider />
+        </div>
+        @*<div class="col-sm-2 custom-btn-design text-right">
+        <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Filled.RemoveRedEye" Color="Color.Info" Size="Size.Small">View All</MudButton>
+        </div>*@
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudGrid class="search-action-block align-items-center block-design">
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTextField T="string" ReadOnly="true" @bind-Value="EmpName" HelperText="Employee Name" Immediate="true" Label="Select Employee*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Person" OnAdornmentClick="@((e) => OpenDialogEmployee(maxWidth))" AdornmentAriaLabel="Select Employee" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudNumericField @bind-Value="EmpBasicSalary" Disabled="true" Min="0" HelperText="Basic Salary" Immediate="true" Clearable="true"
+                                     Label="Basic Salary*" AdornmentText="Rs" Format="N2" Culture="@CultureInfo.InvariantCulture" Variant="Variant.Text"> </MudNumericField>
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudNumericField @bind-Value="EmpGrossSalary" Disabled="true" Min="0" HelperText="Gross Salary" Immediate="true" Clearable="true"
+                                     Label="Gross Salary*" AdornmentText="Rs" Format="N2" Culture="@CultureInfo.InvariantCulture" Variant="Variant.Text"> </MudNumericField>
+                </MudItem>
+                <MudItem xs="12" sm="12" md="12" lg="12">
+                    @if (Loading)
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudText>Loading...</MudText>
+                            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudItem xs="12" sm="12" md="12" lg="12" class="text-right custom-btn-design" style="justify-content: flex-end;">
+                            <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Save</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
+                        </MudItem>
+                    }
+                </MudItem>
+            </MudGrid>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudCard Elevation="5">
+                <MudCardContent>
+                    <MudTabs Elevation="2" Rounded="true" Centered="true" Class="my-6" Color="Color.Dark">
+                        <MudTabPanel Icon="@Icons.Material.Filled.MergeType" Text="Recurring Elements">
+                            <MudTable Items="@oListEmployeeElementDetailRec" class="table-setting text-right custom-btn-design" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsEmployeeElementDetail,bool>(FilterFunc)">
+                                <ToolBarContent>
+                                    <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialogElement(maxWidth))" StartIcon="@Icons.Material.Filled.Add" Color="Color.Success" Size="Size.Small">Pick Element</MudButton>
+                                    <MudSpacer />
+                                    <MudTextField T="string" @bind-Value="searchStringElement" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                                </ToolBarContent>
+                                <HeaderContent>
+                                    <MudTh>Element Code</MudTh>
+                                    <MudTh>Element Name</MudTh>
+                                    <MudTh>Element Type</MudTh>
+                                    <MudTh>Value Type</MudTh>
+                                    <MudTh>Amount</MudTh>
+                                    <MudTh>Active</MudTh>
+                                </HeaderContent>
+                                <RowTemplate>
+                                    <MudTd DataLabel="Element Code">@context.ElementCode</MudTd>
+                                    <MudTd DataLabel="Element Name">@context.ElementDescription</MudTd>
+                                    <MudTd DataLabel="Element Code">@context.ElementType</MudTd>
+                                    <MudTd DataLabel="Element Code">@context.ElementValueType</MudTd>
+                                    <MudTd DataLabel="Element Code">@context.Amount</MudTd>
+                                    <MudTd DataLabel="Active">
+                                        <MudSwitch @bind-Checked="@context.FlgActive" ThumbIcon="@(context.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
+                                                   ThumbIconColor="@(context.FlgActive==true ? Color.Primary : Color.Error)" Color="@(context.FlgActive==true ? Color.Info : Color.Error)">
+                                            <span>@(context.FlgActive == true ? "Active" : "In Active")</span>
+                                        </MudSwitch>
+                                    </MudTd>
+                                </RowTemplate>
+                                <PagerContent>
+                                    <MudTablePager />
+                                </PagerContent>
+                            </MudTable>
+                        </MudTabPanel>
+                        <MudTabPanel Icon="@Icons.Material.Filled.MergeType" Text="Non Recurring Elements">
+                            <MudTable Items="@oListEmployeeElementDetailNonRec" class="table-setting text-right custom-btn-design" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsEmployeeElementDetail,bool>(FilterFunc)">
+                                <ToolBarContent>
+                                    <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialogElement(maxWidth))" StartIcon="@Icons.Material.Filled.Add" Color="Color.Success" Size="Size.Small">Pick Element</MudButton>
+                                    <MudSpacer />
+                                    <MudTextField T="string" @bind-Value="searchStringElement" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                                </ToolBarContent>
+                                <HeaderContent>
+                                    <MudTh>Element Code</MudTh>
+                                    <MudTh>Element Name</MudTh>
+                                    <MudTh>Element Type</MudTh>
+                                    <MudTh>Value Type</MudTh>
+                                    <MudTh>Amount</MudTh>
+                                    <MudTh>Pay In</MudTh>
+                                    <MudTh>Paid</MudTh>
+                                    <MudTh>Active</MudTh>
+                                </HeaderContent>
+                                <RowTemplate>
+                                    <MudTd DataLabel="Element Code">@context.ElementCode</MudTd>
+                                    <MudTd DataLabel="Element Name">@context.ElementDescription</MudTd>
+                                    <MudTd DataLabel="Element Code">@context.ElementType</MudTd>
+                                    <MudTd DataLabel="Element Code">@context.ElementValueType</MudTd>
+                                    <MudTd DataLabel="Element Code">@context.Amount</MudTd>
+                                    <MudTd DataLabel="Element Code">
+                                        <MudSelect @bind-Value="context.PeriodId" HelperText="Select Period" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                                            @foreach (CfgPeriodDate Period in oCfgPeriodDateList.ToList())
+                                            {
+                                                <MudSelectItem Value="(int?)Period.Id">@Period.PeriodName</MudSelectItem>
+                                            }
+                                        </MudSelect>
+                                    </MudTd>
+                                    <MudTd DataLabel="Element Code">
+                                        <MudSwitch @bind-Checked="@context.FlgPaid" Disabled="true" ThumbIcon="@(context.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
+                                                   ThumbIconColor="@(context.FlgActive==true ? Color.Primary : Color.Error)" Color="@(context.FlgActive==true ? Color.Info : Color.Error)">
+                                            <span>@(context.FlgActive == true ? "Active" : "In Active")</span>
+                                        </MudSwitch>
+                                    </MudTd>
+                                    <MudTd DataLabel="Active">
+                                        <MudSwitch @bind-Checked="@context.FlgActive" ThumbIcon="@(context.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
+                                                   ThumbIconColor="@(context.FlgActive==true ? Color.Primary : Color.Error)" Color="@(context.FlgActive==true ? Color.Info : Color.Error)">
+                                            <span>@(context.FlgActive == true ? "Active" : "In Active")</span>
+                                        </MudSwitch>
+                                    </MudTd>
+                                </RowTemplate>
+                                <PagerContent>
+                                    <MudTablePager />
+                                </PagerContent>
+                            </MudTable>
+                        </MudTabPanel>
+                    </MudTabs>
+                </MudCardContent>
+            </MudCard>
+        </div>
+    </div>
+</div>

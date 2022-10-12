@@ -7,9 +7,9 @@ namespace HCM.API.Repository.MasterData
 {
     public class MstCountryStateCityRepo : IMstCountryStateCity
     {
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public MstCountryStateCityRepo(WebHCMOneContext DBContext)
+        public MstCountryStateCityRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }

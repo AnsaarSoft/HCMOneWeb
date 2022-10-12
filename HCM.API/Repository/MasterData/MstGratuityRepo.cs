@@ -7,9 +7,9 @@ namespace HCM.API.Repository.MasterData
 {
     public class MstGratuityRepo:IMstGratuity
     {
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public MstGratuityRepo(WebHCMOneContext DBContext)
+        public MstGratuityRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
@@ -59,19 +59,19 @@ namespace HCM.API.Repository.MasterData
                 await Task.Run(() =>
                 {
                     oMstGratuity.UpdateDate = DateTime.Now;
-                    var Detail = _DBContext.MstGratuityDetails.Where(x => x.Fkid == oMstGratuity.Id).ToList();
+                    var Detail = _DBContext.MstGratuityDetails.Where(x => x.GratId == oMstGratuity.Id).ToList();
                     _DBContext.MstGratuityDetails.RemoveRange(Detail);
                     _DBContext.MstGratuities.Update(oMstGratuity);                    
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }

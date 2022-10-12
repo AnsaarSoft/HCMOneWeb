@@ -2,6 +2,7 @@
 using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.MasterData;
+using HCM.UI.Interfaces.MasterElement;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -24,6 +25,12 @@ namespace HCM.UI.Pages.MasterDataSetup
         public IMstLoans _mstLoans { get; set; }
 
         [Inject]
+        public IMstElement _mstElement { get; set; }
+
+        [Inject]
+        public IMstGratuity _mstGratuity { get; set; }
+
+        [Inject]
         public ILocalStorageService _localStorage { get; set; }
         private string LoginUser = "";
 
@@ -32,7 +39,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         #region Variables
 
         bool Loading = false;
-      
+
         bool DisabledCode = false;
         public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
         private string searchString1 = "";
@@ -40,8 +47,9 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         MstLoan oModel = new MstLoan();
         private IEnumerable<MstLoan> oList = new List<MstLoan>();
+        private IEnumerable<MstElement> oListElement = new List<MstElement>();
+        private IEnumerable<MstGratuity> oListGratuity = new List<MstGratuity>();
 
-        
         #endregion
 
         #region Functions
@@ -53,9 +61,10 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
-                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description))
+                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description) || (oModel.FlgPf == true && !string.IsNullOrWhiteSpace(oModel.ElementCode))
+                    || (oModel.FlgGratuity == true && !string.IsNullOrWhiteSpace(oModel.GratuityCode)))
                 {
-                    if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
+                    if (oList.Where(x => x.Code.Trim().ToLowerInvariant() == oModel.Code.Trim().ToLowerInvariant()).Count() > 0)
                     {
                         Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
@@ -67,16 +76,16 @@ namespace HCM.UI.Pages.MasterDataSetup
                         }
                         else
                         {
-                           if (oModel.Id == 0)
-                           {
-                                oModel.CreatedBy = LoginUser;
+                            if (oModel.Id == 0)
+                            {
+                                oModel.UserId = LoginUser;
                                 res = await _mstLoans.Insert(oModel);
-                           }
-                           else
-                           {
+                            }
+                            else
+                            {
                                 oModel.UpdatedBy = LoginUser;
                                 res = await _mstLoans.Update(oModel);
-                           }
+                            }
                         }
                     }
                     if (res != null && res.Id == 1)
@@ -89,8 +98,6 @@ namespace HCM.UI.Pages.MasterDataSetup
                     {
                         Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
-                    oModel.FlgActive = true;
-                    oModel.FlgDefault = true;
                 }
                 else
                 {
@@ -123,6 +130,28 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
+        private async Task GetAllElements()
+        {
+            try
+            {
+                oListElement = await _mstElement.GetAllData();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private async Task GetAllGratuity()
+        {
+            try
+            {
+                oListGratuity = await _mstGratuity.GetAllData();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
         private async Task GetAllLoans()
         {
             try
@@ -143,9 +172,11 @@ namespace HCM.UI.Pages.MasterDataSetup
                 return true;
             if (element.Description.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
-            if (element.FlgActive.Equals(searchString1))
+            if (element.ElementCode.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
-            if (element.FlgDefault.Equals(searchString1))
+            if (element.GratuityCode.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.FlgActive.Equals(searchString1))
                 return true;
             return false;
         }
@@ -176,14 +207,15 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (res != null)
                 {
                     AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
-                   
-                    oModel.Id = res.Id;
-                    oModel.Code = res.Code;
+
+                    oModel = res;
+                    //oModel.Id = res.Id;
+                    //oModel.Code = res.Code;
                     DisabledCode = true;
-                    oModel.Description = res.Description;
-                   
-                    oModel.FlgActive = res.FlgActive;
-                    oModel.FlgDefault = res.FlgDefault;
+                    //oModel.Description = res.Description;
+
+                    //oModel.FlgActive = res.FlgActive;
+
                     oList = oList.Where(x => x.Id != LineNum);
                 }
             }
@@ -208,7 +240,12 @@ namespace HCM.UI.Pages.MasterDataSetup
                 {
                     LoginUser = Session.UserCode;
                     oModel.FlgActive = true;
+                    oModel.LoanValue = 0;
+                    oModel.TotalLoanCap = 0;
+                    oModel.Pfcap = 0;
                     await GetAllLoans();
+                    await GetAllElements();
+                    await GetAllGratuity();
                 }
                 else
                 {
@@ -223,7 +260,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = false;
             }
         }
-        
+
         #endregion
     }
 }

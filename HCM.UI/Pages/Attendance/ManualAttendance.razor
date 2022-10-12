@@ -5,47 +5,54 @@
     <div class="row">
         <div class="col-sm-12">
             <h3>Manual Attendance</h3>
-            <MudDivider/>
+            <MudDivider />
         </div>
         @*<div class="col-sm-1">
-            <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.List" Title="View All" />
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.List" Title="View All" />
         </div>*@
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
-            <MudGrid class="search-action-block align-items-center">
-                <MudItem xs="2" sm="2" md="2" lg="2">
-                    <MudAutocomplete T="MstEmployee" @bind-Value="oModelEmployee" SearchFunc="@SearchEmployee" Clearable="true" Label="Select Employee*" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
-                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.EmpId}")" />
-                </MudItem> 
-                 <MudItem xs="2" sm="2" md="2" lg="2">
+            <MudGrid class="search-action-block align-items-center block-design dn-num">
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudAutocomplete T="MstEmployee" @bind-Value="oModelEmployee" SearchFunc="@SearchEmployee" Clearable="true" HelperText="Select Employee" Label="Select Employee*" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.EmpId}")" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
                     <MudSelect @bind-Value="oModel.InOut" Label="Attendance Type*" HelperText="Select Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                         <MudSelectItem Value="@("In")">In</MudSelectItem>
                         <MudSelectItem Value="@("Out")">Out</MudSelectItem>
                     </MudSelect>
-                </MudItem> 
-                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
-                    <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.PunchedDate" Label="Punch Date*" HelperText="Enter Punch Date" DateFormat="MM/dd/yyyy"  Variant="Variant.Text" 
-                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
                 </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                <MudItem xs="3" sm="3" md="3" lg="3" class="text-right">
+                    <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.PunchedDate" Label="Punch Date*" HelperText="Enter Punch Date" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
+                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3" class="text-right">
                     <MudTimePicker PickerVariant="PickerVariant.Dialog" Label="24 hours*" @bind-Time="@TSPunchTime" HelperText="Punch Time" Variant="Variant.Text"
-                            Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Timer"/>
+                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Timer" />
                 </MudItem>
-                @if (Loading)
-                {
-                            <MudItem xs="2" sm="2" md="2" lg="2">
-                                <MudText>Loading...</MudText>
-                                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
-                            </MudItem>
-                }
-                else
-                {
-                            <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
-                                <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
-                                <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
-                            </MudItem>
-                }
+                <MudItem xs="12" sm="12" md="12" lg="12">
+
+
+                    @if (Loading)
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudText>Loading...</MudText>
+                            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudItem xs="12" sm="12" md="12" lg="12" class="text-right custom-btn-design">
+                            <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small">Save</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
+
+                            @*<MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                        <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />*@
+                        </MudItem>
+                    }
+                </MudItem>
             </MudGrid>
         </div>
     </div>
@@ -57,7 +64,7 @@
                         <ToolBarContent>
                             <MudText Typo="Typo.h6">Attendance</MudText>
                             <MudSpacer />
-                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
                         </ToolBarContent>
                         <HeaderContent>
                             <MudTh>Employee Code</MudTh>
@@ -80,5 +87,5 @@
                 </MudCardContent>
             </MudCard>
         </div>
-    </div>    
+    </div>
 </div>

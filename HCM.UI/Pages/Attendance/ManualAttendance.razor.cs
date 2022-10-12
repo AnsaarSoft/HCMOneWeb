@@ -60,16 +60,17 @@ namespace HCM.UI.Pages.Attendance
                 await Task.Delay(3);
                 if (!string.IsNullOrWhiteSpace(oModelEmployee.EmpId) && !string.IsNullOrWhiteSpace(oModel.InOut))
                 {
+                    oModel.FkempId = oModelEmployee.Id;
                     oModel.EmpId = oModelEmployee.EmpId;
                     oModel.PunchedTime = TSPunchTime.ToString();
                     if (oModel.Id == 0)
                     {
-                        oModel.CreatedBy = LoginUser;
+                        oModel.UserId = LoginUser;
                         res = await _trnsTempAttendance.Insert(oModel);
                     }
                     else
                     {
-                        oModel.UpdatedBy = LoginUser;
+                        oModel.UserId = LoginUser;
                         res = await _trnsTempAttendance.Update(oModel);
                     }
                     if (res != null && res.Id == 1)
@@ -142,7 +143,7 @@ namespace HCM.UI.Pages.Attendance
         {
             if (string.IsNullOrWhiteSpace(searchString1))
                 return true;
-            if (element.EmpId.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            if (element.FkempId.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
             if (element.InOut.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
@@ -205,7 +206,9 @@ namespace HCM.UI.Pages.Attendance
                 {
                     oModel = res;
                     TSPunchTime = TimeSpan.Parse(oModel.PunchedTime);
-                    oModelEmployee.EmpId = oModel.EmpId;
+                    oModelEmployee.Id = oModel.FkempId;
+                    var GetEmpID = oListEmployee.Where(x => x.Id == oModelEmployee.Id).FirstOrDefault();
+                    oModelEmployee.EmpId = GetEmpID.EmpId;
                     oList = oList.Where(x => x.Id != LineNum);
                 }
             }

@@ -5,78 +5,81 @@
     <div class="row">
         <div class="col-sm-12">
             <h3>Payroll Initialization</h3>
-            <MudDivider/>
+            <MudDivider />
         </div>
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
-            <MudGrid class="search-action-block align-items-center">
+            <MudGrid class="search-action-block align-items-center block-design">
                 <MudItem xs="4" sm="4" md="4" lg="4">
                     <MudSwitch @bind-Checked="@oModel.FlgEmployeeCodeSeries" ThumbIcon="@(oModel.FlgEmployeeCodeSeries==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgEmployeeCodeSeries==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgEmployeeCodeSeries==true ? Color.Info : Color.Error)">
-                    <span>@(oModel.FlgEmployeeCodeSeries==true ? "Enabled Customized Employee Code Series" : "Disabled Customized Employee Code Series")</span>
-                    </MudSwitch>
-                </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4">                   
-                    <MudSwitch @bind-Checked="@oModel.FlgMultipleDimension" ThumbIcon="@(oModel.FlgMultipleDimension==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgMultipleDimension==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgMultipleDimension==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgMultipleDimension==true ? "Enable Multiple Dimension" : "Disabled Multiple Dimension")</span>
-                    </MudSwitch>
-                </MudItem>
-                  <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudSwitch @bind-Checked="@oModel.FlgLateInEarlyOutLeaveRules" ThumbIcon="@(oModel.FlgLateInEarlyOutLeaveRules==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgLateInEarlyOutLeaveRules==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgLateInEarlyOutLeaveRules==true ? Color.Info : Color.Error)">
-                     <span>@(oModel.FlgLateInEarlyOutLeaveRules==true ? "Enabled LateIn / EarlyOut Leave Rules" : "Disabled LateIn / EarlyOut Leave Rules")</span>   
-                    </MudSwitch>
-                </MudItem>
-                 <MudItem xs="4" sm="4" md="4" lg="4">
-                     <MudSwitch @bind-Checked="@oModel.FlgLeaveCalendar" ThumbIcon="@(oModel.FlgLeaveCalendar==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgLeaveCalendar==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgLeaveCalendar==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgLeaveCalendar==true ? "Enabled Leave Calender" : "Disabled Leave Calender")</span>
-                    </MudSwitch>
-                </MudItem>
-                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudSwitch @bind-Checked="@oModel.FlgTaxSetup" ThumbIcon="@(oModel.FlgTaxSetup==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgTaxSetup==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgTaxSetup==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgTaxSetup==true ? "Enabled Tax Setup" : "Disabled Tax Setup")</span>
-                    </MudSwitch>
-                </MudItem>
-                      <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudSwitch @bind-Checked="@oModel.FlgAbsent"ThumbIcon="@(oModel.FlgAbsent==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgAbsent==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgAbsent==true ? Color.Info : Color.Error)">
-                         <span>@(oModel.FlgAbsent==true ? "Mark Absent If In/Out Missing" : "Don't Mark Absent If In/Out Missing")</span>
-                    </MudSwitch>
-                </MudItem>
-                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudSwitch @bind-Checked="@oModel.FlgProcessingOnAttendance" ThumbIcon="@(oModel.FlgProcessingOnAttendance==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgProcessingOnAttendance==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgProcessingOnAttendance==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgProcessingOnAttendance==true ? "Enable Attendance Based Payroll" : "Disabled Attendance Based Payroll")</span>
-                    </MudSwitch>
-                </MudItem>
-                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudSwitch @bind-Checked="@oModel.FlgAttendanceSystem"  ThumbIcon="@(oModel.FlgAttendanceSystem==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgAttendanceSystem==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgAttendanceSystem==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgAttendanceSystem==true ? "Enable Branch Integration of SAP B1" : "Disabled Branch Integration of SAP B1")</span> 
+                        <span>@(oModel.FlgEmployeeCodeSeries == true ? "Enabled Customized Employee Code Series" : "Disabled Customized Employee Code Series")</span>
                     </MudSwitch>
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudSwitch @bind-Checked="@oModel.FlgPayrollWithSap"  ThumbIcon="@(oModel.FlgPayrollWithSap==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgPayrollWithSap==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgPayrollWithSap==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgPayrollWithSap==true ? "Enabled Payroll with SAP" : "Disabled Payroll with SAP")</span>
+                    <MudSwitch @bind-Checked="@oModel.FlgMultipleDimension" ThumbIcon="@(oModel.FlgMultipleDimension==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgMultipleDimension==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgMultipleDimension==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgMultipleDimension == true ? "Enable Multiple Dimension" : "Disabled Multiple Dimension")</span>
+                    </MudSwitch>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudSwitch @bind-Checked="@oModel.FlgLateInEarlyOutLeaveRules" ThumbIcon="@(oModel.FlgLateInEarlyOutLeaveRules==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgLateInEarlyOutLeaveRules==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgLateInEarlyOutLeaveRules==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgLateInEarlyOutLeaveRules == true ? "Enabled LateIn / EarlyOut Leave Rules" : "Disabled LateIn / EarlyOut Leave Rules")</span>
+                    </MudSwitch>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudSwitch @bind-Checked="@oModel.FlgLeaveCalendar" ThumbIcon="@(oModel.FlgLeaveCalendar==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgLeaveCalendar==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgLeaveCalendar==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgLeaveCalendar == true ? "Enabled Leave Calender" : "Disabled Leave Calender")</span>
+                    </MudSwitch>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudSwitch @bind-Checked="@oModel.FlgTaxSetup" ThumbIcon="@(oModel.FlgTaxSetup==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgTaxSetup==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgTaxSetup==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgTaxSetup == true ? "Enabled Tax Setup" : "Disabled Tax Setup")</span>
+                    </MudSwitch>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudSwitch @bind-Checked="@oModel.FlgAbsent" ThumbIcon="@(oModel.FlgAbsent==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgAbsent==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgAbsent==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgAbsent == true ? "Mark Absent If In/Out Missing" : "Don't Mark Absent If In/Out Missing")</span>
+                    </MudSwitch>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudSwitch @bind-Checked="@oModel.FlgProcessingOnAttendance" ThumbIcon="@(oModel.FlgProcessingOnAttendance==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgProcessingOnAttendance==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgProcessingOnAttendance==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgProcessingOnAttendance == true ? "Enable Attendance Based Payroll" : "Disabled Attendance Based Payroll")</span>
+                    </MudSwitch>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudSwitch @bind-Checked="@oModel.FlgAttendanceSystem" ThumbIcon="@(oModel.FlgAttendanceSystem==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgAttendanceSystem==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgAttendanceSystem==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgAttendanceSystem == true ? "Enable Branch Integration of SAP B1" : "Disabled Branch Integration of SAP B1")</span>
+                    </MudSwitch>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudSwitch @bind-Checked="@oModel.FlgPayrollWithSap" ThumbIcon="@(oModel.FlgPayrollWithSap==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgPayrollWithSap==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgPayrollWithSap==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgPayrollWithSap == true ? "Enabled Payroll with SAP" : "Disabled Payroll with SAP")</span>
                     </MudSwitch>
                 </MudItem>
 
-                  @if (Loading)
-                {
-                            <MudItem xs="2" sm="2" md="2" lg="2">
-                                <MudText>Loading...</MudText>
-                                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
-                            </MudItem>
-                }
-                else
-                {
-                            <MudItem xs="2" sm="2" md="2" lg="2">
-                                <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
-                                <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
-                            </MudItem>
-                }
-            
-                
-                
+                <MudItem xs="12" sm="12" md="12" lg="12">
+                    @if (Loading)
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudText>Loading...</MudText>
+                            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2" class="text-right custom-btn-design">
+                            <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small">Save</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
+
+                            @*<MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                        <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />*@
+                        </MudItem>
+                    }
+
+                </MudItem>
+
             </MudGrid>
         </div>
     </div>
 </div>
 
- 

@@ -106,7 +106,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                             //}
                         }
                         else
-                        {                            
+                        {
                             res = await _mstDeductionRule.Update(oModel);
                         }
                     }
@@ -120,7 +120,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     {
                         Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
-                    
+
                 }
                 else
                 {
@@ -212,7 +212,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Logs.GenerateLogs(ex);
             }
         }
-        
+
         public void EditRecord(int LineNum)
         {
             try
@@ -259,6 +259,8 @@ namespace HCM.UI.Pages.MasterDataSetup
                     await GetAllLove();
                     await GetAllDeductionRule();
                     await GetAllLeaveType();
+                    oModel.GracePeriod = 0;
+                    oModel.LeaveCount = 0;
                     oModel.Deduction = true;
                 }
                 else

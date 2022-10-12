@@ -38,7 +38,7 @@ namespace HCM.UI.Pages.MasterElement
         bool Loading = false;
         bool DisabledCode = false;
         public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
-        
+
         private string searchString1 = "";
         private bool FilterFunc(MstOverTime element) => FilterFunc(element, searchString1);
 
@@ -78,7 +78,7 @@ namespace HCM.UI.Pages.MasterElement
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
-                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description) && !string.IsNullOrWhiteSpace(oModel.Expression) && !string.IsNullOrWhiteSpace(oModel.ValueType))
+                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description) && !string.IsNullOrWhiteSpace(oModel.ValueType)) //&& !string.IsNullOrWhiteSpace(oModel.Expression)
                 {
                     if (oModel.Code.Length > 20)
                     {
@@ -88,13 +88,13 @@ namespace HCM.UI.Pages.MasterElement
                     {
                         if (oModel.Id == 0)
                         {
-                            if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
+                            if (oList.Where(x => x.Code.Trim().ToLowerInvariant() == oModel.Code.Trim().ToLowerInvariant()).Count() > 0)
                             {
                                 Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                             }
                             else
                             {
-                                oModel.CreatedBy = LoginUser;
+                                oModel.UserId = LoginUser;
                                 res = await _mstOverTime.Insert(oModel);
                             }
                         }
@@ -157,7 +157,7 @@ namespace HCM.UI.Pages.MasterElement
                 return true;
             if (element.Hours.Equals(searchString1))
                 return true;
-            if (element.MonthDays.Equals(searchString1))
+            if (element.Days.Equals(searchString1))
                 return true;
             if (element.PerDayCap.Equals(searchString1))
                 return true;
@@ -205,7 +205,7 @@ namespace HCM.UI.Pages.MasterElement
                 if (res != null)
                 {
                     AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
-                    
+
                     oModel.Id = res.Id;
                     oModel.Code = res.Code;
                     DisabledCode = true;
@@ -214,9 +214,11 @@ namespace HCM.UI.Pages.MasterElement
                     oModel.PerDayCap = res.PerDayCap;
                     oModel.PerMonthCap = res.PerMonthCap;
                     oModel.Value = res.Value;
-                    
-                    oModel.Hours = res.Hours;
-                    oModel.MonthDays = res.MonthDays;   
+
+                    oModel.ValueType = res.ValueType;
+
+                    oModel.Hour = res.Hour;
+                    oModel.MonthDays = res.MonthDays;
                     oModel.FlgFormula = res.FlgFormula;
                     oModel.FlgDefault = res.FlgDefault;
                     oModel.FlgActive = res.FlgActive;
@@ -250,7 +252,7 @@ namespace HCM.UI.Pages.MasterElement
                     oModel.FlgActive = true;
                     oModel.FlgDefault = true;
                     oModel.FlgFormula = true;
-                    oModel.Hours = 0;
+                    oModel.Hour = 0;
                     oModel.MonthDays = 0;
                     await GetAllLove();
                     await GetAllOverTime();

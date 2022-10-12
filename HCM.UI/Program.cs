@@ -1,3 +1,4 @@
+global using HCM.API.HCMModels;
 using Blazored.LocalStorage;
 using CA.UI.Authentication;
 using HCM.UI;
@@ -38,7 +39,10 @@ builder.Services.AddMudServices(config =>
     config.SnackbarConfiguration.ShowTransitionDuration = 500;
     config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
 });
+builder.Services.AddScoped<IMstForm, MstFormService>();
+builder.Services.AddScoped<IMstDocumentNumberSeries, MstDocumentNumberSeriesService>();
 builder.Services.AddScoped<IMstCountryStateCity, MstCountryStateCityService>();
+builder.Services.AddScoped<IMstDimension, MstDimensionService>();
 builder.Services.AddScoped<IMstDepartment, MstDepartmentService>();
 builder.Services.AddScoped<IMstContractor, MstContractorService>();
 builder.Services.AddScoped<IMstStation, MstStationService>();
@@ -50,7 +54,7 @@ builder.Services.AddScoped<IMstBranch, MstBranchService>();
 builder.Services.AddScoped<IMstCalendar, MstCalendarService>();
 builder.Services.AddScoped<IMstLeaveCalendar, MstLeaveCalendarService>();
 builder.Services.AddScoped<IMstEmailConfig, MstEmailConfigService>();
-builder.Services.AddScoped<IMstPayrollinit, MstPayrollinitService>();
+builder.Services.AddScoped<ICfgPayrollDefinationinit, CfgPayrollDefinationinitService>();
 builder.Services.AddScoped<IMstLoans, MstLoansService>();
 builder.Services.AddScoped<IMstElement, MstElementService>();
 builder.Services.AddScoped<IMstLove, MstLoveService>();
@@ -60,15 +64,19 @@ builder.Services.AddScoped<IMstAdvance, MstAdvanceService>();
 builder.Services.AddScoped<IMstLeaveType, MstLeaveTypeService>();
 builder.Services.AddScoped<IMstLeaveDeduction, MstLeaveDeductionService>();
 builder.Services.AddScoped<IMstDeductionRule, MstDeductionRuleService>();
-builder.Services.AddScoped<IMstTaxSetup, MstTaxSetupService>();
+builder.Services.AddScoped<ICfgTaxSetup, CfgTaxSetupService>();
 builder.Services.AddScoped<IMstAttendanceRules, MstAttendanceRulesService>();
 builder.Services.AddScoped<IMstBonus, MstBonusService>();
-builder.Services.AddScoped<IMstPayroll, MstPayrollService>();
+builder.Services.AddScoped<ICfgPayrollDefination, CfgPayrollDefinationService>();
 builder.Services.AddScoped<IMstGratuity, MstGratuityService>();
 builder.Services.AddScoped<IMstUser, MstUserService>();
 builder.Services.AddScoped<IMstEmployeeMasterData, MstEmployeeMasterDataService>();
+builder.Services.AddScoped<ITrnsEmployeeTransfer, TrnsEmployeeTransferService>();
 builder.Services.AddScoped<ITrnsAttendanceRegister, TrnsAttendanceRegisterService>();
 builder.Services.AddScoped<ITrnsTempAttendance, TrnsTempAttendanceService>();
+builder.Services.AddScoped<IMstEmployeeLeaves, MstEmployeeLeavesService>();
+builder.Services.AddScoped<ITrnsLeaveRequest, TrnsLeaveRequestService>();
+builder.Services.AddScoped<ITrnsElementTransaction, TrnsElementTransactionService>();
 
 //Configuration Start
 

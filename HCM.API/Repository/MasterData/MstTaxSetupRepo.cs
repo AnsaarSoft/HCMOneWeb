@@ -5,22 +5,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HCM.API.Repository.MasterData
 {
-    public class MstTaxSetupRepo : IMstTaxSetup
+    public class CfgTaxSetupRepo : ICfgTaxSetup
     {
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public MstTaxSetupRepo(WebHCMOneContext DBContext)
+        public CfgTaxSetupRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
-        public async Task<List<MstTaxSetup>> GetAllData()
+        public async Task<List<CfgTaxSetup>> GetAllData()
         {
-            List<MstTaxSetup> oList = new List<MstTaxSetup>();
+            List<CfgTaxSetup> oList = new List<CfgTaxSetup>();
             try
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.MstTaxSetups.Include(c => c.MstTaxSetupDetails).ToList();
+                    oList = _DBContext.CfgTaxSetups.Include(c => c.CfgTaxDetails).ToList();
                 });
             }
             catch (Exception ex)
@@ -29,15 +29,15 @@ namespace HCM.API.Repository.MasterData
             }
             return oList;
         }
-        public async Task<ApiResponseModel> Insert(MstTaxSetup oMstTaxSetup)
+        public async Task<ApiResponseModel> Insert(CfgTaxSetup oCfgTaxSetup)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    oMstTaxSetup.CreatedDate = DateTime.Now;
-                    _DBContext.MstTaxSetups.Add(oMstTaxSetup);
+                    oCfgTaxSetup.CreateDate = DateTime.Now;
+                    _DBContext.CfgTaxSetups.Add(oCfgTaxSetup);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";
@@ -51,27 +51,27 @@ namespace HCM.API.Repository.MasterData
             }
             return response;
         }
-        public async Task<ApiResponseModel> Update(MstTaxSetup oMstTaxSetup)
+        public async Task<ApiResponseModel> Update(CfgTaxSetup oCfgTaxSetup)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    oMstTaxSetup.UpdatedDate = DateTime.Now;
-                    var Detail = _DBContext.MstTaxSetupDetails.Where(x => x.Fkid == oMstTaxSetup.Id).ToList();
-                    _DBContext.MstTaxSetupDetails.RemoveRange(Detail);
-                    _DBContext.MstTaxSetups.Update(oMstTaxSetup);
+                    oCfgTaxSetup.UpdateDate = DateTime.Now;
+                    var Detail = _DBContext.CfgTaxDetails.Where(x => x.Pid == oCfgTaxSetup.Id).ToList();
+                    _DBContext.CfgTaxDetails.RemoveRange(Detail);
+                    _DBContext.CfgTaxSetups.Update(oCfgTaxSetup);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }

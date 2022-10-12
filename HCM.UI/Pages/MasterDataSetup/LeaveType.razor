@@ -5,75 +5,101 @@
     <div class="row">
         <div class="col-sm-12">
             <h3>Leave Type</h3>
-            <MudDivider/>
+            <MudDivider />
         </div>
         @*<div class="col-sm-1">
-            <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.List" Title="View All" />
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.List" Title="View All" />
         </div>*@
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
-            <MudGrid class="search-action-block align-items-center">
+            <MudGrid class="search-action-block align-items-center block-design">
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisabledCode" Mask="@AlphaNumericMask" MaxLength="20" Counter="20" HelperText="Enter Code" Immediate="true" Clearable="true" Label="Code" Variant="Variant.Text" 
-                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
-                </MudItem> 
+                    <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisabledCode" Mask="@AlphaNumericMask" MaxLength="20" Counter="20" HelperText="Enter Code" Immediate="true" Clearable="true" Label="Code*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="250" Counter="250" HelperText="Enter Description" Immediate="true" Clearable="true" Label="Description" Variant="Variant.Text" 
-                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
-                </MudItem> 
-                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="250" Counter="250" HelperText="Enter Description" Immediate="true" Clearable="true" Label="Description*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4" class="text-left">
                     <MudSwitch @bind-Checked="@oModel.FlgActive" ThumbIcon="@(oModel.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgActive==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgActive==true ? "Active" : "In Active")</span>
+                        <span>@(oModel.FlgActive == true ? "Active" : "In Active")</span>
+                    </MudSwitch>
+                    <MudSwitch @bind-Checked="@oModel.FlgEncash" ThumbIcon="@(oModel.FlgEncash==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgEncash==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgEncash==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgEncash == true ? "Encash Active" : "Encash In Active")</span>
+                    </MudSwitch>
+                    <MudSwitch @bind-Checked="@oModel.FlgPartiallyEncash" ThumbIcon="@(oModel.FlgPartiallyEncash==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgPartiallyEncash==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgPartiallyEncash==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgPartiallyEncash == true ? "Partially Encash Active" : "Partially Encash In Active")</span>
+                    </MudSwitch>
+                    <MudSwitch @bind-Checked="@oModel.FlgCarryForward" ThumbIcon="@(oModel.FlgCarryForward==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgCarryForward==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgCarryForward==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgCarryForward == true ? "CarryForward Active" : "CarryForward In Active")</span>
                     </MudSwitch>
                 </MudItem>
-                @if (Loading)
-                {
-                            <MudItem xs="2" sm="2" md="2" lg="2">
-                                <MudText>Loading...</MudText>
-                                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
-                            </MudItem>
-                }
-                else
-                {
-                            <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
-                                <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
-                                <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
-                            </MudItem>
-                }
+
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudSelect @bind-Value="oModel.DeductionType" Label="Leave Type" HelperText="Select Deduction Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
-                        @foreach (MstLove Love in oLovesList.Where(x => x.Type=="LevTyp_LevType").ToList())
+                    <MudSelect @bind-Value="oModel.DeductionType" Label="Leave Type*" HelperText="Select Deduction Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (MstLove Love in oLovesList.Where(x => x.Type == "LevTyp_LevType").ToList())
                         {
-                                    <MudSelectItem Value="@Love.Code">@Love.Code - @Love.Value</MudSelectItem>
+                            <MudSelectItem Value="@Love.Code">@Love.Code - @Love.Value</MudSelectItem>
                         }
                     </MudSelect>
-                </MudItem> 
+                </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
                     <MudSelect @bind-Value="oModel.DeductionId" Label="Deduction ID" HelperText="Select Deduction ID" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
-                        @foreach (MstLeaveDeduction LeaveDeduction in oListLeaveDeduction.Where(x => x.FlgActive== true).ToList())
+                        @foreach (MstLeaveDeduction LeaveDeduction in oListLeaveDeduction.Where(x => x.FlgActive == true).ToList())
                         {
-                                    <MudSelectItem Value="(int?)LeaveDeduction.Id">@LeaveDeduction.Code - @LeaveDeduction.Description</MudSelectItem>
+                            <MudSelectItem Value="(int?)LeaveDeduction.Id">@LeaveDeduction.Code - @LeaveDeduction.Description</MudSelectItem>
                         }
                     </MudSelect>
-                </MudItem>   
-                <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.MonthDays" HelperText="Enter Month Days" Immediate="true" Clearable="true" Label="Month Days" 
-                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" > </MudNumericField>
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.LeaveCap" HelperText="Enter Leave Cap" Immediate="true" Clearable="true" Label="Leave Cap" 
-                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text" > </MudNumericField>
+                    <MudNumericField @bind-Value="oModel.LeaveCap" Min="0" HelperText="Enter Leave Days" Immediate="true" Clearable="true" Label="Leave Days*"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text"> </MudNumericField>
                 </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
-                    <MudSwitch @bind-Checked="@oModel.FlgEncash" ThumbIcon="@(oModel.FlgEncash==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgEncash==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgEncash==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgEncash==true ? "Encash Active" : "Encash Inactive")</span>
-                    </MudSwitch>
-                </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
-                    <MudSwitch @bind-Checked="@oModel.FlgCarryForward" ThumbIcon="@(oModel.FlgCarryForward==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgCarryForward==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgCarryForward==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgCarryForward==true ? "CarryForward Active" : "CarryForward Inactive")</span>
-                    </MudSwitch>
+                @if (oModel.FlgEncash == true)
+                {
+                    <MudItem xs="4" sm="4" md="4" lg="4">
+                        <MudSelect @bind-Value="oModel.ElementCode" Label="Encash Element*" HelperText="Select Encash Element" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                            @foreach (MstElement Element in oListElement.Where(x => x.ElmtType == "Ded").ToList())
+                            {
+                                <MudSelectItem Value="@Element.Code">@Element.Code - @Element.Description</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                }
+                @if (oModel.FlgEncash == true || oModel.FlgPartiallyEncash == true)
+                {
+                    <MudItem xs="4" sm="4" md="4" lg="4">
+                        <MudNumericField @bind-Value="oModel.EncashmentCap" Min="0" HelperText="Enter Encashment Cap" Immediate="true" Clearable="true" Label="Encashment Cap*"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text"> </MudNumericField>
+                    </MudItem>
+                }
+                @if (oModel.FlgCarryForward  == true)
+                {
+                    <MudItem xs="4" sm="4" md="4" lg="4">
+                        <MudNumericField @bind-Value="oModel.CarryForwardLeaves" Min="0" HelperText="Enter Carry Forward Leaves" Immediate="true" Clearable="true" Label="Carry Forward Leaves*"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text"> </MudNumericField>
+                    </MudItem>
+                }
+                <MudItem xs="12" sm="12" md="12" lg="12">
+                    @if (Loading)
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudText>Loading...</MudText>
+                            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2" class="text-right custom-btn-design">
+                            <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small">Save</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
+
+                            @*<MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                        <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />*@
+                        </MudItem>
+                    }
                 </MudItem>
             </MudGrid>
         </div>
@@ -81,45 +107,49 @@
     <div class="row mt-5">
         <div class="col-sm-12">
             <MudCard Elevation="5">
-                        <MudCardContent>
-                            <MudTable Items="@oList" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstLeaveType ,bool>(FilterFunc)">
-                                <ToolBarContent>
-                                    <MudText Typo="Typo.h6">Leave Type</MudText>
-                                    <MudSpacer />
-                                    <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />        
-                                </ToolBarContent>
-                                <HeaderContent>
-                                    <MudTh>Code</MudTh>
-                                    <MudTh>Description</MudTh>
-                                    <MudTh>Deduction Type</MudTh>
-                                    <MudTh>Deduction ID</MudTh>
-                                    <MudTh>Month Days</MudTh>
-                                    <MudTh>Leave Cap</MudTh>
-                                    <MudTh>Encash</MudTh>
-                                    <MudTh>CarryForward</MudTh>
-                                    <MudTh>Active</MudTh>
-                                    <MudTh>Action</MudTh>
-                                </HeaderContent>
-                                <RowTemplate>
-                                     <MudTd DataLabel="Code">@context.Code</MudTd>                                   
-                                    <MudTd DataLabel="Description">@context.Description</MudTd>
-                                    <MudTd DataLabel="LeaveType">@context.DeductionType</MudTd>
-                                    <MudTd DataLabel="DeductionId">@context.DeductionId</MudTd>
-                                    <MudTd DataLabel="MonthDays">@context.MonthDays</MudTd>
-                                    <MudTd DataLabel="LeaveCap">@context.LeaveCap</MudTd>                                   
-                                    <MudTd DataLabel="FlgEncash">@context.FlgEncash</MudTd>
-                                    <MudTd DataLabel="FlgCarryForward">@context.FlgCarryForward</MudTd>
-                                    <MudTd DataLabel="FlgActive">@context.FlgActive</MudTd>
-                                    <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id))" Title="Edit"></MudIconButton></MudTd>
-                                </RowTemplate>
-                                <PagerContent>
-                                    <MudTablePager />
-                                </PagerContent>
-                            </MudTable>
-                        </MudCardContent>
+                <MudCardContent>
+                    <MudTable Items="@oList" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstLeaveType ,bool>(FilterFunc)">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Leave Type</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Code</MudTh>
+                            <MudTh>Description</MudTh>
+                            <MudTh>Deduction Type</MudTh>
+                            <MudTh>Deduction ID</MudTh>
+                            <MudTh>Leave Days</MudTh>
+                            <MudTh>Encash</MudTh>
+                            <MudTh>Partially Encash</MudTh>
+                            <MudTh>Encash ELement</MudTh>
+                            <MudTh>Encash Cap</MudTh>
+                            <MudTh>Carry Forward</MudTh>
+                            <MudTh>Carry Forward Leaves</MudTh>
+                            <MudTh>Active</MudTh>
+                            <MudTh>Action</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code">@context.Code</MudTd>
+                            <MudTd DataLabel="Description">@context.Description</MudTd>
+                            <MudTd DataLabel="LeaveType">@context.DeductionType</MudTd>
+                            <MudTd DataLabel="DeductionId">@context.DeductionId</MudTd>
+                            <MudTd DataLabel="LeaveCap">@context.LeaveCap</MudTd>
+                            <MudTd DataLabel="FlgEncash">@context.FlgEncash</MudTd>
+                            <MudTd DataLabel="FlgEncash">@context.FlgPartiallyEncash</MudTd>
+                            <MudTd DataLabel="FlgEncash">@context.ElementCode</MudTd>
+                            <MudTd DataLabel="FlgEncash">@context.EncashmentCap</MudTd>
+                            <MudTd DataLabel="FlgCarryForward">@context.FlgCarryForward</MudTd>
+                            <MudTd DataLabel="FlgCarryForward">@context.CarryForwardLeaves</MudTd>
+                            <MudTd DataLabel="FlgActive">@context.FlgActive</MudTd>
+                            <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id))" Title="Edit"></MudIconButton></MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                </MudCardContent>
             </MudCard>
         </div>
-    </div>    
+    </div>
 </div>
-
-

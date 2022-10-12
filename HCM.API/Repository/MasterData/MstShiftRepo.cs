@@ -7,9 +7,9 @@ namespace HCM.API.Repository.MasterData
 {
     public class MstShiftRepo : IMstShifts
     {
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public MstShiftRepo(WebHCMOneContext DBContext)
+        public MstShiftRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
@@ -20,7 +20,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.MstShifts.Include(c => c.MstShiftsDetails).ToList();
+                    oList = _DBContext.MstShifts.Include(c => c.MstShiftDetails).ToList();
                 });
             }
             catch (Exception ex)
@@ -36,7 +36,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstShift.CreatedDate = DateTime.Now;
+                    oMstShift.CreateDate = DateTime.Now;
                     _DBContext.MstShifts.Add(oMstShift);
                     _DBContext.SaveChanges();
                     response.Id = 1;
@@ -58,18 +58,18 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstShift.UpdatedDate = DateTime.Now;
+                    oMstShift.UpdateDate = DateTime.Now;
                     _DBContext.MstShifts.Update(oMstShift);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }

@@ -24,7 +24,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         [Inject]
         public IMstCalendar _mstCalendar { get; set; }
         [Inject]
-        public IMstPayroll _mstPayroll { get; set; }
+        public ICfgPayrollDefination _CfgPayrollDefination { get; set; }
 
         [Inject]
         public ILocalStorageService _localStorage { get; set; }
@@ -43,12 +43,12 @@ namespace HCM.UI.Pages.MasterDataSetup
         private bool FilterFunc(MstCalendar element) => FilterFunc(element, searchString1);
 
         MstCalendar oModel = new MstCalendar();
-        MstPayrollPeriod oModelPeriods = new MstPayrollPeriod();
-        MstPayroll oModelPayroll = new MstPayroll();
+        CfgPeriodDate oModelPeriods = new CfgPeriodDate();
+        CfgPayrollDefination oModelPayroll = new CfgPayrollDefination();
         private IEnumerable<MstCalendar> oList = new List<MstCalendar>();
-        private IEnumerable<MstPayroll> oListPayroll = new List<MstPayroll>();
-        private IEnumerable<MstPayrollPeriod> oListPeriods = new List<MstPayrollPeriod>();
-        List<MstPayrollPeriod> oListPeriodsDB = new List<MstPayrollPeriod>();
+        private IEnumerable<CfgPayrollDefination> oListPayroll = new List<CfgPayrollDefination>();
+        private IEnumerable<CfgPeriodDate> oListPeriods = new List<CfgPeriodDate>();
+        List<CfgPeriodDate> oListPeriodsDB = new List<CfgPeriodDate>();
 
         MudDateRangePicker _picker;
         DateRange _dateRange;
@@ -67,7 +67,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 await Task.Delay(3);
                 if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description))
                 {
-                    if (oList.Where(x => x.Code == oModel.Code).Count() > 0)
+                    if (oList.Where(x => x.Code.Trim().ToLowerInvariant() == oModel.Code.Trim().ToLowerInvariant()).Count() > 0)
                     {
                         Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
@@ -95,7 +95,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                                     {
                                         oModel.FlgActive = false;
                                     }
-                                    oModel.CreatedBy = LoginUser;
+                                    oModel.UserId = LoginUser;
                                     res = await _mstCalendar.Insert(oModel);
                                 }
                                 else
@@ -164,7 +164,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         {
             try
             {
-                oListPayroll = await _mstPayroll.GetAllData();
+                oListPayroll = await _CfgPayrollDefination.GetAllData();
             }
             catch (Exception ex)
             {
@@ -175,7 +175,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         {
             try
             {
-                //oListPeriods = await _mstPayroll.GetAllData();
+                //oListPeriods = await _CfgPayrollDefination.GetAllData();
             }
             catch (Exception ex)
             {
@@ -323,14 +323,16 @@ namespace HCM.UI.Pages.MasterDataSetup
                 return null;
             }
         }
-        public void AddPeriodDates(DateTime pFromDate, DateTime pToDate, string pCalendarCode,Int32 pCalendarID)
+        public async void AddPeriodDates(DateTime pFromDate, DateTime pToDate, string pCalendarCode, Int32 pCalendarID)
         {
             try
             {
+                Loading = true;
+                var res = new ApiResponseModel();
                 var oPayrollCollection = oListPayroll.Where(a => a.FlgActive.GetValueOrDefault() == true).ToList();
                 foreach (var oPayroll in oPayrollCollection)
                 {
-                    var CheckPeriods = oListPeriods.Where(a => a.Fkid == oPayroll.Id
+                    var CheckPeriods = oListPeriods.Where(a => a.PayrollId == oPayroll.Id
                                         && a.CalCode == pCalendarCode).Count();
                     if (CheckPeriods == 0)
                     {
@@ -365,14 +367,14 @@ namespace HCM.UI.Pages.MasterDataSetup
                                 while (LocalEnd <= pToDate && flgHalfMonthlyTrigger)
                                 {
                                     i++;
-                                    MstPayrollPeriod oPeriod = new MstPayrollPeriod();
+                                    CfgPeriodDate oPeriod = new CfgPeriodDate();
                                     oPeriod.EndDate = PeriodEndDate;
-                                    oPeriod.Fkid = oPayroll.Id;
+                                    oPeriod.PayrollId = oPayroll.Id;
                                     oPeriod.FlgLocked = false;
                                     oPeriod.FlgPosted = false;
                                     oPeriod.FlgVisible = true;
                                     oPeriod.CalCode = pCalendarCode;
-                                    oPeriod.FkcalId = pCalendarID;
+                                    //oPeriod.FkcalId = pCalendarID;
                                     if (i == 1)
                                     {
                                         LocalStart = PeriodStartDate;
@@ -385,26 +387,26 @@ namespace HCM.UI.Pages.MasterDataSetup
                                     LocalStart = PeriodStartDate.AddMonths(i);
                                     LocalEnd = PeriodEndDate.AddMonths(i);
 
-                                    int cnt = oListPeriods.Where(p => p.Fkid == oPayroll.Id
+                                    int cnt = oListPeriods.Where(p => p.PayrollId == oPayroll.Id
                                     && p.StartDate == oPeriod.StartDate
                                     && p.EndDate == oPeriod.EndDate).Count();
                                     if (cnt == 0)
                                     {
                                         oListPeriodsDB.Add(oPeriod);
                                     }
-                                }                                
+                                }
                                 break;
                             case "HMNT":
                                 while (PeriodEndDate <= pToDate && flgHalfMonthlyTrigger)
                                 {
-                                    MstPayrollPeriod oPeriodHalfMonth = new MstPayrollPeriod();
+                                    CfgPeriodDate oPeriodHalfMonth = new CfgPeriodDate();
                                     oPeriodHalfMonth.EndDate = PeriodEndDate;
-                                    oPeriodHalfMonth.Fkid = oPayroll.Id;                                   
+                                    oPeriodHalfMonth.PayrollId = oPayroll.Id;
                                     oPeriodHalfMonth.FlgLocked = false;
                                     oPeriodHalfMonth.FlgPosted = false;
                                     oPeriodHalfMonth.FlgVisible = true;
                                     oPeriodHalfMonth.CalCode = pCalendarCode;
-                                    oPeriodHalfMonth.FkcalId = pCalendarID;
+                                    //oPeriodHalfMonth.FkcalId = pCalendarID;
 
                                     int thatMonthDays = DateTime.DaysInMonth(PeriodEndDate.Year, PeriodEndDate.Month);
                                     int monthHalf = thatMonthDays / 2;
@@ -419,7 +421,7 @@ namespace HCM.UI.Pages.MasterDataSetup
 
                                             oPeriodHalfMonth.StartDate = Convert.ToDateTime(startDate.AddDays(mFirstStart));
                                             oPeriodHalfMonth.EndDate = Convert.ToDateTime(startDate.AddDays(mFirstEnd));
-                                            oPeriodHalfMonth.PeriodName += pCalendarCode + "-"+CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(startDate.Month) + "-" + count;
+                                            oPeriodHalfMonth.PeriodName += pCalendarCode + "-" + CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(startDate.Month) + "-" + count;
                                         }
                                         else
                                         {
@@ -435,21 +437,24 @@ namespace HCM.UI.Pages.MasterDataSetup
                                             count = 0;
                                         }
                                     }
-                                    int cnt = oListPeriods.Where(p => p.Fkid == oPayroll.Id
+                                    int cnt = oListPeriods.Where(p => p.PayrollId == oPayroll.Id
                                     && p.StartDate == oPeriodHalfMonth.StartDate
                                     && p.EndDate == oPeriodHalfMonth.EndDate).Count();
                                     if (cnt == 0)
                                     {
                                         oListPeriodsDB.Add(oPeriodHalfMonth);
                                     }
-                                }
-                                if (oListPeriodsDB.Count > 0)
-                                {
-                                    _mstCalendar.Insert(oListPeriodsDB);
-                                    oListPeriodsDB.Clear();
-                                }
-                                
+                                }                                
                                 break;
+                        }
+                        if (oListPeriodsDB.Count > 0)
+                        {
+                            res = await _mstCalendar.Insert(oListPeriodsDB);
+                            oListPeriodsDB.Clear();
+                        }
+                        if (res != null && res.Id == 1)
+                        {
+                            Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
                         }
                     }
                     else
@@ -459,8 +464,13 @@ namespace HCM.UI.Pages.MasterDataSetup
                 }
             }
             catch (Exception ex)
-            { }
+            {
+                Loading = false;
+                Logs.GenerateLogs(ex.Message);
+            }
+            Loading = false;
         }
+
         #endregion
 
         #region Events

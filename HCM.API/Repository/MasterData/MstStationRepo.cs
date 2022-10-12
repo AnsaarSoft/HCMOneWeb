@@ -6,9 +6,9 @@ namespace HCM.API.Repository.MasterData
 {
     public class MstStationRepo : IMstStation
     {
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public MstStationRepo(WebHCMOneContext DBContext)
+        public MstStationRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
@@ -19,7 +19,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.MstStations.ToList();                    
+                    oList = _DBContext.MstStations.ToList();
                 });
             }
             catch (Exception ex)
@@ -61,14 +61,14 @@ namespace HCM.API.Repository.MasterData
                     _DBContext.MstStations.Update(oMstStation);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }
@@ -103,14 +103,14 @@ namespace HCM.API.Repository.MasterData
                     _DBContext.MstStations.UpdateRange(oMstStation);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }

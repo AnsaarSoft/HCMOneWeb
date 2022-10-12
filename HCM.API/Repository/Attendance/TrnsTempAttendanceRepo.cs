@@ -6,9 +6,9 @@ namespace HCM.API.Repository.Attendance
 {
     public class TrnsTempAttendanceRepo : ITrnsTempAttendance
     {
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public TrnsTempAttendanceRepo(WebHCMOneContext DBContext)
+        public TrnsTempAttendanceRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
@@ -57,18 +57,18 @@ namespace HCM.API.Repository.Attendance
             {
                 await Task.Run(() =>
                 {
-                    oTrnsTempAttendance.UpdatedDate = DateTime.Now;
+                    oTrnsTempAttendance.UpdateDate = DateTime.Now;
                     _DBContext.TrnsTempAttendances.Update(oTrnsTempAttendance);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }
@@ -103,14 +103,14 @@ namespace HCM.API.Repository.Attendance
                     _DBContext.TrnsTempAttendances.UpdateRange(oTrnsTempAttendance);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }    

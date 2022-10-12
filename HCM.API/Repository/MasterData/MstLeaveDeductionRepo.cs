@@ -6,9 +6,9 @@ namespace HCM.API.Repository.MasterData
 {
     public class MstLeaveDeductionRepo : IMstLeaveDeduction
     {
-        private WebHCMOneContext _DBContext;
+        private HCMOneContext _DBContext;
 
-        public MstLeaveDeductionRepo(WebHCMOneContext DBContext)
+        public MstLeaveDeductionRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
@@ -35,7 +35,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstLeaveDeduction.CreatedDate = DateTime.Now;
+                    oMstLeaveDeduction.CreateDate = DateTime.Now;
                     _DBContext.MstLeaveDeductions.Add(oMstLeaveDeduction);
                     _DBContext.SaveChanges();
                     response.Id = 1;
@@ -57,18 +57,18 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oMstLeaveDeduction.UpdatedDate = DateTime.Now;
+                    oMstLeaveDeduction.UpdateDate = DateTime.Now;
                     _DBContext.MstLeaveDeductions.Update(oMstLeaveDeduction);
                     _DBContext.SaveChanges();
                     response.Id = 1;
-                    response.Message = "Saved successfully";
+                    response.Message = "Update successfully";
                 });
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 response.Id = 0;
-                response.Message = "Failed to save successfully";
+                response.Message = "Failed to Update successfully";
             }
             return response;
         }

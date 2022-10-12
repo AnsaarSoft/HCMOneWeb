@@ -1,0 +1,31 @@
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'EmpID'.
+Invalid column name 'EmpID'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at Microsoft.Data.SqlClient.SqlDataReader.get_MetaData()
+   at Microsoft.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean isAsync, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at Microsoft.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry, String method)
+   at Microsoft.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at HCM.API.Repository.EmployeeMasterSetup.MstEmployeeMasterDataRepo.<>c__DisplayClass2_0.<GetAllData>b__0() in D:\Projects\Web\04. MEPL Web Payroll\04. MEPL Web Payroll\HCMOneWeb\HCM.API\Repository\EmployeeMasterSetup\MstEmployeeMasterDataRepo.cs:line 23
+   at System.Threading.Tasks.Task.InnerInvoke()
+   at System.Threading.Tasks.Task.<>c.<.cctor>b__272_0(Object obj)
+   at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at HCM.API.Repository.EmployeeMasterSetup.MstEmployeeMasterDataRepo.GetAllData() in D:\Projects\Web\04. MEPL Web Payroll\04. MEPL Web Payroll\HCMOneWeb\HCM.API\Repository\EmployeeMasterSetup\MstEmployeeMasterDataRepo.cs:line 21
+ClientConnectionId:bc720428-d9ee-4e26-8cca-9843867b9498
+Error Number:207,State:1,Class:16: 23/09/2022 1:09:05 pm
+System.ArgumentNullException: Value cannot be null. (Parameter 'addresses')
+   at System.Net.Mail.MailAddressCollection.Add(String addresses)
+   at HCM.API.General.Email.SentEmail(String Subject, String Body, String SenderName, String ReceiverEmail) in D:\04. MEPL Web Payroll\04. MEPL Web Payroll\04. MEPL Web Payroll\HCMOneWeb\HCM.API\General\Email.cs:line 57: 06/10/2022 3:57:10 pm

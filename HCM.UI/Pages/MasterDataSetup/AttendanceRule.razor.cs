@@ -67,7 +67,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 oModel.GpBeforeTimeEnd = GPBeforeTimeEnd.ToString();
                 if (oModel.Id >= 0)
                 {
-                    oModel.UpdatedBy = LoginUser;
+                    //oModel.UpdateBy = LoginUser;
                     res = await _mstAttendanceRule.Update(oModel);
                 }
 

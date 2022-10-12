@@ -6,14 +6,19 @@
 
 html, body {
     /*font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
-    font-family: 'Segoe UI', Segoe UI, Segoe UI, Segoe UI;
+    /*  font-family: 'Segoe UI', Segoe UI, Segoe UI, Segoe UI;*/
+    font-family: 'Roboto', Segoe UI, Segoe UI, Segoe UI;
+    font-size: 14px;
+    line-height: 16px;
+    background-color: #f5f8fa;
 }
 
 a, .btn-link {
     color: #0366d6;
 }
+
 .mud-input-control-input-container {
-    margin-top:-5px !important;
+    margin-top: -5px !important;
 }
 
 .btn-primary {
@@ -167,6 +172,9 @@ button.mud-button-root.mud-icon-button.mud-icon-button-color-primary.mud-ripple.
 
 .mud-typography-body1, .mud-fab-label {
     font-size: 12px !important;
+    /*white-space: nowrap;*/
+    /*    font-size: 14px !important;
+    font-weight: 500;*/
 }
 
 a.navbar-brand {
@@ -191,7 +199,8 @@ a.navbar-brand {
 }
 
 div.sidebar {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #1d7597 70%) !important;
+    /*    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #1d7597 70%) !important;
+*/
 }
 
 button.mud-button-root.mud-icon-button.mud-icon-button-color-primary.mud-ripple.mud-ripple-icon {
@@ -203,13 +212,15 @@ button.mud-button-root.mud-icon-button.mud-icon-button-color-primary.mud-ripple.
 }
 
 .mud-layout h3 {
-    background-color: #122f3b;
+    background-color: #1e1e2d;
     display: inline-block;
     color: #fff;
     border-radius: 5px;
     padding: 7px 15px;
-    margin: 0 -15px 10px;
+    margin: 0 0px 10px;
     font-size: 20px;
+    font-size: 16px;
+    line-height: 16px;
 }
 
 .mud-layout .col-md-1 {
@@ -298,118 +309,527 @@ button.mud-button-root.mud-icon-button.mud-icon-button-color-inherit.mud-ripple.
 .page-content-setting .search-action-block.mud-grid {
     align-items: center !important;
 }
+
 .page-content-setting .search-action-block button {
-    width:35px !important;
-    height:35px !important;
+    /*    width:35px !important;
+    height:35px !important;*/
 }
-.page-content-setting .mud-card-content{
-    padding:0;
+
+.page-content-setting .mud-card-content {
+    padding: 0;
 }
+
+.page-content-setting .mud-input-helper-text {
+    font-size: 12px;
+    font-family: 'Roboto';
+    color: #00000094;
+    font-weight: 500;
+}
+
 .mud-drawer.mud-drawer-fixed.main-sidebar-nav {
-    background-color: #122f3b;
+    /*background-color: #122f3b;*/
     color: #fff;
     font-size: 14px;
+    background: linear-gradient(0deg, rgba(97,83,121,1) 0%, rgba(39,29,87,1) 32%);
+    box-shadow: 0px 0px 5px 1px #000;
+    background: #1e1e2d;
+    background-image: url(https://pixinvent.com/demo/apex-react-redux-bootstrap-admin-dashboard-template/demo-1/static/media/01.b4490f4d.jpg);
+    overflow: hidden;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
+
+    .mud-drawer.mud-drawer-fixed.main-sidebar-nav:after {
+        background: #1e1e2d;
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100vh;
+        opacity: 0.8;
+        display: block;
+        overflow: hidden;
+    }
+
+    .mud-drawer.mud-drawer-fixed.main-sidebar-nav .mud-drawer-content {
+        z-index: 121;
+    }
+
+    .mud-drawer.mud-drawer-fixed.main-sidebar-nav .mud-navmenu {
+        overflow-y: scroll;
+    }
+
 .main-sidebar-nav .mud-nav-link .mud-nav-link-expand-icon {
     color: #ffffff !important;
 }
+
 .main-sidebar-nav .mud-navmenu.mud-navmenu-default .mud-nav-link-expand-icon.mud-transform {
-    fill:#fff !important;
+    fill: #fff !important;
 }
+
 .main-sidebar-nav .mud-nav-link:not(.mud-nav-link-disabled) .mud-nav-link-icon.mud-nav-link-icon-default {
     color: #fff;
-    
+    /*    font-size:12px;*/
 }
+
 .main-sidebar-nav .mud-navmenu.mud-navmenu-default .mud-nav-link.active:not(.mud-nav-link-disabled) {
     background-color: rgb(0 0 0 / 32%);
 }
+
 .main-sidebar-nav .mud-nav-link:hover {
     color: #fff;
     background-color: rgb(0 0 0 / 18%);
 }
+
 .main-sidebar-nav .mud-nav-link:focus {
-    outline:none;
-} 
+    outline: none;
+}
+
 .main-sidebar-nav .mud-navmenu.mud-navmenu-default .mud-nav-link.active:not(.mud-nav-link-disabled) {
     color: #fff;
+    /*padding-left:8px;*/
 }
+
 .mud-drawer.mud-drawer-fixed.main-sidebar-nav::-webkit-scrollbar-thumb {
     background: #051820;
 }
+
 .main-sidebar-nav .mud-drawer-content .mud-drawer-header {
     padding: 10px 10px 10px 10px;
     align-items: center;
+    border-bottom: 1px dashed #343440;
 }
-.main-sidebar-nav .mud-drawer-content .mud-drawer-header img {
-    width: 60px;
-    filter: brightness(0) invert(1);
-    box-shadow: none;
-}
-.main-sidebar-nav .mud-drawer-content .mud-drawer-header .mud-typography-h6 {
-    line-height: 20px;
-    padding-left: 10px;
- }
-    .mud-appbar.header-bar {
-        background-color: #122f3b;
-        border-left: 2px solid #ffffff;
+
+    .main-sidebar-nav .mud-drawer-content .mud-drawer-header img {
+        width: 60px;
+        filter: brightness(0) invert(1);
+        box-shadow: none;
+        z-index: 1;
     }
-.mud-appbar.header-bar a:hover{
-    color:#fff;
+
+    .main-sidebar-nav .mud-drawer-content .mud-drawer-header .mud-typography-h6 {
+        line-height: 20px;
+        padding-left: 10px;
+        z-index: 1;
+    }
+
+.main-sidebar-nav .mud-nav-group .mud-nav-link {
+    display: flex;
+    align-items: center;
+    /*    padding-left: 8px;*/
 }
+
+main-sidebar-nav .mud-nav-group .mud-nav-link .mud-svg-icon {
+    background: rgba(0,0,0,0.5);
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    border-radius: 40px;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    color: #fff;
+}
+
+.mud-appbar.header-bar {
+    background-color: #fff;
+    border-left: 2px solid #ffffff;
+    box-shadow: 0px 10px 30px 0px rgba(82, 63, 105, 0.05);
+    /*  background: linear-gradient(270deg, rgba(97,83,121,1) 0%, rgba(39,29,87,1) 32%);*/
+}
+
+    .mud-appbar.header-bar a:hover {
+        color: #fff;
+    }
+
 .header-bar button:focus {
-    outline:none;
+    outline: none;
 }
+
 .header-bar .mud-button-root {
-    background-color: rgb(0 0 0 / 32%);
+    background-color: #F4F6FA;
 }
-.header-bar .mud-button-root:hover {
-    background-color: rgb(0 0 0 / 89%);
-}
+
+    .header-bar .mud-button-root:hover {
+        background-color: #1e1e2d;
+        transition: ease all 0.9s;
+    }
+
+        .header-bar .mud-button-root:hover .mud-svg-icon {
+            fill: #fff;
+        }
+
+    .header-bar .mud-button-root .mud-svg-icon {
+        fill: #1e1e2d;
+    }
+
 .header-bar .mud-icon-root {
     font-size: 20px;
 }
-.header-bar a:nth-of-type(1) {
+
+.header-bar a {
     margin-right: 10px;
 }
+
 .table-setting .mud-table-head {
-    background-color: #122f3b !important;
-    }
+    background-color: #1e1e2d !important;
+}
+
 .table-setting thead tr th {
-    
     color: #fff !important;
 }
+
 .table-setting .mud-table-container .mud-button-root {
     border-color: #122f3b !important;
+    padding: 3px;
 }
-.table-setting .mud-table-container .mud-button-root .mud-icon-root {
-    width: 20px;
-    height: 20px;
-    color: #122f3b !important;
+
+    .table-setting .mud-table-container .mud-button-root:hover {
+        background-color: #1e1e2d;
     }
+
+        .table-setting .mud-table-container .mud-button-root:hover .mud-icon-root {
+            color: #fff !important;
+            transition: 0.9s ease all;
+        }
+
+.mud-main-content .page-content-setting {
+    padding-bottom: 20px;
+}
+
+.table-setting .mud-table-container .mud-button-root .mud-icon-root {
+    width: 15px;
+    height: 15px;
+    color: #1e1e2d !important
+}
+
 .table-setting .mud-table-container thead tr th {
     /*white-space:nowrap;*/
     line-height: 20px !important;
 }
+
 .toggle-btn-setting .mud-switch {
     margin-right: 10px;
 }
+
 .shift-master-page-setting .mud-grid-item .mud-switch {
-    white-space:nowrap;
+    /*white-space:nowrap;*/
+    text-align: left;
 }
-.shift-table-setting thead tr th{
-    white-space:nowrap;
+
+.shift-table-setting thead tr th {
+    white-space: nowrap;
 }
+
 .process-modal-setting .mud-dialog-content {
     overflow-y: scroll;
     height: 520px;
 }
+
     .process-modal-setting .mud-dialog-content .mud-table .mud-table-container thead tr th {
         /*white-space:nowrap;*/
         padding: 6px 10px;
     }
-.process-modal-setting .mud-dialog-content .mud-table .mud-table-container tbody tr td {
+
+    .process-modal-setting .mud-dialog-content .mud-table .mud-table-container tbody tr td {
         padding: 10px;
     }
+
+.sidebar {
+    height: 100%;
+    /*  position: fixed;*/
+}
+
+.mud-drawer.main-sidebar-nav:after {
+    /*    content: "";
+    background-image: url(../img/sidebar-bg.png);
+    position: fixed;
+    background-size: 10%;
+    width: 180px;
+    height: 170px;
+    left: 20px;
+    bottom: 0;
+    background-size: cover;
+    background-position: center center;
+    opacity: 0.*/;
+}
+
+.login-page-deisgn .mud-paper {
+    box-shadow: 0px 0px 3px 2px #bfbfbf;
+    border-radius: 20px;
+    background: linear-gradient(0deg, rgba(97,83,121,1) 0%, rgba(30,30,45,1) 39%);
+    position: relative;
+    position: relative;
+    box-shadow: none;
+    border-radius: 0;
+    height: 100vh;
+}
+
+.login-page-deisgn .mud-input-helper-text {
+    color: #fff;
+}
+
+.login-page-deisgn .mud-input-input-control:nth-of-type(2) {
+    /*margin:20px 0 0;*/
+}
+
+.login-page-deisgn .mud-input-input-control .mud-icon-root.mud-svg-icon {
+    fill: #000;
+    /*   background: rgba(0,0,0,0.5);
+    padding: 6px 0;
+    border-radius: 40px;
+    width: 35px;
+    height: 35px;*/
+}
+
+.login-page-deisgn .mud-icon-root.mud-svg-icon {
+    /*   fill:#fff;*/
+}
+/*   .login-page-deisgn .mud-icon-root.mud-svg-icon:hover{
+        fill:#000;
+    }*/
+.forgot-pass-block {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 10px 0 20px;
+}
+
+    .forgot-pass-block a {
+        font-size: 12px;
+    }
+
+.login-page-deisgn .mud-input.mud-input-underline:before {
+    border-bottom: none;
+}
+
+.login-page-deisgn .mud-input.mud-input-underline:hover::before {
+    border-bottom: none;
+}
+
+.login-page-deisgn .mud-input {
+    background-color: #fff !important;
+    border-radius: 40px;
+    height: 45px;
+    color: #000;
+    padding: 0 18px;
+}
+
+.forgetpass-page .mud-input-control .mud-input {
+    color: #fff;
+}
+
+.login-page-deisgn .mud-icon-root {
+    margin: 0 0 0 0px;
+    padding: 0;
+}
+
+.login-page-deisgn .mud-icon-button {
+    margin: 0;
+    padding: 0;
+}
+
+.login-info-content {
+    text-align: center;
+    padding: 0 100px;
+    color: #fff;
+    font-weight: 500;
+    z-index: 12;
+}
+
+    .login-info-content p {
+        color: #fff;
+        font-family: 'Roboto';
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .login-info-content h2 {
+        font-size: 32px;
+        line-height: 34px;
+        font-family: 'Roboto';
+        margin: 0 0 20px;
+    }
+
+.mud-nav-item.mud-ripple.child-icons .mud-icon-default {
+    font-size: 8px;
+    fill: #31314a;
+}
+
+.mud-nav-item.mud-ripple.child-icons .mud-nav-link:hover .mud-icon-default {
+    fill: #fff;
+}
+
+.mud-nav-item.mud-ripple.child-icons .mud-nav-link.active:hover .mud-icon-default {
+    fill: #fff;
+}
+
+.custom-btn-design.mud-grid-item {
+    margin: 0 0px 0 auto;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.custom-btn-design .mud-button {
+    padding: 0 10px 0 0;
+    min-width: 74px;
+}
+
+    .custom-btn-design .mud-button:nth-of-type(2) {
+        margin-left: 10px;
+    }
+
+    .custom-btn-design .mud-button .mud-button-icon-start {
+        background: rgb(30 30 45);
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-left: 3px;
+        position: relative;
+        margin-right: 10px;
+    }
+
+        .custom-btn-design .mud-button .mud-button-icon-start:after {
+            content: "";
+            position: absolute;
+            margin-left: 0;
+            border-width: 7px;
+            border-style: solid;
+            border-color: #1e1e2d transparent transparent transparent;
+            transform: rotate(-89deg);
+            right: -14px;
+        }
+
+    .custom-btn-design .mud-button .mud-button-label {
+        font-size: 12px;
+        font-family: 'Roboto';
+        line-height: 20px;
+        letter-spacing: 0;
+        /*text-transform: capitalize;*/
+    }
+
+.input-btns .mud-button-root {
+    padding: 10px 10px 10px 40px;
+    min-width: 74px;
+    border-radius: 5px;
+    height: unset;
+    line-height: 20px;
+    font-size: 16px;
+    position: relative;
+}
+
+    .input-btns .mud-button-root .mud-icon-root {
+        background: rgb(30 30 45);
+        width: 30px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        margin-right: 10px;
+        position: absolute;
+        left: 0px;
+        margin: 0;
+        bottom: 0;
+        top: 0;
+        padding: 0 4px;
+    }
+
+.page-content-setting .mud-input-control > .mud-input-control-input-container > div.mud-input.mud-input-text {
+    margin-top: 26px;
+}
+
+.page-content-setting .mud-input-control-input-container .mud-input-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #000;
+    opacity: 1;
+    font-family: 'Roboto';
+}
+
+.page-content-setting .block-design {
+    border: 1px solid #cccc;
+    border-radius: 4px;
+    box-shadow: 0 0 10px #ccc;
+    background: #fff;
+    padding: 10px 10px;
+}
+
+    .page-content-setting .block-design.mud-grid-spacing-xs-3 {
+        width: unset;
+        margin: unset;
+    }
+
+.modal-settings .mud-dialog-content .mud-input-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #000;
+    opacity: 1;
+    font-family: 'Roboto';
+}
+
+.modal-settings .mud-dialog-actions {
+    padding: 10px 24px;
+}
+
+.modal-settings .mud-grid {
+    margin: 10px -12px 0;
+}
+
+.modal-settings .mud-dialog-content .mud-container {
+    padding: 0 !important;
+}
+
+.modal-settings .mud-dialog-content .table-setting {
+    box-shadow: 0 0 10px #ccc;
+    border: 1px solid #ccc;
+}
+
+.modal-settings .mud-table-container {
+    max-height: 300px;
+    /*    min-height:300px;*/
+}
+
+.table-setting.shift-details-table .mud-table-container .mud-table-body .mud-switch-base {
+    top: 5px;
+    left: 7px;
+}
+
+.table-setting.shift-details-table .mud-table-container .mud-table-body .mud-switch {
+    margin: 0;
+}
+
+.table-setting.shift-details-table .mud-table-container .mud-table-root {
+    white-space: nowrap;
+}
+
+.table-setting.shift-details-table .mud-table-body .mud-table-cell {
+    padding: 10px 15px !important;
+}
+
+.table-setting.shift-details-table .mud-table-head .mud-table-cell {
+    padding: 10px 30px !important;
+}
+
+.modal-settings .mud-dialog-content .table-setting.shift-details-table {
+    margin: 20px 0 0;
+}
+
+.shift-scheduler .mud-table-container {
+    max-height: 200px;
+}
+
+.block-design.dn-num label {
+    /* line-height:1.6em;
+    visibility:hidden;*/
+}
 
 .selected {
     background-color: #1E88E5 !important;

@@ -8,7 +8,7 @@ using MudBlazor;
 
 namespace HCM.UI.Pages.MasterDataSetup
 {
-    public partial class LeaveType 
+    public partial class LeaveType
     {
         #region InjectService
 
@@ -22,13 +22,16 @@ namespace HCM.UI.Pages.MasterDataSetup
         public ISnackbar Snackbar { get; set; }
 
         [Inject]
-        public IMstLeaveType  _mstLeaveType { get; set; }
+        public IMstLeaveType _mstLeaveType { get; set; }
 
         [Inject]
         public IMstLove _mstLove { get; set; }
 
         [Inject]
         public IMstLeaveDeduction _mstLeaveDeduction { get; set; }
+
+        [Inject]
+        public IMstElement _mstElement { get; set; }
 
         [Inject]
         public ILocalStorageService _localStorage { get; set; }
@@ -43,12 +46,13 @@ namespace HCM.UI.Pages.MasterDataSetup
         public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
 
         private string searchString1 = "";
-        private bool FilterFunc(MstLeaveType  element) => FilterFunc(element, searchString1);
+        private bool FilterFunc(MstLeaveType element) => FilterFunc(element, searchString1);
 
-        MstLeaveType  oModel = new MstLeaveType ();
+        MstLeaveType oModel = new MstLeaveType();
         List<MstLove> oLovesList = new List<MstLove>();
-        private IEnumerable<MstLeaveType > oList = new List<MstLeaveType>();
-        private IEnumerable<MstLeaveDeduction > oListLeaveDeduction = new List<MstLeaveDeduction>();
+        private IEnumerable<MstLeaveType> oList = new List<MstLeaveType>();
+        private IEnumerable<MstLeaveDeduction> oListLeaveDeduction = new List<MstLeaveDeduction>();
+        private IEnumerable<MstElement> oListElement = new List<MstElement>();
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
         #endregion
@@ -64,7 +68,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (!result.Cancelled)
                 {
                     DisabledCode = true;
-                    var res = (MstLeaveType )result.Data;
+                    var res = (MstLeaveType)result.Data;
                     AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
                     oModel = res;
                 }
@@ -82,7 +86,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
-                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description) && !string.IsNullOrWhiteSpace(oModel.DeductionType))
+                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description) && !string.IsNullOrWhiteSpace(oModel.DeductionType) && (oModel.FlgEncash ==true || oModel.FlgPartiallyEncash == true) && !string.IsNullOrWhiteSpace(oModel.ElementCode))
                 {
                     if (oModel.Code.Length > 20)
                     {
@@ -90,15 +94,22 @@ namespace HCM.UI.Pages.MasterDataSetup
                     }
                     else
                     {
-                        if (oModel.Id == 0)
+                        if (oList.Where(x => x.Code.Trim().ToLowerInvariant() == oModel.Code.Trim().ToLowerInvariant()).Count() > 0)
                         {
-                            oModel.CreatedBy = LoginUser;
-                            res = await _mstLeaveType.Insert(oModel);
+                            Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                         }
                         else
                         {
-                            oModel.UpdatedBy = LoginUser;
-                            res = await _mstLeaveType.Update(oModel);
+                            if (oModel.Id == 0)
+                            {
+                                oModel.CreatedBy = LoginUser;
+                                res = await _mstLeaveType.Insert(oModel);
+                            }
+                            else
+                            {
+                                oModel.UpdatedBy = LoginUser;
+                                res = await _mstLeaveType.Update(oModel);
+                            }
                         }
                     }
                     if (res != null && res.Id == 1)
@@ -144,7 +155,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
-        private bool FilterFunc(MstLeaveType  element, string searchString1)
+        private bool FilterFunc(MstLeaveType element, string searchString1)
         {
             if (string.IsNullOrWhiteSpace(searchString1))
                 return true;
@@ -156,9 +167,9 @@ namespace HCM.UI.Pages.MasterDataSetup
                 return true;
             if (element.DeductionId.Equals(searchString1))
                 return true;
-            if (element.MonthDays.Equals(searchString1))
-                return true;
             if (element.LeaveCap.Equals(searchString1))
+                return true;
+            if (element.ElementCode.Equals(searchString1))
                 return true;
             if (element.FlgEncash.Equals(searchString1))
                 return true;
@@ -170,6 +181,17 @@ namespace HCM.UI.Pages.MasterDataSetup
             return false;
         }
 
+        private async Task GetAllElements()
+        {
+            try
+            {
+                oListElement = await _mstElement.GetAllData();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
         private async Task GetAllLeaveType()
         {
             try
@@ -213,17 +235,21 @@ namespace HCM.UI.Pages.MasterDataSetup
                 {
                     AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
 
-                    oModel.Id = res.Id;
-                    oModel.Code = res.Code;
+                    oModel = res;
+                    //oModel.Id = res.Id;
+                    //oModel.Code = res.Code;
                     DisabledCode = true;
-                    oModel.Description = res.Description;
-                    oModel.DeductionType = res.DeductionType;
-                    oModel.DeductionId = res.DeductionId;
-                    oModel.MonthDays = res.MonthDays;
-                    oModel.LeaveCap = res.LeaveCap;
-                    oModel.FlgEncash = res.FlgEncash;
-                    oModel.FlgCarryForward = res.FlgCarryForward;
-                    oModel.FlgActive = res.FlgActive;
+                    //oModel.Description = res.Description;
+                    //oModel.DeductionType = res.DeductionType;
+                    //oModel.DeductionId = res.DeductionId;
+                    //oModel.LeaveCap = res.LeaveCap;
+                    //oModel.FlgEncash = res.FlgEncash;
+                    //oModel.ElementCode = res.ElementCode;
+                    //oModel.EncashmentCap = res.EncashmentCap;
+                    //oModel.FlgCarryForward = res.FlgCarryForward;
+                    //oModel.CarryForwardLeaves = res.CarryForwardLeaves;
+                    //oModel.FlgPartiallyEncash = res.FlgPartiallyEncash;
+                    //oModel.FlgActive = res.FlgActive;
                     oList = oList.Where(x => x.Id != LineNum);
                     //_ = InvokeAsync(StateHasChanged);
                 }
@@ -251,9 +277,13 @@ namespace HCM.UI.Pages.MasterDataSetup
                     await GetAllLove();
                     await GetAllLeaveDeduction();
                     await GetAllLeaveType();
+                    await GetAllElements();
                     oModel.FlgEncash = true;
                     oModel.FlgCarryForward = true;
                     oModel.FlgActive = true;
+                    oModel.LeaveCap = 0;
+                    oModel.EncashmentCap = 0;
+                    oModel.CarryForwardLeaves = 0;
                 }
                 else
                 {
