@@ -309,6 +309,36 @@
                         </PagerContent>
                     </MudTable>
                 }
+                @if (oListTrnsAdvanceRequest?.Count > 0 && DialogFor == "AdvanceRequest")
+                {
+                    <MudTable Items="@oListTrnsAdvanceRequest" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsAdvanceRequest,bool>(FilterFuncTrnsAdvanceRequest)"
+                      Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableTrnsAdvanceRequest" RowClassFunc="@SelectedRowClassFuncTrnsAdvanceRequest" OnRowClick="RowClickEventTrnsAdvanceRequest" T="TrnsAdvanceRequest" @bind-SelectedItem="oModelTrnsAdvanceRequest">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Leave Request</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Doc Num</MudTh>
+                            <MudTh>Employee Name</MudTh>
+                            <MudTh>Doc Status</MudTh>
+                            <MudTh>Approval Status</MudTh>
+                            <MudTh>Doc Date</MudTh>
+                            <MudTh>Leave Type</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code">@context.DocNum</MudTd>
+                            <MudTd DataLabel="Code">@context.EmpName</MudTd>
+                            <MudTd DataLabel="Code">@context.DocStatus</MudTd>
+                            <MudTd DataLabel="Code">@context.DocAprStatus</MudTd>
+                            <MudTd DataLabel="Code">@Convert.ToDateTime(context.DocDate).ToString("MM/dd/yyyy")</MudTd>
+                            <MudTd DataLabel="Code">@context.AdvanceDescription</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                }
             }
         </MudContainer>
     </DialogContent>

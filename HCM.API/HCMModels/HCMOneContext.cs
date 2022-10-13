@@ -367,6 +367,7 @@ namespace HCM.API.HCMModels
         public virtual DbSet<TrnsAdvancePettyCashRequest> TrnsAdvancePettyCashRequests { get; set; }
         public virtual DbSet<TrnsAdvanceReceived> TrnsAdvanceReceiveds { get; set; }
         public virtual DbSet<TrnsAdvanceRegister> TrnsAdvanceRegisters { get; set; }
+        public virtual DbSet<TrnsAdvanceRequest> TrnsAdvanceRequests { get; set; }
         public virtual DbSet<TrnsAppealEvidence> TrnsAppealEvidences { get; set; }
         public virtual DbSet<TrnsAppraisalResult> TrnsAppraisalResults { get; set; }
         public virtual DbSet<TrnsAssistanceRequest> TrnsAssistanceRequests { get; set; }
@@ -13256,6 +13257,59 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.UpdatedBy).HasMaxLength(10);
 
                 entity.Property(e => e.UpdatedDt).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<TrnsAdvanceRequest>(entity =>
+            {
+                entity.ToTable("TrnsAdvanceRequest");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.AdvanceCode).HasMaxLength(250);
+
+                entity.Property(e => e.AdvanceDescription).HasMaxLength(250);
+
+                entity.Property(e => e.AdvanceProvidedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.ApprovedAmount).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.BasicSalary).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.DateOfJoining).HasColumnType("datetime");
+
+                entity.Property(e => e.DocAprStatus).HasMaxLength(10);
+
+                entity.Property(e => e.DocDate).HasColumnType("datetime");
+
+                entity.Property(e => e.DocStatus).HasMaxLength(10);
+
+                entity.Property(e => e.EmpDept).HasMaxLength(50);
+
+                entity.Property(e => e.EmpDesg).HasMaxLength(50);
+
+                entity.Property(e => e.EmpId).HasColumnName("EmpID");
+
+                entity.Property(e => e.EmpName).HasMaxLength(100);
+
+                entity.Property(e => e.FkadvanceId).HasColumnName("FKAdvanceID");
+
+                entity.Property(e => e.GrossSalary).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.InstallmentAmount).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.PaymentMode).HasMaxLength(50);
+
+                entity.Property(e => e.RequestedAmount).HasColumnType("numeric(18, 6)");
+
+                entity.Property(e => e.RequiredDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdateBy).HasMaxLength(20);
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UserId).HasMaxLength(20);
             });
 
             modelBuilder.Entity<TrnsAppealEvidence>(entity =>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using MudBlazor.Extensions;
 using HCM.UI.Interfaces.MasterData;
+using DocumentFormat.OpenXml.Office2013.Excel;
 
 namespace HCM.UI.Pages.MasterElement
 {
@@ -124,20 +125,41 @@ namespace HCM.UI.Pages.MasterElement
                             }
                         }
                         oListElement = oTempList;
+                        List<TrnsEmployeeElementDetail> oTempListDetail = new List<TrnsEmployeeElementDetail>();
                         List<TrnsEmployeeElementDetail> oTempListRec = new List<TrnsEmployeeElementDetail>();
                         if (oListElement.Where(x => x.Type == "Rec").ToList().Count > 0)
                         {
                             foreach (var RecElement in oListElement.Where(x => x.Type == "Rec").ToList())
                             {
                                 TrnsEmployeeElementDetail oBJ = new TrnsEmployeeElementDetail();
+                                var SetID = oListEmployeeElementDetail.Where(x => x.ElementId == RecElement.Id).FirstOrDefault();
+                                if(SetID != null)
+                                {
+                                    oBJ.Id = SetID.Id;
+                                }
                                 oBJ.ElementId = RecElement.Id;
                                 oBJ.ElementCode = RecElement.Code;
                                 oBJ.ElementDescription = RecElement.Description;
                                 oBJ.ElementType = RecElement.ElmtType;
                                 oBJ.ElementValueType = RecElement.ValueType;
+                                oBJ.Type = RecElement.Type;
                                 oBJ.FlgActive = RecElement.FlgActive;
-                                oBJ.Amount = 0;
+                                if(RecElement.ElmtType == "Ear" || RecElement.ElmtType == "Ded" )
+                                {
+                                    oBJ.Amount = BusinessLogic.GetElementAmount(oModelEmployee, RecElement);
+                                    oBJ.EmpContr = 0;
+                                    oBJ.EmplrContr = 0;
+                                }
+                                else
+                                {
+                                    decimal emprAmount = 0;
+                                    oBJ.Amount = BusinessLogic.GetElementAmount(oModelEmployee, RecElement, out emprAmount);
+                                    oBJ.EmpContr = oBJ.Amount;
+                                    oBJ.EmplrContr = emprAmount;
+
+                                }
                                 oTempListRec.Add(oBJ);
+                                oTempListDetail.Add(oBJ);
                             }
                             oListEmployeeElementDetailRec = oTempListRec.ToList();
                         }
@@ -147,17 +169,38 @@ namespace HCM.UI.Pages.MasterElement
                             foreach (var RecElement in oListElement.Where(x => x.Type == "Non-Rec").ToList())
                             {
                                 TrnsEmployeeElementDetail oBJ = new TrnsEmployeeElementDetail();
+                                var SetID = oListEmployeeElementDetail.Where(x => x.ElementId == RecElement.Id).FirstOrDefault();
+                                if (SetID != null)
+                                {
+                                    oBJ.Id = SetID.Id;
+                                }
                                 oBJ.ElementId = RecElement.Id;
                                 oBJ.ElementCode = RecElement.Code;
                                 oBJ.ElementDescription = RecElement.Description;
                                 oBJ.ElementType = RecElement.ElmtType;
                                 oBJ.ElementValueType = RecElement.ValueType;
+                                oBJ.Type = RecElement.Type;
                                 oBJ.FlgActive = RecElement.FlgActive;
-                                oBJ.Amount = 0;
+                                if (RecElement.ElmtType == "Ear" || RecElement.ElmtType == "Ded")
+                                {
+                                    oBJ.Amount = BusinessLogic.GetElementAmount(oModelEmployee, RecElement);
+                                    oBJ.EmpContr = 0;
+                                    oBJ.EmplrContr = 0;
+                                }
+                                else
+                                {
+                                    decimal emprAmount = 0;
+                                    oBJ.Amount = BusinessLogic.GetElementAmount(oModelEmployee, RecElement, out emprAmount);
+                                    oBJ.EmpContr = oBJ.Amount;
+                                    oBJ.EmplrContr = emprAmount;
+
+                                }
                                 oTempListNonRec.Add(oBJ);
+                                oTempListDetail.Add(oBJ);
                             }
                             oListEmployeeElementDetailNonRec = oTempListNonRec.ToList();
                         }
+                        oListEmployeeElementDetail = oTempListDetail.ToList();
                     }
                 }
             }

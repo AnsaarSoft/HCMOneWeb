@@ -1,16 +1,15 @@
 ﻿using Blazored.LocalStorage;
 using HCM.API.Models;
 using HCM.UI.General;
-using HCM.UI.Interfaces.Loan;
+using HCM.UI.Interfaces.Advance;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using System.Globalization;
 
-namespace HCM.UI.Pages.Loan
+namespace HCM.UI.Pages.Advance
 {
-    public partial class LoanRequest
+    public partial class AdvanceRequest
     {
         #region InjectService
 
@@ -24,13 +23,13 @@ namespace HCM.UI.Pages.Loan
         public ISnackbar Snackbar { get; set; }
 
         [Inject]
-        public IMstLoans _mstLoan { get; set; }
+        public IMstAdvance _mstAdvance { get; set; }
 
         [Inject]
         public IMstLove _mstLove { get; set; }
 
         [Inject]
-        public ITrnsLoanRequest _trnsLoanRequest { get; set; }
+        public ITrnsAdvanceRequest _trnsAdvanceRequest { get; set; }
 
         [Inject]
         public ICfgPayrollDefinationinit _CfgPayrollDefinationinit { get; set; }
@@ -56,11 +55,11 @@ namespace HCM.UI.Pages.Loan
 
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
-        TrnsLoanRequest oModel = new TrnsLoanRequest();
-        private IEnumerable<TrnsLoanRequest> oList = new List<TrnsLoanRequest>();
+        TrnsAdvanceRequest oModel = new TrnsAdvanceRequest();
+        private IEnumerable<TrnsAdvanceRequest> oList = new List<TrnsAdvanceRequest>();
 
-        MstLoan oModelLoan = new MstLoan();
-        private IEnumerable<MstLoan> oListLoanType = new List<MstLoan>();
+        MstAdvance oModelAdvance = new MstAdvance();
+        private IEnumerable<MstAdvance> oListAdvanceType = new List<MstAdvance>();
         List<MstLove> oLoveList = new List<MstLove>();
 
         MstEmployee oModelEmployee = new MstEmployee();
@@ -83,12 +82,12 @@ namespace HCM.UI.Pages.Loan
             try
             {
                 var parameters = new DialogParameters();
-                parameters.Add("DialogFor", "LoanRequest");
+                parameters.Add("DialogFor", "AdvanceRequest");
                 var dialog = Dialog.Show<DialogBox>("", parameters, options);
                 var result = await dialog.Result;
                 if (!result.Cancelled)
                 {
-                    var res = (TrnsLoanRequest)result.Data;
+                    var res = (TrnsAdvanceRequest)result.Data;
                     oModel = res;
                 }
             }
@@ -139,23 +138,23 @@ namespace HCM.UI.Pages.Loan
 
             return Task.CompletedTask;
         }
-        private async Task GetAllLoanRequest()
+        private async Task GetAllAdvanceRequest()
         {
             try
             {
-                oList = await _trnsLoanRequest.GetAllData();
+                oList = await _trnsAdvanceRequest.GetAllData();
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
             }
         }
-        private async Task GetAllLoanMaster()
+        private async Task GetAllAdvanceMaster()
         {
             try
             {
-                oListLoanType = await _mstLoan.GetAllData();
-                oListLoanType = oListLoanType.Where(x => x.FlgActive == true);
+                oListAdvanceType = await _mstAdvance.GetAllData();
+                oListAdvanceType = oListAdvanceType.Where(x => x.FlgActive == true);
             }
             catch (Exception ex)
             {
@@ -203,7 +202,7 @@ namespace HCM.UI.Pages.Loan
             {
                 Loading = true;
                 await Task.Delay(3);
-                Navigation.NavigateTo("/LoanRequest", forceLoad: true);
+                Navigation.NavigateTo("/AdvanceRequest", forceLoad: true);
                 Loading = false;
             }
             catch (Exception ex)
@@ -239,70 +238,18 @@ namespace HCM.UI.Pages.Loan
             {
                 Logs.GenerateLogs(ex);
             }
-        }
-        private async Task VerifyPeriodRange()
-        {
-            try
-            {
-                Loading = true;
-                await Task.Delay(3);
-
-                var LockedPeriod = oPayrollPeriodList.Where(a => a.PayrollId == EmpPayrollID && a.StartDate <= _dateRange.Start && a.EndDate >= _dateRange.End && a.FlgLocked == true).FirstOrDefault();
-                if (LockedPeriod != null)
-                {
-                    Snackbar.Add("Leave not allowed on locked Periods.", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                    Loading = false;
-                    return;
-                }
-                var CurrentPeriod = oPayrollPeriodList.Where(a => a.PayrollId == EmpPayrollID && a.StartDate <= _dateRange.Start && a.EndDate >= _dateRange.Start && a.FlgLocked == false).FirstOrDefault();
-                var CurrentPeriod2 = oPayrollPeriodList.Where(a => a.PayrollId == EmpPayrollID && a.StartDate <= _dateRange.End && a.EndDate >= _dateRange.End && a.FlgLocked == false).FirstOrDefault();
-                if (CurrentPeriod != CurrentPeriod2)
-                {
-                    Snackbar.Add("Leave Document range can not fall on multiple Periods.", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                    Loading = false;
-                    return;
-                }
-                string checkPeriodTodate = "";
-                string checkPeriodTodate2 = "";
-                if (CurrentPeriod != null && CurrentPeriod2 != null)
-                {
-                    checkPeriodTodate = CurrentPeriod.PeriodName;
-                    checkPeriodTodate2 = CurrentPeriod2.PeriodName;
-                }
-                if (oModelEmployee.JoiningDate > _dateRange.Start)
-                {
-                    Snackbar.Add("From date could not be greater then to Join date", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                    Loading = false;
-                    return;
-                }
-                if (oModelEmployee.JoiningDate > _dateRange.End)
-                {
-                    Snackbar.Add("End date could not be greater then to Join date", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                    Loading = false;
-                    return;
-                }
-                if (_dateRange.Start > _dateRange.End)
-                {
-                    Snackbar.Add("From date could not be greater then to date.", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                    Loading = false;
-                    return;
-                }
-                Loading = false;
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-                Loading = false;
-            }
-        }
-        private async Task CalculateInstallmentAmount()
+        }        
+        private async Task SetAdvance()
         {
             try
             {
                 await Task.Delay(1);
-                if (oModel.RequestedAmount > 0 && oModel.NoOfInstallments > 0)
+                if (!string.IsNullOrWhiteSpace(oModel.AdvanceCode))
                 {
-                    oModel.InstallmentAmount = oModel.RequestedAmount / oModel.NoOfInstallments;
+                    oModelAdvance = oListAdvanceType.Where(x => x.AllowanceId == oModel.AdvanceCode).FirstOrDefault();
+                    oModel.FkadvanceId = oModelAdvance.Id;
+                    oModel.AdvanceCode = oModelAdvance.AllowanceId;
+                    oModel.AdvanceDescription = oModelAdvance.Description;
                 }
             }
             catch (Exception ex)
@@ -310,32 +257,29 @@ namespace HCM.UI.Pages.Loan
                 Logs.GenerateLogs(ex);
             }
         }
-        private async Task SetLoan()
+        private async Task VerifyAmount()
         {
             try
             {
                 await Task.Delay(1);
-                if (!string.IsNullOrWhiteSpace(oModel.LoanCode))
+                if (oModel.RequestedAmount > oModel.GrossSalary)
                 {
-                    oModelLoan = oListLoanType.Where(x => x.Code == oModel.LoanCode).FirstOrDefault();
-                    oModel.FkloanId = oModelLoan.Id;
-                    oModel.LoanCode = oModelLoan.Code;
-                    oModel.LoanDescription = oModelLoan.Description;
-                }
+                    Snackbar.Add("Requested Amount can't be greater then Salary", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                    oModel.RequestedAmount = 0;
+                }                
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
             }
         }
-
         private async Task<ApiResponseModel> Save()
         {
             try
             {
                 Loading = true;
                 var res = new ApiResponseModel();
-                if (!string.IsNullOrWhiteSpace(oModelEmployee.EmpId) && !string.IsNullOrWhiteSpace(oModel.LoanCode) && oModel.RequestedAmount > 0 && oModel.NoOfInstallments > 0)
+                if (!string.IsNullOrWhiteSpace(oModelEmployee.EmpId) && !string.IsNullOrWhiteSpace(oModel.AdvanceCode) && oModel.RequestedAmount > 0)
                 {
                     if (oModel.DocStatus == "Open" && oModel.DocAprStatus == "Approved" && !string.IsNullOrWhiteSpace(oModel.PaymentMode))
                     {
@@ -344,18 +288,18 @@ namespace HCM.UI.Pages.Loan
                     if (oModel.Id > 0)
                     {
                         oModel.UpdateBy = LoginUser;
-                        res = await _trnsLoanRequest.Update(oModel);
+                        res = await _trnsAdvanceRequest.Update(oModel);
                     }
                     else
                     {
                         oModel.UserId = LoginUser;
-                        res = await _trnsLoanRequest.Insert(oModel);
+                        res = await _trnsAdvanceRequest.Insert(oModel);
                     }
                     if (res != null && res.Id == 1)
                     {
                         Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
                         await Task.Delay(3000);
-                        Navigation.NavigateTo("/LoanRequest", forceLoad: true);
+                        Navigation.NavigateTo("/AdvanceRequest", forceLoad: true);
                     }
                     else
                     {
@@ -390,9 +334,9 @@ namespace HCM.UI.Pages.Loan
                 if (Session != null)
                 {
                     LoginUser = Session.UserCode;
-                    await GetAllLoanRequest();
+                    await GetAllAdvanceRequest();
                     await SetDocNo();
-                    await GetAllLoanMaster();
+                    await GetAllAdvanceMaster();
                     _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date);
                     oModel.DocStatus = "Draft";
                     oModel.DocAprStatus = "Pending";
@@ -400,11 +344,9 @@ namespace HCM.UI.Pages.Loan
                     oModel.RequiredDate = DateTime.Today;
                     oModel.BasicSalary = 0;
                     oModel.GrossSalary = 0;
-                    oModel.NoOfInstallments = 0;
                     oModel.RequestedAmount = 0;
                     oModel.ApprovedAmount = 0;
                     oModel.InstallmentAmount = 0;
-                    oModel.FlgStopInstallment = true;
                     await GetAllLove();
                     await GetPayrollInit();
                 }
