@@ -14,12 +14,14 @@ namespace HCM.API.Controllers
         private IMstEmployeeMasterData _mstEmployee;
         private ITrnsEmployeeTransfer _TrnsEmployeeTransfer;
         private ITrnsLeaveRequest _trnsLeaveRequest;
+        private ITrnsEmployeeResign _trnsEmployeeResign;
 
-        public EmployeeMasterDataController(IMstEmployeeMasterData mstEmployee, ITrnsLeaveRequest trnsLeaveRequest, ITrnsEmployeeTransfer TrnsEmployeeTransfer)
+        public EmployeeMasterDataController(IMstEmployeeMasterData mstEmployee, ITrnsLeaveRequest trnsLeaveRequest, ITrnsEmployeeTransfer TrnsEmployeeTransfer, ITrnsEmployeeResign trnsEmployeeResign)
         {
             _mstEmployee = mstEmployee;
             _TrnsEmployeeTransfer = TrnsEmployeeTransfer;
             _trnsLeaveRequest = trnsLeaveRequest;
+            _trnsEmployeeResign = trnsEmployeeResign;
         }
 
         #region MST Employee
@@ -328,6 +330,130 @@ namespace HCM.API.Controllers
             try
             {
                 response = await _trnsLeaveRequest.Update(pTrnsLeavesRequest);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
+
+        #region Trns Employee Resign
+
+        [Route("getAllEmployeeResign")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllEmployeeResign()
+        {
+            List<TrnsResignation> oTrnsEmployeeResign = new List<TrnsResignation>();
+            try
+            {
+                oTrnsEmployeeResign = await _trnsEmployeeResign.GetAllData();
+                if (oTrnsEmployeeResign == null)
+                {
+                    return BadRequest(oTrnsEmployeeResign);
+                }
+                else
+                {
+                    return Ok(oTrnsEmployeeResign);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addEmployeeResign")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] TrnsResignation pTrnsEmployeeResign)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _trnsEmployeeResign.Insert(pTrnsEmployeeResign);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateEmployeeResign")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] TrnsResignation pTrnsEmployeeResign)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _trnsEmployeeResign.Update(pTrnsEmployeeResign);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addEmployeeResignList")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] List<TrnsResignation> pTrnsEmployeeResign)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _trnsEmployeeResign.Insert(pTrnsEmployeeResign);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateEmployeeResignList")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] List<TrnsResignation> pTrnsEmployeeResign)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _trnsEmployeeResign.Update(pTrnsEmployeeResign);
                 if (response == null)
                 {
                     return BadRequest(response);
