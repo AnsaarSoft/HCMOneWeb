@@ -13,6 +13,7 @@ namespace HCM.API.HCMModels
         public int Id { get; set; }
         public int? EmployeeId { get; set; }
         public int? Period { get; set; }
+        public string PeriodName { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? UpdateDate { get; set; }
         public string UserId { get; set; }
