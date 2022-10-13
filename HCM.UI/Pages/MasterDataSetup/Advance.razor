@@ -24,11 +24,11 @@
                         <span>@(oModel.FlgActive == true ? "Active" : "In Active")</span>
                     </MudSwitch>
                 </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                @*<MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
                     <MudSwitch @bind-Checked="@oModel.FlgDefault" ThumbIcon="@(oModel.FlgDefault==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgDefault==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgDefault==true ? Color.Info : Color.Error)">
                         <span>@(oModel.FlgDefault == true ? "Default" : "Custom")</span>
                     </MudSwitch>
-                </MudItem>
+                </MudItem>*@
                 <MudItem xs="12" sm="12" md="12" lg="12">
 
 
@@ -73,14 +73,14 @@
                         <HeaderContent>
                             <MudTh>Code</MudTh>
                             <MudTh>Description</MudTh>
-                            <MudTh>Default</MudTh>
+                            @*<MudTh>Default</MudTh>*@
                             <MudTh>Active</MudTh>
                             <MudTh>Action</MudTh>
                         </HeaderContent>
                         <RowTemplate>
                             <MudTd DataLabel="Code">@context.AllowanceId</MudTd>
                             <MudTd DataLabel="Advance Name">@context.Description</MudTd>
-                            <MudTd DataLabel="Default">@context.FlgDefault</MudTd>
+                            @*<MudTd DataLabel="Default">@context.FlgDefault</MudTd>*@
                             <MudTd DataLabel="Active">@context.FlgActive</MudTd>
                             <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id) )" Title="Edit"></MudIconButton></MudTd>
                         </RowTemplate>

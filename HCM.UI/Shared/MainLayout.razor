@@ -20,22 +20,13 @@
         <MudText Typo="Typo.subtitle1" Class="text-dark pr-2 pl-2" Style="text-decoration:underline">@LoginUser</MudText>
         <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Error" OnClick="Logout" Title="Logout" />
     </MudAppBar>
-
-
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1" Class="main-sidebar-nav">
         <MudDrawerHeader>
-
             <MudImage Src="img/logo.png" Alt="mepl logo" Elevation="25" Class="" /><MudText Typo="Typo.h6">Web Payroll</MudText>
             <MudDivider />
         </MudDrawerHeader>
-
         <NavMenu />
-
-
     </MudDrawer>
-
-
-
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="my-3 pt-3">
             @Body

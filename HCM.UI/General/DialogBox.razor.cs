@@ -1,4 +1,5 @@
 ﻿using HCM.API.Models;
+using HCM.UI.Interfaces.Advance;
 using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.Loan;
 using HCM.UI.Interfaces.MasterData;
@@ -49,6 +50,9 @@ namespace HCM.UI.General
         [Inject]
         public ITrnsLoanRequest _trnsLoanRequest { get; set; }
 
+        [Inject]
+        public ITrnsAdvanceRequest _trnsAdvanceRequest { get; set; }
+
         [Parameter]
         public string DialogFor { get; set; }
 
@@ -74,6 +78,7 @@ namespace HCM.UI.General
         private bool FilterFuncTrnsEmployeeTransfer(TrnsEmployeeTransfer element) => FilterFuncTrnsEmployeeTransfer(element, searchString1);
         private bool FilterFuncTrnsLeavesRequest(TrnsLeavesRequest element) => FilterFuncTrnsLeavesRequest(element, searchString1);
         private bool FilterFuncTrnsLoanRequest(TrnsLoanRequest element) => FilterFuncTrnsLoanRequest(element, searchString1);
+        private bool FilterFuncTrnsAdvanceRequest(TrnsAdvanceRequest element) => FilterFuncTrnsAdvanceRequest(element, searchString1);
 
         void Cancel() => MudDialog.Cancel();
 
@@ -113,6 +118,10 @@ namespace HCM.UI.General
         private MudTable<TrnsLoanRequest> _tableTrnsLoanRequest;
         TrnsLoanRequest oModelTrnsLoanRequest = new TrnsLoanRequest();
         List<TrnsLoanRequest> oListTrnsLoanRequest = new List<TrnsLoanRequest>();
+
+        private MudTable<TrnsAdvanceRequest> _tableTrnsAdvanceRequest;
+        TrnsAdvanceRequest oModelTrnsAdvanceRequest = new TrnsAdvanceRequest();
+        List<TrnsAdvanceRequest> oListTrnsAdvanceRequest = new List<TrnsAdvanceRequest>();
 
         #endregion
 
@@ -406,6 +415,40 @@ namespace HCM.UI.General
             return false;
         }
 
+        private async Task GetAllTrnsAdvanceRequest()
+        {
+            try
+            {
+                oListTrnsAdvanceRequest = await _trnsAdvanceRequest.GetAllData();
+                if (oListTrnsAdvanceRequest?.Count == 0 || oListTrnsAdvanceRequest == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncTrnsAdvanceRequest(TrnsAdvanceRequest element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.DocNum.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.EmpName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.DocStatus.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.DocAprStatus.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.DocDate.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.AdvanceDescription.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
+        }
+
         #endregion
 
         #region Events
@@ -454,6 +497,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "LoanRequest")
                 {
                     await GetAllTrnsLoanRequest();
+                }
+                else if (DialogFor == "AdvanceRequest")
+                {
+                    await GetAllTrnsAdvanceRequest();
                 }
                 Loading = false;
             }
@@ -752,6 +799,38 @@ namespace HCM.UI.General
             }
         }
 
+        public void RowClickEventTrnsAdvanceRequest(TableRowClickEventArgs<TrnsAdvanceRequest> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncTrnsAdvanceRequest(TrnsAdvanceRequest element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableTrnsAdvanceRequest.SelectedItem != null && _tableTrnsAdvanceRequest.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
         private void Submit()
         {
             try
@@ -799,6 +878,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "LoanRequest" && oModelTrnsLoanRequest.Id > 0)
                 {
                     MudDialog.Close(DialogResult.Ok<TrnsLoanRequest>(oModelTrnsLoanRequest));
+                }
+                else if (DialogFor == "AdvanceRequest" && oModelTrnsAdvanceRequest.Id > 0)
+                {
+                    MudDialog.Close(DialogResult.Ok<TrnsAdvanceRequest>(oModelTrnsAdvanceRequest));
                 }
                 else
                 {
