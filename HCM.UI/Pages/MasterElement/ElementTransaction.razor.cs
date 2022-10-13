@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using MudBlazor.Extensions;
 using HCM.UI.Interfaces.MasterData;
+using DocumentFormat.OpenXml.Office2013.Excel;
 
 namespace HCM.UI.Pages.MasterElement
 {
@@ -136,7 +137,20 @@ namespace HCM.UI.Pages.MasterElement
                                 oBJ.ElementType = RecElement.ElmtType;
                                 oBJ.ElementValueType = RecElement.ValueType;
                                 oBJ.FlgActive = RecElement.FlgActive;
-                                oBJ.Amount = 0;
+                                if(RecElement.ElmtType == "Ear" || RecElement.ElmtType == "Ded" )
+                                {
+                                    oBJ.Amount = BusinessLogic.GetElementAmount(oModelEmployee, RecElement);
+                                    oBJ.EmpContr = 0;
+                                    oBJ.EmplrContr = 0;
+                                }
+                                else
+                                {
+                                    decimal emprAmount = 0;
+                                    oBJ.Amount = BusinessLogic.GetElementAmount(oModelEmployee, RecElement, out emprAmount);
+                                    oBJ.EmpContr = oBJ.Amount;
+                                    oBJ.EmplrContr = emprAmount;
+
+                                }
                                 oTempListRec.Add(oBJ);
                             }
                             oListEmployeeElementDetailRec = oTempListRec.ToList();
@@ -153,7 +167,20 @@ namespace HCM.UI.Pages.MasterElement
                                 oBJ.ElementType = RecElement.ElmtType;
                                 oBJ.ElementValueType = RecElement.ValueType;
                                 oBJ.FlgActive = RecElement.FlgActive;
-                                oBJ.Amount = 0;
+                                if (RecElement.ElmtType == "Ear" || RecElement.ElmtType == "Ded")
+                                {
+                                    oBJ.Amount = BusinessLogic.GetElementAmount(oModelEmployee, RecElement);
+                                    oBJ.EmpContr = 0;
+                                    oBJ.EmplrContr = 0;
+                                }
+                                else
+                                {
+                                    decimal emprAmount = 0;
+                                    oBJ.Amount = BusinessLogic.GetElementAmount(oModelEmployee, RecElement, out emprAmount);
+                                    oBJ.EmpContr = oBJ.Amount;
+                                    oBJ.EmplrContr = emprAmount;
+
+                                }
                                 oTempListNonRec.Add(oBJ);
                             }
                             oListEmployeeElementDetailNonRec = oTempListNonRec.ToList();
