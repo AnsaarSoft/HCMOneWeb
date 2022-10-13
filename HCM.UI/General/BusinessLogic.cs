@@ -1,4 +1,6 @@
-﻿namespace HCM.UI.General
+﻿using DocumentFormat.OpenXml.Math;
+
+namespace HCM.UI.General
 {
     public class BusinessLogic
     {
@@ -63,6 +65,20 @@
                                 oTrnsEmployeeElementDetail.FlgPaid = false;
                                 oTrnsEmployeeElementDetail.SourceType = "Employee Master Update";
                                 oTrnsEmployeeElementDetail.Amount = 0;
+                                if (Element.ElmtType == "Ear" || Element.ElmtType == "Ded")
+                                {
+                                    oTrnsEmployeeElementDetail.Amount = GetElementAmount(oModel, Element);
+                                    oTrnsEmployeeElementDetail.EmpContr = 0;
+                                    oTrnsEmployeeElementDetail.EmplrContr = 0;
+                                }
+                                else
+                                {
+                                    decimal emprAmount = 0;
+                                    oTrnsEmployeeElementDetail.Amount = BusinessLogic.GetElementAmount(oModel, Element, out emprAmount);
+                                    oTrnsEmployeeElementDetail.EmpContr = oTrnsEmployeeElementDetail.Amount;
+                                    oTrnsEmployeeElementDetail.EmplrContr = emprAmount;
+
+                                }
                                 //oTrnsEmployeeElement.TrnsEmployeeElementDetails.Add(oTrnsEmployeeElementDetail);                                            
                                 oModel.TrnsEmployeeElements.Where(x => x.EmployeeId == oModel.Id).FirstOrDefault().TrnsEmployeeElementDetails.Add(oTrnsEmployeeElementDetail);
                             }
@@ -77,6 +93,76 @@
                 Logs.GenerateLogs(ex);
                 return null;
             }
+        }
+
+        public static decimal GetElementAmount(MstEmployee oEmp, MstElement oElement)
+        {
+            decimal amount = 0;
+            try
+            {
+                if (oElement is not null)
+                {
+                    if (oElement.ValueType == "POB")
+                    {
+                        decimal basic = oEmp.BasicSalary.GetValueOrDefault();
+                        decimal configvalue = oElement.Value.GetValueOrDefault();
+                        amount = (basic / 100) * configvalue;
+                    }
+                    else if (oElement.ValueType == "POG")
+                    {
+                        decimal gross = oEmp.GrossSalary.GetValueOrDefault();
+                        decimal configvalue = oElement.Value.GetValueOrDefault();
+                        amount = (gross / 100) * configvalue;
+                    }
+                    else
+                    {
+                        amount = oElement.Value.GetValueOrDefault();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+            return amount;
+        }
+
+        public static decimal GetElementAmount(MstEmployee oEmp, MstElement oElement, out decimal EmprAmount)
+        {
+            decimal amount = 0;
+            EmprAmount = 0;
+            try
+            {
+                if (oElement is not null)
+                {
+                    if (oElement.ValueType == "POB")
+                    {
+                        decimal basic = oEmp.BasicSalary.GetValueOrDefault();
+                        decimal configvalue = oElement.EmployeeContribution.GetValueOrDefault();
+                        decimal configvalueempr = oElement.EmployerContribution.GetValueOrDefault();
+
+                        amount = (basic / 100) * configvalue;
+                        EmprAmount = (basic / 100) * configvalueempr;
+                    }
+                    else if (oElement.ValueType == "POG")
+                    {
+                        decimal gross = oEmp.GrossSalary.GetValueOrDefault();
+                        decimal configvalue = oElement.EmployeeContribution.GetValueOrDefault();
+                        decimal configvalueempr = oElement.EmployerContribution.GetValueOrDefault();
+                        amount = (gross / 100) * configvalue;
+                        EmprAmount = (gross / 100) * configvalueempr;
+                    }
+                    else
+                    {
+                        amount = oElement.Value.GetValueOrDefault();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+            return amount;
         }
     }
 }
