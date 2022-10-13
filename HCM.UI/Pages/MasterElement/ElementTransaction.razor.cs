@@ -125,17 +125,24 @@ namespace HCM.UI.Pages.MasterElement
                             }
                         }
                         oListElement = oTempList;
+                        List<TrnsEmployeeElementDetail> oTempListDetail = new List<TrnsEmployeeElementDetail>();
                         List<TrnsEmployeeElementDetail> oTempListRec = new List<TrnsEmployeeElementDetail>();
                         if (oListElement.Where(x => x.Type == "Rec").ToList().Count > 0)
                         {
                             foreach (var RecElement in oListElement.Where(x => x.Type == "Rec").ToList())
                             {
                                 TrnsEmployeeElementDetail oBJ = new TrnsEmployeeElementDetail();
+                                var SetID = oListEmployeeElementDetail.Where(x => x.ElementId == RecElement.Id).FirstOrDefault();
+                                if(SetID != null)
+                                {
+                                    oBJ.Id = SetID.Id;
+                                }
                                 oBJ.ElementId = RecElement.Id;
                                 oBJ.ElementCode = RecElement.Code;
                                 oBJ.ElementDescription = RecElement.Description;
                                 oBJ.ElementType = RecElement.ElmtType;
                                 oBJ.ElementValueType = RecElement.ValueType;
+                                oBJ.Type = RecElement.Type;
                                 oBJ.FlgActive = RecElement.FlgActive;
                                 if(RecElement.ElmtType == "Ear" || RecElement.ElmtType == "Ded" )
                                 {
@@ -152,6 +159,7 @@ namespace HCM.UI.Pages.MasterElement
 
                                 }
                                 oTempListRec.Add(oBJ);
+                                oTempListDetail.Add(oBJ);
                             }
                             oListEmployeeElementDetailRec = oTempListRec.ToList();
                         }
@@ -161,11 +169,17 @@ namespace HCM.UI.Pages.MasterElement
                             foreach (var RecElement in oListElement.Where(x => x.Type == "Non-Rec").ToList())
                             {
                                 TrnsEmployeeElementDetail oBJ = new TrnsEmployeeElementDetail();
+                                var SetID = oListEmployeeElementDetail.Where(x => x.ElementId == RecElement.Id).FirstOrDefault();
+                                if (SetID != null)
+                                {
+                                    oBJ.Id = SetID.Id;
+                                }
                                 oBJ.ElementId = RecElement.Id;
                                 oBJ.ElementCode = RecElement.Code;
                                 oBJ.ElementDescription = RecElement.Description;
                                 oBJ.ElementType = RecElement.ElmtType;
                                 oBJ.ElementValueType = RecElement.ValueType;
+                                oBJ.Type = RecElement.Type;
                                 oBJ.FlgActive = RecElement.FlgActive;
                                 if (RecElement.ElmtType == "Ear" || RecElement.ElmtType == "Ded")
                                 {
@@ -182,9 +196,11 @@ namespace HCM.UI.Pages.MasterElement
 
                                 }
                                 oTempListNonRec.Add(oBJ);
+                                oTempListDetail.Add(oBJ);
                             }
                             oListEmployeeElementDetailNonRec = oTempListNonRec.ToList();
                         }
+                        oListEmployeeElementDetail = oTempListDetail.ToList();
                     }
                 }
             }
