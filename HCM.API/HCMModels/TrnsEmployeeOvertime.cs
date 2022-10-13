@@ -12,7 +12,7 @@ namespace HCM.API.HCMModels
 
         public int Id { get; set; }
         public int? EmployeeId { get; set; }
-        public int? Period { get; set; }
+        public int? PeriodId { get; set; }
         public string PeriodName { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? UpdateDate { get; set; }
@@ -26,7 +26,7 @@ namespace HCM.API.HCMModels
         public string Remarks { get; set; }
 
         public virtual MstEmployee Employee { get; set; }
-        public virtual CfgPeriodDate PeriodNavigation { get; set; }
+        public virtual CfgPeriodDate Period { get; set; }
         public virtual ICollection<TrnsEmployeeOvertimeDetail> TrnsEmployeeOvertimeDetails { get; set; }
     }
 }

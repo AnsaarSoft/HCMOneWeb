@@ -15703,6 +15703,10 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.DocStatus).HasMaxLength(50);
 
+                entity.Property(e => e.PeriodId).HasColumnName("PeriodID");
+
+                entity.Property(e => e.PeriodName).HasMaxLength(100);
+
                 entity.Property(e => e.Remarks).HasMaxLength(50);
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
@@ -15716,9 +15720,9 @@ namespace HCM.API.HCMModels
                     .HasForeignKey(d => d.EmployeeId)
                     .HasConstraintName("FK_TrnsEmployeeOvertime_MstEmployee");
 
-                entity.HasOne(d => d.PeriodNavigation)
+                entity.HasOne(d => d.Period)
                     .WithMany(p => p.TrnsEmployeeOvertimes)
-                    .HasForeignKey(d => d.Period)
+                    .HasForeignKey(d => d.PeriodId)
                     .HasConstraintName("FK_TrnsEmployeeOvertime_CfgPerformancePeriod");
             });
 
