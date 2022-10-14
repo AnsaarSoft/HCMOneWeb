@@ -1,0 +1,107 @@
+﻿@page "/EmployeeResign"
+@using HCM.API.Models
+@using System.Globalization
+
+<div class="container-fluid page-content-setting shift-scheduler">
+    <div class="row">
+        <div class="col-sm-10">
+            <h3>Employee Resign</h3>
+            <MudDivider />
+        </div>
+        <div class="col-sm-2 custom-btn-design text-right">
+            <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Filled.RemoveRedEye" Color="Color.Info" Size="Size.Small">View All</MudButton>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudGrid class="search-action-block align-items-center block-design">
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTextField T="string" ReadOnly="true" @bind-Value="oModel.EmpName" HelperText="Employee Name" Immediate="true" Label="Select Employee*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Person" OnAdornmentClick="@((e) => OpenDialogEmployee(maxWidth))" AdornmentAriaLabel="Select Employee" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTextField @bind-Value="oModel.DocNum" Disabled="true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields"
+                                  Label="Doc No*" Variant="Variant.Text"> </MudTextField>
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudSelect @bind-Value="oModel.DocStatus" Disabled="true" Label="Doc Status*" HelperText="Doc Status" AdornmentIcon="@Icons.Material.Filled.DocumentScanner" Adornment="Adornment.Start">
+                        <MudSelectItem Value="@("Open")">Open</MudSelectItem>
+                        <MudSelectItem Value="@("Closed")">Closed</MudSelectItem>
+                        <MudSelectItem Value="@("Draft")">Draft</MudSelectItem>
+                        <MudSelectItem Value="@("Cancelled")">Cancelled</MudSelectItem>
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudSelect @bind-Value="oModel.DocAprStatus" Disabled="true" Label="Approval Status*" HelperText="Approval Status" AdornmentIcon="@Icons.Material.Filled.Approval" Adornment="Adornment.Start">
+                        <MudSelectItem Value="@("Accepted")">Accepted</MudSelectItem>
+                        <MudSelectItem Value="@("Rejected")">Rejected</MudSelectItem>
+                        <MudSelectItem Value="@("Pending")">Pending</MudSelectItem>
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTextField @bind-Value="oModel.EmpDesg" Disabled="true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields"
+                                  Label="Designation*" Variant="Variant.Text"> </MudTextField>
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTextField @bind-Value="oModel.DateOfJoining" Disabled="true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange"
+                                  Label="Date of Joining*" Variant="Variant.Text"> </MudTextField>
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTextField @bind-Value="LoginUser" Disabled="true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.VerifiedUser"
+                                  Label="Originator*" Variant="Variant.Text"> </MudTextField>
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudDatePicker PickerVariant="PickerVariant.Dialog" Disabled="true" @bind-Date="oModel.DocDate" MinDate="DateTime.Today" Label="Doc Date*" HelperText="Enter Doc Date" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
+                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.ResignDate" MinDate="DateTime.Today" Label="Resign Date*" HelperText="Enter Resign Date" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
+                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
+                </MudItem>
+                <MudItem xs="7" sm="7" md="7" lg="7">
+                    <MudTextField T="string" @bind-Value="oModel.ResignationReason" MaxLength="250" Counter="250" Lines="3" HelperText="Enter Resign Reason" Immediate="true" Clearable="true" Label="Resign Reason*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2" class="text-left">
+                    <MudSwitch @bind-Checked="@oModel.FlgOption1" ThumbIcon="@(oModel.FlgOption1==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgOption1==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgOption1==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgOption1 == true ? "1 Month Notice - Yes" : "1 Month Notice - No")</span>
+                    </MudSwitch>
+                </MudItem>
+                @if (oModel.DocStatus == "Open" && oModel.DocAprStatus == "Approved")
+                {
+                    <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudSelect @bind-Value="oModel.CurrentPaymentMode" Label="Payment Mode*" HelperText="Select Payment Mode" AdornmentIcon="@Icons.Material.Filled.Payments" Adornment="Adornment.Start">
+                            @foreach (MstLove Love in oLoveList.Where(x => x.Type == "PaymentMode" && (x.Code == "CASH" || x.Code == "CHECK")).ToList())
+                            {
+                                <MudSelectItem Value="@Love.Code">@Love.Value</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                        <MudSwitch @bind-Checked="@oModel.StopSalary" ThumbIcon="@(oModel.StopSalary==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.StopSalary==true ? Color.Primary : Color.Error)" Color="@(oModel.StopSalary==true ? Color.Info : Color.Error)">
+                            <span>@(oModel.StopSalary == true ? "Stop Salary - Yes" : "Stop Salary - No")</span>
+                        </MudSwitch>
+                    </MudItem>
+                }
+                <MudItem xs="12" sm="12" md="12" lg="12">
+
+
+                    @if (Loading)
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudText>Loading...</MudText>
+                            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudItem xs="12" sm="12" md="12" lg="12" class="text-right custom-btn-design" style="justify-content: flex-end;">
+                            <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Save</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error" style="margin:0 10px;">Reset</MudButton>
+                        </MudItem>
+                    }
+                </MudItem>
+            </MudGrid>
+        </div>
+    </div>
+</div>

@@ -53,8 +53,6 @@ namespace HCM.UI.General
         [Inject]
         public ITrnsAdvanceRequest _trnsAdvanceRequest { get; set; }
 
-        [Inject]
-        public ITrnsEmployeeOverTime _trnsEmployeeOverTime { get; set; }
         [Parameter]
         public string DialogFor { get; set; }
 
@@ -81,7 +79,6 @@ namespace HCM.UI.General
         private bool FilterFuncTrnsLeavesRequest(TrnsLeavesRequest element) => FilterFuncTrnsLeavesRequest(element, searchString1);
         private bool FilterFuncTrnsLoanRequest(TrnsLoanRequest element) => FilterFuncTrnsLoanRequest(element, searchString1);
         private bool FilterFuncTrnsAdvanceRequest(TrnsAdvanceRequest element) => FilterFuncTrnsAdvanceRequest(element, searchString1);
-        private bool FilterFuncTrnsEmployeeOvertime(TrnsEmployeeOvertime element) => FilterFuncTrnsEmployeeOvertime(element, searchString1);
 
         void Cancel() => MudDialog.Cancel();
 
@@ -125,10 +122,6 @@ namespace HCM.UI.General
         private MudTable<TrnsAdvanceRequest> _tableTrnsAdvanceRequest;
         TrnsAdvanceRequest oModelTrnsAdvanceRequest = new TrnsAdvanceRequest();
         List<TrnsAdvanceRequest> oListTrnsAdvanceRequest = new List<TrnsAdvanceRequest>();
-
-        private MudTable<TrnsEmployeeOvertime> _tableTrnsEmployeeOvertime;
-        TrnsEmployeeOvertime oModelTrnsEmployeeOvertime = new TrnsEmployeeOvertime();
-        List<TrnsEmployeeOvertime> oListTrnsEmployeeOvertime = new List<TrnsEmployeeOvertime>();
 
         #endregion
 
@@ -484,6 +477,40 @@ namespace HCM.UI.General
             return false;
         }
 
+        private async Task GetAllTrnsEmployeeResign()
+        {
+            try
+            {
+                oListTrnsEmployeeResign = await _trnsEmployeeResign.GetAllData();
+                if (oListTrnsEmployeeResign?.Count == 0 || oListTrnsEmployeeResign == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncTrnsEmployeeResign(TrnsResignation element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.DocNum.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.EmpName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.DocStatus.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.DocAprStatus.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.DocDate.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.ResignDate.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
+        }
+
         #endregion
 
         #region Events
@@ -536,10 +563,6 @@ namespace HCM.UI.General
                 else if (DialogFor == "AdvanceRequest")
                 {
                     await GetAllTrnsAdvanceRequest();
-                }
-                else if (DialogFor == "TrnsEmployeeOverTime")
-                {
-                    await GetAllTrnsEmployeeOverTime();
                 }
                 Loading = false;
             }
@@ -870,38 +893,6 @@ namespace HCM.UI.General
             }
         }
 
-        public void RowClickEventTrnsEmployeeOverTime(TableRowClickEventArgs<TrnsEmployeeOvertime> tableRowClickEventArgs)
-        {
-            try
-            {
-                clickedEvents.Add("Row has been clicked");
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-            }
-
-        }
-        private string SelectedRowClassFuncTrnsEmployeeOverTime(TrnsEmployeeOvertime element, int rowNumber)
-        {
-            if (selectedRowNumber == rowNumber)
-            {
-                selectedRowNumber = -1;
-                clickedEvents.Add("Selected Row: None");
-                return string.Empty;
-            }
-            else if (_tableTrnsEmployeeOvertime.SelectedItem != null && _tableTrnsEmployeeOvertime.SelectedItem.Equals(element))
-            {
-                selectedRowNumber = rowNumber;
-                clickedEvents.Add($"Selected Row: {rowNumber}");
-                return "selected";
-            }
-            else
-            {
-                return string.Empty;
-            }
-        }
-
         private void Submit()
         {
             try
@@ -953,10 +944,6 @@ namespace HCM.UI.General
                 else if (DialogFor == "AdvanceRequest" && oModelTrnsAdvanceRequest.Id > 0)
                 {
                     MudDialog.Close(DialogResult.Ok<TrnsAdvanceRequest>(oModelTrnsAdvanceRequest));
-                }
-                else if (DialogFor == "TrnsEmployeeOverTime" && oModelTrnsEmployeeOvertime.Id > 0)
-                {
-                    MudDialog.Close(DialogResult.Ok<TrnsEmployeeOvertime>(oModelTrnsEmployeeOvertime));
                 }
                 else
                 {
