@@ -1,14 +1,14 @@
 ﻿@page "/ApprovalStages"
 @using HCM.API.Models
 
-
 <div class="input-field-setting custom-helper-text">
     <div class="row">
-        <div class="col-md-11">
-            <h3>Stages</h3>
+        <div class="col-sm-10">
+            <h3>Approval Stages</h3>
+            <MudDivider />
         </div>
-        <div class="col-sm-1">
-            @*<MudFab Color="Color.Primary" OnClick="@((e) => OpenDialog(FullView))" StartIcon="@Icons.Material.Filled.List" Title="View All" />*@
+        <div class="col-sm-2 custom-btn-design text-right">
+            <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Filled.RemoveRedEye" Color="Color.Info" Size="Size.Small">View All</MudButton>
         </div>
     </div>
     <MudDivider />
@@ -24,11 +24,11 @@
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.NumberOfApprovals" HelperText="No. of Approval" Immediate="true" Clearable="true" Label="No. of Approval"
+                    <MudNumericField @bind-Value="oModel.NumberOfApprovals" HelperText="Enter No. of Approval" Immediate="true" Clearable="true" Label="No. of Approval"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" Min="0"> </MudNumericField>
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.NumberOfRejectins" HelperText="No. of Rejection" Immediate="true" Clearable="true" Label="No. of Rejection"
+                    <MudNumericField @bind-Value="oModel.NumberOfRejectins" HelperText="Enter No. of Rejection" Immediate="true" Clearable="true" Label="No. of Rejection"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" Min="0"> </MudNumericField>
                 </MudItem>
                 <MudItem xs="12" sm="12" md="12" lg="12">
@@ -50,29 +50,10 @@
             </MudGrid>
         </div>
     </div>
-    @*<div class="row mt-5">
-        <div class="col-md-4 col-sm-4">
-            <MudTextField Required="true" @bind-Value="oModel.StageName" InputMode="InputMode.text" MaxLength="100" Counter="100" HelperText="Enter Stage Name" Immediate="true" Clearable="true" Label="Stage Name" Variant="Variant.Text"
-                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
-        </div>
-        <div class="col-md-4 col-sm-4">
-            <MudNumericField Required="true" @bind-Value="oModel.NumberOfApprovals" HelperText="No. of Approval" Immediate="true" Clearable="true" Label="No. of Approval"
-                             Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" Min="0"> </MudNumericField>
-        </div>
-        <div class="col-md-4 col-sm-4">
-            <MudNumericField Required="true" @bind-Value="oModel.NumberOfRejectins" HelperText="No. of Rejection" Immediate="true" Clearable="true" Label="No. of Rejection"
-                             Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" Min="0"> </MudNumericField>
-        </div>
-    </div>*@
-
     <div class="row mt-5">
         <div class="col-md-12">
-            <MudTabs Border="true" Elevation="5" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Centered="true">
-                <MudTabPanel Icon="@Icons.Sharp.Person" Text="Employee">
-              @*      <MudTextField T="string" ReadOnly="true" HelperText="Employee Name" Immediate="true" Label="Select Employee*" Variant="Variant.Text"
-                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Person" OnAdornmentClick="@((e) => OpenDialogEmployee(maxWidth))" AdornmentAriaLabel="Select Employee" />*@
-                    <MudIconButton Icon="@Icons.Material.Filled.Person" Color="Color.Primary" OnClick="@((e) => OpenDialogEmployee(maxWidth))"></MudIconButton>
-                    <MudDivider Class="mt-5" />
+            <MudTabs Border="true" Elevation="1" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-1" Centered="true">
+                <MudTabPanel Icon="@Icons.Sharp.Person" Text="Employee" OnClick="@((e) => OpenDialogEmployee(maxWidth))">
                     @if (AuthorizerNames != null)
                     {
                         @foreach (var item in AuthorizerNames)
@@ -84,24 +65,6 @@
             </MudTabs>
         </div>
     </div>
-   @* <div class="row mt-5 justify-content-start">
-        <div class="col-md-2 text-left">
-            @if (Loading)
-            {
-                <MudItem xs="2" sm="2" md="2" lg="2">
-                    <MudText>Loading...</MudText>
-                    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
-                </MudItem>
-            }
-            else
-            {
-                <MudItem xs="12" sm="12" md="12" lg="12" class="text-right custom-btn-design" style="justify-content: flex-end;">
-                    <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Save</MudButton>
-                    <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
-                </MudItem>
-            }
-        </div>
-    </div>*@
 </div>
 
 

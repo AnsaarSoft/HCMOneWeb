@@ -12,6 +12,11 @@ namespace HCM.API.Controllers
     {
         private IMstStages _mstStages;
 
+        public ApprovalSetupController(IMstStages mstStages)
+        {
+            _mstStages = mstStages;
+        }
+
         #region MstStages
 
         [Route("getAllStage")]
