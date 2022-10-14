@@ -4,6 +4,7 @@ namespace HCM.UI.General
 {
     public class BusinessLogic
     {
+        #region Employee Master
         public static MstEmployee ApplyPayrolStdlElement(MstEmployee oModel, IEnumerable<MstElement> oListElement, string LoginUser)
         {
             try
@@ -95,6 +96,10 @@ namespace HCM.UI.General
             }
         }
 
+        #endregion
+
+        #region Element Transaction
+
         public static decimal GetElementAmount(MstEmployee oEmp, MstElement oElement)
         {
             decimal amount = 0;
@@ -165,36 +170,42 @@ namespace HCM.UI.General
             return amount;
         }
 
-        public static decimal GetOverTimeAmount(MstEmployee oEmp, MstOverTime oOverTime, decimal EmprAmount)
+        #endregion
+
+        #region Employee Overtime
+
+        public static decimal GetOverTimeAmount(MstEmployee oEmp, MstOverTime oTime, decimal TotalHour)
         {
             decimal amount = 0;
-            EmprAmount = 0;
             try
             {
-                if (oOverTime is not null)
+                if (oTime is not null)
                 {
-                    if (oOverTime.ValueType == "POB")
+                    if (oTime.ValueType == "POB")
                     {
-                        //decimal basic = oEmp.BasicSalary.GetValueOrDefault();
-                        //decimal configvalue = oOverTime..GetValueOrDefault();
-                        //decimal configvalueempr = oOverTime.EmployerContribution.GetValueOrDefault();
+                        decimal basic = oEmp.BasicSalary.GetValueOrDefault();
+                        decimal configvalue = oTime.Value.GetValueOrDefault();
+                        decimal confighour = oTime.Hour.GetValueOrDefault();
+                        decimal configMonthDays = oTime.MonthDays.GetValueOrDefault();
 
-                        //amount = (basic / 100) * configvalue;
-                        //EmprAmount = (basic / 100) * configvalueempr;
-                        return 10;
+                        decimal perHourSalary = (((basic / 100) * configvalue) / configMonthDays) / confighour;
+                        amount = perHourSalary * TotalHour;
+                        return amount;
                     }
-                    else if (oOverTime.ValueType == "POG")
+                    else if (oTime.ValueType == "POG")
                     {
-                        //decimal gross = oEmp.GrossSalary.GetValueOrDefault();
-                        //decimal configvalue = oOverTime.EmployeeContribution.GetValueOrDefault();
-                        //decimal configvalueempr = oOverTime.EmployerContribution.GetValueOrDefault();
-                        //amount = (gross / 100) * configvalue;
-                        //EmprAmount = (gross / 100) * configvalueempr;
-                        return 10;
+                        decimal gross = oEmp.GrossSalary.GetValueOrDefault();
+                        decimal configvalue = oTime.Value.GetValueOrDefault();
+                        decimal confighour = oTime.Hour.GetValueOrDefault();
+                        decimal configMonthDays = oTime.MonthDays.GetValueOrDefault();
+
+                        decimal perHourSalary = (((gross / 100) * configvalue) / configMonthDays) / confighour;
+                        amount = perHourSalary * TotalHour;
+                        return amount;
                     }
                     else
                     {
-                        amount = oOverTime.Value.GetValueOrDefault();
+                        amount = oTime.Value.GetValueOrDefault();
                     }
                 }
             }
@@ -204,5 +215,7 @@ namespace HCM.UI.General
             }
             return amount;
         }
+
+        #endregion
     }
 }
