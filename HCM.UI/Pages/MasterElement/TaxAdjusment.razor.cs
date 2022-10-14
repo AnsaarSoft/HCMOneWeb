@@ -13,9 +13,9 @@ using MudBlazor;
 using System.Collections.Immutable;
 using static MudBlazor.CategoryTypes;
 
-namespace HCM.UI.Pages.EmployeeMasterSetup
+namespace HCM.UI.Pages.MasterElement
 {
-    public partial class EmployeeOverTime
+    public partial class TaxAdjusment
     {
         #region InjectService
 
@@ -137,7 +137,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     var res = (TrnsEmployeeOvertime)result.Data;
                     oModel = res;
                     oModelMstEmployee = oListEmployee.Where(x => x.Id == oModel.EmployeeId).FirstOrDefault();
-                    EmpName = oModelMstEmployee.FirstName + " " + oModelMstEmployee.MiddleName+ " " + oModelMstEmployee.LastName;
+                    FullName = oModelMstEmployee.FirstName + " " + oModelMstEmployee.MiddleName+ " " + oModelMstEmployee.LastName;
 
                     oListTrnsEmployeeOvertimeDetail = oModel.TrnsEmployeeOvertimeDetails.ToList();
                     oModelTrnsEmployeeOvertimeDetail = oListTrnsEmployeeOvertimeDetail.Where(x => x.EmpOvertimeId == oModel.Id).FirstOrDefault();
@@ -508,7 +508,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 trnsEmployeeOvertimeDetail.Othours = Hours;
                 trnsEmployeeOvertimeDetail.FlgActive=IsFlg;
                 oModelmstOvertime = oListmstOverTime.Where(x => x.Id == oModelmstOvertime.Id).FirstOrDefault();
-                trnsEmployeeOvertimeDetail.Amount = BusinessLogic.GetOverTimeAmount(oModelMstEmployee, oModelmstOvertime, Hours);
+                oModelTrnsEmployeeOvertimeDetail.Amount = BusinessLogic.GetOverTimeAmount(oModelMstEmployee, oModelmstOvertime, Hours);
 
                 if (!string.IsNullOrWhiteSpace(oModel.PeriodName)
                     && (trnsEmployeeOvertimeDetail.OvertimeId != null && trnsEmployeeOvertimeDetail.OvertimeId > 0)
