@@ -27,10 +27,10 @@
                     <MudTextField T="string" ReadOnly="true" @bind-Value="EmpName"  HelperText="Employee Name" Immediate="true" Label="Select Employee*" Variant="Variant.Text"
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Person" OnAdornmentClick="@((e) => OpenDialogEmployee(maxWidth))" AdornmentAriaLabel="Select Employee" />
                 </MudItem>
-                <MudItem xs="3" sm="3" md="3" lg="3">
+               @* <MudItem xs="3" sm="3" md="3" lg="3">
                     <MudAutocomplete T="string" @bind-Value="FullName" ReadOnly="@true" Immediate="true" Clearable="true" Label="Employee Name" Variant="Variant.Text"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
-                </MudItem>
+                </MudItem>*@
 
                 <MudItem xs="3" sm="3" md="3" lg="3">
                     <MudTextField T="string" @bind-Value="oModelMstEmployee.PayrollName" ReadOnly="@true" Immediate="true" Clearable="true" Label="Employee Payroll" Variant="Variant.Text"
