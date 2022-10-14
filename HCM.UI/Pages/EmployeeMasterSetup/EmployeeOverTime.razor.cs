@@ -508,7 +508,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 trnsEmployeeOvertimeDetail.Othours = Hours;
                 trnsEmployeeOvertimeDetail.FlgActive=IsFlg;
                 oModelmstOvertime = oListmstOverTime.Where(x => x.Id == oModelmstOvertime.Id).FirstOrDefault();
-                oModelTrnsEmployeeOvertimeDetail.Amount = BusinessLogic.GetOverTimeAmount(oModelMstEmployee, oModelmstOvertime, Hour);
+                oModelTrnsEmployeeOvertimeDetail.Amount = BusinessLogic.GetOverTimeAmount(oModelMstEmployee, oModelmstOvertime, Hours);
 
                 if (!string.IsNullOrWhiteSpace(oModel.PeriodName)
                     && (trnsEmployeeOvertimeDetail.OvertimeId != null && trnsEmployeeOvertimeDetail.OvertimeId > 0)
