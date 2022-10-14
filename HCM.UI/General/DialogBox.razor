@@ -225,6 +225,36 @@
                         </PagerContent>
                     </MudTable>
                 }
+                @if (oListMstEmployee?.Count > 0 && DialogFor == "MultipleEmployeeSelect")
+                {
+                    <MudTable Items="@oListMstEmployee" MultiSelection="true" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstEmployee,bool>(FilterFuncMstEmployee)"
+                      Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableMstEmployee" RowClassFunc="@SelectedRowClassFuncMstEmployee" OnRowClick="RowClickEventMstEmployee" T="MstEmployee" @bind-SelectedItem="oModelMstEmployee" @bind-SelectedItems="selectedEmployee">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Employees</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Image</MudTh>
+                            <MudTh>Employee Code</MudTh>
+                            <MudTh>Name</MudTh>
+                            <MudTh>Date of Joining</MudTh>
+                            <MudTh>Designation</MudTh>
+                            <MudTh>Location</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code"><MudAvatar Image="@context.ImgPath" Style="height:70px; width:70px; font-size:2rem;" /></MudTd>
+                            <MudTd DataLabel="Code">@context.EmpId</MudTd>
+                            <MudTd DataLabel="Code">@context.FirstName @context.MiddleName @context.LastName</MudTd>
+                            <MudTd DataLabel="Code">@Convert.ToDateTime(context.JoiningDate).ToString("MM/dd/yyyy")</MudTd>
+                            <MudTd DataLabel="Code">@context.DesignationName</MudTd>
+                            <MudTd DataLabel="Code">@context.LocationName</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                }
                 @if (oListTrnsEmployeeTransfer?.Count > 0 && DialogFor == "TrnsEmployeeTransfer")
                 {
                     <MudTable Items="@oListTrnsEmployeeTransfer" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsEmployeeTransfer,bool>(FilterFuncTrnsEmployeeTransfer)"
