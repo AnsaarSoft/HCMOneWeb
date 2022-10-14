@@ -227,6 +227,14 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                         oModelPayroll.Id = (int)oModel.PayrollId;
                         oModelPayroll.PayrollName = oModel.PayrollName;
                     }
+                    if (!string.IsNullOrWhiteSpace(oModel.BonusCode))
+                    {
+                        oModelBonus.Code = oModel.BonusCode;
+                    }
+                    if (!string.IsNullOrWhiteSpace(oModel.GratuityName))
+                    {
+                        oModelGratuity.GrtCode = oModel.GratuityName;
+                    }
                     if (!string.IsNullOrWhiteSpace(oModel.ImgPath))
                     {
                         EmpImagePath = oModel.ImgPath;

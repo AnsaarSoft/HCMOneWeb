@@ -16,20 +16,18 @@
                     <MudNumericField @bind-Value="oModel.DocNo" Disabled=true MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers"
                                      Label="Doc No*" Variant="Variant.Text"> </MudNumericField>
                 </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4">
+                @*<MudItem xs="4" sm="4" md="4" lg="4">
                     <MudTextField T="string" @bind-Value="oModel.DocCode" Disabled="@DisabledCode" Mask="@AlphaNumericMask" MaxLength="100" Counter="100" HelperText="Enter Doc Code" Immediate="true" Clearable="true"
                                   Label="Doc Code*" Variant="Variant.Text" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>*@
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisabledCode" MaxLength="50" Mask="AlphaNumericMask2" Counter="50" HelperText="Enter Code" Immediate="true" Clearable="true" Label="Code*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4" class="text-right">
                     <MudSwitch @bind-Checked="@oModel.FlgActive" ThumbIcon="@(oModel.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgActive==true ? Color.Info : Color.Error)">
                         <span>@(oModel.FlgActive == true ? "Active" : "In Active")</span>
                     </MudSwitch>
-                </MudItem>
-
-
-                <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisabledCode" MaxLength="50" Mask="AlphaNumericMask2" Counter="50" HelperText="Enter Code" Immediate="true" Clearable="true" Label="Code*" Variant="Variant.Text"
-                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
                     <MudSelect @bind-Value="oModel.ValueType" Label="Value Type*" HelperText="Select Value Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
@@ -105,7 +103,7 @@
                             <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
                         </ToolBarContent>
                         <HeaderContent>
-                            <MudTh>Doc Code</MudTh>
+                            @*<MudTh>Doc Code</MudTh>*@
                             <MudTh>Code</MudTh>
                             <MudTh>Value Type</MudTh>
                             <MudTh>Salary From</MudTh>
@@ -118,7 +116,7 @@
                             <MudTh>Action</MudTh>
                         </HeaderContent>
                         <RowTemplate>
-                            <MudTd DataLabel="Code">@context.DocCode</MudTd>
+                            @*<MudTd DataLabel="Code">@context.DocCode</MudTd>*@
                             <MudTd DataLabel="Value">@context.Code</MudTd>
                             <MudTd DataLabel="RangeFrom">@context.ValueType</MudTd>
                             <MudTd DataLabel="RangeTo">@context.SalaryFrom</MudTd>

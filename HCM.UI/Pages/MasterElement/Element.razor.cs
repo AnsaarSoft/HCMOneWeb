@@ -195,6 +195,7 @@ namespace HCM.UI.Pages.MasterElement
                     oModel.FlgStandardElement = true;
                     oModel.FlgEffectOnGross = true;
                     oModel.FlgProbationApplicable = true;
+                    oModel.FlgEmployeeBonus = false;
                     //oModel.FlgNotTaxable = false;
                     //oModel.FlgEos = false;
                     //oModel.FlgVariableValue = false;

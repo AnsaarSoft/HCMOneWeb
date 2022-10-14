@@ -61,13 +61,13 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
-                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.DocCode) && (oModel.DocNo > 0))
+                if (!string.IsNullOrWhiteSpace(oModel.Code) && (oModel.DocNo > 0))
                 {
                     if (oModel.Id == 0)
                     {
-                        if (oList.Where(x => x.DocCode.Trim().ToLowerInvariant() == oModel.DocCode.Trim().ToLowerInvariant()).Count() > 0)
+                        if (oList.Where(x => x.Code.Trim().ToLowerInvariant() == oModel.Code.Trim().ToLowerInvariant()).Count() > 0)
                         {
-                            Snackbar.Add(oModel.DocCode +" is Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                            Snackbar.Add(oModel.Code + " is already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                         }
                         else
                         {
@@ -166,6 +166,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             try
             {
                 oElementList = await _mstElement.GetAllData();
+                oElementList = oElementList.Where(x=> x.FlgActive == true && x.FlgEmployeeBonus == true).ToList();
             }
             catch (Exception ex)
             {
