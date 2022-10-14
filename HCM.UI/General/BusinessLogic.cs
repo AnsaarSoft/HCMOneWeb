@@ -165,7 +165,7 @@ namespace HCM.UI.General
             return amount;
         }
 
-        public static decimal GetOverTimeAmount(MstEmployee oEmp, MstOverTime oOverTime, out decimal EmprAmount)
+        public static decimal GetOverTimeAmount(MstEmployee oEmp, MstOverTime oOverTime, decimal EmprAmount)
         {
             decimal amount = 0;
             EmprAmount = 0;

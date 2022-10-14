@@ -14,10 +14,18 @@
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
+                <h3>Employee Header</h3>
+                <MudDivider />
+        </div>
+        <div class="col-sm-12">
             <MudGrid class="search-action-block align-items-center block-design">
-                <MudItem xs="3" sm="3" md="3" lg="3">
+              @*  <MudItem xs="3" sm="3" md="3" lg="3">
                     <MudAutocomplete T="MstEmployee" Value="oModelMstEmployee" SearchFunc="@SearchEmployee" ValueChanged="@FillEmployeeCode" Clearable="true" Label="Select Employee Code" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.EmpId}")" />
+                </MudItem>*@
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTextField T="string" ReadOnly="true" @bind-Value="EmpName"  HelperText="Employee Name" Immediate="true" Label="Select Employee*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Person" OnAdornmentClick="@((e) => OpenDialogEmployee(maxWidth))" AdornmentAriaLabel="Select Employee" />
                 </MudItem>
                 <MudItem xs="3" sm="3" md="3" lg="3">
                     <MudAutocomplete T="string" @bind-Value="FullName" ReadOnly="@true" Immediate="true" Clearable="true" Label="Employee Name" Variant="Variant.Text"
@@ -96,14 +104,14 @@
             </MudItem>
 
             <MudItem xs="2" sm="2" md="2" lg="2">
-                    <MudSwitch @bind-Checked="@oModelTrnsEmployeeOvertimeDetail.FlgActive" ThumbIcon="@(oModelTrnsEmployeeOvertimeDetail.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModelTrnsEmployeeOvertimeDetail.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModelTrnsEmployeeOvertimeDetail.FlgActive==true ? Color.Info : Color.Error)">
+                    <MudSwitch @bind-Checked="@IsFlg" ThumbIcon="@(IsFlg==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(IsFlg==true ? Color.Primary : Color.Error)" Color="@(IsFlg==true ? Color.Info : Color.Error)">
                     <span>@(
-                                oModelTrnsEmployeeOvertimeDetail.FlgActive == true ? "Overtime  - Yes" : "Overtime - No"
+                                IsFlg == true ? "Overtime  - Yes" : "Overtime - No"
                               )</span>
                 </MudSwitch>
             </MudItem>
             <MudItem xs="12" sm="12" md="12" lg="12" class="text-right custom-btn-design" style="justify-content: flex-end;">
-                    <MudButton Variant="Variant.Filled" OnClick="AddList" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Add List</MudButton>
+                    <MudButton Variant="Variant.Filled" OnClick="AddList" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Add Detail</MudButton>
              </MudItem>
         </MudGrid>
         </div>
@@ -114,7 +122,7 @@
                 <MudCardContent>
                     <MudTable Items="@oListTrnsEmployeeOvertimeDetail" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsEmployeeOvertimeDetail,bool>(FilterFunc)">
                         <ToolBarContent>
-                            <MudText Typo="Typo.h6">Employee List</MudText>
+                            <MudText Typo="Typo.h6">Employee Detail List</MudText>
                             <MudSpacer />
                             <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
                         </ToolBarContent>
