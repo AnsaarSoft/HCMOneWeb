@@ -4,6 +4,7 @@ using CA.UI.Authentication;
 using HCM.UI;
 using HCM.UI.Data.Account;
 using HCM.UI.Data.Advance;
+using HCM.UI.Data.ApprovalSetup;
 using HCM.UI.Data.Attendance;
 using HCM.UI.Data.EmployeeMasterSetup;
 using HCM.UI.Data.Loan;
@@ -12,6 +13,7 @@ using HCM.UI.Data.MasterElement;
 using HCM.UI.Data.ShiftManagement;
 using HCM.UI.Interfaces.Account;
 using HCM.UI.Interfaces.Advance;
+using HCM.UI.Interfaces.ApprovalSetup;
 using HCM.UI.Interfaces.Attendance;
 using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.Loan;
@@ -85,6 +87,7 @@ builder.Services.AddScoped<ITrnsLoanRequest, TrnsLoanRequestService>();
 builder.Services.AddScoped<ITrnsAdvanceRequest, TrnsAdvanceRequestService>();
 builder.Services.AddScoped<ITrnsEmployeeOverTime, TrnsEmployeeOverTimeService>();
 builder.Services.AddScoped<ITrnsEmployeeResign, TrnsEmployeeResignService>();
+builder.Services.AddScoped<IMstStages, MstStagesService>();
 
 //Configuration Start
 

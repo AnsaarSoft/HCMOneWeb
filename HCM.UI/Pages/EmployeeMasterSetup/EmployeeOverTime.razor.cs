@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using DocumentFormat.OpenXml.InkML;
+using HCM.API.HCMModels;
 using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.EmployeeMasterSetup;
@@ -49,9 +50,10 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         #region Variables
 
         bool Loading = false;
-        bool IsEmployeeValidate = false;
-        public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
+        bool IsFlg = false;
 
+        public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
+        string EmpName = "";
         private decimal Amount;
         private decimal Hours;
         private string PayrollPeriodstr = "Select Period";
@@ -71,7 +73,8 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         private IEnumerable<TrnsEmployeeOvertime> oList = new List<TrnsEmployeeOvertime>();
 
         TrnsEmployeeOvertimeDetail oModelTrnsEmployeeOvertimeDetail = new TrnsEmployeeOvertimeDetail();
-        private List<TrnsEmployeeOvertimeDetail> oListTrnsEmployeeOvertimeDetail = new List<TrnsEmployeeOvertimeDetail>();
+        private IEnumerable<TrnsEmployeeOvertimeDetail> oListTrnsEmployeeOvertimeDetail = new List<TrnsEmployeeOvertimeDetail>();
+        private List<TrnsEmployeeOvertimeDetail> oListTrnsEmployeeOtDetail = new List<TrnsEmployeeOvertimeDetail>();
 
         CfgPayrollDefination oPayroll = new CfgPayrollDefination();
         private List<CfgPayrollDefination> oListPayroll = new List<CfgPayrollDefination>();
@@ -91,6 +94,36 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
 
         #region Functions
+        private async Task OpenDialogEmployee(DialogOptions options)
+        {
+            try
+            {
+                var parameters = new DialogParameters();
+                parameters.Add("DialogFor", "EmployeeMaster");
+                var dialog = Dialog.Show<DialogBox>("", parameters, options);
+                var result = await dialog.Result;
+                if (!result.Cancelled)
+                {
+                    var res = (MstEmployee)result.Data;
+                    oModelMstEmployee = res;
+                    oModel.EmployeeId = oModelMstEmployee.Id;
+                    
+                    EmpName = oModelMstEmployee.FirstName + " " + oModelMstEmployee.MiddleName + " " + oModelMstEmployee.LastName;
+                    var EmpDetail = oListEmployee.Where(x => x.EmpId == oModelMstEmployee.EmpId).FirstOrDefault();
+                    oPayroll = oListPayroll.Where(x => x.Id == EmpDetail.PayrollId).FirstOrDefault();
+                    CfgPeriodDate mstPayrollPeriod = new CfgPeriodDate();
+                    oListPayrollPeriod = oPayroll.CfgPeriodDates.Where(x => x.PayrollId == oPayroll.Id).ToList();
+                   
+                   // FullName = EmpDetail.FirstName + " " + EmpDetail.MiddleName + " " + EmpDetail.LastName;
+                    oModelMstEmployee.PayrollName = EmpDetail.PayrollName;
+                    oModelMstEmployee = EmpDetail;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
         private async Task OpenDialog(DialogOptions options)
         {
             try
@@ -108,16 +141,15 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
                     oListTrnsEmployeeOvertimeDetail = oModel.TrnsEmployeeOvertimeDetails.ToList();
                     oModelTrnsEmployeeOvertimeDetail = oListTrnsEmployeeOvertimeDetail.Where(x => x.EmpOvertimeId == oModel.Id).FirstOrDefault();
-                    oModelmstOvertime = oListmstOverTime.Where(x=>x.Id== oModelTrnsEmployeeOvertimeDetail.OvertimeId).FirstOrDefault();
-                 
-                    
-                   
-                   // oModelmstOvertime.Id = (int)oModelTrnsEmployeeOvertimeDetail.OvertimeId;
-                    docdate = oModelTrnsEmployeeOvertimeDetail.Otdate;
-                    timefrom = TimeSpan.Parse(oModelTrnsEmployeeOvertimeDetail.FromTime);
-                    timeto = TimeSpan.Parse(oModelTrnsEmployeeOvertimeDetail.ToTime);
-                    Hours = Convert.ToDecimal(oModelTrnsEmployeeOvertimeDetail.Othours);
-                    Amount = Convert.ToDecimal(oModelTrnsEmployeeOvertimeDetail.Amount);
+
+
+                   // oModelmstOvertime = oListmstOverTime.Where(x=>x.Id== oModelTrnsEmployeeOvertimeDetail.OvertimeId).FirstOrDefault();                   
+                   //// oModelmstOvertime.Id = (int)oModelTrnsEmployeeOvertimeDetail.OvertimeId;
+                   // docdate = oModelTrnsEmployeeOvertimeDetail.Otdate;
+                   // timefrom = TimeSpan.Parse(oModelTrnsEmployeeOvertimeDetail.FromTime);
+                   // timeto = TimeSpan.Parse(oModelTrnsEmployeeOvertimeDetail.ToTime);
+                   // Hours = Convert.ToDecimal(oModelTrnsEmployeeOvertimeDetail.Othours);
+                   // Amount = Convert.ToDecimal(oModelTrnsEmployeeOvertimeDetail.Amount);
                 }
             }
             catch (Exception ex)
@@ -303,16 +335,27 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         {
             try
             {
-                var res = oList.Where(x => x.Id == LineNum).FirstOrDefault();
-
+                // var res = oList.Where(x => x.Id == LineNum).FirstOrDefault();
+               // IEnumerable<TrnsEmployeeOvertimeDetail> listot = oListTrnsEmployeeOvertimeDetail.ToList();
+                var res = oListTrnsEmployeeOvertimeDetail.Where(x => x.Id == LineNum).FirstOrDefault();
+                oListTrnsEmployeeOtDetail = oListTrnsEmployeeOvertimeDetail.ToList();
                 if (res != null)
                 {
-                    oModel.Id = res.Id;
-                    //oModel.DoNum = res.DoNum;
-                    //oModel.DocDate = res.DocDate;
-                    oModel.TrnsEmployeeOvertimeDetails = res.TrnsEmployeeOvertimeDetails;
-                    oListTrnsEmployeeOvertimeDetail = (List<TrnsEmployeeOvertimeDetail>)res.TrnsEmployeeOvertimeDetails;
-
+                    oModel.Id = (int)res.EmpOvertimeId;
+                    oModelmstOvertime = oListmstOverTime.Where(x => x.Id == res.OvertimeId).FirstOrDefault();
+                   
+                    docdate = res.Otdate;
+                    timefrom= TimeSpan.Parse(res.FromTime);
+                    timeto= TimeSpan.Parse(res.ToTime);
+                    Hours = (decimal)res.Othours;
+                    IsFlg = (bool)res.FlgActive;
+                    
+                    var filterRecord =oListTrnsEmployeeOvertimeDetail.Where(x => x.Id == res.Id).FirstOrDefault();
+                    oListTrnsEmployeeOtDetail.Remove(filterRecord);
+                    oListTrnsEmployeeOvertimeDetail = oListTrnsEmployeeOtDetail;
+                    //var FilterRecord = oListTrnsEmployeeOvertimeDetail.Where(x => x.Id == res.Id).FirstOrDefault();
+                    //oListTrnsEmployeeOTDtl.Remove(FilterRecord);
+                    //oListTrnsEmployeeOvertimeDetail = oListTrnsEmployeeOTDtl;
                     oList = oList.Where(x => x.Id != LineNum);
                 }
             }
@@ -353,44 +396,51 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
 
-
-                //oModel.EmployeeId = oModelMstEmployee.Id;
-                //oModelTrnsEmployeeOvertimeDetail.OvertimeId = oModelmstOvertime.Id;
-                //oModelTrnsEmployeeOvertimeDetail.EmpOvertimeId = oModel.Id;
-                //oModelTrnsEmployeeOvertimeDetail.Otdate = docdate;
-                //oModelTrnsEmployeeOvertimeDetail.FromTime = timefrom.ToString();
-                //oModelTrnsEmployeeOvertimeDetail.ToTime = timeto.ToString();
-                //oModelTrnsEmployeeOvertimeDetail.Othours = Hours;
-                //oModelmstOvertime = oListmstOverTime.Where(x => x.Id == oModelmstOvertime.Id).FirstOrDefault();
-                //decimal emprAmount = 0;
-                //oModelTrnsEmployeeOvertimeDetail.Amount = BusinessLogic.GetOverTimeAmount(oModelMstEmployee, oModelmstOvertime, out emprAmount);
-
-                //if ((oModel.EmployeeId != null && oModel.EmployeeId > 0)
-                //    && !string.IsNullOrWhiteSpace(oModel.PeriodName)
-                //    && (oModelTrnsEmployeeOvertimeDetail.OvertimeId != null && oModelTrnsEmployeeOvertimeDetail.OvertimeId > 0)
-                //    && (oModelTrnsEmployeeOvertimeDetail.Otdate != null)
-                //    && (oModelTrnsEmployeeOvertimeDetail.Othours != null && oModelTrnsEmployeeOvertimeDetail.Othours > 0)
-                //    && (oModelTrnsEmployeeOvertimeDetail.Amount != null && oModelTrnsEmployeeOvertimeDetail.Amount > 0)
-                //    && (oModelTrnsEmployeeOvertimeDetail.FlgActive != null && oModelTrnsEmployeeOvertimeDetail.FlgActive != false))
-                if(oListTrnsEmployeeOvertimeDetail.Count > 0)
+               
+                if (oListTrnsEmployeeOvertimeDetail.Count() > 0)
                 {
-                    if (oModel.Id == 0)
-                    {
-                        oModelTrnsEmployeeOvertimeDetail.CreateDate = DateTime.Now;
-                        oModelTrnsEmployeeOvertimeDetail.UserId = LoginUser;
-                    }
-                    else
-                    {
-                        oModelTrnsEmployeeOvertimeDetail.UpdateDate = DateTime.Now;
-                        oModelTrnsEmployeeOvertimeDetail.UpdatedBy = LoginUser;
-                    }
-                    oModel.TrnsEmployeeOvertimeDetails.Add(oModelTrnsEmployeeOvertimeDetail);
+                    oModel.EmployeeId = oModelMstEmployee.Id;
 
-                    if (oModel.TrnsEmployeeOvertimeDetails.Count() > 0)
+                    oListTrnsEmployeeOtDetail.Clear();
+                    foreach (var item in oListTrnsEmployeeOvertimeDetail)
                     {
-                        //var check = oList.Where(x => x.Id == oModel.Id).FirstOrDefault();
-                        //if (check == null)
-                        //{
+                        
+                        //oModel.TrnsEmployeeOvertimeDetails = oListTrnsEmployeeOvertimeDetail.ToList();
+                        //oDetailList.ToList();                        
+                        if (oModel.Id == 0)
+                        {
+                            item.UserId = LoginUser;
+                            item.CreateDate = DateTime.Now.Date;
+                            oListTrnsEmployeeOtDetail.Add(item);
+                            oModel.TrnsEmployeeOvertimeDetails =  oListTrnsEmployeeOtDetail.ToList();
+
+                        }
+                        else
+                        {
+                            item.UpdatedBy = LoginUser;
+                            item.UpdateDate = DateTime.Now.Date;
+                            oListTrnsEmployeeOtDetail.Add(item);
+                            oModel.TrnsEmployeeOvertimeDetails = oListTrnsEmployeeOtDetail.ToList();
+                        }
+
+
+                    }
+
+
+                    //if (oModel.Id == 0)
+                    //{
+                    //    oModelTrnsEmployeeOvertimeDetail.CreateDate = DateTime.Now;
+                    //    oModelTrnsEmployeeOvertimeDetail.UserId = LoginUser;
+                    //}
+                    //else
+                    //{
+                    //    oModelTrnsEmployeeOvertimeDetail.UpdateDate = DateTime.Now;
+                    //    oModelTrnsEmployeeOvertimeDetail.UpdatedBy = LoginUser;
+                    //}
+                    //oModel.TrnsEmployeeOvertimeDetails.Add(oModelTrnsEmployeeOvertimeDetail);
+
+                    //if (oModel.TrnsEmployeeOvertimeDetails.Count() > 0)
+                    //{
                         if (oModel.Id == 0)
                         {
                             oModel.UserId = LoginUser;
@@ -412,12 +462,11 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                         {
                             Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                         }
-                        // }
-                    }
-                    else
-                    {
-                        Snackbar.Add("No Record Found .", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                    }
+                    //}
+                    //else
+                    //{
+                    //    Snackbar.Add("No Record Found .", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                    //}
 
                 }
 
@@ -449,32 +498,35 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 await Task.Delay(3);
 
 
-                oModel.EmployeeId = oModelMstEmployee.Id;
-                oModelTrnsEmployeeOvertimeDetail.OvertimeId = oModelmstOvertime.Id;
-                oModelTrnsEmployeeOvertimeDetail.EmpOvertimeId = oModel.Id;
-                oModelTrnsEmployeeOvertimeDetail.Otdate = docdate;
-                oModelTrnsEmployeeOvertimeDetail.FromTime = timefrom.ToString();
-                oModelTrnsEmployeeOvertimeDetail.ToTime = timeto.ToString();
-                oModelTrnsEmployeeOvertimeDetail.Othours = Hours;
+              //  oModel.EmployeeId = oModelMstEmployee.Id;
+              TrnsEmployeeOvertimeDetail trnsEmployeeOvertimeDetail = new TrnsEmployeeOvertimeDetail();
+                trnsEmployeeOvertimeDetail.OvertimeId = oModelmstOvertime.Id;
+                trnsEmployeeOvertimeDetail.EmpOvertimeId = oModel.Id;
+                trnsEmployeeOvertimeDetail.Otdate = docdate;
+                trnsEmployeeOvertimeDetail.FromTime = timefrom.ToString();
+                trnsEmployeeOvertimeDetail.ToTime = timeto.ToString();
+                trnsEmployeeOvertimeDetail.Othours = Hours;
+                trnsEmployeeOvertimeDetail.FlgActive=IsFlg;
                 oModelmstOvertime = oListmstOverTime.Where(x => x.Id == oModelmstOvertime.Id).FirstOrDefault();
-                decimal emprAmount = 0;
-                oModelTrnsEmployeeOvertimeDetail.Amount = BusinessLogic.GetOverTimeAmount(oModelMstEmployee, oModelmstOvertime, out emprAmount);
+                oModelTrnsEmployeeOvertimeDetail.Amount = BusinessLogic.GetOverTimeAmount(oModelMstEmployee, oModelmstOvertime, Hours);
 
-                if ((oModel.EmployeeId != null && oModel.EmployeeId > 0)
-                    && !string.IsNullOrWhiteSpace(oModel.PeriodName)
-                    && (oModelTrnsEmployeeOvertimeDetail.OvertimeId != null && oModelTrnsEmployeeOvertimeDetail.OvertimeId > 0)
-                    && (oModelTrnsEmployeeOvertimeDetail.Otdate != null)
-                    && (oModelTrnsEmployeeOvertimeDetail.Othours != null && oModelTrnsEmployeeOvertimeDetail.Othours > 0)
-                    && (oModelTrnsEmployeeOvertimeDetail.Amount != null && oModelTrnsEmployeeOvertimeDetail.Amount > 0)
-                    && (oModelTrnsEmployeeOvertimeDetail.FlgActive != null && oModelTrnsEmployeeOvertimeDetail.FlgActive != false))
+                if (!string.IsNullOrWhiteSpace(oModel.PeriodName)
+                    && (trnsEmployeeOvertimeDetail.OvertimeId != null && trnsEmployeeOvertimeDetail.OvertimeId > 0)
+                    && (trnsEmployeeOvertimeDetail.Otdate != null)
+                    && (trnsEmployeeOvertimeDetail.Othours != null && trnsEmployeeOvertimeDetail.Othours > 0)
+                    && (trnsEmployeeOvertimeDetail.Amount != null && trnsEmployeeOvertimeDetail.Amount > 0)
+                    && (trnsEmployeeOvertimeDetail.FlgActive != null && trnsEmployeeOvertimeDetail.FlgActive != false))
                 {
-                    oListTrnsEmployeeOvertimeDetail.Add(oModelTrnsEmployeeOvertimeDetail);
-                    docdate=null;
-                    timefrom=null;
-                    timeto =null;
+                    
+                    oListTrnsEmployeeOtDetail.Add(trnsEmployeeOvertimeDetail);
+                    oListTrnsEmployeeOvertimeDetail = oListTrnsEmployeeOtDetail.ToList();
+                    docdate =DateTime.Now;
+                    timefrom= new TimeSpan(0, 0, 0); 
+                    timeto = new TimeSpan(0,0,0);
                     Hours = 0;
                     Amount = 0;
-                    oModelTrnsEmployeeOvertimeDetail = null;
+                    IsFlg = false;
+                    //oModelTrnsEmployeeOvertimeDetail = null;
                 }
 
                 else

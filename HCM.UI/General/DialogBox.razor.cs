@@ -138,6 +138,8 @@ namespace HCM.UI.General
         TrnsEmployeeOvertime oModelTrnsEmployeeOvertime = new TrnsEmployeeOvertime();
         List<TrnsEmployeeOvertime> oListTrnsEmployeeOvertime = new List<TrnsEmployeeOvertime>();
 
+        private HashSet<MstEmployee> selectedEmployee = new HashSet<MstEmployee>();
+
         #endregion
 
         #region Functions
@@ -560,6 +562,10 @@ namespace HCM.UI.General
                     await GetAllPayrollSetup();
                 }
                 else if (DialogFor == "EmployeeMaster")
+                {
+                    await GetAllMstEmployee();
+                }
+                else if (DialogFor == "MultipleEmployeeSelect")
                 {
                     await GetAllMstEmployee();
                 }
@@ -1015,6 +1021,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "EmployeeMaster" && oModelMstEmployee.Id > 0)
                 {
                     MudDialog.Close(DialogResult.Ok<MstEmployee>(oModelMstEmployee));
+                }
+                else if (DialogFor == "MultipleEmployeeSelect" && selectedEmployee.Count > 0)
+                {
+                    MudDialog.Close(DialogResult.Ok<HashSet<MstEmployee>>(selectedEmployee));
                 }
                 else if (DialogFor == "TrnsEmployeeTransfer" && oModelTrnsEmployeeTransfer.Id > 0)
                 {
