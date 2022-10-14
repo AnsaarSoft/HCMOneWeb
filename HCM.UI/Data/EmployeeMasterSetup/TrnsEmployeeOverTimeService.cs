@@ -7,24 +7,24 @@ using RestSharp;
 
 namespace HCM.UI.Data.EmployeeMasterSetup
 {
-    public class TrnsEmployeeTransferService : ITrnsEmployeeTransfer
+    public class TrnsEmployeeOverTimeService : ITrnsEmployeeOverTime
     {
         private readonly RestClient _restClient;
 
-        public TrnsEmployeeTransferService()
+        public TrnsEmployeeOverTimeService()
         {
             _restClient = new RestClient(Settings.APIBaseURL);
         }
 
-        public async Task<List<TrnsEmployeeTransfer>> GetAllData()
+        public async Task<List<TrnsEmployeeOvertime>> GetAllData()
         {
             try
             {
-                List<TrnsEmployeeTransfer> oList = new List<TrnsEmployeeTransfer>();
+                List<TrnsEmployeeOvertime> oList = new List<TrnsEmployeeOvertime>();
 
-                var request = new RestRequest("EmployeeMasterData/getAllEmptrns", Method.Get) { RequestFormat = DataFormat.Json };
+                var request = new RestRequest("EmployeeMasterData/getAllEmpOT", Method.Get) { RequestFormat = DataFormat.Json };
 
-                var response = await _restClient.ExecuteAsync<List<TrnsEmployeeTransfer>>(request);
+                var response = await _restClient.ExecuteAsync<List<TrnsEmployeeOvertime>>(request);
 
                 if (response.IsSuccessful)
                 {
@@ -42,13 +42,13 @@ namespace HCM.UI.Data.EmployeeMasterSetup
             }
         }
 
-        public async Task<ApiResponseModel> Insert(TrnsEmployeeTransfer oTrnsEmployeeTransfer)
+        public async Task<ApiResponseModel> Insert(TrnsEmployeeOvertime oTrnsEmployeeOvertime)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                var request = new RestRequest("EmployeeMasterData/addEmptrns", Method.Post);
-                request.AddJsonBody(oTrnsEmployeeTransfer);
+                var request = new RestRequest("EmployeeMasterData/addEmpOT", Method.Post);
+                request.AddJsonBody(oTrnsEmployeeOvertime);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {
@@ -72,13 +72,13 @@ namespace HCM.UI.Data.EmployeeMasterSetup
             }
         }
 
-        public async Task<ApiResponseModel> Update(TrnsEmployeeTransfer oTrnsEmployeeTransfer)
+        public async Task<ApiResponseModel> Update(TrnsEmployeeOvertime oTrnsEmployeeOvertime)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                var request = new RestRequest("EmployeeMasterData/updateEmptrns", Method.Post);
-                request.AddJsonBody(oTrnsEmployeeTransfer);
+                var request = new RestRequest("EmployeeMasterData/updateEmpOT", Method.Post);
+                request.AddJsonBody(oTrnsEmployeeOvertime);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {

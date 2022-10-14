@@ -74,30 +74,6 @@
                         <MudAvatar Image="@EmpImagePath" Style="height:70px; width:70px; font-size:2rem;" />
                     </MudPaper>
                 </MudItem>
-               @* <MudItem xs="2" sm="2" md="2" lg="2" class="text-left">
-                    <MudSwitch @bind-Checked="@oModel.FlgMedicalExempt" ThumbIcon="@(oModel.FlgMedicalExempt==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgMedicalExempt==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgMedicalExempt==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgMedicalExempt == true ? "10% Med Exampt - Yes" : "10% Med Exampt - No")</span>
-                    </MudSwitch>
-                    <MudSwitch @bind-Checked="@oModel.FlgTax" ThumbIcon="@(oModel.FlgTax==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgTax==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgTax==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgTax == true ? "Taxable - Yes" : "Taxable - No")</span>
-                    </MudSwitch>
-                </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2" class="text-left">
-                    <MudSwitch @bind-Checked="@oModel.FlgOtapplicable" ThumbIcon="@(oModel.FlgOtapplicable==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgOtapplicable==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgOtapplicable==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgOtapplicable == true ? "Overtime Applicable - Yes" : "Overtime Applicable - No")</span>
-                    </MudSwitch>
-                    <MudSwitch @bind-Checked="@oModel.FlgSuperVisor" ThumbIcon="@(oModel.FlgSuperVisor==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgSuperVisor==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgSuperVisor==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgSuperVisor == true ? "Supervisor - Yes" : "Supervisor - No")</span>
-                    </MudSwitch>
-                </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2" class="text-left">
-                    <MudSwitch @bind-Checked="@oModel.FlgDailyWager" ThumbIcon="@(oModel.FlgDailyWager==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgDailyWager==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgDailyWager==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgDailyWager == true ? "Daily Wager - Yes" : "Daily Wager - No")</span>
-                    </MudSwitch>
-                    <MudSwitch @bind-Checked="@oModel.FlgActive" ThumbIcon="@(oModel.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgActive==true ? Color.Info : Color.Error)">
-                        <span>@(oModel.FlgActive == true ? "Active" : "In Active")</span>
-                    </MudSwitch>
-                </MudItem>*@
                 @if (Loading)
                 {
                         <MudItem xs="2" sm="2" md="2" lg="2">
@@ -144,14 +120,6 @@
                                 }
                             </MudSelect>
                         </MudItem>
-                       @* <MudItem xs="3" sm="3" md="3" lg="3">
-                            <MudSelect @bind-Value="oModel.BloodGroupId" Label="Blood Group" HelperText="Select Blood Group" AdornmentIcon="@Icons.Material.Filled.Bloodtype" Adornment="Adornment.Start">
-                                @foreach (MstLove Love in oListLove.Where(x => x.Type == "BloodGroup").ToList())
-                                {
-                                        <MudSelectItem Value="@Love.Id.ToString()">@Love.Value</MudSelectItem>
-                                }
-                            </MudSelect>
-                        </MudItem>*@
                         <MudItem xs="3" sm="3" md="3" lg="3">
                             <MudSelect @bind-Value="oModel.MartialStatusId" Label="Marital Status*" HelperText="Select Marital Status" AdornmentIcon="@Icons.Material.Filled.People" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "Marital").ToList())
@@ -180,62 +148,6 @@
                             <MudTextField T="string" @bind-Value="oModel.Nationality" MaxLength="20" Counter="20" HelperText="Enter Nationality" Immediate="true" Clearable="true" Label="Nationality*" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                         </MudItem>
-                       @* <MudItem xs="3" sm="3" md="3" lg="3">
-                            <MudTextField T="string" @bind-Value="oModel.SocialSecurityNo" MaxLength="20" Counter="20" HelperText="Enter Social Security No" Immediate="true" Clearable="true" Label="Social Security No" Variant="Variant.Text"
-                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" />
-                        </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
-                            <MudTextField T="string" @bind-Value="oModel.EmpUnion" MaxLength="10" Counter="10" HelperText="Enter Employee Union" Immediate="true" Clearable="true" Label="Employee Union" Variant="Variant.Text"
-                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" />
-                        </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
-                            <MudTextField T="string" @bind-Value="oModel.UnionMembershipNo" MaxLength="20" Counter="20" HelperText="Enter Union Membership No" Immediate="true" Clearable="true" Label="Union Membership No" Variant="Variant.Text"
-                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" />
-                        </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
-                            <MudTextField T="string" @bind-Value="oModel.Idno" MaxLength="20" Counter="20" HelperText="Enter ID No" Immediate="true" Clearable="true" Label="ID No" Variant="Variant.Text"
-                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" />
-                        </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
-                            <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.IddateofIssue" Label="ID Date of Issue" HelperText="Enter ID Date of Issue" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
-                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
-                        </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
-                            <MudTextField T="string" @bind-Value="oModel.IdplaceofIssue" MaxLength="20" Counter="20" HelperText="Enter ID Place of Issue" Immediate="true" Clearable="true" Label="ID Place of Issue" Variant="Variant.Text"
-                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
-                        </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
-                            <MudTextField T="string" @bind-Value="oModel.IdissuedBy" MaxLength="50" Counter="50" HelperText="Enter ID Issued By" Immediate="true" Clearable="true" Label="ID Issued By" Variant="Variant.Text"
-                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
-                        </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
-                            <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.IdexpiryDate" Label="ID Date of Expiry" HelperText="Enter ID Date of Expiry" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
-                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
-                        </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
-                            <MudTextField T="string" @bind-Value="oModel.PassportNo" MaxLength="100" Counter="100" HelperText="Enter Passport No" Immediate="true" Clearable="true" Label="Passport No" Variant="Variant.Text"
-                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" />
-                        </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
-                            <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.PassportDateofIssue" Label="Passport Date of Issue" HelperText="Enter Passport Date of Issue" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
-                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
-                        </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
-                            <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.PassportExpiryDate" Label="Passport Date of Expiry" HelperText="Enter Passport Date of Expiry" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
-                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
-                        </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
-                            <MudTextField T="string" @bind-Value="oModel.IncomeTaxNo" MaxLength="20" Counter="20" HelperText="Enter Income Tax No" Immediate="true" Clearable="true" Label="Income Tax No" Variant="Variant.Text"
-                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" />
-                        </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
-                            <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.ResignDate" Label="Resignation Date" HelperText="Enter Resignation Date" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
-                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
-                        </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
-                            <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.TerminationDate" Label="Termination Date" HelperText="Enter Termination Date" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
-                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
-                        </MudItem>*@
                     </MudGrid>
                 </MudTabPanel>
                 <MudTabPanel Text="Salary" Icon="@Icons.Material.Filled.Money">
@@ -320,24 +232,6 @@
                                 }
                             </MudSelect>
                         </MudItem>
-                       @* <MudItem xs="3" sm="3" md="3" lg="3">
-                            <MudAutocomplete T="MstGratuity" @bind-Value="oModelGratuity" SearchFunc="@SearchGratuity" Clearable="true" Label="Select Gratuity" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
-                                             Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Code}")" />
-                        </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
-                            <MudAutocomplete T="MstBonu" @bind-Value="oModelBonus" SearchFunc="@SearchBonus" Clearable="true" Label="Select Bonus" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
-                                             Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Code}")" />
-                        </MudItem>
-                        <MudItem xs="2" sm="2" md="2" lg="2" class="text-left">
-                            <MudSwitch @bind-Checked="@oModel.FlgEmail" ThumbIcon="@(oModel.FlgEmail==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgEmail==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgEmail==true ? Color.Info : Color.Error)">
-                                <span>@(oModel.FlgEmail == true ? "Email Salary Slip - Yes" : "Email Salary Slip - No")</span>
-                            </MudSwitch>
-                        </MudItem>
-                        <MudItem xs="2" sm="2" md="2" lg="2" class="text-left">
-                            <MudSwitch @bind-Checked="@oModel.FlgSandwich" ThumbIcon="@(oModel.FlgSandwich==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgSandwich==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgSandwich==true ? Color.Info : Color.Error)">
-                                <span>@(oModel.FlgSandwich == true ? "Sandwich Leaves - Yes" : "Sandwich Leaves - No")</span>
-                            </MudSwitch>
-                        </MudItem>*@
                     </MudGrid>
                 </MudTabPanel>
                @* <MudTabPanel Text="Contact" Icon="@Icons.Material.Filled.Contacts">

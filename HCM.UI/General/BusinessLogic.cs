@@ -164,5 +164,45 @@ namespace HCM.UI.General
             }
             return amount;
         }
+
+        public static decimal GetOverTimeAmount(MstEmployee oEmp, MstOverTime oOverTime, out decimal EmprAmount)
+        {
+            decimal amount = 0;
+            EmprAmount = 0;
+            try
+            {
+                if (oOverTime is not null)
+                {
+                    if (oOverTime.ValueType == "POB")
+                    {
+                        //decimal basic = oEmp.BasicSalary.GetValueOrDefault();
+                        //decimal configvalue = oOverTime..GetValueOrDefault();
+                        //decimal configvalueempr = oOverTime.EmployerContribution.GetValueOrDefault();
+
+                        //amount = (basic / 100) * configvalue;
+                        //EmprAmount = (basic / 100) * configvalueempr;
+                        return 10;
+                    }
+                    else if (oOverTime.ValueType == "POG")
+                    {
+                        //decimal gross = oEmp.GrossSalary.GetValueOrDefault();
+                        //decimal configvalue = oOverTime.EmployeeContribution.GetValueOrDefault();
+                        //decimal configvalueempr = oOverTime.EmployerContribution.GetValueOrDefault();
+                        //amount = (gross / 100) * configvalue;
+                        //EmprAmount = (gross / 100) * configvalueempr;
+                        return 10;
+                    }
+                    else
+                    {
+                        amount = oOverTime.Value.GetValueOrDefault();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+            return amount;
+        }
     }
 }

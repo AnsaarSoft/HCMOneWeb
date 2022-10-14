@@ -1,6 +1,6 @@
 ﻿using HCM.API.Models;
 
-namespace HCM.API.Interfaces.MasterData
+namespace HCM.API.Interfaces.EmployeeMasterSetup
 {
     public interface ITrnsEmployeeTransfer
     {
