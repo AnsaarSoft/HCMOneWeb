@@ -95,6 +95,8 @@ builder.Services.AddScoped<ITrnsLeaveRequest, TrnsLeaveRequestRepo>();
 builder.Services.AddScoped<ITrnsElementTransaction, TrnsElementTransactionRepo>();
 builder.Services.AddScoped<ITrnsLoanRequest, TrnsLoanRequestRepo>();
 builder.Services.AddScoped<ITrnsAdvanceRequest, TrnsAdvanceRequestRepo>();
+builder.Services.AddScoped<ITrnsEmployeeOverTime, TrnsEmployeeOverTimeRepo>();
+builder.Services.AddScoped<ITrnsEmployeeResign, TrnsEmployeeResignRepo>();
 
 
 Settings.TitleConfig = builder.Configuration.GetValue<string>("TitleConfig");

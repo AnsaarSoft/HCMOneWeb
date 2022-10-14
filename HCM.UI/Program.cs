@@ -83,6 +83,7 @@ builder.Services.AddScoped<ITrnsLeaveRequest, TrnsLeaveRequestService>();
 builder.Services.AddScoped<ITrnsElementTransaction, TrnsElementTransactionService>();
 builder.Services.AddScoped<ITrnsLoanRequest, TrnsLoanRequestService>();
 builder.Services.AddScoped<ITrnsAdvanceRequest, TrnsAdvanceRequestService>();
+builder.Services.AddScoped<ITrnsEmployeeOverTime, TrnsEmployeeOverTimeService>();
 builder.Services.AddScoped<ITrnsEmployeeResign, TrnsEmployeeResignService>();
 
 //Configuration Start

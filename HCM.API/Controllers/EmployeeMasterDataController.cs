@@ -14,12 +14,16 @@ namespace HCM.API.Controllers
         private IMstEmployeeMasterData _mstEmployee;
         private ITrnsEmployeeTransfer _TrnsEmployeeTransfer;
         private ITrnsLeaveRequest _trnsLeaveRequest;
+        private ITrnsEmployeeOverTime _TrnsEmployeeOverTime;
+        private ITrnsEmployeeResign _trnsEmployeeResign;
 
-        public EmployeeMasterDataController(IMstEmployeeMasterData mstEmployee, ITrnsLeaveRequest trnsLeaveRequest, ITrnsEmployeeTransfer TrnsEmployeeTransfer)
+        public EmployeeMasterDataController(IMstEmployeeMasterData mstEmployee, ITrnsLeaveRequest trnsLeaveRequest, ITrnsEmployeeTransfer TrnsEmployeeTransfer, ITrnsEmployeeResign trnsEmployeeResign, ITrnsEmployeeOverTime trnsEmployeeOverTime)
         {
             _mstEmployee = mstEmployee;
             _TrnsEmployeeTransfer = TrnsEmployeeTransfer;
             _trnsLeaveRequest = trnsLeaveRequest;
+            _trnsEmployeeResign = trnsEmployeeResign;
+            _TrnsEmployeeOverTime = trnsEmployeeOverTime;
         }
 
         #region MST Employee
@@ -328,6 +332,82 @@ namespace HCM.API.Controllers
             try
             {
                 response = await _trnsLeaveRequest.Update(pTrnsLeavesRequest);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
+
+        #region Employee OverTIme
+
+        [Route("getAllEmpOT")]
+        [HttpGet]
+        public async Task<IActionResult> getAllEmpOT()
+        {
+            List<TrnsEmployeeOvertime> oTrnsEmployeeOvertime = new List<TrnsEmployeeOvertime>();
+            try
+            {
+                oTrnsEmployeeOvertime = await _TrnsEmployeeOverTime.GetAllData();
+                if (oTrnsEmployeeOvertime == null)
+                {
+                    return BadRequest(oTrnsEmployeeOvertime);
+                }
+                else
+                {
+                    return Ok(oTrnsEmployeeOvertime);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addEmpOT")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] TrnsEmployeeOvertime pTrnsEmployeeOvertime)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _TrnsEmployeeOverTime.Insert(pTrnsEmployeeOvertime);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateEmpOT")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] TrnsEmployeeOvertime pTrnsEmployeeOvertime)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _TrnsEmployeeOverTime.Update(pTrnsEmployeeOvertime);
                 if (response == null)
                 {
                     return BadRequest(response);
