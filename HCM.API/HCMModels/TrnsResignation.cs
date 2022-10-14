@@ -12,6 +12,10 @@ namespace HCM.API.HCMModels
         public int? Series { get; set; }
         public int? DocNum { get; set; }
         public int? EmpId { get; set; }
+        public string EmpName { get; set; }
+        public string EmpDept { get; set; }
+        public string EmpDesg { get; set; }
+        public DateTime? DocDate { get; set; }
         public DateTime? DateOfJoining { get; set; }
         public DateTime? ResignDate { get; set; }
         public DateTime? TerminationDate { get; set; }
