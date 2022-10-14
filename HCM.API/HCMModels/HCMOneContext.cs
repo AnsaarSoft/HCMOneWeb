@@ -21048,6 +21048,8 @@ namespace HCM.API.HCMModels
                     .HasMaxLength(20)
                     .HasColumnName("DocAprStatusLOV");
 
+                entity.Property(e => e.DocDate).HasColumnType("datetime");
+
                 entity.Property(e => e.DocName)
                     .HasMaxLength(150)
                     .IsUnicode(false);
@@ -21060,7 +21062,13 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.DocType).HasDefaultValueSql("((12))");
 
+                entity.Property(e => e.EmpDept).HasMaxLength(50);
+
+                entity.Property(e => e.EmpDesg).HasMaxLength(50);
+
                 entity.Property(e => e.EmpId).HasColumnName("EmpID");
+
+                entity.Property(e => e.EmpName).HasMaxLength(100);
 
                 entity.Property(e => e.Extension)
                     .HasMaxLength(50)
