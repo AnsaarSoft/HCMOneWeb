@@ -13,6 +13,6 @@ namespace HCM.API.HCMModels
         public DateTime? CreatedDate { get; set; }
         public string UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
-        public bool? FlgPayrollForm { get; set; }
+        public bool? FlgPayrollForms { get; set; }
     }
 }

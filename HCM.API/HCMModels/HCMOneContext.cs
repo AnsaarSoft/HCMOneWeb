@@ -8419,6 +8419,8 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
 
+                entity.Property(e => e.FlgPayrollForms).HasColumnName("flgPayrollForms");
+
                 entity.Property(e => e.FormName)
                     .IsRequired()
                     .HasMaxLength(150)
