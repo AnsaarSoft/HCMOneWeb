@@ -89,7 +89,7 @@ namespace HCM.API.Repository.ApprovalSetup
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.MstForms.Where(x => x.FlgActive == true && x.FlgPayrollForm == true).ToList();
+                    oList = _DBContext.MstForms.Where(x => x.FlgActive == true && x.FlgPayrollForms == true).ToList();
                 });
             }
             catch (Exception ex)
