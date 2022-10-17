@@ -183,6 +183,10 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             {
                 oListPayroll = await _CfgPayrollDefination.GetAllData();
                 oListPayroll = oListPayroll.Where(x => x.FlgActive == true).ToList();
+                var SelectedPayroll = oListPayroll.FirstOrDefault();
+                oModel.PayrollId = SelectedPayroll.Id;
+                oListPayrollPeriod = SelectedPayroll.CfgPeriodDates.Where(x => x.PayrollId == oModel.PayrollId).ToList();
+                oModel.PaysInPeriodId = oListPayrollPeriod.Where(x=> x.StartDate >= DateTime.Now && x.EndDate <= DateTime.Now).FirstOrDefault().Id;
             }
             catch (Exception ex)
             {
@@ -196,7 +200,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             {
                 oListCalendar = await _mstCalendar.GetAllData();
                 oModelCalendar = oListCalendar.Where(x => x.FlgActive == true).FirstOrDefault();
-                //oListPayrollPeriod = oPayroll.CfgPeriodDates.Where(x => x.PayrollId == oPayroll.Id).ToList();
+                oModel.CalendarId = oModelCalendar.Id;                
             }
             catch (Exception ex)
             {
