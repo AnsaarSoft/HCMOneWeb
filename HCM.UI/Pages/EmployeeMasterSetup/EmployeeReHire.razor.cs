@@ -332,7 +332,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             {
                 Loading = true;
                 await Task.Delay(3);
-                Navigation.NavigateTo("/TaxAdjustment", forceLoad: true);
+                Navigation.NavigateTo("/EmployeeReHire", forceLoad: true);
                 Loading = false;
             }
             catch (Exception ex)
@@ -372,13 +372,15 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 await Task.Delay(3);
 
                 oModel.EmpId = oModelMstEmployee.Id;
-                //oModel.EmpCode = oModelMstEmployee.EmpId;
                 oModel.UserId = LoginUser;
+                oDetail.ReHireId = oModel.Id;
                 oDetail.DesignationId = oModelMstEmployee.DesignationId;
                 oDetail.NewDesignationId = oModelDesignation.Id;
                 oDetail.DeptId = oModelMstEmployee.DepartmentId;
                 oDetail.NewDeptId = oModelDepartment.Id;
+
                 oDetail.LocationId = oModelMstEmployee.LocationName;
+
                 oDetail.NewLocaitonId = oModelLocation.Id;
                 oDetail.BranchId = oModelMstEmployee.BranchId;
                 oDetail.NewBranchId = oModelBranch.Id;
@@ -401,7 +403,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
 
 
-                    oModel.TrnsReHireEmployeeDetails = oDetailList.ToList();
+                    oModel.TrnsReHireEmployeeDetails.Add(oDetail);
                     if (oModel.Id == 0)
                     {
                         oModel.UserId = LoginUser;
@@ -417,7 +419,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     {
                         Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
                         await Task.Delay(3000);
-                        Navigation.NavigateTo("/TaxAdjustment", forceLoad: true);
+                        Navigation.NavigateTo("/EmployeeReHire", forceLoad: true);
                     }
                     else
                     {
