@@ -100,6 +100,7 @@ builder.Services.AddScoped<ITrnsAdvanceRequest, TrnsAdvanceRequestRepo>();
 builder.Services.AddScoped<ITrnsEmployeeOverTime, TrnsEmployeeOverTimeRepo>();
 builder.Services.AddScoped<ITrnsEmployeeResign, TrnsEmployeeResignRepo>();
 builder.Services.AddScoped<IMstStages, MstStagesRepo>();
+builder.Services.AddScoped<ITrnsTaxAdjustment, TrnsTaxAdjustmentRepo>();
 
 
 Settings.TitleConfig = builder.Configuration.GetValue<string>("TitleConfig");

@@ -11,6 +11,7 @@ namespace HCM.API.HCMModels
         public DateTime? CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public bool? FlgDeleted { get; set; }
+        public string EmpId { get; set; }
 
         public virtual MstEmployee Employee { get; set; }
         public virtual MstStage Stage { get; set; }

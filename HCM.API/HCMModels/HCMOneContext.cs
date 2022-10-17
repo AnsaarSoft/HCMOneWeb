@@ -10943,6 +10943,10 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
+                entity.Property(e => e.EmpId)
+                    .HasMaxLength(50)
+                    .HasColumnName("EmpID");
+
                 entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
 
                 entity.Property(e => e.StageId).HasColumnName("StageID");
