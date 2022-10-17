@@ -15,6 +15,7 @@ namespace HCM.API.HCMModels
         public bool? FlgLoan { get; set; }
         public bool? FlgAppraisal { get; set; }
         public bool? FlgAdvance { get; set; }
+        public bool? FlgEmpTransfer { get; set; }
 
         public virtual CfgApprovalTemplate At { get; set; }
     }

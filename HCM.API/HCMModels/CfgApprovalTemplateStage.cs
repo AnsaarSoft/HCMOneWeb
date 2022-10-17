@@ -8,6 +8,7 @@ namespace HCM.API.HCMModels
         public int Id { get; set; }
         public int? Atid { get; set; }
         public int? StageId { get; set; }
+        public string StageName { get; set; }
         public byte? Priorty { get; set; }
 
         public virtual CfgApprovalTemplate At { get; set; }

@@ -1202,6 +1202,12 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.CreatedBy).HasMaxLength(50);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
                 entity.Property(e => e.StageDescription)
                     .IsRequired()
                     .HasMaxLength(100);
@@ -1209,6 +1215,10 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.StageName)
                     .IsRequired()
                     .HasMaxLength(20);
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<CfgApprovalStageDetail>(entity =>
@@ -1224,6 +1234,12 @@ namespace HCM.API.HCMModels
                     .HasColumnName("AuthorizerID");
 
                 entity.Property(e => e.AuthorizerName).HasMaxLength(50);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.FkempId).HasColumnName("FKEmpID");
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.As)
                     .WithMany(p => p.CfgApprovalStageDetails)
@@ -1276,6 +1292,8 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.FlgEmpLeave).HasColumnName("flgEmpLeave");
 
+                entity.Property(e => e.FlgEmpTransfer).HasColumnName("flgEmpTransfer");
+
                 entity.Property(e => e.FlgJobRequisition).HasColumnName("flgJobRequisition");
 
                 entity.Property(e => e.FlgLoan).HasColumnName("flgLoan");
@@ -1309,6 +1327,8 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.Atid).HasColumnName("ATID");
 
                 entity.Property(e => e.StageId).HasColumnName("StageID");
+
+                entity.Property(e => e.StageName).HasMaxLength(150);
 
                 entity.HasOne(d => d.At)
                     .WithMany(p => p.CfgApprovalTemplateStages)

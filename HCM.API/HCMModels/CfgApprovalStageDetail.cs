@@ -9,6 +9,10 @@ namespace HCM.API.HCMModels
         public int? Asid { get; set; }
         public string AuthorizerId { get; set; }
         public string AuthorizerName { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
+        public bool? FlgDeleted { get; set; }
+        public int? FkempId { get; set; }
 
         public virtual CfgApprovalStage As { get; set; }
     }

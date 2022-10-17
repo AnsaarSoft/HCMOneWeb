@@ -17,6 +17,11 @@ namespace HCM.API.HCMModels
         public string StageDescription { get; set; }
         public byte ApprovalsNo { get; set; }
         public byte RejectionsNo { get; set; }
+        public string CreatedBy { get; set; }
+        public string UpdatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
+        public bool? FlgActive { get; set; }
 
         public virtual ICollection<CfgApprovalStageDetail> CfgApprovalStageDetails { get; set; }
         public virtual ICollection<CfgApprovalTemplateStage> CfgApprovalTemplateStages { get; set; }
