@@ -19,61 +19,27 @@ namespace HCM.UI.Pages.ApprovalSetup
         public IDialogService Dialog { get; set; }
         [Inject]
         public IMstStages _stageService { get; set; }
-        //[Inject]
-        //public IUserProfile _userProfileService { get; set; }
         [Inject]
         public NavigationManager navigation { get; set; }
         [Inject]
-        public ILocalStorageService _localStorageService { get; set; }
+        public ILocalStorageService _localStorage { get; set; }
 
         #endregion
 
         #region Variable
 
         private bool Loading = false;
-
-        private string LoginUserCode = "";
         private IEnumerable<MstEmployee> AuthorizerNames { get; set; } = new HashSet<MstEmployee>();
 
         MstStage oModel = new MstStage();
 
-        //MstUserProfile oUser = new MstUserProfile();
-        //List<MstUserProfile> oUserList = new List<MstUserProfile>();
-
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
+
+        private string LoginUser = "";
 
         #endregion
 
         #region Function
-
-        private async Task OpenDialog(DialogOptions options)
-        {
-            try
-            {
-                var parameters = new DialogParameters();
-                parameters.Add("DialogFor", "Stages");
-                //var dialog = Dialog.Show<SaveDataDialog>("", parameters, options);
-                //var result = await dialog.Result;
-                //if (!result.Cancelled)
-                //{
-                //    var res = (MstStage)result.Data;
-                //    oModel = res;
-                //    AuthorizerNames = new HashSet<MstUserProfile>();
-                //    List<MstUserProfile> oList = new List<MstUserProfile>();
-                //    foreach (var item in oModel.MstStageDetails)
-                //    {
-                //        MstUserProfile LineUser = new MstUserProfile();
-                //        LineUser = oUserList.Where(a => a.Id == item.FkUserId).FirstOrDefault();
-                //        oList.Add(LineUser);
-                //    }
-                //    AuthorizerNames = oList;
-                //}
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-            }
-        }
 
         private async Task OpenDialogEmployee(DialogOptions options)
         {
@@ -94,36 +60,38 @@ namespace HCM.UI.Pages.ApprovalSetup
             }
         }
 
-        //async Task<List<MstUserProfile>> GetAllUsers()
-        //{
-        //    try
-        //    {
-        //        oUserList = await _userProfileService.GetAllData();
-        //        return oUserList;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logs.GenerateLogs(ex);
-        //        return null;
-        //    }
-        //}
+        private async Task OpenDialog(DialogOptions options)
+        {
+            try
+            {
+                var parameters = new DialogParameters();
+                parameters.Add("DialogFor", "LeaveRequest");
+                var dialog = Dialog.Show<DialogBox>("", parameters, options);
+                var result = await dialog.Result;
+                if (!result.Cancelled)
+                {
+                    //var res = (TrnsLeavesRequest)result.Data;
+                    //oModel = res;
+                    //_dateRange.Start = oModel.LeaveFrom;
+                    //_dateRange.End = oModel.LeaveTo;
+                    //SetEmployeeLeaves();
+                    //if (!string.IsNullOrWhiteSpace(oModel.FromTime) && !string.IsNullOrWhiteSpace(oModel.ToTime))
+                    //{
+                    //    string[] spFromTime = oModel.FromTime.Split(':');
+                    //    TimeSpan FromTime = new TimeSpan(Convert.ToInt32(spFromTime[0]), Convert.ToInt32(spFromTime[1]), 0);
+                    //    TSFromTime = FromTime;
 
-        //private string GetAuthorizersSelection(List<string> selectedValues)
-        //{
-        //    try
-        //    {
-        //        if (selectedValues.Count < 1)
-        //        {
-        //            return $"Please choose Authorizer";
-        //        }
-        //        return $"{selectedValues.Count} Authorizer{(selectedValues.Count > 1 ? "s have" : " has")} been selected";
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logs.GenerateLogs(ex);
-        //        return null;
-        //    }
-        //}
+                    //    string[] spToTime = oModel.ToTime.Split(':');
+                    //    TimeSpan ToTime = new TimeSpan(Convert.ToInt32(spToTime[0]), Convert.ToInt32(spToTime[1]), 0);
+                    //    TSToTime = ToTime;
+                    //}
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
 
         private async Task<ApiResponseModel> Save()
         {
@@ -158,7 +126,9 @@ namespace HCM.UI.Pages.ApprovalSetup
                             foreach (var Line in AuthorizerNames)
                             {
                                 MstStageDetail oLine = new MstStageDetail();
-                                oLine.EmployeeId = Convert.ToInt32(Line.EmpId);
+                                oLine.EmployeeId = Convert.ToInt32(Line.Id);
+                                oLine.EmpId = Line.EmpId;
+                                oLine.CreatedDate = DateTime.Now;
                                 oModel.MstStageDetails.Add(oLine);
                             }
                         }
@@ -166,10 +136,18 @@ namespace HCM.UI.Pages.ApprovalSetup
                         {
                             if (oModel.Id == 0)
                             {
+                                oModel.CreatedBy = LoginUser;
+                                oModel.StageDescription = oModel.StageName;
+                                oModel.CreatedDate = DateTime.Now;
+                                oModel.FlgActive = true;
                                 res1 = await _stageService.Insert(oModel);
                             }
                             else
                             {
+                                oModel.UpdatedBy = LoginUser;
+                                oModel.StageDescription = oModel.StageName;
+                                oModel.UpdatedDate = DateTime.Now;
+                                oModel.FlgActive = true;
                                 res1 = await _stageService.Update(oModel);
                             }
                         }
@@ -183,7 +161,7 @@ namespace HCM.UI.Pages.ApprovalSetup
                         {
                             Snackbar.Add(res1.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
                             await Task.Delay(1000);
-                            Navigation.NavigateTo("/Stage", forceLoad: true);
+                            Navigation.NavigateTo("/ApprovalStages", forceLoad: true);
                         }
                         else
                         {
@@ -240,18 +218,17 @@ namespace HCM.UI.Pages.ApprovalSetup
         {
             try
             {
-                //var Session = await _localStorageService.GetItemAsync<MstUserProfile>("User");
-                //if (Session != null)
-                //{
-                //    LoginUserCode = Session.UserCode;
-                //    Loading = true;
-                //    await GetAllUsers();
-                //    Loading = false;
-                //}
-                //else
-                //{
-                //    navigation.NavigateTo("/Login", true);
-                //}
+                Loading = true;
+                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                if (Session != null)
+                {
+                    LoginUser = Session.UserCode;
+                }
+                else
+                {
+                    Navigation.NavigateTo("/Login", forceLoad: true);
+                }
+                Loading = false;
             }
             catch (Exception ex)
             {
