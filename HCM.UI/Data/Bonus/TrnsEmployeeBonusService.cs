@@ -21,7 +21,7 @@ namespace HCM.UI.Data.Bonus
             {
                 List<TrnsEmployeeBonu> oList = new List<TrnsEmployeeBonu>();
 
-                var request = new RestRequest("Loan/getAllEmployeeBonus", Method.Get) { RequestFormat = DataFormat.Json };
+                var request = new RestRequest("BonusCal/getAllEmployeeBonus", Method.Get) { RequestFormat = DataFormat.Json };
 
                 var response = await _restClient.ExecuteAsync<List<TrnsEmployeeBonu>>(request);
 
@@ -46,7 +46,7 @@ namespace HCM.UI.Data.Bonus
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                var request = new RestRequest("Loan/addEmployeeBonus", Method.Post);
+                var request = new RestRequest("BonusCal/addEmployeeBonus", Method.Post);
                 request.AddJsonBody(oTrnsEmployeeBonu);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
@@ -76,7 +76,7 @@ namespace HCM.UI.Data.Bonus
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                var request = new RestRequest("Loan/updateEmployeeBonus", Method.Post);
+                var request = new RestRequest("BonusCal/updateEmployeeBonus", Method.Post);
                 request.AddJsonBody(oTrnsEmployeeBonu);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
@@ -106,7 +106,7 @@ namespace HCM.UI.Data.Bonus
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                var request = new RestRequest("Loan/addEmployeeBonusList", Method.Post);
+                var request = new RestRequest("BonusCal/addEmployeeBonusList", Method.Post);
                 request.AddJsonBody(oTrnsEmployeeBonu);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
@@ -136,7 +136,7 @@ namespace HCM.UI.Data.Bonus
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                var request = new RestRequest("Loan/updateEmployeeBonusList", Method.Post);
+                var request = new RestRequest("BonusCal/updateEmployeeBonusList", Method.Post);
                 request.AddJsonBody(oTrnsEmployeeBonu);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)

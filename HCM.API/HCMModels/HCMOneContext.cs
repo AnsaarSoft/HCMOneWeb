@@ -14788,6 +14788,8 @@ namespace HCM.API.HCMModels
 
             modelBuilder.Entity<TrnsEmployeeBonu>(entity =>
             {
+                entity.Property(e => e.CalendarCode).HasMaxLength(50);
+
                 entity.Property(e => e.CalendarId).HasColumnName("CalendarID");
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(200);
@@ -14796,7 +14798,11 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.PaymentId).HasColumnName("PaymentID");
 
+                entity.Property(e => e.PayrollCode).HasMaxLength(50);
+
                 entity.Property(e => e.PayrollId).HasColumnName("PayrollID");
+
+                entity.Property(e => e.PaysInPeriodCode).HasMaxLength(50);
 
                 entity.Property(e => e.PaysInPeriodId).HasColumnName("PaysInPeriodID");
 
@@ -15003,6 +15009,8 @@ namespace HCM.API.HCMModels
                 entity.ToTable("TrnsEmployeeElement");
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.EmpGrossSalary).HasColumnType("numeric(18, 6)");
 
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
 

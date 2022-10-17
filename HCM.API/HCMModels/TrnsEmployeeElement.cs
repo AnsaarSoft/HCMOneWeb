@@ -14,6 +14,7 @@ namespace HCM.API.HCMModels
 
         public int Id { get; set; }
         public int? EmployeeId { get; set; }
+        public decimal? EmpGrossSalary { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? UpdateDate { get; set; }
         public string UserId { get; set; }

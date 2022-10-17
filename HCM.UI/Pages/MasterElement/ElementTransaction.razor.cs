@@ -104,6 +104,7 @@ namespace HCM.UI.Pages.MasterElement
             {
                 if (oModelPayroll.Id > 0)
                 {
+                    EmpGrossSalary = (decimal)oModelEmployee.BasicSalary;
                     var PayrollElements = oModelPayroll.MstElementLinks;
                     var parameters = new DialogParameters();
                     parameters.Add("DialogFor", "ElementTransaction");
@@ -133,7 +134,7 @@ namespace HCM.UI.Pages.MasterElement
                             {
                                 TrnsEmployeeElementDetail oBJ = new TrnsEmployeeElementDetail();
                                 var SetID = oListEmployeeElementDetail.Where(x => x.ElementId == RecElement.Id).FirstOrDefault();
-                                if(SetID != null)
+                                if (SetID != null)
                                 {
                                     oBJ.Id = SetID.Id;
                                 }
@@ -144,7 +145,7 @@ namespace HCM.UI.Pages.MasterElement
                                 oBJ.ElementValueType = RecElement.ValueType;
                                 oBJ.Type = RecElement.Type;
                                 oBJ.FlgActive = RecElement.FlgActive;
-                                if(RecElement.ElmtType == "Ear" || RecElement.ElmtType == "Ded" )
+                                if (RecElement.ElmtType == "Ear" || RecElement.ElmtType == "Ded")
                                 {
                                     oBJ.Amount = BusinessLogic.GetElementAmount(oModelEmployee, RecElement);
                                     oBJ.EmpContr = 0;
@@ -156,7 +157,14 @@ namespace HCM.UI.Pages.MasterElement
                                     oBJ.Amount = BusinessLogic.GetElementAmount(oModelEmployee, RecElement, out emprAmount);
                                     oBJ.EmpContr = oBJ.Amount;
                                     oBJ.EmplrContr = emprAmount;
-
+                                }
+                                if ((RecElement.ElmtType == "Ear" || RecElement.ElmtType == "Con") && RecElement.FlgEffectOnGross == true)
+                                {
+                                    EmpGrossSalary = (decimal)(EmpGrossSalary + oBJ.Amount);
+                                }
+                                else if (RecElement.ElmtType == "Ded" && RecElement.FlgEffectOnGross == true)
+                                {
+                                    EmpGrossSalary = (decimal)(EmpGrossSalary - oBJ.Amount);
                                 }
                                 oTempListRec.Add(oBJ);
                                 oTempListDetail.Add(oBJ);
@@ -195,8 +203,20 @@ namespace HCM.UI.Pages.MasterElement
                                     oBJ.EmplrContr = emprAmount;
 
                                 }
-                                oTempListNonRec.Add(oBJ);
-                                oTempListDetail.Add(oBJ);
+                                //var CheckCurrentPeriod = oCfgPeriodDateList.Where(x => DateTime.Now.Date >= x.StartDate && DateTime.Now.Date <= x.EndDate).FirstOrDefault();
+                                //if (CheckCurrentPeriod != null)
+                                //{
+                                    if ((RecElement.ElmtType == "Ear" || RecElement.ElmtType == "Con") && RecElement.FlgEffectOnGross == true)
+                                    {
+                                        EmpGrossSalary = (decimal)(EmpGrossSalary + oBJ.Amount);
+                                    }
+                                    else if (RecElement.ElmtType == "Ded" && RecElement.FlgEffectOnGross == true)
+                                    {
+                                        EmpGrossSalary = (decimal)(EmpGrossSalary - oBJ.Amount);
+                                    }
+                                    oTempListNonRec.Add(oBJ);
+                                    oTempListDetail.Add(oBJ);
+                                //}
                             }
                             oListEmployeeElementDetailNonRec = oTempListNonRec.ToList();
                         }
@@ -219,8 +239,9 @@ namespace HCM.UI.Pages.MasterElement
                 await Task.Delay(3);
                 if (!string.IsNullOrWhiteSpace(oModelEmployee.EmpId) && oListEmployeeElementDetail.Count() > 0)
                 {
+                    oModel.EmpGrossSalary = EmpGrossSalary;
                     var SelectedHeader = oList.Where(x => x.FlgActive == true && x.EmployeeId == oModelEmployee.Id).FirstOrDefault();
-                    if(SelectedHeader != null)
+                    if (SelectedHeader != null)
                     {
                         oModel.Id = SelectedHeader.Id;
                         oModel.CreateDate = SelectedHeader.CreateDate;
@@ -341,6 +362,7 @@ namespace HCM.UI.Pages.MasterElement
                 if (oList != null && oList.Count() > 0)
                 {
                     var SelectedHeader = oList.Where(x => x.FlgActive == true && x.EmployeeId == oModelEmployee.Id).FirstOrDefault();
+                    EmpGrossSalary = (decimal)SelectedHeader.EmpGrossSalary;
                     oListEmployeeElementDetail = SelectedHeader.TrnsEmployeeElementDetails;
                     oListEmployeeElementDetailRec = oListEmployeeElementDetail.Where(x => x.Type == "Rec").ToList();
                     oListEmployeeElementDetailNonRec = oListEmployeeElementDetail.Where(x => x.Type == "Non-Rec").ToList();

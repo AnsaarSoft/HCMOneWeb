@@ -8,6 +8,7 @@ using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using static MudBlazor.CategoryTypes;
 
 namespace HCM.UI.Pages.EmployeeMasterSetup
 {
@@ -20,6 +21,9 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
         [Inject]
         public ISnackbar Snackbar { get; set; }
+
+        [Inject]
+        public IDialogService Dialog { get; set; }
 
         [Inject]
         public IMstDesignation _mstDesignation { get; set; }
@@ -113,9 +117,45 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         DateRange _dateRange;
         DateTime MinDate;
 
+        DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
+
         #endregion
 
         #region Functions
+
+        private async Task OpenDialog(DialogOptions options)
+        {
+            try
+            {
+                var parameters = new DialogParameters();
+                parameters.Add("DialogFor", "EmployeeBonus");
+                var dialog = Dialog.Show<DialogBox>("", parameters, options);
+                var result = await dialog.Result;
+                if (!result.Cancelled)
+                {
+                    var res = (TrnsEmployeeBonu)result.Data;
+                    oModel = res;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+
+        private Task SetDocNo()
+        {
+            try
+            {
+                oModel.DocumentNo = oList.Count() + 1;
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+            return Task.CompletedTask;
+        }
 
         private async Task GetAllEmployeeBonus()
         {
@@ -503,7 +543,15 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                         oDetail.EmployeeId = Employee.Id;
                         oDetail.EmployeeName = Employee.FirstName + " " + Employee.MiddleName + " " + Employee.LastName;
                         oDetail.BasicSalary = Employee.BasicSalary;
-                        oDetail.GrossSalary = Employee.GrossSalary;
+                        var GetEmployeeCalculatedGross = oListEmployeeElement.Where(x => x.EmployeeId == Employee.Id).FirstOrDefault();
+                        if (GetEmployeeCalculatedGross != null)
+                        {
+                            oDetail.GrossSalary = GetEmployeeCalculatedGross.EmpGrossSalary;
+                        }
+                        else
+                        {
+                            oDetail.GrossSalary = Employee.GrossSalary;
+                        }
                         if (!string.IsNullOrWhiteSpace(Employee.BonusCode))
                         {
                             var SelectedBonus = oBonusList.Where(x => x.Code == Employee.BonusCode).FirstOrDefault();
@@ -522,9 +570,9 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                                 }
                                 else if (SelectedBonus.ValueType == "POG")
                                 {
-                                    if (Employee.GrossSalary >= SelectedBonus.SalaryFrom && Employee.GrossSalary <= SelectedBonus.SalaryTo)
+                                    if (oDetail.GrossSalary >= SelectedBonus.SalaryFrom && oDetail.GrossSalary <= SelectedBonus.SalaryTo)
                                     {
-                                        oDetail.CalculatedAmount = Employee.GrossSalary * (oDetail.Percentage / 100);
+                                        oDetail.CalculatedAmount = oDetail.GrossSalary * (oDetail.Percentage / 100);
                                     }
                                 }
                                 else if (SelectedBonus.ValueType == "FIX")
@@ -568,107 +616,23 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         }
         private async Task EmployeeValidation()
         {
-            //try
-            //{
-            //    Loading = true;
-            await Task.Delay(1);
-            //    if (_dateRange.Start >= oModelCalendar.StartDate && _dateRange.End <= oModelCalendar.EndDate)
-            //    {
-            //        foreach (var FilterEmployee in oListFilteredEmployee)
-            //        {
-            //            int SelectedShiftCount = 0;
-            //            if (FilterEmployee.PayrollId > 0)
-            //            {
-            //                for (DateTime x = (DateTime)_dateRange.Start; x <= (DateTime)_dateRange.End; x = x.AddDays(1))
-            //                {
-            //                    var PayrollPeriodID = oListPayroll.Where(x => x.Id == FilterEmployee.PayrollId).Select(b => b.CfgPeriodDates.Where(c => c.StartDate <= x && x <= c.EndDate).Select(d => d.Id)).FirstOrDefault();
-            //                    if (Convert.ToInt32(PayrollPeriodID.FirstOrDefault()) == 0)
-            //                    {
-            //                        Snackbar.Add($@"Period for Selected Date Range Can't be found", Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
-            //                        return;
-            //                    }
-            //                    if (FilterEmployee.JoiningDate > x) continue;
-            //                    string DayOfWeek = Convert.ToString(x.DayOfWeek);
-            //                    TrnsAttendanceRegister oModelforUpdate = oList.Where(b => b.EmpId == FilterEmployee.Id && b.Date == x).FirstOrDefault();
-            //                    if (oModelforUpdate != null && (oModelforUpdate.FlgProcessed == true || oModelforUpdate.FlgPosted == true))
-            //                    {
-            //                        Snackbar.Add($@"Shift can not be changed Employee: {FilterEmployee.EmpId} has Attendance Processed/Posted on Date: {x.ToString("MM/dd/yyyy")}", Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
-            //                        continue;
-            //                    }
-            //                    if (SelectedShiftCount == oListSelectedShift.Count())
-            //                    {
-            //                        SelectedShiftCount = 0;
-            //                    }
-            //                    var FilterSelectedShiftRow = oListSelectedShift.ElementAt(SelectedShiftCount).MstShiftDetails.Where(x => x.Day == DayOfWeek).FirstOrDefault();
-            //                    SelectedShiftCount++;
-            //                    if (oModelforUpdate != null)
-            //                    {
-            //                        oModelforUpdate.PeriodId = Convert.ToInt32(PayrollPeriodID.FirstOrDefault());
-            //                        oModelforUpdate.ShiftId = (int)FilterSelectedShiftRow.ShiftId;
-            //                        oModelforUpdate.DateDay = DayOfWeek;
-            //                        if ((string.IsNullOrEmpty(FilterSelectedShiftRow.StartTime) || FilterSelectedShiftRow.StartTime == "00:00")
-            //                            && (string.IsNullOrEmpty(FilterSelectedShiftRow.EndTime) || FilterSelectedShiftRow.EndTime == "00:00"))
-            //                        {
-            //                            oModelforUpdate.FlgOffDay = true;
-            //                        }
-            //                        else if ((!string.IsNullOrEmpty(FilterSelectedShiftRow.StartTime) || FilterSelectedShiftRow.StartTime != "00:00")
-            //                           && (!string.IsNullOrEmpty(FilterSelectedShiftRow.EndTime) || FilterSelectedShiftRow.EndTime != "00:00"))
-            //                        {
-            //                            oModelforUpdate.FlgOffDay = false;
-            //                        }
-
-            //                        oModelforUpdate.UpdateDate = DateTime.Now;
-            //                        oModelforUpdate.UpdatedBy = LoginUser;
-            //                        oEmployeeBonusUpdateList.Add(oModelforUpdate);
-            //                    }
-            //                    else
-            //                    {
-            //                        TrnsAttendanceRegister oModelforAdd = new TrnsAttendanceRegister();
-            //                        oModelforAdd.EmpId = FilterEmployee.Id;
-            //                        oModelforAdd.FkpayrollId = (int)FilterEmployee.PayrollId;
-            //                        oModelforAdd.PeriodId = Convert.ToInt32(PayrollPeriodID.FirstOrDefault());
-            //                        oModelforAdd.Date = x;
-            //                        oModelforAdd.DateDay = DayOfWeek;
-            //                        oModelforAdd.ShiftId = (int)FilterSelectedShiftRow.ShiftId;
-            //                        oModelforAdd.CreateDate = DateTime.Now;
-            //                        oModelforAdd.UserId = LoginUser;
-            //                        oModelforAdd.FlgProcessed = false;
-            //                        oModelforAdd.FlgPosted = false;
-            //                        if ((string.IsNullOrEmpty(FilterSelectedShiftRow.StartTime) || FilterSelectedShiftRow.StartTime == "00:00")
-            //                           && (string.IsNullOrEmpty(FilterSelectedShiftRow.EndTime) || FilterSelectedShiftRow.EndTime == "00:00"))
-            //                        {
-            //                            oModelforAdd.FlgOffDay = true;
-            //                        }
-            //                        else if ((!string.IsNullOrEmpty(FilterSelectedShiftRow.StartTime) || FilterSelectedShiftRow.StartTime != "00:00")
-            //                          && (!string.IsNullOrEmpty(FilterSelectedShiftRow.EndTime) || FilterSelectedShiftRow.EndTime != "00:00"))
-            //                        {
-            //                            oModelforAdd.FlgOffDay = false;
-            //                        }
-            //                        oEmployeeBonusAddList.Add(oModelforAdd);
-            //                    }
-            //                }
-            //            }
-            //            else
-            //            {
-            //                Snackbar.Add($@"No Payroll assigned to the employee: {FilterEmployee.EmpId}", Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
-            //                continue;
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        Snackbar.Add($@"Date deviates from active calendar.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
-            //        IsEmployeeValidate = false;
-            //    }
-
-            //    Loading = false;
-            //}
-            //catch (Exception ex)
-            //{
-            //    Logs.GenerateLogs(ex);
-            //    Loading = false;
-            //    IsEmployeeValidate = false;
-            //}
+            try
+            {
+                Loading = true;
+                await Task.Delay(1);
+                if (oModel.ElementType == 0)
+                {
+                    Snackbar.Add($@"Please fill the required field(s).", Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+                    IsEmployeeValidate = false;
+                }
+                Loading = false;
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                Loading = false;
+                IsEmployeeValidate = false;
+            }
         }
         private async Task<ApiResponseModel> Save()
         {
@@ -676,16 +640,58 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             {
                 Loading = true;
                 var res = new ApiResponseModel();
-                if (oModel.TrnsEmployeeBonusDetails.Count() > 0)
+                if (oModel.TrnsEmployeeBonusDetails.Count() > 0 && oModel.ElementType > 0)
                 {
-                    await EmployeeValidation();
+                    oModel.CreatedBy = LoginUser;
                     if (oModel.Id > 0)
                     {
-                        res = await _trnsEmployeeBonus.Insert(oModel);
+                        res = await _trnsEmployeeBonus.Update(oModel);
                     }
                     else
                     {
+                        res = await _trnsEmployeeBonus.Insert(oModel);
+                    }
+
+                    if (res != null && res.Id == 1)
+                    {
+                        Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+                        await Task.Delay(3000);
+                        Navigation.NavigateTo("/EmployeeBonus", forceLoad: true);
+                    }
+                    else
+                    {
+                        Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                    }
+                }
+                else
+                {
+                    Snackbar.Add("Please fill the required field(s).", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+                Loading = false;
+                return res;
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                Loading = false;
+                return null;
+            }
+        }
+        private async Task<ApiResponseModel> ProcessedInSalary()
+        {
+            try
+            {
+                Loading = true;
+                var res = new ApiResponseModel();
+                if (oModel.TrnsEmployeeBonusDetails.Count() > 0 && oModel.ElementType == 0)
+                {
+                    if (oModel.Id > 0)
+                    {
                         res = await _trnsEmployeeBonus.Update(oModel);
+                    }
+                    else
+                    {
+                        res = await _trnsEmployeeBonus.Insert(oModel);
                     }
 
                     if (res != null && res.Id == 1)
@@ -729,6 +735,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     LoginUser = Session.UserCode;
                     _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date);
                     oModel.Status = "Create";
+                    await SetDocNo();
                     await GetAllEmployeeBonus();
                     await GetAllEmployees();
                     await GetAllDesignation();
