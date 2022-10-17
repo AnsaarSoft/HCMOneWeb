@@ -386,7 +386,7 @@
                         <RowTemplate>
                             <MudTd DataLabel="Empid">@context.EmployeeId</MudTd>
                             <MudTd DataLabel="Period">@context.PeriodName</MudTd>
-                           @* <MudTd DataLabel="Code">@Convert.ToDateTime(context.DocDate).ToString("MM/dd/yyyy")</MudTd>*@
+                            @* <MudTd DataLabel="Code">@Convert.ToDateTime(context.DocDate).ToString("MM/dd/yyyy")</MudTd>*@
                         </RowTemplate>
                         <PagerContent>
                             <MudTablePager />
@@ -423,7 +423,7 @@
                         </PagerContent>
                     </MudTable>
                 }
-                 @if (oListTrnsTaxAdjustment?.Count > 0 && DialogFor == "TaxAdjustment")
+                @if (oListTrnsTaxAdjustment?.Count > 0 && DialogFor == "TaxAdjustment")
                 {
                     <MudTable Items="@oListTrnsTaxAdjustment" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsTaxAdjustment,bool>(FilterFuncTrnsTaxAdjustment)"
                       Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableTaxAdjustment" RowClassFunc="@SelectedRowClassFuncTaxAdjustment" OnRowClick="RowClickEventTaxAdjustment" T="TrnsTaxAdjustment" @bind-SelectedItem="oModelTrnsTaxAdjustment">
@@ -435,13 +435,43 @@
                         <HeaderContent>
                             <MudTh>Employee Code</MudTh>
                             <MudTh>Calender</MudTh>
-                            <MudTh>Ative</MudTh>
+                            <MudTh>Active</MudTh>
                         </HeaderContent>
                         <RowTemplate>
                             <MudTd DataLabel="Code">@context.EmpCode</MudTd>
                             <MudTd DataLabel="Code">@context.CalendarCode</MudTd>
                             <MudTd DataLabel="Code">@context.FlgActive</MudTd>
-                         </RowTemplate>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                }
+                @if (oListMstEmployee?.Count > 0 && DialogFor == "EmployeeReHire")
+                {
+                    <MudTable Items="@oListMstEmployee" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstEmployee,bool>(FilterFuncMstEmployee)"
+                      Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableMstEmployee" RowClassFunc="@SelectedRowClassFuncMstEmployeeReHire" OnRowClick="RowClickEventMstEmployeeReHire" T="MstEmployee" @bind-SelectedItem="oModelMstEmployee">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Employees</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Image</MudTh>
+                            <MudTh>Employee Code</MudTh>
+                            <MudTh>Name</MudTh>
+                            <MudTh>Date of Joining</MudTh>
+                            <MudTh>Designation</MudTh>
+                            <MudTh>Location</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code"><MudAvatar Image="@context.ImgPath" Style="height:70px; width:70px; font-size:2rem;" /></MudTd>
+                            <MudTd DataLabel="Code">@context.EmpId</MudTd>
+                            <MudTd DataLabel="Code">@context.FirstName @context.MiddleName @context.LastName</MudTd>
+                            <MudTd DataLabel="Code">@Convert.ToDateTime(context.JoiningDate).ToString("MM/dd/yyyy")</MudTd>
+                            <MudTd DataLabel="Code">@context.DesignationName</MudTd>
+                            <MudTd DataLabel="Code">@context.LocationName</MudTd>
+                        </RowTemplate>
                         <PagerContent>
                             <MudTablePager />
                         </PagerContent>

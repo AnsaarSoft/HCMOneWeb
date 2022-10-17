@@ -316,7 +316,7 @@ namespace HCM.UI.General
         {
             try
             {
-                oListMstEmployee = await _mstEmployee.GetAllData();
+                oListMstEmployee = await _mstEmployee.GetAllData();                
                 if (oListMstEmployee?.Count == 0 || oListMstEmployee == null)
                 {
                     Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
@@ -570,6 +570,38 @@ namespace HCM.UI.General
             return false;
         }
 
+        private async Task GetAllMstEmployeeReHire()
+        {
+            try
+            {
+                oListMstEmployee = await _mstEmployee.GetAllData();
+                oListMstEmployee = oListMstEmployee.Where(x => x.FlgActive == false && (x.ResignDate != null || x.TerminationDate != null)).ToList();
+                if (oListMstEmployee?.Count == 0 || oListMstEmployee == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncMstEmployeeReHire(MstEmployee element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.EmpId.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.FirstName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.JoiningDate.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.DesignationName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.LocationName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
+        }
 
         #endregion
 
@@ -639,6 +671,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "TaxAdjustment")
                 {
                     await GetAllTrnsTaxAdjustment();
+                }
+                else if (DialogFor == "EmployeeReHire")
+                {
+                    await GetAllMstEmployeeReHire();
                 }
                 Loading = false;
             }
@@ -1064,6 +1100,38 @@ namespace HCM.UI.General
             }
         }
 
+        public void RowClickEventMstEmployeeReHire(TableRowClickEventArgs<MstEmployee> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncMstEmployeeReHire(MstEmployee element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableMstEmployee.SelectedItem != null && _tableMstEmployee.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
         private void Submit()
         {
             try
@@ -1131,6 +1199,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "TaxAdjustment" && oModelTrnsTaxAdjustment.Id > 0)
                 {
                     MudDialog.Close(DialogResult.Ok<TrnsTaxAdjustment>(oModelTrnsTaxAdjustment));
+                }
+                else if (DialogFor == "EmployeeReHire" && oModelMstEmployee.Id > 0)
+                {
+                    MudDialog.Close(DialogResult.Ok<MstEmployee>(oModelMstEmployee));
                 }
                 else
                 {

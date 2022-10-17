@@ -172,7 +172,7 @@
                     </MudSelect>
                 </MudItem>
                 <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
-                    <MudSelect @bind-Value="oModelTaxAdjustmentDetail.Period" HelperText="Select Period" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                    <MudSelect @bind-Value="oModelTaxAdjustmentDetail.Period"  Label="Period" HelperText="Select Period" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                         @foreach (CfgPeriodDate Period in oCfgPeriodDateList.ToList())
                         {
                             <MudSelectItem Value="Period.PeriodName">@Period.PeriodName</MudSelectItem>

@@ -92,6 +92,7 @@ builder.Services.AddScoped<ITrnsEmployeeResign, TrnsEmployeeResignService>();
 builder.Services.AddScoped<IMstStages, MstStagesService>();
 builder.Services.AddScoped<ITrnsTaxAdjustment, TrnsTaxAdjustmentService>();
 builder.Services.AddScoped<ITrnsEmployeeBonus, TrnsEmployeeBonusService>();
+builder.Services.AddScoped<ITrnsReHireEmployee, TrnsReHireEmployeeService>();
 
 //Configuration Start
 
