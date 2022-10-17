@@ -79,6 +79,9 @@ namespace HCM.UI.Pages.MasterElement
         private List<CfgPayrollDefination> oListPayroll = new List<CfgPayrollDefination>();
         private IEnumerable<CfgPeriodDate> oListPayrollPeriod = new List<CfgPeriodDate>();
 
+
+        List<MstCalendar> oCalendarList = new List<MstCalendar>();
+
         private IEnumerable<MstEmployee> oListEmployee = new List<MstEmployee>();
         private IEnumerable<MstEmployee> oListFilteredEmployee = new List<MstEmployee>();
 
@@ -132,6 +135,7 @@ namespace HCM.UI.Pages.MasterElement
                     oModel = res;
                     oModelMstEmployee = oListEmployee.Where(x => x.Id == oModel.EmpId).FirstOrDefault();
                     FullName = oModelMstEmployee.FirstName + " " + oModelMstEmployee.MiddleName+ " " + oModelMstEmployee.LastName;
+                    EmpName = oModelMstEmployee.FirstName + " " + oModelMstEmployee.MiddleName+ " " + oModelMstEmployee.LastName;
                     oDetailList = oModel.TrnsTaxAdjustmentDetails.ToList();
                 }
             }
@@ -146,6 +150,7 @@ namespace HCM.UI.Pages.MasterElement
             {
                 var parameters = new DialogParameters();
                 parameters.Add("DialogFor", "TaxAdjustment");
+                parameters.Add("EmpPayrollId", oModelMstEmployee.PayrollId);
                 var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
                 var result = await dialog.Result;
                 if (!result.Cancelled)
@@ -174,6 +179,7 @@ namespace HCM.UI.Pages.MasterElement
                 var parameters = new DialogParameters();
                 parameters.Add("oDetailParaTaxAdjust", oDetailPara);
                 parameters.Add("DialogFor", "TaxAdjustment");
+                parameters.Add("EmpPayrollId", oModelMstEmployee.PayrollId);
                 var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
                 var result = await dialog.Result;
 
@@ -215,6 +221,17 @@ namespace HCM.UI.Pages.MasterElement
             }
         }
 
+        private async Task GetAllCalendar()
+        {
+            try
+            {
+                oCalendarList = await _mstCalendar.GetAllData();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
         private async Task GetAllEmployees()
         {
             try
@@ -304,7 +321,7 @@ namespace HCM.UI.Pages.MasterElement
             {
                 Loading = true;
                 await Task.Delay(3);
-                Navigation.NavigateTo("/EmployeeOverTime", forceLoad: true);
+                Navigation.NavigateTo("/TaxAdjustment", forceLoad: true);
                 Loading = false;
             }
             catch (Exception ex)
@@ -319,14 +336,14 @@ namespace HCM.UI.Pages.MasterElement
             {
                 Loading = true;
                 await Task.Delay(1);
-                List<TrnsEmployeeOvertimeDetail> oListTrnsEmployeeOTDtl = new List<TrnsEmployeeOvertimeDetail>();
-                //oListTrnsEmployeeOTDtl = oListTrnsEmployeeOvertimeDetail.ToList();
-                //if (oListTrnsEmployeeOvertimeDetail.Count() > 0)
-                //{
-                //    var FilterRecord = oListTrnsEmployeeOvertimeDetail.Where(x => x.Id == ID).FirstOrDefault();
-                //    oListTrnsEmployeeOTDtl.Remove(FilterRecord);
-                //    oListTrnsEmployeeOvertimeDetail = oListTrnsEmployeeOTDtl;
-                //}
+                List<TrnsTaxAdjustmentDetail> oListTrnsEmployeeTaxAdjustDtl = new List<TrnsTaxAdjustmentDetail>();
+                oListTrnsEmployeeTaxAdjustDtl = oDetailList.ToList();
+                if (oDetailList.Count() > 0)
+                {
+                    var FilterRecord = oDetailList.Where(x => x.Id == ID).FirstOrDefault();
+                    oListTrnsEmployeeTaxAdjustDtl.Remove(FilterRecord);
+                    oDetailList = oListTrnsEmployeeTaxAdjustDtl;
+                }
                 Loading = false;
             }
             catch (Exception ex)
@@ -335,108 +352,6 @@ namespace HCM.UI.Pages.MasterElement
                 Loading = false;
             }
         }
-        //private async Task<ApiResponseModel> Save()
-        //{
-        //    try
-        //    {
-
-        //        Loading = true;
-        //        var res = new ApiResponseModel();
-        //        await Task.Delay(3);
-
-
-        //        //if (oListTrnsEmployeeOvertimeDetail.Count() > 0)
-        //        //{
-        //        //    oModel.EmployeeId = oModelMstEmployee.Id;
-
-        //        //    oListTrnsEmployeeOtDetail.Clear();
-        //        //    foreach (var item in oListTrnsEmployeeOvertimeDetail)
-        //        //    {
-
-        //        //        oModel.TrnsEmployeeOvertimeDetails = oListTrnsEmployeeOvertimeDetail.ToList();
-        //        //        oDetailList.ToList();
-        //        //        if (oModel.Id == 0)
-        //        //        {
-        //        //            item.UserId = LoginUser;
-        //        //            item.CreateDate = DateTime.Now.Date;
-        //        //            oListTrnsEmployeeOtDetail.Add(item);
-        //        //            oModel.TrnsEmployeeOvertimeDetails = oListTrnsEmployeeOtDetail.ToList();
-
-        //        //        }
-        //        //        else
-        //        //        {
-        //        //            item.UpdatedBy = LoginUser;
-        //        //            item.UpdateDate = DateTime.Now.Date;
-        //        //            oListTrnsEmployeeOtDetail.Add(item);
-        //        //            oModel.TrnsEmployeeOvertimeDetails = oListTrnsEmployeeOtDetail.ToList();
-        //        //        }
-
-
-        //        //    }
-
-
-        //        //    if (oModel.Id == 0)
-        //        //    {
-        //        //        oModelTrnsEmployeeOvertimeDetail.CreateDate = DateTime.Now;
-        //        //        oModelTrnsEmployeeOvertimeDetail.UserId = LoginUser;
-        //        //    }
-        //        //    else
-        //        //    {
-        //        //        oModelTrnsEmployeeOvertimeDetail.UpdateDate = DateTime.Now;
-        //        //        oModelTrnsEmployeeOvertimeDetail.UpdatedBy = LoginUser;
-        //        //    }
-        //        //    oModel.TrnsEmployeeOvertimeDetails.Add(oModelTrnsEmployeeOvertimeDetail);
-
-        //        //    if (oModel.TrnsEmployeeOvertimeDetails.Count() > 0)
-        //        //    {
-        //        //        if (oModel.Id == 0)
-        //        //        {
-        //        //            oModel.UserId = LoginUser;
-        //        //            res = await _TrnsEmployeeOverTime.Insert(oModel);
-        //        //        }
-        //        //        else
-        //        //        {
-        //        //            oModel.UpdatedBy = LoginUser;
-        //        //            res = await _TrnsEmployeeOverTime.Update(oModel);
-        //        //        }
-
-        //        //        if (res != null && res.Id == 1)
-        //        //        {
-        //        //            Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
-        //        //            await Task.Delay(3000);
-        //        //            Navigation.NavigateTo("/EmployeeOverTime", forceLoad: true);
-        //        //        }
-        //        //        else
-        //        //        {
-        //        //            Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-        //        //        }
-        //        //    }
-        //        //    else
-        //        //    {
-        //        //        Snackbar.Add("No Record Found .", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-        //        //    }
-
-        //        //}
-
-        //        //else
-        //        //{
-        //        //    Snackbar.Add("Please Fill Field.", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-        //        //}
-
-
-
-
-        //        Loading = false;
-        //        return res;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logs.GenerateLogs(ex);
-        //        Loading = false;
-        //        return null;
-        //    }
-        //}
-
         private async Task<ApiResponseModel> Save()
         {
             try
@@ -446,8 +361,10 @@ namespace HCM.UI.Pages.MasterElement
                 await Task.Delay(3);
 
                 oModel.EmpId = oModelMstEmployee.Id;
+                oModel.EmpCode = oModelMstEmployee.EmpId;
+                oModel.CalendarCode = oCalendarList.Where(x=>x.Id == oModel.CalendarId).Select(x=>x.Code).FirstOrDefault();
                 oModel.FlgActive = true;
-                if ((oModel.EmpId != null) && oDetailList.Count() > 0)
+                if ((oModel.EmpId != null) && (oModel.CalendarId != null) && oDetailList.Count() > 0)
                 {
                     foreach (var item in oDetailList)
                     {
@@ -516,6 +433,7 @@ namespace HCM.UI.Pages.MasterElement
                     LoginUser = Session.UserCode;
                     await GetAllEmployees();
                     await GetAllTaxAdjustment();
+                    await GetAllCalendar();
                 }
                 else
                 {

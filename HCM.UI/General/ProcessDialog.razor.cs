@@ -32,9 +32,14 @@ namespace HCM.UI.General
         [Inject]
         public IMstBonus _mstBonus { get; set; }
 
+        [Inject]
+        public ICfgPayrollDefination _CfgPayrollDefination { get; set; }
+
         [Parameter]
         public string DialogFor { get; set; }
 
+        [Parameter]
+        public int EmpPayrollId { get; set; } =0;
         #endregion
 
         #region Variables
@@ -59,6 +64,11 @@ namespace HCM.UI.General
 
         [Parameter] public TrnsTaxAdjustmentDetail oDetailParaTaxAdjust { get; set; } = new TrnsTaxAdjustmentDetail();
         TrnsTaxAdjustmentDetail oModelTaxAdjustmentDetail = new TrnsTaxAdjustmentDetail();
+
+
+        CfgPayrollDefination oModelPayroll = new CfgPayrollDefination();
+        private IEnumerable<CfgPayrollDefination> oPayrollList = new List<CfgPayrollDefination>();
+        private IEnumerable<CfgPeriodDate> oCfgPeriodDateList = new List<CfgPeriodDate>();
 
         #endregion
 
@@ -279,9 +289,25 @@ namespace HCM.UI.General
             }
             else if (DialogFor == "TaxAdjustment")
             {
-                if (!string.IsNullOrWhiteSpace(oModelTaxAdjustmentDetail.Description))
+                if (!string.IsNullOrWhiteSpace(oModelTaxAdjustmentDetail.Description) && !string.IsNullOrWhiteSpace(oModelTaxAdjustmentDetail.TaxType) && !string.IsNullOrWhiteSpace(oModelTaxAdjustmentDetail.AmountType) && oModelTaxAdjustmentDetail.Amount != null)
                 {
-                    MudDialog.Close(DialogResult.Ok<TrnsTaxAdjustmentDetail>(oModelTaxAdjustmentDetail));
+                    if (oModelTaxAdjustmentDetail.TaxType == "Monthly")
+                    {
+                      //  oModelTaxAdjustmentDetail.FlgMonthly = true;
+                        if (string.IsNullOrWhiteSpace(oModelTaxAdjustmentDetail.Period))
+                        {
+                            Snackbar.Add("Must Fill the Period field(s).", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+
+                        }
+                        else
+                        {
+                            MudDialog.Close(DialogResult.Ok<TrnsTaxAdjustmentDetail>(oModelTaxAdjustmentDetail));
+                        }
+                    }
+                    else
+                    {
+                        MudDialog.Close(DialogResult.Ok<TrnsTaxAdjustmentDetail>(oModelTaxAdjustmentDetail));
+                    }
                 }
                 else
                 {
@@ -342,10 +368,24 @@ namespace HCM.UI.General
                 {
                     if (oDetailParaTaxAdjust.Description != null)
                     {
+                        oPayrollList = await _CfgPayrollDefination.GetAllData();
+                        oModelPayroll = oPayrollList.Where(x => x.Id == EmpPayrollId).FirstOrDefault();
+                        oCfgPeriodDateList = oModelPayroll.CfgPeriodDates.Where(x => x.PayrollId == oModelPayroll.Id).ToList();
+
+                        //if (oDetailParaTaxAdjust.FlgMonthly == true)
+                        //  taxtype = "Monthly";
+                        //else
+                        //  taxtype = "Yearly";
                         oModelTaxAdjustmentDetail = oDetailParaTaxAdjust;
                     }
                     else
                     {
+                        if (EmpPayrollId != 0)
+                        {
+                        oPayrollList = await _CfgPayrollDefination.GetAllData();
+                        oModelPayroll = oPayrollList.Where(x => x.Id == EmpPayrollId).FirstOrDefault();
+                        oCfgPeriodDateList = oModelPayroll.CfgPeriodDates.Where(x => x.PayrollId == oModelPayroll.Id).ToList();
+                        }
                         oModelTaxAdjustmentDetail.Description = "";
                         oModelTaxAdjustmentDetail.FlgActive= true;
                         oModelTaxAdjustmentDetail.Amount = 0;

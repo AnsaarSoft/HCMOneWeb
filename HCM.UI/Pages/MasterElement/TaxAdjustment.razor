@@ -47,8 +47,14 @@
                     <MudNumericField @bind-Value="oModelMstEmployee.GrossSalary" Min="0" ReadOnly="true" Immediate="true" Clearable="true" Label="Gross Salary" Variant="Variant.Text"
                                      Adornment="Adornment.Start" AdornmentText="Rs" Format="0.00" />
                 </MudItem>
-
-
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudSelect @bind-Value="oModel.CalendarId" Label="Tax Year*" HelperText="Select Year" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (MstCalendar Calendar in oCalendarList.ToList())
+                        {
+                            <MudSelectItem Value="(int?)Calendar.Id">@Calendar.Code</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
 
                 <MudItem xs="12" sm="12" md="12" lg="12">
                     @if (Loading)
@@ -87,14 +93,20 @@
                     <MudTable Items="oDetailList" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true">
                         <HeaderContent>
                             <MudTh>Description</MudTh>
+                            <MudTh>AmountType</MudTh>
+                            <MudTh>TaxType</MudTh>
+                            <MudTh>Period</MudTh>
                             <MudTh>Amount</MudTh>
                             <MudTh>Active</MudTh>
                             <MudTh>Action</MudTh>
                         </HeaderContent>
                         <RowTemplate>
-                            <MudTd DataLabel="Branch Name">@context.Description</MudTd>
-                            <MudTd DataLabel="Branch Name">@context.Amount</MudTd>
-                            <MudTd DataLabel="Branch Name">@context.FlgActive</MudTd>
+                            <MudTd DataLabel="Description">@context.Description</MudTd>
+                            <MudTd DataLabel="AmountType">@context.AmountType</MudTd>
+                            <MudTd DataLabel="TaxType">@context.TaxType</MudTd>
+                            <MudTd DataLabel="Period">@context.Period</MudTd>
+                            <MudTd DataLabel="Amount">@context.Amount</MudTd>
+                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
                             <MudTd DataLabel="Action">
                                 <MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@((e) => OpenEditDialog(FullView, context))" Title="Edit"></MudIconButton>
                             </MudTd>

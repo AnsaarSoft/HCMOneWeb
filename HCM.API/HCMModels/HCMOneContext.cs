@@ -21966,9 +21966,15 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.CalendarCode).HasMaxLength(20);
+
+                entity.Property(e => e.CalendarId).HasColumnName("CalendarID");
+
                 entity.Property(e => e.CreateDt).HasColumnType("datetime");
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(10);
+
+                entity.Property(e => e.EmpCode).HasMaxLength(20);
 
                 entity.Property(e => e.EmpId).HasColumnName("empID");
 
@@ -21978,9 +21984,9 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.UpdatedBy).HasMaxLength(10);
 
-                entity.HasOne(d => d.CalendarYearNavigation)
+                entity.HasOne(d => d.Calendar)
                     .WithMany(p => p.TrnsTaxAdjustments)
-                    .HasForeignKey(d => d.CalendarYear)
+                    .HasForeignKey(d => d.CalendarId)
                     .HasConstraintName("FK_TrnsTaxAdjustment_MstCalendar");
 
                 entity.HasOne(d => d.Emp)
@@ -22010,6 +22016,8 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.Period).HasMaxLength(30);
 
                 entity.Property(e => e.Taid).HasColumnName("TAID");
+
+                entity.Property(e => e.TaxType).HasMaxLength(20);
 
                 entity.Property(e => e.UpdateDt).HasColumnType("datetime");
 
