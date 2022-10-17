@@ -18,7 +18,7 @@ namespace HCM.UI.Pages.ApprovalSetup
         [Inject]
         public IDialogService Dialog { get; set; }
         [Inject]
-        public IMstStages _stageService { get; set; }
+        public ICfgApprovalStage _stageService { get; set; }
         [Inject]
         public NavigationManager navigation { get; set; }
         [Inject]
@@ -31,7 +31,7 @@ namespace HCM.UI.Pages.ApprovalSetup
         private bool Loading = false;
         private IEnumerable<MstEmployee> AuthorizerNames { get; set; } = new HashSet<MstEmployee>();
 
-        MstStage oModel = new MstStage();
+        CfgApprovalStage oModel = new CfgApprovalStage();
 
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
@@ -51,7 +51,7 @@ namespace HCM.UI.Pages.ApprovalSetup
                 var result = await dialog.Result;
                 if (!result.Cancelled)
                 {
-                    AuthorizerNames = (ICollection<MstEmployee>)result.Data;
+                    AuthorizerNames = (HashSet<MstEmployee>)result.Data;
                 }
             }
             catch (Exception ex)
@@ -65,26 +65,22 @@ namespace HCM.UI.Pages.ApprovalSetup
             try
             {
                 var parameters = new DialogParameters();
-                parameters.Add("DialogFor", "LeaveRequest");
+                parameters.Add("DialogFor", "ApprovalStages");
                 var dialog = Dialog.Show<DialogBox>("", parameters, options);
                 var result = await dialog.Result;
                 if (!result.Cancelled)
                 {
-                    //var res = (TrnsLeavesRequest)result.Data;
-                    //oModel = res;
-                    //_dateRange.Start = oModel.LeaveFrom;
-                    //_dateRange.End = oModel.LeaveTo;
-                    //SetEmployeeLeaves();
-                    //if (!string.IsNullOrWhiteSpace(oModel.FromTime) && !string.IsNullOrWhiteSpace(oModel.ToTime))
-                    //{
-                    //    string[] spFromTime = oModel.FromTime.Split(':');
-                    //    TimeSpan FromTime = new TimeSpan(Convert.ToInt32(spFromTime[0]), Convert.ToInt32(spFromTime[1]), 0);
-                    //    TSFromTime = FromTime;
-
-                    //    string[] spToTime = oModel.ToTime.Split(':');
-                    //    TimeSpan ToTime = new TimeSpan(Convert.ToInt32(spToTime[0]), Convert.ToInt32(spToTime[1]), 0);
-                    //    TSToTime = ToTime;
-                    //}
+                    var res = (CfgApprovalStage)result.Data;
+                    oModel = res;
+                    List<MstEmployee> oListTemp = new List<MstEmployee>();
+                    foreach (var item in oModel.CfgApprovalStageDetails)
+                    {
+                        MstEmployee obj = new MstEmployee();
+                        obj.Id = (int)item.FkempId;
+                        obj.EmpId = item.AuthorizerId;
+                        oListTemp.Add(obj);
+                    }
+                    AuthorizerNames = oListTemp.ToList();
                 }
             }
             catch (Exception ex)
@@ -107,8 +103,8 @@ namespace HCM.UI.Pages.ApprovalSetup
                         Loading = true;
                         var res1 = new ApiResponseModel();
                         await Task.Delay(1);
-
-                        if (oModel.StageName == null || oModel.NumberOfApprovals == null || oModel.NumberOfRejectins == null)
+                        
+                        if (oModel.StageName == null || oModel.ApprovalsNo == null || oModel.RejectionsNo == null)
                         {
                             Snackbar.Add("Please fill the required field(s)", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                             Loading = false;
@@ -122,17 +118,17 @@ namespace HCM.UI.Pages.ApprovalSetup
                         }
                         if (AuthorizerNames != null && AuthorizerNames.Count() > 0)
                         {
-                            oModel.MstStageDetails.Clear();
+                            oModel.CfgApprovalStageDetails.Clear();
                             foreach (var Line in AuthorizerNames)
                             {
-                                MstStageDetail oLine = new MstStageDetail();
-                                oLine.EmployeeId = Convert.ToInt32(Line.Id);
-                                oLine.EmpId = Line.EmpId;
+                                CfgApprovalStageDetail oLine = new CfgApprovalStageDetail();
+                                oLine.FkempId = Convert.ToInt32(Line.Id);
+                                oLine.AuthorizerId = Line.EmpId;
                                 oLine.CreatedDate = DateTime.Now;
-                                oModel.MstStageDetails.Add(oLine);
+                                oModel.CfgApprovalStageDetails.Add(oLine);
                             }
                         }
-                        if (oModel != null && oModel.MstStageDetails != null && oModel.MstStageDetails.Count > 0)
+                        if (oModel != null && oModel.CfgApprovalStageDetails != null && oModel.CfgApprovalStageDetails.Count > 0)
                         {
                             if (oModel.Id == 0)
                             {

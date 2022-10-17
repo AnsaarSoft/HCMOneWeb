@@ -5,22 +5,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HCM.API.Repository.ApprovalSetup
 {
-    public class MstStagesRepo : IMstStages
+    public class CfgApprovalStageDetailRepo : ICfgApprovalStage
     {
         private HCMOneContext _DBContext;
 
-        public MstStagesRepo(HCMOneContext DBContext)
+        public CfgApprovalStageDetailRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
-        public async Task<List<MstStage>> GetAllData()
+        public async Task<List<CfgApprovalStage>> GetAllData()
         {
-            List<MstStage> oList = new List<MstStage>();
+            List<CfgApprovalStage> oList = new List<CfgApprovalStage>();
             try
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.MstStages.Include(t => t.MstStageDetails).ToList();
+                    oList = _DBContext.CfgApprovalStages.Where(x=>x.FlgActive == true).Include(t => t.CfgApprovalStageDetails).ToList();
                 });
             }
             catch (Exception ex)
@@ -29,14 +29,14 @@ namespace HCM.API.Repository.ApprovalSetup
             }
             return oList;
         }
-        public async Task<ApiResponseModel> Insert(MstStage oStage)
+        public async Task<ApiResponseModel> Insert(CfgApprovalStage oCfgApprovalStage)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    _DBContext.MstStages.Add(oStage);
+                    _DBContext.CfgApprovalStages.Add(oCfgApprovalStage);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";
@@ -50,16 +50,16 @@ namespace HCM.API.Repository.ApprovalSetup
             }
             return response;
         }
-        public async Task<ApiResponseModel> Update(MstStage oStage)
+        public async Task<ApiResponseModel> Update(CfgApprovalStage oCfgApprovalStage)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    var Detail = _DBContext.MstStageDetails.Where(x => x.StageId == oStage.Id).ToList();
-                    _DBContext.MstStageDetails.RemoveRange(Detail);
-                    _DBContext.MstStages.Update(oStage);
+                    var Detail = _DBContext.CfgApprovalStageDetails.Where(x => x.Asid == oCfgApprovalStage.Id).ToList();
+                    _DBContext.CfgApprovalStageDetails.RemoveRange(Detail);
+                    _DBContext.CfgApprovalStages.Update(oCfgApprovalStage);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";

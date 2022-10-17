@@ -24,12 +24,12 @@
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.NumberOfApprovals" HelperText="Enter No. of Approval" Immediate="true" Clearable="true" Label="No. of Approval"
-                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" Min="0"> </MudNumericField>
+                    <MudNumericField @bind-Value="oModel.ApprovalsNo" HelperText="Enter No. of Approval" Immediate="true" Clearable="true" Label="No. of Approval"
+                                T="Byte" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" Min="0"> </MudNumericField>
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.NumberOfRejectins" HelperText="Enter No. of Rejection" Immediate="true" Clearable="true" Label="No. of Rejection"
-                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" Min="0"> </MudNumericField>
+                    <MudNumericField @bind-Value="oModel.RejectionsNo" HelperText="Enter No. of Rejection" Immediate="true" Clearable="true" Label="No. of Rejection"
+                                     T="Byte" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text" Min="0"> </MudNumericField>
                 </MudItem>
                 <MudItem xs="12" sm="12" md="12" lg="12">
                     @if (Loading)

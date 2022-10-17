@@ -1,0 +1,128 @@
+﻿@page "/ApprovalTemplate"
+@using HCM.API.Models
+
+<div class="input-field-setting">
+    <div class="row">
+        <div class="col-sm-10">
+            <h3>Approval Template</h3>
+            <MudDivider />
+        </div>
+        <div class="col-sm-2 custom-btn-design text-right">
+            <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Filled.RemoveRedEye" Color="Color.Info" Size="Size.Small">View All</MudButton>
+        </div>
+    </div>
+    <MudDivider />
+    @if (Loading)
+    {
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    }
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudGrid class="search-action-block align-items-center block-design">
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField @bind-Value="oModel.Name" InputMode="InputMode.text" MaxLength="200" Counter="200" HelperText="Enter Approval Name" Immediate="true" Clearable="true" Label="Approval Name" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudSwitch @bind-Checked="@oModel.FlgActive" ThumbIcon="@(oModel.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgActive==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgActive == true ? "Active" : "In Active")</span>
+                    </MudSwitch>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    @if (Loading)
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudText>Loading...</MudText>
+                            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudItem xs="12" sm="12" md="12" lg="12" class="text-right custom-btn-design" style="justify-content: flex-end;">
+                            <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Save</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
+                        </MudItem>
+                    }
+                </MudItem>
+            </MudGrid>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <MudTabs Border="true" Elevation="5" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Centered="true" Class="custom-tab-setting">
+                <MudTabPanel Icon="@Icons.Sharp.Person" Text="Originators">
+                    <MudGrid class="search-action-block align-items-center block-design">
+                        <MudItem xs="12" Class="text-right custom-btn-design" style="justify-content: flex-start;">
+                            <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialogEmployee(maxWidth))" StartIcon="@Icons.Material.Filled.Add" Color="Color.Success" Size="Size.Small">Add Originator</MudButton>
+                        </MudItem>
+                    </MudGrid>
+                    <MudDivider Class="mt-5" />
+                    @if (SelectedEmployee != null)
+                    {
+                        @foreach (var item in SelectedEmployee)
+                        {
+                            <MudChip Icon="@Icons.Material.Filled.Person" Class="mt-5" Variant="Variant.Text" Color="Color.Primary">@item.EmpId</MudChip>
+                        }
+                    }
+                </MudTabPanel>
+                <MudTabPanel Icon="@Icons.Sharp.Description" Text="Documents">
+                    <MudSelect Required="true" RequiredError="Required!" MultiSelectionTextFunc="@(new Func<List<string>, string>(GetDocumentSelection))" @bind-SelectedValues="DocNames" T="MstForm" @bind-Value="oDoc" MultiSelection="true" Label="Select Document" Variant="Variant.Outlined" OffsetY="true" Margin="Margin.Dense">
+                        @foreach (MstForm item in oDocList)
+                        {
+                            <MudSelectItem Value="@item">@item.FormName</MudSelectItem>
+                        }
+                    </MudSelect>
+                    <MudDivider Class="mt-5" />
+                    @if (DocNames != null)
+                    {
+                        @foreach (var item in DocNames)
+                        {
+                            <MudChip Icon="@Icons.Material.Filled.Description" Class="mt-5" Variant="Variant.Text" Color="Color.Primary">@item.FormName</MudChip>
+                        }
+                    }
+                </MudTabPanel>
+                <MudTabPanel Icon="@Icons.Sharp.Segment" Text="Stages">
+                    <MudGrid class="search-action-block align-items-center block-design">
+                        <MudItem xs="5">
+                            <MudAutocomplete T="CfgApprovalStage" @bind-Value="oModelCfgApprovalStage" SearchFunc="@SearchCfgApprovalStage" Clearable="true" Label="Select Stage" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
+                                             Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.StageName}")" />
+                        </MudItem>
+                        <MudItem xs="7" Class="text-right custom-btn-design" style="justify-content: flex-start;">
+                            <MudButton Variant="Variant.Filled" OnClick="@(() => AddRow() )" StartIcon="@Icons.Material.Filled.Add" Color="Color.Success" Size="Size.Small">Add Stage</MudButton>
+                        </MudItem>
+                    </MudGrid>
+                    <div class="row mt-5">
+                        <div class="col-md-12">
+                            <MudCard Elevation="5">
+                                <MudCardContent>
+                                    <MudTable Items="@oCfgApprovalTemplateStageList" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true">
+                                        <HeaderContent>
+                                            <MudTh>Stage ID</MudTh>
+                                            <MudTh>Stage Name</MudTh>
+                                            <MudTh>Priorty</MudTh>
+                                            <MudTh>Action</MudTh>
+                                        </HeaderContent>
+                                        <RowTemplate>
+                                            <MudTd DataLabel="Code">@context.StageId</MudTd>
+                                            <MudTd DataLabel="Loans Name">@context.StageName</MudTd>
+                                            <MudTd DataLabel="Loans Name">@context.Priorty</MudTd>
+                                            <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Remove" OnClick="@(() => RemoveRecord(context.Id) )" Title="Remove"></MudIconButton></MudTd>
+                                        </RowTemplate>
+                                        <PagerContent>
+                                            <MudTablePager />
+                                        </PagerContent>
+                                    </MudTable>
+                                </MudCardContent>
+                                <MudCardActions>
+                                </MudCardActions>
+                            </MudCard>
+                        </div>
+                    </div>
+                </MudTabPanel>
+            </MudTabs>
+        </div>
+    </div>
+</div>
+
+
+

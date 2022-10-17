@@ -5,23 +5,23 @@ using RestSharp;
 
 namespace HCM.UI.Data.ApprovalSetup
 {
-    public class MstStagesService : IMstStages
+    public class oCfgApprovalStageService : ICfgApprovalStage
     {
         private readonly RestClient _restClient;
-        public MstStagesService()
+        public oCfgApprovalStageService()
         {
             _restClient = new RestClient(Settings.APIBaseURL);
         }
 
-        public async Task<List<MstStage>> GetAllData()
+        public async Task<List<CfgApprovalStage>> GetAllData()
         {
             try
             {
-                List<MstStage> oList = new List<MstStage>();
+                List<CfgApprovalStage> oList = new List<CfgApprovalStage>();
 
                 var request = new RestRequest("ApprovalSetup/getAllStage", Method.Get) { RequestFormat = DataFormat.Json };
 
-                var response = await _restClient.ExecuteAsync<List<MstStage>>(request);
+                var response = await _restClient.ExecuteAsync<List<CfgApprovalStage>>(request);
 
                 if (response.IsSuccessful)
                 {
@@ -39,13 +39,13 @@ namespace HCM.UI.Data.ApprovalSetup
             }
         }
 
-        public async Task<ApiResponseModel> Insert(MstStage oMstStage)
+        public async Task<ApiResponseModel> Insert(CfgApprovalStage oCfgApprovalStage)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 var request = new RestRequest("ApprovalSetup/addStage", Method.Post);
-                request.AddJsonBody(oMstStage);
+                request.AddJsonBody(oCfgApprovalStage);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {
@@ -69,13 +69,13 @@ namespace HCM.UI.Data.ApprovalSetup
             }
         }
 
-        public async Task<ApiResponseModel> Update(MstStage oMstStage)
+        public async Task<ApiResponseModel> Update(CfgApprovalStage oCfgApprovalStage)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 var request = new RestRequest("ApprovalSetup/updateStage", Method.Post);
-                request.AddJsonBody(oMstStage);
+                request.AddJsonBody(oCfgApprovalStage);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {
