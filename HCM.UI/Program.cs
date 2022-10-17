@@ -6,6 +6,7 @@ using HCM.UI.Data.Account;
 using HCM.UI.Data.Advance;
 using HCM.UI.Data.ApprovalSetup;
 using HCM.UI.Data.Attendance;
+using HCM.UI.Data.Bonus;
 using HCM.UI.Data.EmployeeMasterSetup;
 using HCM.UI.Data.Loan;
 using HCM.UI.Data.MasterData;
@@ -15,6 +16,7 @@ using HCM.UI.Interfaces.Account;
 using HCM.UI.Interfaces.Advance;
 using HCM.UI.Interfaces.ApprovalSetup;
 using HCM.UI.Interfaces.Attendance;
+using HCM.UI.Interfaces.Bonus;
 using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.Loan;
 using HCM.UI.Interfaces.MasterData;
@@ -88,6 +90,9 @@ builder.Services.AddScoped<ITrnsAdvanceRequest, TrnsAdvanceRequestService>();
 builder.Services.AddScoped<ITrnsEmployeeOverTime, TrnsEmployeeOverTimeService>();
 builder.Services.AddScoped<ITrnsEmployeeResign, TrnsEmployeeResignService>();
 builder.Services.AddScoped<IMstStages, MstStagesService>();
+builder.Services.AddScoped<ITrnsTaxAdjustment, TrnsTaxAdjustmentService>();
+builder.Services.AddScoped<ITrnsEmployeeBonus, TrnsEmployeeBonusService>();
+builder.Services.AddScoped<ITrnsReHireEmployee, TrnsReHireEmployeeService>();
 
 //Configuration Start
 

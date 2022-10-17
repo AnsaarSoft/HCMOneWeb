@@ -14,13 +14,14 @@ namespace HCM.API.Controllers
         private IMstLove _mstLove;
         private IMstOverTime _mstOverTime;
         private ITrnsElementTransaction _trnsElementTransaction;
-
-        public MasterElementController(IMstElement mstElement, IMstLove mstLove, IMstOverTime mstOverTime, ITrnsElementTransaction trnsElementTransaction)
+        private ITrnsTaxAdjustment _trnsTaxAdjustment;
+        public MasterElementController(IMstElement mstElement, IMstLove mstLove, IMstOverTime mstOverTime, ITrnsElementTransaction trnsElementTransaction , ITrnsTaxAdjustment trnsTaxAdjustment)
         {
             _mstElement = mstElement;
             _mstLove = mstLove;
             _mstOverTime = mstOverTime;
             _trnsElementTransaction = trnsElementTransaction;
+            _trnsTaxAdjustment = trnsTaxAdjustment;
         }
 
         #region MST Element
@@ -278,5 +279,83 @@ namespace HCM.API.Controllers
         }
 
         #endregion
+
+        #region Trns Tax Adjustment
+
+        [Route("getAllTaxAdjust")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllTaxAdjust()
+        {
+            List<TrnsTaxAdjustment> oTrnsTaxAdjustment = new List<TrnsTaxAdjustment>();
+            try
+            {
+                oTrnsTaxAdjustment = await _trnsTaxAdjustment.GetAllData();
+                if (oTrnsTaxAdjustment == null)
+                {
+                    return BadRequest(oTrnsTaxAdjustment);
+                }
+                else
+                {
+                    return Ok(oTrnsTaxAdjustment);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addTaxAdjust")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] TrnsTaxAdjustment pTrnsTaxAdjustment)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _trnsTaxAdjustment.Insert(pTrnsTaxAdjustment);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateTaxAdjust")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] TrnsTaxAdjustment pTrnsTaxAdjustment)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _trnsTaxAdjustment.Update(pTrnsTaxAdjustment);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
+
     }
+
 }

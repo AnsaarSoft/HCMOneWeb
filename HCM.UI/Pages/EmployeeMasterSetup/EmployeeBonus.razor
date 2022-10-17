@@ -4,9 +4,14 @@
 
 <div class="container-fluid page-content-setting shift-scheduler">
     <div class="row">
-        <div class="col-sm-12">
-            <h3>Employee Bonus</h3>
+        <div class="col-sm-10">
+            <h3>Employee Filter</h3>
             <MudDivider />
+        </div>
+        <div class="col-sm-2 custom-btn-design text-right">
+            <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Filled.RemoveRedEye" Color="Color.Info" Size="Size.Small">View All</MudButton>
+
+            @*<MudFab Color="Color.Primary" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Material.Filled.List" Title="View All" />*@
         </div>
     </div>
     <div class="row mt-5">
@@ -58,6 +63,7 @@
 
                             <MudButton Variant="Variant.Filled" OnClick="SearchCriteria" StartIcon="@Icons.Material.Filled.Search" Color="Color.Info" Size="Size.Small">Search</MudButton>
                             <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Save</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick="ProcessedInSalary" StartIcon="@Icons.Material.Filled.Approval" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Processed in Salary</MudButton>
                             <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
 
                             @*       <MudFab Color="Color.Primary" OnClick="SearchCriteria" StartIcon="@Icons.Material.Filled.Search" Title="Search" IconSize="Size.Small" />
@@ -72,33 +78,92 @@
 
     <div class="row mt-5">
         <div class="col-sm-12">
+            <h3>Header</h3>
+            <MudDivider />
+        </div>
+        <div class="col-sm-12">
+            <MudGrid class="search-action-block align-items-center block-design">
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudNumericField Label="Doc Num*" @bind-Value="oModel.DocumentNo" Variant="Variant.Text" ReadOnly="true" />
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudSelect @bind-Value="oModel.CalendarCode" Disabled="true" Label="Payroll Calendar" HelperText="Active Payroll Calendar" AdornmentIcon="@Icons.Material.Filled.CalendarViewMonth" Adornment="Adornment.Start">
+                        @foreach (MstCalendar calendar in oListCalendar.ToList())
+                        {
+                            <MudSelectItem Value="calendar.Code">@calendar.Code - @calendar.Description</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudSelect @bind-Value="oModel.PayrollCode" Label="Payroll" HelperText="Select Payroll" AdornmentIcon="@Icons.Material.Filled.RollerSkating" Adornment="Adornment.Start">
+                        @foreach (CfgPayrollDefination Payroll in oListPayroll.ToList())
+                        {
+                            <MudSelectItem Value="Payroll.PayrollName">@Payroll.PayrollName</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudSelect @bind-Value="oModel.PaysInPeriodCode" Disabled="true" Label="Payroll Period*" HelperText="Select Payroll Periods" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (var period in oListPayrollPeriod.ToList())
+                        {
+                            <MudSelectItem Value="period.PeriodName">@period.PeriodName</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudSelect @bind-Value="oModel.ElementType" Label="Element Type*" HelperText="Select Element Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (MstElement Element in oElementList.Where(x => x.FlgActive == true).ToList())
+                        {
+                            <MudSelectItem Value="(int?)Element.Id">@Element.Code - @Element.Description</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudTextField T="string" @bind-Value="oModel.Status" HelperText="Document Status" Immediate="true" Label="Status*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>
+            </MudGrid>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-sm-12">
             <MudCard Elevation="5">
                 <MudCardContent>
-                    <MudTable Items="@oListFilteredEmployee" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstEmployee,bool>(FilterFuncFilteredEmployee)">
+                    <MudTable Items="@oModel.TrnsEmployeeBonusDetails" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsEmployeeBonusDetail,bool>(FilterFuncFilteredEmployeeBonus)">
                         <ToolBarContent>
                             <MudText Typo="Typo.h6">Selected Employees</MudText>
                             <MudSpacer />
-                            <MudTextField T="string" @bind-Value="searchStringFilteredEmployee" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                            <MudTextField T="string" @bind-Value="searchStringFilteredEmployeeBonus" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
                         </ToolBarContent>
                         <HeaderContent>
                             <MudTh>Delete</MudTh>
-                            <MudTh>Employee Code</MudTh>
+                            <MudTh>Employee ID</MudTh>
                             <MudTh>Employee Name</MudTh>
-                            <MudTh>Payroll</MudTh>
-                            <MudTh>Designation</MudTh>
-                            <MudTh>Department</MudTh>
-                            <MudTh>Location</MudTh>
-                            <MudTh>Branch</MudTh>
+                            <MudTh>Basic Salary</MudTh>
+                            <MudTh>Gross Salary</MudTh>
+                            <MudTh>Slab Code</MudTh>
+                            <MudTh>Salary Range</MudTh>
+                            <MudTh>Percentage</MudTh>
+                            <MudTh>Calculated Amount</MudTh>
+                            <MudTh>Active</MudTh>
                         </HeaderContent>
                         <RowTemplate>
-                            <MudTd DataLabel="Action"><MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteFromFilter(context.Id) )" Title="Delete"></MudIconButton></MudTd>
-                            <MudTd DataLabel="Department Code">@context.EmpId</MudTd>
-                            <MudTd DataLabel="Department Name">@context.FirstName @context.MiddleName @context.LastName</MudTd>
-                            <MudTd DataLabel="Active">@context.PayrollName</MudTd>
-                            <MudTd DataLabel="Active">@context.DesignationName</MudTd>
-                            <MudTd DataLabel="Active">@context.DepartmentName</MudTd>
-                            <MudTd DataLabel="Active">@context.LocationName</MudTd>
-                            <MudTd DataLabel="Active">@context.BranchName</MudTd>
+                            <MudTd DataLabel="Action"><MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteFromFilter(context.EmployeeId))" Title="Delete"></MudIconButton></MudTd>
+                            <MudTd DataLabel="Department Code">@context.EmployeeId</MudTd>
+                            <MudTd DataLabel="Department Name">@context.EmployeeName</MudTd>
+                            <MudTd DataLabel="Active">@context.BasicSalary</MudTd>
+                            <MudTd DataLabel="Active">@context.GrossSalary</MudTd>
+                            <MudTd DataLabel="Active">@context.SlabCode</MudTd>
+                            <MudTd DataLabel="Active">@context.SalaryRange</MudTd>
+                            <MudTd DataLabel="Active">@context.Percentage</MudTd>
+                            <MudTd DataLabel="Active">@context.CalculatedAmount</MudTd>
+                            <MudTd DataLabel="Active">
+                                <MudSwitch @bind-Checked="@context.FlgActive" Disabled="true" ThumbIcon="@(context.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
+                                           ThumbIconColor="@(context.FlgActive==true ? Color.Primary : Color.Error)" Color="@(context.FlgActive==true ? Color.Info : Color.Error)">
+                                    <span>@(context.FlgActive == true ? "Active" : "In Active")</span>
+                                </MudSwitch>
+                            </MudTd>
                         </RowTemplate>
                         <PagerContent>
                             <MudTablePager />
@@ -108,32 +173,32 @@
             </MudCard>
         </div>
     </div>
-    <div class="row mt-3">      
+    <div class="row mt-3">
         @*<div class="col-sm-6 mt-3">
-            <MudCard Elevation="5">
-                <MudCardContent>
-                    <MudTable Items="@oListSelectedShift" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstShift,bool>(FilterFuncSelectedShift)">
-                        <ToolBarContent>
-                            <MudText Typo="Typo.h6">Selected Shifts</MudText>
-                            <MudSpacer />
-                            <MudTextField T="string" @bind-Value="searchStringSelectedShift" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
-                        </ToolBarContent>
-                        <HeaderContent>
-                            <MudTh>Shift Code</MudTh>
-                            <MudTh>Shift Name</MudTh>
-                            <MudTh>Delete</MudTh>
-                        </HeaderContent>
-                        <RowTemplate>
-                            <MudTd DataLabel="Department Code">@context.Code</MudTd>
-                            <MudTd DataLabel="Department Name">@context.Description</MudTd>
-                            <MudTd DataLabel="Action"><MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteShift(context.Id) )" Title="Delete"></MudIconButton></MudTd>
-                        </RowTemplate>
-                        <PagerContent>
-                            <MudTablePager />
-                        </PagerContent>
-                    </MudTable>
-                </MudCardContent>
-            </MudCard>
+        <MudCard Elevation="5">
+        <MudCardContent>
+        <MudTable Items="@oListSelectedShift" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstShift,bool>(FilterFuncSelectedShift)">
+        <ToolBarContent>
+        <MudText Typo="Typo.h6">Selected Shifts</MudText>
+        <MudSpacer />
+        <MudTextField T="string" @bind-Value="searchStringSelectedShift" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+        </ToolBarContent>
+        <HeaderContent>
+        <MudTh>Shift Code</MudTh>
+        <MudTh>Shift Name</MudTh>
+        <MudTh>Delete</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+        <MudTd DataLabel="Department Code">@context.Code</MudTd>
+        <MudTd DataLabel="Department Name">@context.Description</MudTd>
+        <MudTd DataLabel="Action"><MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteShift(context.Id) )" Title="Delete"></MudIconButton></MudTd>
+        </RowTemplate>
+        <PagerContent>
+        <MudTablePager />
+        </PagerContent>
+        </MudTable>
+        </MudCardContent>
+        </MudCard>
         </div>*@
     </div>
 </div>

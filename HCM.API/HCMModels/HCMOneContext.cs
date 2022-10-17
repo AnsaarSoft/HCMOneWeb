@@ -1202,6 +1202,12 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.CreatedBy).HasMaxLength(50);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
                 entity.Property(e => e.StageDescription)
                     .IsRequired()
                     .HasMaxLength(100);
@@ -1209,6 +1215,10 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.StageName)
                     .IsRequired()
                     .HasMaxLength(20);
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<CfgApprovalStageDetail>(entity =>
@@ -1224,6 +1234,12 @@ namespace HCM.API.HCMModels
                     .HasColumnName("AuthorizerID");
 
                 entity.Property(e => e.AuthorizerName).HasMaxLength(50);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.FkempId).HasColumnName("FKEmpID");
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.As)
                     .WithMany(p => p.CfgApprovalStageDetails)
@@ -1276,6 +1292,8 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.FlgEmpLeave).HasColumnName("flgEmpLeave");
 
+                entity.Property(e => e.FlgEmpTransfer).HasColumnName("flgEmpTransfer");
+
                 entity.Property(e => e.FlgJobRequisition).HasColumnName("flgJobRequisition");
 
                 entity.Property(e => e.FlgLoan).HasColumnName("flgLoan");
@@ -1309,6 +1327,8 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.Atid).HasColumnName("ATID");
 
                 entity.Property(e => e.StageId).HasColumnName("StageID");
+
+                entity.Property(e => e.StageName).HasMaxLength(150);
 
                 entity.HasOne(d => d.At)
                     .WithMany(p => p.CfgApprovalTemplateStages)
@@ -4138,6 +4158,8 @@ namespace HCM.API.HCMModels
 
                 entity.HasIndex(e => e.Code, "IX_MstCalendar")
                     .IsUnique();
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Code).HasMaxLength(20);
 
@@ -14786,6 +14808,8 @@ namespace HCM.API.HCMModels
 
             modelBuilder.Entity<TrnsEmployeeBonu>(entity =>
             {
+                entity.Property(e => e.CalendarCode).HasMaxLength(50);
+
                 entity.Property(e => e.CalendarId).HasColumnName("CalendarID");
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(200);
@@ -14794,7 +14818,11 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.PaymentId).HasColumnName("PaymentID");
 
+                entity.Property(e => e.PayrollCode).HasMaxLength(50);
+
                 entity.Property(e => e.PayrollId).HasColumnName("PayrollID");
+
+                entity.Property(e => e.PaysInPeriodCode).HasMaxLength(50);
 
                 entity.Property(e => e.PaysInPeriodId).HasColumnName("PaysInPeriodID");
 
@@ -15001,6 +15029,8 @@ namespace HCM.API.HCMModels
                 entity.ToTable("TrnsEmployeeElement");
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.EmpGrossSalary).HasColumnType("numeric(18, 6)");
 
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
 
@@ -21964,9 +21994,15 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.CalendarCode).HasMaxLength(20);
+
+                entity.Property(e => e.CalendarId).HasColumnName("CalendarID");
+
                 entity.Property(e => e.CreateDt).HasColumnType("datetime");
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(10);
+
+                entity.Property(e => e.EmpCode).HasMaxLength(20);
 
                 entity.Property(e => e.EmpId).HasColumnName("empID");
 
@@ -21976,9 +22012,9 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.UpdatedBy).HasMaxLength(10);
 
-                entity.HasOne(d => d.CalendarYearNavigation)
+                entity.HasOne(d => d.Calendar)
                     .WithMany(p => p.TrnsTaxAdjustments)
-                    .HasForeignKey(d => d.CalendarYear)
+                    .HasForeignKey(d => d.CalendarId)
                     .HasConstraintName("FK_TrnsTaxAdjustment_MstCalendar");
 
                 entity.HasOne(d => d.Emp)
@@ -21993,6 +22029,8 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.Amount).HasColumnType("numeric(18, 6)");
 
+                entity.Property(e => e.AmountType).HasMaxLength(20);
+
                 entity.Property(e => e.CreateDt).HasColumnType("datetime");
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(10);
@@ -22003,7 +22041,11 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.FlgMonthly).HasColumnName("flgMonthly");
 
+                entity.Property(e => e.Period).HasMaxLength(30);
+
                 entity.Property(e => e.Taid).HasColumnName("TAID");
+
+                entity.Property(e => e.TaxType).HasMaxLength(20);
 
                 entity.Property(e => e.UpdateDt).HasColumnType("datetime");
 

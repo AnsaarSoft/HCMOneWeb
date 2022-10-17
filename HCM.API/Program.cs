@@ -4,6 +4,7 @@ using HCM.API.Interfaces.Account;
 using HCM.API.Interfaces.Advance;
 using HCM.API.Interfaces.ApprovalSetup;
 using HCM.API.Interfaces.Attendance;
+using HCM.API.Interfaces.Bonus;
 using HCM.API.Interfaces.EmployeeMasterSetup;
 using HCM.API.Interfaces.Loan;
 using HCM.API.Interfaces.MasterData;
@@ -13,6 +14,7 @@ using HCM.API.Repository.Account;
 using HCM.API.Repository.Advance;
 using HCM.API.Repository.ApprovalSetup;
 using HCM.API.Repository.Attendance;
+using HCM.API.Repository.Bonus;
 using HCM.API.Repository.EmployeeMasterSetup;
 using HCM.API.Repository.Loan;
 using HCM.API.Repository.MasterData;
@@ -100,6 +102,9 @@ builder.Services.AddScoped<ITrnsAdvanceRequest, TrnsAdvanceRequestRepo>();
 builder.Services.AddScoped<ITrnsEmployeeOverTime, TrnsEmployeeOverTimeRepo>();
 builder.Services.AddScoped<ITrnsEmployeeResign, TrnsEmployeeResignRepo>();
 builder.Services.AddScoped<IMstStages, MstStagesRepo>();
+builder.Services.AddScoped<ITrnsTaxAdjustment, TrnsTaxAdjustmentRepo>();
+builder.Services.AddScoped<ITrnsEmployeeBonus, TrnsEmployeeBonusRepo>();
+builder.Services.AddScoped<ITrnsReHireEmployee, TrnsReHireEmployeeRepo>();
 
 
 Settings.TitleConfig = builder.Configuration.GetValue<string>("TitleConfig");

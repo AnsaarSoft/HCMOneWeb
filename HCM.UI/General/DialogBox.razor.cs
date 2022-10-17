@@ -65,6 +65,9 @@ namespace HCM.UI.General
         [Inject]
         public ITrnsEmployeeOverTime _trnsEmployeeOverTime { get; set; }
 
+        [Inject]
+        public ITrnsTaxAdjustment _trnsTaxAdjustment { get; set; }
+
         #endregion
 
         #region Variables
@@ -87,6 +90,7 @@ namespace HCM.UI.General
         private bool FilterFuncTrnsAdvanceRequest(TrnsAdvanceRequest element) => FilterFuncTrnsAdvanceRequest(element, searchString1);
         private bool FilterFuncTrnsEmployeeOvertime(TrnsEmployeeOvertime element) => FilterFuncTrnsEmployeeOvertime(element, searchString1);
         private bool FilterFuncTrnsEmployeeResign(TrnsResignation element) => FilterFuncTrnsEmployeeResign(element, searchString1);
+        private bool FilterFuncTrnsTaxAdjustment(TrnsTaxAdjustment element) => FilterFuncTrnsTaxAdjustment(element, searchString1);
         void Cancel() => MudDialog.Cancel();
 
         private MudTable<MstElement> _tableElement;
@@ -137,6 +141,10 @@ namespace HCM.UI.General
         private MudTable<TrnsEmployeeOvertime> _tableTrnsEmployeeOvertime;
         TrnsEmployeeOvertime oModelTrnsEmployeeOvertime = new TrnsEmployeeOvertime();
         List<TrnsEmployeeOvertime> oListTrnsEmployeeOvertime = new List<TrnsEmployeeOvertime>();
+        
+        private MudTable<TrnsTaxAdjustment> _tableTaxAdjustment;
+        TrnsTaxAdjustment oModelTrnsTaxAdjustment = new TrnsTaxAdjustment();
+        List<TrnsTaxAdjustment> oListTrnsTaxAdjustment = new List<TrnsTaxAdjustment>();
 
         private HashSet<MstEmployee> selectedEmployee = new HashSet<MstEmployee>();
 
@@ -308,7 +316,7 @@ namespace HCM.UI.General
         {
             try
             {
-                oListMstEmployee = await _mstEmployee.GetAllData();
+                oListMstEmployee = await _mstEmployee.GetAllData();                
                 if (oListMstEmployee?.Count == 0 || oListMstEmployee == null)
                 {
                     Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
@@ -528,6 +536,73 @@ namespace HCM.UI.General
             return false;
         }
 
+        private async Task GetAllTrnsTaxAdjustment()
+        {
+            try
+            {
+                oListTrnsTaxAdjustment = await _trnsTaxAdjustment.GetAllData();
+                if (oListTrnsTaxAdjustment?.Count == 0 || oListTrnsTaxAdjustment == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncTrnsTaxAdjustment(TrnsTaxAdjustment element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            //if (element.DocNum.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            //if (element.EmpName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            //if (element.DocStatus.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            //if (element.DocAprStatus.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            //if (element.DocDate.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            //if (element.ResignDate.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            return false;
+        }
+
+        private async Task GetAllMstEmployeeReHire()
+        {
+            try
+            {
+                oListMstEmployee = await _mstEmployee.GetAllData();
+                oListMstEmployee = oListMstEmployee.Where(x => x.FlgActive == false && (x.ResignDate != null || x.TerminationDate != null)).ToList();
+                if (oListMstEmployee?.Count == 0 || oListMstEmployee == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncMstEmployeeReHire(MstEmployee element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.EmpId.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.FirstName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.JoiningDate.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.DesignationName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.LocationName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
+        }
+
         #endregion
 
         #region Events
@@ -592,6 +667,14 @@ namespace HCM.UI.General
                 else if (DialogFor == "EmployeeResign")
                 {
                     await GetAllTrnsEmployeeResign();
+                }
+                else if (DialogFor == "TaxAdjustment")
+                {
+                    await GetAllTrnsTaxAdjustment();
+                }
+                else if (DialogFor == "EmployeeReHire")
+                {
+                    await GetAllMstEmployeeReHire();
                 }
                 Loading = false;
             }
@@ -985,6 +1068,69 @@ namespace HCM.UI.General
                 return string.Empty;
             }
         }
+        public void RowClickEventTaxAdjustment(TableRowClickEventArgs<TrnsTaxAdjustment> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncTaxAdjustment(TrnsTaxAdjustment element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableTaxAdjustment.SelectedItem != null && _tableTaxAdjustment.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public void RowClickEventMstEmployeeReHire(TableRowClickEventArgs<MstEmployee> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncMstEmployeeReHire(MstEmployee element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableMstEmployee.SelectedItem != null && _tableMstEmployee.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
 
         private void Submit()
         {
@@ -1049,6 +1195,14 @@ namespace HCM.UI.General
                 else if (DialogFor == "EmployeeResign" && oModelTrnsEmployeeResign.Id > 0)
                 {
                     MudDialog.Close(DialogResult.Ok<TrnsResignation>(oModelTrnsEmployeeResign));
+                }
+                else if (DialogFor == "TaxAdjustment" && oModelTrnsTaxAdjustment.Id > 0)
+                {
+                    MudDialog.Close(DialogResult.Ok<TrnsTaxAdjustment>(oModelTrnsTaxAdjustment));
+                }
+                else if (DialogFor == "EmployeeReHire" && oModelMstEmployee.Id > 0)
+                {
+                    MudDialog.Close(DialogResult.Ok<MstEmployee>(oModelMstEmployee));
                 }
                 else
                 {

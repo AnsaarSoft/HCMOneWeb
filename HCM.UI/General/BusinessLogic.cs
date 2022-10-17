@@ -1,14 +1,18 @@
 ﻿using DocumentFormat.OpenXml.Math;
+using HCM.UI.Interfaces.MasterElement;
+using Microsoft.AspNetCore.Components;
 
 namespace HCM.UI.General
 {
     public class BusinessLogic
-    {
+    {       
+
         #region Employee Master
         public static MstEmployee ApplyPayrolStdlElement(MstEmployee oModel, IEnumerable<MstElement> oListElement, string LoginUser)
         {
             try
             {
+                decimal EmpGrossSalary = (decimal)oModel.BasicSalary;
                 TrnsEmployeeElement oTrnsEmployeeElement = new TrnsEmployeeElement();
                 //Check Existing Element
                 var ExistingElementHeader = oModel.TrnsEmployeeElements.Where(x => x.EmployeeId == oModel.Id).FirstOrDefault();
@@ -33,7 +37,20 @@ namespace HCM.UI.General
                         oTrnsEmployeeElementDetail.FlgActive = true;
                         oTrnsEmployeeElementDetail.FlgPaid = false;
                         oTrnsEmployeeElementDetail.SourceType = "Employee Master Add";
-                        oTrnsEmployeeElementDetail.Amount = 0;
+                        //oTrnsEmployeeElementDetail.Amount = 0;
+
+                        decimal emprAmount = 0;
+                        oTrnsEmployeeElementDetail.Amount = BusinessLogic.GetElementAmount(oModel, Element, out emprAmount);
+
+                        if ((Element.ElmtType == "Ear" || Element.ElmtType == "Con") && Element.FlgEffectOnGross == true)
+                        {
+                            EmpGrossSalary = (decimal)(EmpGrossSalary + oTrnsEmployeeElementDetail.Amount);
+                        }
+                        else if (Element.ElmtType == "Ded" && Element.FlgEffectOnGross == true)
+                        {
+                            EmpGrossSalary = (decimal)(EmpGrossSalary - oTrnsEmployeeElementDetail.Amount);
+                        }
+                        oTrnsEmployeeElement.EmpGrossSalary = EmpGrossSalary;
                         oTrnsEmployeeElement.TrnsEmployeeElementDetails.Add(oTrnsEmployeeElementDetail);
                     }
                     oModel.TrnsEmployeeElements.Add(oTrnsEmployeeElement);
@@ -80,7 +97,15 @@ namespace HCM.UI.General
                                     oTrnsEmployeeElementDetail.EmplrContr = emprAmount;
 
                                 }
-                                //oTrnsEmployeeElement.TrnsEmployeeElementDetails.Add(oTrnsEmployeeElementDetail);                                            
+                                if ((Element.ElmtType == "Ear" || Element.ElmtType == "Con") && Element.FlgEffectOnGross == true)
+                                {
+                                    EmpGrossSalary = (decimal)(EmpGrossSalary + oTrnsEmployeeElementDetail.Amount);
+                                }
+                                else if (Element.ElmtType == "Ded" && Element.FlgEffectOnGross == true)
+                                {
+                                    EmpGrossSalary = (decimal)(EmpGrossSalary - oTrnsEmployeeElementDetail.Amount);
+                                }
+                                oTrnsEmployeeElement.EmpGrossSalary = EmpGrossSalary;
                                 oModel.TrnsEmployeeElements.Where(x => x.EmployeeId == oModel.Id).FirstOrDefault().TrnsEmployeeElementDetails.Add(oTrnsEmployeeElementDetail);
                             }
                         }
