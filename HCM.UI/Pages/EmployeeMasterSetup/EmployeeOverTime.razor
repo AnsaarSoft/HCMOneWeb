@@ -127,8 +127,6 @@
                             <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
                         </ToolBarContent>
                         <HeaderContent>
-                             <MudTh>Delete</MudTh>
-                             <MudTh>Edit</MudTh>
                             <MudTh>Overtime</MudTh>
                             <MudTh>OT Date</MudTh>
                             <MudTh>Time From</MudTh>
@@ -136,18 +134,22 @@
                             <MudTh>Hours</MudTh>
                             <MudTh>Amount</MudTh>
                             <MudTh>Active</MudTh>
+                            <MudTh>Action</MudTh>
                         </HeaderContent>
                         <RowTemplate>
                             @*<MudIconButton Icon="@Icons.Material.Filled.Pattern" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" />*@
-                            <MudTd DataLabel="Action"><MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteFromFilter(context.Id) )" Title="Delete"></MudIconButton></MudTd>
-                            <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id) )" Title="Edit"></MudIconButton></MudTd>
-                            <MudTd DataLabel="Description">@context.OvertimeId</MudTd>
-                            <MudTd DataLabel="OT Date">@context.Otdate</MudTd>
+                             <MudTd DataLabel="Description">@context.OvertimeId</MudTd>
+                            <MudTd DataLabel="OT Date">@Convert.ToDateTime(context.Otdate).ToString("MM/dd/yyyy")</MudTd>
                             <MudTd DataLabel="Hours">@context.FromTime</MudTd>
                             <MudTd DataLabel="Hours">@context.ToTime</MudTd>
                             <MudTd DataLabel="Hours">@context.Othours</MudTd>
                             <MudTd DataLabel="Amount">@context.Amount</MudTd>
                             <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                            <MudTd DataLabel="Action">
+                                <MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteFromFilter(context.Id) )" Title="Delete"></MudIconButton>
+                                <MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id) )" Title="Edit"></MudIconButton>
+                            </MudTd>
+
                         </RowTemplate>
                         <PagerContent>
                             <MudTablePager />

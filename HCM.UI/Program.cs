@@ -88,6 +88,7 @@ builder.Services.AddScoped<ITrnsAdvanceRequest, TrnsAdvanceRequestService>();
 builder.Services.AddScoped<ITrnsEmployeeOverTime, TrnsEmployeeOverTimeService>();
 builder.Services.AddScoped<ITrnsEmployeeResign, TrnsEmployeeResignService>();
 builder.Services.AddScoped<IMstStages, MstStagesService>();
+builder.Services.AddScoped<ITrnsTaxAdjustment, TrnsTaxAdjustmentService>();
 
 //Configuration Start
 

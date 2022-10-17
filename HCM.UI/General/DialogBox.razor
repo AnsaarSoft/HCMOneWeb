@@ -260,7 +260,7 @@
                     <MudTable Items="@oListTrnsEmployeeTransfer" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsEmployeeTransfer,bool>(FilterFuncTrnsEmployeeTransfer)"
                       Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableTrnsEmployeeTransfer" RowClassFunc="@SelectedRowClassFuncTrnsEmployeeTransfer" OnRowClick="RowClickEventTrnsEmployeeTransfer" T="TrnsEmployeeTransfer" @bind-SelectedItem="oModelTrnsEmployeeTransfer">
                         <ToolBarContent>
-                            <MudText Typo="Typo.h6">Leave Request</MudText>
+                            <MudText Typo="Typo.h6">Employee Transfer</MudText>
                             <MudSpacer />
                             <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
                         </ToolBarContent>
@@ -374,7 +374,7 @@
                     <MudTable Items="@oListTrnsEmployeeOvertime" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsEmployeeOvertime,bool>(FilterFuncTrnsEmployeeOvertime)"
                       Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableTrnsEmployeeOvertime" RowClassFunc="@SelectedRowClassFuncTrnsEmployeeOverTime" OnRowClick="RowClickEventTrnsEmployeeOverTime" T="TrnsEmployeeOvertime" @bind-SelectedItem="oModelTrnsEmployeeOvertime">
                         <ToolBarContent>
-                            <MudText Typo="Typo.h6">Leave Request</MudText>
+                            <MudText Typo="Typo.h6">Employee OverTime</MudText>
                             <MudSpacer />
                             <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
                         </ToolBarContent>
@@ -418,6 +418,30 @@
                             <MudTd DataLabel="Code">@Convert.ToDateTime(context.DocDate).ToString("MM/dd/yyyy")</MudTd>
                             <MudTd DataLabel="Code">@Convert.ToDateTime(context.ResignDate).ToString("MM/dd/yyyy")</MudTd>
                         </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                }
+                 @if (oListTrnsTaxAdjustment?.Count > 0 && DialogFor == "TaxAdjustment")
+                {
+                    <MudTable Items="@oListTrnsTaxAdjustment" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsTaxAdjustment,bool>(FilterFuncTrnsTaxAdjustment)"
+                      Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableTaxAdjustment" RowClassFunc="@SelectedRowClassFuncTaxAdjustment" OnRowClick="RowClickEventTaxAdjustment" T="TrnsTaxAdjustment" @bind-SelectedItem="oModelTrnsTaxAdjustment">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Tax Setup</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Employee Code</MudTh>
+                            <MudTh>Calender</MudTh>
+                            <MudTh>Flag</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code">@context.EmpId</MudTd>
+                            <MudTd DataLabel="Code">@context.CalendarYear</MudTd>
+                            <MudTd DataLabel="Code">@context.FlgActive</MudTd>
+                         </RowTemplate>
                         <PagerContent>
                             <MudTablePager />
                         </PagerContent>
