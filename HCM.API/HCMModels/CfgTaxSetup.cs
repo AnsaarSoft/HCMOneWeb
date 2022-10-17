@@ -11,7 +11,7 @@ namespace HCM.API.HCMModels
         }
 
         public int Id { get; set; }
-        public int? SalaryYear { get; set; }
+        public string SalaryYear { get; set; }
         public decimal? MinTaxSalaryF { get; set; }
         public int? SeniorCitizonAge { get; set; }
         public decimal? MaxSalaryDisc { get; set; }

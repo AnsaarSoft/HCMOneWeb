@@ -6,7 +6,7 @@ namespace HCM.API.HCMModels
     public partial class MstPartnerFeedbackAssign
     {
         public int Id { get; set; }
-        public int? YearId { get; set; }
+        public string YearId { get; set; }
         public int? FeedbackId { get; set; }
         public int? EmpId { get; set; }
         public string FunctionName { get; set; }

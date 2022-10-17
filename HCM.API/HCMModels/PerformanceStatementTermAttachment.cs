@@ -8,7 +8,7 @@ namespace HCM.API.HCMModels
         public int Id { get; set; }
         public int? StatementId { get; set; }
         public int? TermId { get; set; }
-        public int? YearId { get; set; }
+        public string YearId { get; set; }
         public decimal? Weightage { get; set; }
         public int? DocNum { get; set; }
         public string DocStatus { get; set; }

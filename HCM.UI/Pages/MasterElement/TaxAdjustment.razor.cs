@@ -1,7 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using DocumentFormat.OpenXml.InkML;
 using HCM.API.HCMModels;
-using HCM.API.Interfaces.MasterData;
+//using HCM.API.Interfaces.MasterData;
 using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.EmployeeMasterSetup;
@@ -13,6 +13,7 @@ using Microsoft.VisualBasic;
 using MudBlazor;
 using System.Collections.Immutable;
 using static MudBlazor.CategoryTypes;
+
 
 namespace HCM.UI.Pages.MasterElement
 {
@@ -37,6 +38,9 @@ namespace HCM.UI.Pages.MasterElement
 
         [Inject]
         public ITrnsTaxAdjustment _TrnsTaxAdjustment { get; set; }
+
+        [Inject]
+        public IMstCalendar _mstCalendar { get; set; }
 
         [Inject]
         public ILocalStorageService _localStorage { get; set; }

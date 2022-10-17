@@ -15,6 +15,8 @@ namespace HCM.API.HCMModels
         public DateTime? CreateDt { get; set; }
         public string UpdatedBy { get; set; }
         public DateTime? UpdateDt { get; set; }
+        public string AmountType { get; set; }
+        public string Period { get; set; }
 
         public virtual TrnsTaxAdjustment Ta { get; set; }
     }

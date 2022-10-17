@@ -11,7 +11,7 @@ namespace HCM.API.HCMModels
         }
 
         public int Id { get; set; }
-        public int? YearId { get; set; }
+        public string YearId { get; set; }
         public int? CatId { get; set; }
         public string Description { get; set; }
         public decimal? TotalPoints { get; set; }
