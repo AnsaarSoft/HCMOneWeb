@@ -2113,6 +2113,8 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.MinTaxSalaryF).HasColumnType("numeric(18, 6)");
 
+                entity.Property(e => e.SalaryYear).HasMaxLength(20);
+
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.UpdatedBy).HasMaxLength(20);
@@ -4138,6 +4140,8 @@ namespace HCM.API.HCMModels
 
                 entity.HasIndex(e => e.Code, "IX_MstCalendar")
                     .IsUnique();
+
+                entity.Property(e => e.Id).HasMaxLength(20);
 
                 entity.Property(e => e.Code).HasMaxLength(20);
 
@@ -8861,7 +8865,9 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
-                entity.Property(e => e.YearId).HasColumnName("yearID");
+                entity.Property(e => e.YearId)
+                    .HasMaxLength(20)
+                    .HasColumnName("yearID");
 
                 entity.HasOne(d => d.Year)
                     .WithMany(p => p.MstGoalsRulesses)
@@ -9563,7 +9569,9 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.DesignationLevelId).HasColumnName("DesignationLevelID");
 
-                entity.Property(e => e.Fiscalyear).HasColumnName("fiscalyear");
+                entity.Property(e => e.Fiscalyear)
+                    .HasMaxLength(20)
+                    .HasColumnName("fiscalyear");
 
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
 
@@ -9673,7 +9681,9 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.MinWaight).HasMaxLength(50);
 
-                entity.Property(e => e.PayrollId).HasColumnName("PayrollID");
+                entity.Property(e => e.PayrollId)
+                    .HasMaxLength(20)
+                    .HasColumnName("PayrollID");
 
                 entity.Property(e => e.TermId).HasColumnName("termID");
 
@@ -9834,7 +9844,9 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
 
-                entity.Property(e => e.YearId).HasColumnName("yearId");
+                entity.Property(e => e.YearId)
+                    .HasMaxLength(20)
+                    .HasColumnName("yearId");
 
                 entity.HasOne(d => d.Emp)
                     .WithMany(p => p.MstPartnerFeedbackAssigns)
@@ -9974,6 +9986,8 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
 
+                entity.Property(e => e.YearId).HasMaxLength(20);
+
                 entity.HasOne(d => d.Cat)
                     .WithMany(p => p.MstPartnerPerformanceSubCats)
                     .HasForeignKey(d => d.CatId)
@@ -10031,7 +10045,9 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
 
-                entity.Property(e => e.YearId).HasColumnName("yearId");
+                entity.Property(e => e.YearId)
+                    .HasMaxLength(20)
+                    .HasColumnName("yearId");
 
                 entity.HasOne(d => d.Year)
                     .WithMany(p => p.MstPartnerPerformanceTerms)
@@ -10182,7 +10198,9 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
 
-                entity.Property(e => e.YearId).HasColumnName("yearID");
+                entity.Property(e => e.YearId)
+                    .HasMaxLength(20)
+                    .HasColumnName("yearID");
 
                 entity.HasOne(d => d.Year)
                     .WithMany(p => p.MstPerformanceTerms)
@@ -10251,6 +10269,8 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
 
+                entity.Property(e => e.Year).HasMaxLength(20);
+
                 entity.HasOne(d => d.Designation)
                     .WithMany(p => p.MstProbationCategories)
                     .HasForeignKey(d => d.DesignationId)
@@ -10303,6 +10323,8 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
 
+                entity.Property(e => e.Year).HasMaxLength(20);
+
                 entity.HasOne(d => d.YearNavigation)
                     .WithMany(p => p.MstProbationEvalCriteria)
                     .HasForeignKey(d => d.Year)
@@ -10324,6 +10346,8 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.UpdatedBy).HasMaxLength(100);
 
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Year).HasMaxLength(20);
 
                 entity.HasOne(d => d.YearNavigation)
                     .WithMany(p => p.MstProbationEvalCycles)
@@ -11888,7 +11912,9 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.Weightage).HasColumnType("numeric(18, 6)");
 
-                entity.Property(e => e.YearId).HasColumnName("YearID");
+                entity.Property(e => e.YearId)
+                    .HasMaxLength(20)
+                    .HasColumnName("YearID");
 
                 entity.HasOne(d => d.Statement)
                     .WithMany(p => p.PerformanceStatementTermAttachments)
@@ -19060,7 +19086,9 @@ namespace HCM.API.HCMModels
                     .HasColumnType("decimal(18, 2)")
                     .HasColumnName("weightage");
 
-                entity.Property(e => e.YearId).HasColumnName("yearId");
+                entity.Property(e => e.YearId)
+                    .HasMaxLength(20)
+                    .HasColumnName("yearId");
 
                 entity.HasOne(d => d.Emp)
                     .WithMany(p => p.TrnsObjFnyHeads)
@@ -19554,6 +19582,8 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.DocStatus).HasMaxLength(50);
 
+                entity.Property(e => e.FiscalYear).HasMaxLength(20);
+
                 entity.Property(e => e.PartnerFunction)
                     .HasMaxLength(50)
                     .HasColumnName("partnerFunction");
@@ -19589,6 +19619,8 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.CreatedBy).HasMaxLength(50);
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.FiscalYear).HasMaxLength(20);
 
                 entity.Property(e => e.FromDate).HasColumnType("datetime");
 
@@ -19675,6 +19707,8 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
+                entity.Property(e => e.FiscalYear).HasMaxLength(20);
+
                 entity.Property(e => e.FromDate).HasColumnType("datetime");
 
                 entity.Property(e => e.ToDate).HasColumnType("datetime");
@@ -19733,6 +19767,8 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
+                entity.Property(e => e.FiscalYear).HasMaxLength(20);
+
                 entity.Property(e => e.FromDate).HasColumnType("datetime");
 
                 entity.Property(e => e.ToDate).HasColumnType("datetime");
@@ -19788,6 +19824,8 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.CreatedBy).HasMaxLength(50);
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.FiscalYear).HasMaxLength(20);
 
                 entity.Property(e => e.FromDate).HasColumnType("datetime");
 
@@ -19873,6 +19911,8 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
+                entity.Property(e => e.FiscalYear).HasMaxLength(20);
+
                 entity.Property(e => e.FromDate).HasColumnType("datetime");
 
                 entity.Property(e => e.ToDate).HasColumnType("datetime");
@@ -19943,6 +19983,8 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.CreatedBy).HasMaxLength(50);
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.FiscalYear).HasMaxLength(20);
 
                 entity.Property(e => e.PartnerPercent).HasColumnType("decimal(18, 2)");
 
@@ -21964,6 +22006,8 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.CalendarYear).HasMaxLength(20);
+
                 entity.Property(e => e.CreateDt).HasColumnType("datetime");
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(10);
@@ -21993,6 +22037,8 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.Amount).HasColumnType("numeric(18, 6)");
 
+                entity.Property(e => e.AmountType).HasMaxLength(20);
+
                 entity.Property(e => e.CreateDt).HasColumnType("datetime");
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(10);
@@ -22002,6 +22048,8 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
 
                 entity.Property(e => e.FlgMonthly).HasColumnName("flgMonthly");
+
+                entity.Property(e => e.Period).HasMaxLength(30);
 
                 entity.Property(e => e.Taid).HasColumnName("TAID");
 

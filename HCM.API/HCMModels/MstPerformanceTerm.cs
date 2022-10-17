@@ -12,7 +12,7 @@ namespace HCM.API.HCMModels
         }
 
         public int Id { get; set; }
-        public int? YearId { get; set; }
+        public string YearId { get; set; }
         public string TermDescription { get; set; }
         public int? Weightage { get; set; }
         public bool? FlgIncrement { get; set; }
