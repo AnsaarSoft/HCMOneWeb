@@ -101,11 +101,11 @@ builder.Services.AddScoped<ITrnsLoanRequest, TrnsLoanRequestRepo>();
 builder.Services.AddScoped<ITrnsAdvanceRequest, TrnsAdvanceRequestRepo>();
 builder.Services.AddScoped<ITrnsEmployeeOverTime, TrnsEmployeeOverTimeRepo>();
 builder.Services.AddScoped<ITrnsEmployeeResign, TrnsEmployeeResignRepo>();
-builder.Services.AddScoped<IMstStages, MstStagesRepo>();
+builder.Services.AddScoped<ICfgApprovalStage, CfgApprovalStageDetailRepo>();
 builder.Services.AddScoped<ITrnsTaxAdjustment, TrnsTaxAdjustmentRepo>();
 builder.Services.AddScoped<ITrnsEmployeeBonus, TrnsEmployeeBonusRepo>();
 builder.Services.AddScoped<ITrnsReHireEmployee, TrnsReHireEmployeeRepo>();
-
+builder.Services.AddScoped<ICfgApprovalTemplate, CfgApprovalTemplateRepo>();
 
 Settings.TitleConfig = builder.Configuration.GetValue<string>("TitleConfig");
 Settings.EmailConfig = builder.Configuration.GetValue<string>("EmailConfig");

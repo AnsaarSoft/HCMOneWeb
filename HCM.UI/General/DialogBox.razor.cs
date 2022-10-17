@@ -1,5 +1,6 @@
 ﻿using HCM.API.Models;
 using HCM.UI.Interfaces.Advance;
+using HCM.UI.Interfaces.ApprovalSetup;
 using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.Loan;
 using HCM.UI.Interfaces.MasterData;
@@ -68,6 +69,9 @@ namespace HCM.UI.General
         [Inject]
         public ITrnsTaxAdjustment _trnsTaxAdjustment { get; set; }
 
+        [Inject]
+        public ICfgApprovalStage _mstStages { get; set; }
+
         #endregion
 
         #region Variables
@@ -91,6 +95,8 @@ namespace HCM.UI.General
         private bool FilterFuncTrnsEmployeeOvertime(TrnsEmployeeOvertime element) => FilterFuncTrnsEmployeeOvertime(element, searchString1);
         private bool FilterFuncTrnsEmployeeResign(TrnsResignation element) => FilterFuncTrnsEmployeeResign(element, searchString1);
         private bool FilterFuncTrnsTaxAdjustment(TrnsTaxAdjustment element) => FilterFuncTrnsTaxAdjustment(element, searchString1);
+
+        private bool FilterFuncCfgApprovalStage(CfgApprovalStage element) => FilterFuncCfgApprovalStage(element, searchString1);
         void Cancel() => MudDialog.Cancel();
 
         private MudTable<MstElement> _tableElement;
@@ -147,6 +153,10 @@ namespace HCM.UI.General
         List<TrnsTaxAdjustment> oListTrnsTaxAdjustment = new List<TrnsTaxAdjustment>();
 
         private HashSet<MstEmployee> selectedEmployee = new HashSet<MstEmployee>();
+
+        private MudTable<CfgApprovalStage> _tableCfgApprovalStage;
+        CfgApprovalStage oModelCfgApprovalStage = new CfgApprovalStage();
+        List<CfgApprovalStage> oListCfgApprovalStage = new List<CfgApprovalStage>();
 
         #endregion
 
@@ -603,6 +613,30 @@ namespace HCM.UI.General
             return false;
         }
 
+        private async Task GetAllMstStages()
+        {
+            try
+            {
+                oListCfgApprovalStage = await _mstStages.GetAllData();
+                if (oListCfgApprovalStage?.Count == 0 || oListCfgApprovalStage == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncCfgApprovalStage(CfgApprovalStage element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.StageName.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
+        }
+
         #endregion
 
         #region Events
@@ -675,6 +709,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "EmployeeReHire")
                 {
                     await GetAllMstEmployeeReHire();
+                }
+                else if (DialogFor == "ApprovalStages")
+                {
+                    await GetAllMstStages();
                 }
                 Loading = false;
             }
@@ -1132,6 +1170,39 @@ namespace HCM.UI.General
             }
         }
 
+        public void RowClickEventMstStages(TableRowClickEventArgs<CfgApprovalStage> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+
+        private string SelectedRowClassFuncFilterFuncCfgApprovalStage(CfgApprovalStage element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableCfgApprovalStage.SelectedItem != null && _tableCfgApprovalStage.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
         private void Submit()
         {
             try
@@ -1203,6 +1274,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "EmployeeReHire" && oModelMstEmployee.Id > 0)
                 {
                     MudDialog.Close(DialogResult.Ok<MstEmployee>(oModelMstEmployee));
+                }
+                else if (DialogFor == "ApprovalStages" && oModelCfgApprovalStage.Id > 0)
+                {
+                    MudDialog.Close(DialogResult.Ok<CfgApprovalStage>(oModelCfgApprovalStage));
                 }
                 else
                 {

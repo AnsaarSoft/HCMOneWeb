@@ -89,11 +89,11 @@ builder.Services.AddScoped<ITrnsLoanRequest, TrnsLoanRequestService>();
 builder.Services.AddScoped<ITrnsAdvanceRequest, TrnsAdvanceRequestService>();
 builder.Services.AddScoped<ITrnsEmployeeOverTime, TrnsEmployeeOverTimeService>();
 builder.Services.AddScoped<ITrnsEmployeeResign, TrnsEmployeeResignService>();
-builder.Services.AddScoped<IMstStages, MstStagesService>();
+builder.Services.AddScoped<ICfgApprovalStage, oCfgApprovalStageService>();
 builder.Services.AddScoped<ITrnsTaxAdjustment, TrnsTaxAdjustmentService>();
 builder.Services.AddScoped<ITrnsEmployeeBonus, TrnsEmployeeBonusService>();
 builder.Services.AddScoped<ITrnsReHireEmployee, TrnsReHireEmployeeService>();
-
+builder.Services.AddScoped<ICfgApprovalTemplate, CfgApprovalTemplateService>();
 //Configuration Start
 
 Settings.APIBaseURL = builder.Configuration.GetValue<string>("APIBaseUrl");

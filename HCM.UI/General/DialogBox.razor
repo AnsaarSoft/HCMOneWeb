@@ -477,6 +477,30 @@
                         </PagerContent>
                     </MudTable>
                 }
+                @if (oListCfgApprovalStage?.Count > 0 && DialogFor == "ApprovalStages")
+                {
+                    <MudTable Items="@oListCfgApprovalStage" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<CfgApprovalStage,bool>(FilterFuncCfgApprovalStage)"
+                      Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableCfgApprovalStage" RowClassFunc="@SelectedRowClassFuncFilterFuncCfgApprovalStage" OnRowClick="RowClickEventMstStages" T="CfgApprovalStage" @bind-SelectedItem="oModelCfgApprovalStage">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Approval Stages</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Stage Name</MudTh>
+                            <MudTh>Number Of Approval</MudTh>
+                            <MudTh>Number Of Rejection</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code">@context.StageName</MudTd>
+                            <MudTd DataLabel="Code">@context.ApprovalsNo</MudTd>
+                            <MudTd DataLabel="Code">@context.RejectionsNo</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                }
             }
         </MudContainer>
     </DialogContent>
