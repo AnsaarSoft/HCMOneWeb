@@ -11,7 +11,7 @@ namespace HCM.API.HCMModels
         }
 
         public int Id { get; set; }
-        public string YearId { get; set; }
+        public int? YearId { get; set; }
         public int? EmpId { get; set; }
         public int? ObjectiveId { get; set; }
         public bool? FlgHrapproval { get; set; }

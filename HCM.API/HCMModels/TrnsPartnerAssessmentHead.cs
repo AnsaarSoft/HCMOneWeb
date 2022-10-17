@@ -17,7 +17,7 @@ namespace HCM.API.HCMModels
         public bool? FlgActive { get; set; }
         public string DocStatus { get; set; }
         public string DocAprStatus { get; set; }
-        public string FiscalYear { get; set; }
+        public int? FiscalYear { get; set; }
         public int? FeedbackId { get; set; }
         public string PartnerFunction { get; set; }
         public string CreatedBy { get; set; }

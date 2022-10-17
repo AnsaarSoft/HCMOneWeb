@@ -6,7 +6,7 @@ namespace HCM.API.HCMModels
     public partial class MstPartnerPerformanceTerm
     {
         public int Id { get; set; }
-        public string YearId { get; set; }
+        public int? YearId { get; set; }
         public string TermDescription { get; set; }
         public bool? FlgActive { get; set; }
         public DateTime? AvailableForAvailuation { get; set; }

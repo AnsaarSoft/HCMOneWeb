@@ -30,7 +30,7 @@ namespace HCM.API.HCMModels
             TrnsTaxAdjustments = new HashSet<TrnsTaxAdjustment>();
         }
 
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Code { get; set; }
         public string Description { get; set; }
         public DateTime? StartDate { get; set; }

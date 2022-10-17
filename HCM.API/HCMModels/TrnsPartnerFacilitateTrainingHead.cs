@@ -12,7 +12,7 @@ namespace HCM.API.HCMModels
 
         public int Id { get; set; }
         public int? DocNum { get; set; }
-        public string FiscalYear { get; set; }
+        public int? FiscalYear { get; set; }
         public decimal? AllocatedPoints { get; set; }
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }

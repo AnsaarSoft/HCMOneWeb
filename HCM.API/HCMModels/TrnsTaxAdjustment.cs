@@ -12,7 +12,7 @@ namespace HCM.API.HCMModels
 
         public int Id { get; set; }
         public int? EmpId { get; set; }
-        public string CalendarYear { get; set; }
+        public int? CalendarYear { get; set; }
         public bool? FlgActive { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? CreateDt { get; set; }

@@ -21,7 +21,7 @@ namespace HCM.API.HCMModels
         public int? Parentcode { get; set; }
         public int? Company { get; set; }
         public int? Location { get; set; }
-        public string Fiscalyear { get; set; }
+        public int? Fiscalyear { get; set; }
         public string Description { get; set; }
         public bool? FlgActive { get; set; }
         public int? OpenVacancyCount { get; set; }

@@ -15,7 +15,7 @@ namespace HCM.API.HCMModels
         public string Description { get; set; }
         public string MinWaight { get; set; }
         public string MaxWaight { get; set; }
-        public string PayrollId { get; set; }
+        public int? PayrollId { get; set; }
         public string CoEwaight { get; set; }
         public bool? FlgActive { get; set; }
         public int? Department { get; set; }
