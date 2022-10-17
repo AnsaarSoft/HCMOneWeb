@@ -5,7 +5,7 @@
 <div class="container-fluid page-content-setting shift-scheduler">
     <div class="row">
         <div class="col-sm-12">
-            <h3>Employee Bonus</h3>
+            <h3>Employee Filter</h3>
             <MudDivider />
         </div>
     </div>
@@ -72,6 +72,44 @@
 
     <div class="row mt-5">
         <div class="col-sm-12">
+            <h3>Header</h3>
+            <MudDivider />
+        </div>
+        <div class="col-sm-12">
+            <MudGrid class="search-action-block align-items-center block-design">
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudNumericField Label="Doc Num*" @bind-Value="oModel.DocumentNo" Variant="Variant.Text" ReadOnly="true" />
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudSelect @bind-Value="oModel.CalendarId" Label="Payroll Calendar" HelperText="Active Payroll Calendar" AdornmentIcon="@Icons.Material.Filled.CalendarViewMonth" Adornment="Adornment.Start">
+                        @foreach (MstCalendar calendar in oListCalendar.ToList())
+                        {
+                            <MudSelectItem Value="(int?)calendar.Id">@calendar.Code - @calendar.Description</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudSelect @bind-Value="oModel.PayrollId" Label="Payroll" HelperText="Select Payroll" AdornmentIcon="@Icons.Material.Filled.RollerSkating" Adornment="Adornment.Start">
+                        @foreach (CfgPayrollDefination Payroll in oListPayroll.ToList())
+                        {
+                            <MudSelectItem Value="(int?)Payroll.Id">@Payroll.PayrollName</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudSelect @bind-Value="oModel.PaysInPeriodId" Label="Payroll Period*" HelperText="Select Payroll Periods" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (var period in oListPayrollPeriod.ToList())
+                        {
+                            <MudSelectItem Value="(int?)period.Id">@period.PeriodName</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+            </MudGrid>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-sm-12">
             <MudCard Elevation="5">
                 <MudCardContent>
                     <MudTable Items="@oListFilteredEmployee" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstEmployee,bool>(FilterFuncFilteredEmployee)">
@@ -108,32 +146,32 @@
             </MudCard>
         </div>
     </div>
-    <div class="row mt-3">      
+    <div class="row mt-3">
         @*<div class="col-sm-6 mt-3">
-            <MudCard Elevation="5">
-                <MudCardContent>
-                    <MudTable Items="@oListSelectedShift" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstShift,bool>(FilterFuncSelectedShift)">
-                        <ToolBarContent>
-                            <MudText Typo="Typo.h6">Selected Shifts</MudText>
-                            <MudSpacer />
-                            <MudTextField T="string" @bind-Value="searchStringSelectedShift" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
-                        </ToolBarContent>
-                        <HeaderContent>
-                            <MudTh>Shift Code</MudTh>
-                            <MudTh>Shift Name</MudTh>
-                            <MudTh>Delete</MudTh>
-                        </HeaderContent>
-                        <RowTemplate>
-                            <MudTd DataLabel="Department Code">@context.Code</MudTd>
-                            <MudTd DataLabel="Department Name">@context.Description</MudTd>
-                            <MudTd DataLabel="Action"><MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteShift(context.Id) )" Title="Delete"></MudIconButton></MudTd>
-                        </RowTemplate>
-                        <PagerContent>
-                            <MudTablePager />
-                        </PagerContent>
-                    </MudTable>
-                </MudCardContent>
-            </MudCard>
+        <MudCard Elevation="5">
+        <MudCardContent>
+        <MudTable Items="@oListSelectedShift" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstShift,bool>(FilterFuncSelectedShift)">
+        <ToolBarContent>
+        <MudText Typo="Typo.h6">Selected Shifts</MudText>
+        <MudSpacer />
+        <MudTextField T="string" @bind-Value="searchStringSelectedShift" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+        </ToolBarContent>
+        <HeaderContent>
+        <MudTh>Shift Code</MudTh>
+        <MudTh>Shift Name</MudTh>
+        <MudTh>Delete</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+        <MudTd DataLabel="Department Code">@context.Code</MudTd>
+        <MudTd DataLabel="Department Name">@context.Description</MudTd>
+        <MudTd DataLabel="Action"><MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteShift(context.Id) )" Title="Delete"></MudIconButton></MudTd>
+        </RowTemplate>
+        <PagerContent>
+        <MudTablePager />
+        </PagerContent>
+        </MudTable>
+        </MudCardContent>
+        </MudCard>
         </div>*@
     </div>
 </div>

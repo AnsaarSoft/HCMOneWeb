@@ -73,6 +73,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
         CfgPayrollDefination oModelPayroll = new CfgPayrollDefination();
         private IEnumerable<CfgPayrollDefination> oListPayroll = new List<CfgPayrollDefination>();
+        private IEnumerable<CfgPeriodDate> oListPayrollPeriod = new List<CfgPeriodDate>();
 
         MstCalendar oModelCalendar = new MstCalendar();
         private IEnumerable<MstCalendar> oListCalendar = new List<MstCalendar>();
@@ -86,6 +87,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         private IEnumerable<MstEmployee> oListEmployee = new List<MstEmployee>();
         private IEnumerable<MstEmployee> oListFilteredEmployee = new List<MstEmployee>();
 
+        TrnsEmployeeBonu oModel = new TrnsEmployeeBonu();
         List<TrnsEmployeeBonu> oEmployeeBonusAddList = new List<TrnsEmployeeBonu>();
         List<TrnsEmployeeBonu> oEmployeeBonusUpdateList = new List<TrnsEmployeeBonu>();
         private IEnumerable<TrnsEmployeeBonu> oList = new List<TrnsEmployeeBonu>();
@@ -187,12 +189,14 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 Logs.GenerateLogs(ex);
             }
         }
+
         private async Task GetAllCalendar()
         {
             try
             {
                 oListCalendar = await _mstCalendar.GetAllData();
                 oModelCalendar = oListCalendar.Where(x => x.FlgActive == true).FirstOrDefault();
+                //oListPayrollPeriod = oPayroll.CfgPeriodDates.Where(x => x.PayrollId == oPayroll.Id).ToList();
             }
             catch (Exception ex)
             {
