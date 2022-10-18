@@ -77,6 +77,7 @@ namespace HCM.UI.Pages.ApprovalSetup
                     {
                         MstEmployee obj = new MstEmployee();
                         obj.Id = (int)item.Originator;
+                        obj.EmpId = item.EmpId;
                         oListTemp.Add(obj);
                     }
                     SelectedEmployee = oListTemp.ToList();
@@ -303,11 +304,13 @@ namespace HCM.UI.Pages.ApprovalSetup
                         {
                             CfgApprovalTemplateOriginator oLine = new CfgApprovalTemplateOriginator();
                             oLine.Originator = Line.Id;
+                            oLine.EmpId = Line.EmpId;
                             oModel.CfgApprovalTemplateOriginators.Add(oLine);
                         }
                     }
                     if (DocNames != null && DocNames.Count() > 0)
                     {
+                        oModel.CfgApprovalTemplateDocuments.Clear();
                         CfgApprovalTemplateDocument obj = new CfgApprovalTemplateDocument();
                         obj.FlgJobRequisition = false;
                         obj.FlgCandidate = false;

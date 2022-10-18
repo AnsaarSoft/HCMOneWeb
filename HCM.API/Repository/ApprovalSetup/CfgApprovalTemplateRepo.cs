@@ -3,6 +3,7 @@ using HCM.API.Models;
 using Microsoft.EntityFrameworkCore;
 using HCM.API.Interfaces.ApprovalSetup;
 using HCM.API.HCMModels;
+using System.Linq;
 
 namespace HCM.API.Repository.ApprovalSetup
 {
@@ -62,13 +63,13 @@ namespace HCM.API.Repository.ApprovalSetup
             {
                 await Task.Run(() =>
                 {
-                    //var Detail1 = _DBContext.MstApprovalOriginators.Where(x => x.FkApprovalId == oMstApprovalSetup.Id).ToList();
-                    //var Detail2 = _DBContext.MstApprovalStages.Where(x => x.FkapprovalId == oMstApprovalSetup.Id).ToList();
-                    //var Detail3 = _DBContext.MstApprovalTerms.Where(x => x.FkapprovalId == oMstApprovalSetup.Id).ToList();
-                    //_DBContext.MstApprovalOriginators.RemoveRange(Detail1);
-                    //_DBContext.MstApprovalStages.RemoveRange(Detail2);
-                    //_DBContext.MstApprovalTerms.RemoveRange(Detail3);
-                    //_DBContext.MstApprovalSetups.Update(oMstApprovalSetup);
+                    var DocDetail = _DBContext.CfgApprovalTemplateDocuments.Where(x => x.Atid == oCfgApprovalTemplate.Id).ToList();
+                    var OriDetail = _DBContext.CfgApprovalTemplateOriginators.Where(x => x.Atid == oCfgApprovalTemplate.Id).ToList();
+                    var StagesDetail = _DBContext.CfgApprovalTemplateStages.Where(x => x.Atid == oCfgApprovalTemplate.Id).ToList();
+                    _DBContext.CfgApprovalTemplateDocuments.RemoveRange(DocDetail);
+                    _DBContext.CfgApprovalTemplateOriginators.RemoveRange(OriDetail);
+                    _DBContext.CfgApprovalTemplateStages.RemoveRange(StagesDetail);
+                    _DBContext.CfgApprovalTemplates.Update(oCfgApprovalTemplate);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";
@@ -99,122 +100,119 @@ namespace HCM.API.Repository.ApprovalSetup
             return oList;
         }
 
-        /*public int InsertDocApproval(int OriginatorID, int DocNum, string FLG, int FormCode, string FoamName, string UserCode)
+        public int InsertDocApprovalDecesion(string OriginatorID, int DocNum, string FLG, int FormCode, string FoamName, int EmpID)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 bool chkflg = false;
-                var GetApprovalSetup = _DBContext.MstApprovalSetups
-                 .Include(x => x.MstApprovalOriginators.Where(t => t.OriginatorId == OriginatorID))
-                 .Include(y => y.MstApprovalStages)
-                 .Include(z => z.MstApprovalTerms)
-                 .Where(u => u.FlgActive == true)
-                 .ToList();
-                if (GetApprovalSetup.Count > 0)
+                CfgApprovalTemplate obj = new CfgApprovalTemplate();
+                switch (FLG)
+                {
+                    case "flgEmpLeave":
+                        obj = (from a in _DBContext.CfgApprovalTemplates
+                               join b in _DBContext.CfgApprovalTemplateDocuments on a.Id equals b.Atid
+                               join c in _DBContext.CfgApprovalTemplateOriginators on a.Id equals c.Atid
+                               join d in _DBContext.CfgApprovalTemplateStages on a.Id equals d.Atid
+                               where a.FlgActive == true && b.FlgEmpLeave == true && c.EmpId == OriginatorID
+                               orderby a.CreateDate
+                               select a).FirstOrDefault();
+                        break;
+                    case "flgLoan":
+                        obj = (from a in _DBContext.CfgApprovalTemplates
+                               join b in _DBContext.CfgApprovalTemplateDocuments on a.Id equals b.Atid
+                               join c in _DBContext.CfgApprovalTemplateOriginators on a.Id equals c.Atid
+                               join d in _DBContext.CfgApprovalTemplateStages on a.Id equals d.Atid
+                               where a.FlgActive == true && b.FlgLoan == true && c.EmpId == OriginatorID
+                               orderby a.CreateDate
+                               select a).FirstOrDefault();
+                        break;
+                    case "flgAdvance":
+                        obj = (from a in _DBContext.CfgApprovalTemplates
+                               join b in _DBContext.CfgApprovalTemplateDocuments on a.Id equals b.Atid
+                               join c in _DBContext.CfgApprovalTemplateOriginators on a.Id equals c.Atid
+                               join d in _DBContext.CfgApprovalTemplateStages on a.Id equals d.Atid
+                               where a.FlgActive == true && b.FlgAdvance == true && c.EmpId == OriginatorID
+                               orderby a.CreateDate
+                               select a).FirstOrDefault();
+                        break;
+                    case "flgEmpTransfer":
+                        obj = (from a in _DBContext.CfgApprovalTemplates
+                               join b in _DBContext.CfgApprovalTemplateDocuments on a.Id equals b.Atid
+                               join c in _DBContext.CfgApprovalTemplateOriginators on a.Id equals c.Atid
+                               join d in _DBContext.CfgApprovalTemplateStages on a.Id equals d.Atid
+                               where a.FlgActive == true && b.FlgEmpTransfer == true && c.EmpId == OriginatorID
+                               orderby a.CreateDate
+                               select a).FirstOrDefault();
+                        break;
+                    case "flgResignation":
+                        obj = (from a in _DBContext.CfgApprovalTemplates
+                               join b in _DBContext.CfgApprovalTemplateDocuments on a.Id equals b.Atid
+                               join c in _DBContext.CfgApprovalTemplateOriginators on a.Id equals c.Atid
+                               join d in _DBContext.CfgApprovalTemplateStages on a.Id equals d.Atid
+                               where a.FlgActive == true && b.FlgResignation == true && c.EmpId == OriginatorID
+                               orderby a.CreateDate
+                               select a).FirstOrDefault();
+                        break;
+                }
+                if (obj.Id > 0)
                 {
                     bool IsAlertAdded = false;
-                    foreach (var chkApprovalSetup in GetApprovalSetup)
-                    {
-                        switch (FLG)
+                    //foreach (var chkApprovalSetup in obj)
+                    //{
+                        foreach (var item in obj.CfgApprovalTemplateDocuments)
                         {
-                            case "flgSalesQuatation":
-                                chkflg = (bool)chkApprovalSetup.FlgSalesQuatation;
-                                break;
-                            case "flgMonthlyVOHCalc":
-                                chkflg = (bool)chkApprovalSetup.FlgMonthlyVohcalc;
-                                break;
-                            case "flgItemPriceList":
-                                chkflg = (bool)chkApprovalSetup.FlgItemPriceList;
-                                break;
-                            case "flgResourceMasterData":
-                                chkflg = (bool)chkApprovalSetup.FlgResourceMasterData;
-                                break;
-                            case "flgMonthlyFOHDriverRateCalc":
-                                chkflg = (bool)chkApprovalSetup.FlgMonthlyFohdriverRateCalc;
-                                break;
-                            case "flgMonthlyFOHCostCalc":
-                                chkflg = (bool)chkApprovalSetup.FlgMonthlyFohcostCalc;
-                                break;
-                            case "flgFOHRateCalc":
-                                chkflg = (bool)chkApprovalSetup.FlgFohrateCalc;
-                                break;
-                            case "flgVariableOverheadCost":
-                                chkflg = (bool)chkApprovalSetup.FlgVariableOverheadCost;
-                                break;
+                            switch (FLG)
+                            {
+                                case "flgEmpLeave":
+                                    chkflg = (bool)item.FlgEmpLeave;
+                                    break;
+                                case "flgLoan":
+                                    chkflg = (bool)item.FlgLoan;
+                                    break;
+                                case "flgAdvance":
+                                    chkflg = (bool)item.FlgAdvance;
+                                    break;
+                                case "flgEmpTransfer":
+                                    chkflg = (bool)item.FlgEmpTransfer;
+                                    break;
+                                case "flgResignation":
+                                    chkflg = (bool)item.FlgResignation;
+                                    break;
+                            }
                         }
                         if (chkflg)
                         {
-                            bool Found = (bool)GetApprovalSetup.Select(x => x.MstApprovalTerms).FirstOrDefault().Select(z => z.Always).FirstOrDefault();
-                            if (Found)
+                            //var stageID = olist.Select(x => x.CfgApprovalTemplateStages).FirstOrDefault().Select(z => z.StageId).FirstOrDefault();
+                            var stageID = obj.CfgApprovalTemplateStages.FirstOrDefault();
+                            var stageDetail = _DBContext.CfgApprovalStageDetails.Where(q => q.Asid == stageID.Id).ToList();
+                            List<DocApprovalDecesion> oListDocApproval = new List<DocApprovalDecesion>();
+                            foreach (var item in stageDetail)
                             {
-                                var stageID = GetApprovalSetup.Select(x => x.MstApprovalStages).FirstOrDefault().Select(z => z.FkstageId).FirstOrDefault();
-                                var stageDetail = _DBContext.MstStageDetails.Where(q => q.FkStageId == stageID).ToList();
-                                List<DocApproval> oListDocApproval = new List<DocApproval>();
-                                foreach (var item in stageDetail)
-                                {
-                                    DocApproval oDocApproval = new DocApproval();
-                                    oDocApproval.FkuserId = item.FkUserId;
-                                    oDocApproval.FkformId = FormCode;
-                                    oDocApproval.FkstageId = stageID;
-                                    oDocApproval.FkformName = FoamName;
-                                    oDocApproval.FkapprovalId = chkApprovalSetup.Id;
-                                    oDocApproval.FkdocNum = DocNum;
-                                    oDocApproval.DocStatus = "Pending";
-                                    oDocApproval.FlgActive = true;
-                                    oDocApproval.CreatedBy = UserCode;
-                                    oDocApproval.CreatedDate = DateTime.Now;
-                                    oListDocApproval.Add(oDocApproval);
-                                }
-                                _DBContext.DocApprovals.AddRange(oListDocApproval);
-                                _DBContext.SaveChanges();
-                                response.Id = 1;
-                                response.Message = "Saved successfully";
-                                IsAlertAdded = true;
+                                DocApprovalDecesion oDocApproval = new DocApprovalDecesion();
+                                oDocApproval.EmpId = item.AuthorizerId;
+                                oDocApproval.FkformId = FormCode;
+                                oDocApproval.FkformName = FoamName;
+                                oDocApproval.FkstageId = stageID.Id;
+                                oDocApproval.FkapprovalId = obj.Id;
+                                oDocApproval.FkdocNum = DocNum;
+                                oDocApproval.DocStatus = "Pending";
+                                oDocApproval.FlgActive = true;
+                                oDocApproval.CreatedBy = EmpID.ToString();
+                                oDocApproval.CreatedDate = DateTime.Now;
+                                oListDocApproval.Add(oDocApproval);
                             }
-                            else
-                            {
-                                //TermQuery = Convert.ToString(oDataTableApprovalSetup.Rows[apSetup]["TERMQUERY"]).Trim().Replace("{DOCNUM}", "'" + DocPrefix + "-" + DocNum + "'").ToUpper();
-                                var TermQuery = GetApprovalSetup.Select(x => x.MstApprovalTerms).FirstOrDefault().Select(z => z.TermQuery).FirstOrDefault();
-                                if (TermQuery != null)
-                                {
-                                    var stageID = GetApprovalSetup.Select(x => x.MstApprovalStages).FirstOrDefault().Select(z => z.FkstageId).FirstOrDefault();
-                                    var stageDetail = _DBContext.MstStageDetails.Where(q => q.FkStageId == stageID).ToList();
-                                    List<DocApproval> oListDocApproval = new List<DocApproval>();
-                                    foreach (var item in stageDetail)
-                                    {
-                                        DocApproval oDocApproval = new DocApproval();
-                                        oDocApproval.FkuserId = item.FkUserId;
-                                        oDocApproval.FkformId = FormCode;
-                                        oDocApproval.FkformName = FoamName;
-                                        oDocApproval.FkstageId = stageID;
-                                        oDocApproval.FkapprovalId = chkApprovalSetup.Id;
-                                        oDocApproval.FkdocNum = DocNum;
-                                        oDocApproval.DocStatus = "Pending";
-                                        oDocApproval.FlgActive = true;
-                                        oDocApproval.CreatedBy = UserCode;
-                                        oDocApproval.CreatedDate = DateTime.Now;
-                                        oListDocApproval.Add(oDocApproval);
-                                    }
-                                    _DBContext.DocApprovals.AddRange(oListDocApproval);
-                                    _DBContext.SaveChanges();
-                                    response.Id = 1;
-                                    response.Message = "Saved successfully";
-                                    IsAlertAdded = true;
-                                }
-                                else
-                                {
-                                    response.Id = 2;
-                                    response.Message = "No approval Found.";
-                                    IsAlertAdded = true;
-                                }
-                            }
+                            _DBContext.DocApprovalDecesions.AddRange(oListDocApproval);
+                            _DBContext.SaveChanges();
+                            response.Id = 1;
+                            response.Message = "Saved successfully";
+                            IsAlertAdded = true;
                         }
-                        if (IsAlertAdded)
-                        {
-                            break;
-                        }
-                    }
+                        //if (IsAlertAdded)
+                        //{
+                        //    break;
+                        //}
+                    //}
                 }
 
             }
@@ -225,14 +223,14 @@ namespace HCM.API.Repository.ApprovalSetup
             return response.Id;
         }
 
-        public async Task<List<DocApproval>> GetAlerts(int UserID, string DocStatus)
+        public async Task<List<DocApprovalDecesion>> GetAlerts(int EmpID, string DocStatus)
         {
-            List<DocApproval> oList = new List<DocApproval>();
+            List<DocApprovalDecesion> oList = new List<DocApprovalDecesion>();
             try
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.DocApprovals.Where(x => x.FkuserId == UserID && x.DocStatus == DocStatus && x.FlgActive == true).ToList();
+                    oList = _DBContext.DocApprovalDecesions.Where(x => x.EmployeeId == EmpID && x.DocStatus == DocStatus && x.FlgActive == true).ToList();
                 });
             }
             catch (Exception ex)
@@ -242,26 +240,26 @@ namespace HCM.API.Repository.ApprovalSetup
             return oList;
         }
 
-        public async Task<DocApproval> UpdateDocApprStatus(DocApproval oUserAlert)
+        /*public async Task<DocApprovalDecesion> UpdateDocApprStatus(DocApprovalDecesion oUserAlert)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    _DBContext.DocApprovals.Update(oUserAlert);
+                    _DBContext.DocApprovalDecesions.Update(oUserAlert);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";
                 });
-                var StrQueryMstStage = _DBContext.MstStages.Where(x => x.Id == oUserAlert.FkstageId).FirstOrDefault();
+                var StrQueryMstStage = _DBContext.CfgApprovalStages.Where(x => x.Id == oUserAlert.FkstageId).FirstOrDefault();
                 if (StrQueryMstStage != null)
                 {
-                    int NoOfApproval = (int)StrQueryMstStage.NoOfApproval;
-                    int NoOfRejection = (int)StrQueryMstStage.NoOfRejection;
+                    int NoOfApproval = (int)StrQueryMstStage.ApprovalsNo;
+                    int NoOfRejection = (int)StrQueryMstStage.RejectionsNo;
                     int DocNum = Convert.ToInt32(oUserAlert.FkdocNum);
-                    var StrQueryUserAlertReject = _DBContext.DocApprovals.Where(t => t.FkstageId == oUserAlert.FkstageId && t.DocStatus == "Rejected" && t.FkdocNum == oUserAlert.FkdocNum).Count();
-                    var StrQueryUserAlertApproved = _DBContext.DocApprovals.Where(t => t.FkstageId == oUserAlert.FkstageId && t.DocStatus == "Approved" && t.FkdocNum == oUserAlert.FkdocNum).Count();
+                    var StrQueryUserAlertReject = _DBContext.DocApprovalDecesions.Where(t => t.FkstageId == oUserAlert.FkstageId && t.DocStatus == "Rejected" && t.FkdocNum == oUserAlert.FkdocNum).Count();
+                    var StrQueryUserAlertApproved = _DBContext.DocApprovalDecesions.Where(t => t.FkstageId == oUserAlert.FkstageId && t.DocStatus == "Approved" && t.FkdocNum == oUserAlert.FkdocNum).Count();
                     if (StrQueryUserAlertReject != 0)
                     {
                         int CheckRejection = StrQueryUserAlertReject;
@@ -271,16 +269,16 @@ namespace HCM.API.Repository.ApprovalSetup
                             //_DBContext.DocApprovals.Update(oUserAlert);
                             //_DBContext.SaveChanges();
 
-                            var result = _DBContext.DocApprovals.Where(b => b.FkdocNum == oUserAlert.FkdocNum).ToList();
-                            List<DocApproval> oListRDocApproval = new List<DocApproval>();
+                            var result = _DBContext.DocApprovalDecesions.Where(b => b.FkdocNum == oUserAlert.FkdocNum).ToList();
+                            List<DocApprovalDecesion> oListRDocApproval = new List<DocApprovalDecesion>();
                             foreach (var item in result)
                             {
-                                DocApproval oRUserAlert = new DocApproval();
+                                DocApprovalDecesion oRUserAlert = new DocApprovalDecesion();
                                 oRUserAlert = item;
                                 oRUserAlert.FlgActive = false;
                                 oListRDocApproval.Add(oRUserAlert);
                             }
-                            _DBContext.DocApprovals.UpdateRange(oListRDocApproval);
+                            _DBContext.DocApprovalDecesions.UpdateRange(oListRDocApproval);
                             _DBContext.SaveChanges();
 
                             switch (oUserAlert.FkformId)
@@ -489,5 +487,6 @@ namespace HCM.API.Repository.ApprovalSetup
             }
             return oUserAlert;
         }*/
+
     }
 }

@@ -65,6 +65,7 @@ namespace HCM.API.HCMModels
         public virtual DbSet<CnfHistory> CnfHistories { get; set; }
         public virtual DbSet<Cnotifiy> Cnotifiys { get; set; }
         public virtual DbSet<CompetencyLevelSetup> CompetencyLevelSetups { get; set; }
+        public virtual DbSet<DocApprovalDecesion> DocApprovalDecesions { get; set; }
         public virtual DbSet<DocumentTemplate> DocumentTemplates { get; set; }
         public virtual DbSet<DocumentTemplateDetail> DocumentTemplateDetails { get; set; }
         public virtual DbSet<DynamicApprovalHierarchy> DynamicApprovalHierarchies { get; set; }
@@ -606,7 +607,7 @@ namespace HCM.API.HCMModels
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=PK-LHR-MME-133;Database=HCMOne;User ID=sa;Password=super;");
+                optionsBuilder.UseSqlServer("Server=10.3.182.41;Database=HCMOne;User ID=sa;Password=super;");
             }
         }
 
@@ -2216,6 +2217,65 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
 
                 entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<DocApprovalDecesion>(entity =>
+            {
+                entity.ToTable("DocApprovalDecesion");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CappStamp)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("CAppStamp");
+
+                entity.Property(e => e.CreatedBy)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.DocStatus)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.EmpId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("EmpID");
+
+                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
+
+                entity.Property(e => e.FkapprovalId).HasColumnName("FKApprovalID");
+
+                entity.Property(e => e.FkdocNum).HasColumnName("FKDocNum");
+
+                entity.Property(e => e.FkformId).HasColumnName("FKFormID");
+
+                entity.Property(e => e.FkformName)
+                    .HasMaxLength(150)
+                    .IsUnicode(false)
+                    .HasColumnName("FKFormName");
+
+                entity.Property(e => e.FkstageId).HasColumnName("FKStageID");
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.Remarks)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UappStamp)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("UAppStamp");
+
+                entity.Property(e => e.UpdatedBy)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });

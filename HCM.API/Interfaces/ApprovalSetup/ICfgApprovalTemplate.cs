@@ -8,8 +8,8 @@ namespace HCM.API.Interfaces.ApprovalSetup
         Task<ApiResponseModel> Insert(CfgApprovalTemplate oCfgApprovalTemplate);
         Task<ApiResponseModel> Update(CfgApprovalTemplate oCfgApprovalTemplate);
         Task<List<MstForm>> GetApprovalDocs();
-        //int InsertDocApproval(int OriginatorID, int DocNum, string FLG, int FormCode, string FoamName, string UserCode);
-        //Task<List<DocApproval>> GetAlerts(int UserID, string DocStatus);
-        //Task<DocApproval> UpdateDocApprStatus(DocApproval oDocApproval);
+        int InsertDocApprovalDecesion(string OriginatorID, int DocNum, string FLG, int FormCode, string FoamName, int EmpID);
+        Task<List<DocApprovalDecesion>> GetAlerts(int EmpID, string DocStatus);
+        //Task<DocApprovalDecesion> UpdateDocApprStatus(DocApprovalDecesion oDocApprovalDecesion);
     }
 }
