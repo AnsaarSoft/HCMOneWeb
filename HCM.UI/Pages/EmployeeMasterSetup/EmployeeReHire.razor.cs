@@ -5,6 +5,7 @@ using HCM.API.HCMModels;
 //using HCM.API.Interfaces.MasterData;
 using HCM.API.Models;
 using HCM.UI.General;
+using HCM.UI.Interfaces.Account;
 using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
@@ -31,8 +32,10 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
         [Inject]
         public IMstEmployeeMasterData _mstEmployeeMaster { get; set; }
+
         [Inject]
         public IMstPosition _mstPosition { get; set; }
+
         [Inject]
         public IMstDesignation _mstDesignation { get; set; }
 
@@ -41,10 +44,16 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
         [Inject]
         public IMstLocation _mstLocation { get; set; }
+
         [Inject]
         public ICfgPayrollDefination _CfgPayrollDefination { get; set; }
+
         [Inject]
-        public IMstBranch _mstBranch { get; set; } 
+        public IMstBranch _mstBranch { get; set; }
+
+        [Inject]
+        public IMstUser _mstUser { get; set; }
+
         [Inject]
         public ITrnsReHireEmployee _trnsReHireEmployee { get; set; }
 
@@ -70,8 +79,8 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         MstEmployee oModelMstEmployee = new MstEmployee();
         private IEnumerable<MstEmployee> oListEmployeeFrom = new List<MstEmployee>();
 
-        TrnsReHireEmployee oModel = new TrnsReHireEmployee();
-        private IEnumerable<TrnsReHireEmployee> oList = new List<TrnsReHireEmployee>();
+        TrnsEmployeeReHire oModel = new TrnsEmployeeReHire();
+        private IEnumerable<TrnsEmployeeReHire> oList = new List<TrnsEmployeeReHire>();
 
         private IEnumerable<TrnsReHireEmployeeDetail> oDetailList = new List<TrnsReHireEmployeeDetail>();
         TrnsReHireEmployeeDetail oDetail = new TrnsReHireEmployeeDetail();
@@ -85,7 +94,10 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
         MstDepartment oModelDepartment = new MstDepartment();
         private IEnumerable<MstDepartment> oListDepartment = new List<MstDepartment>();
-        
+
+        MstUser oModelUser = new MstUser();
+        private IEnumerable<MstUser> oListUser = new List<MstUser>();
+
         CfgPayrollDefination oModelPayroll = new CfgPayrollDefination();
         private IEnumerable<CfgPayrollDefination> oListPayroll = new List<CfgPayrollDefination>();
 
@@ -100,9 +112,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         private IEnumerable<MstEmployee> oListFilteredEmployee = new List<MstEmployee>();
 
         DateTime? docdate;
-        TimeSpan? timefrom = new TimeSpan();
-        TimeSpan? timeto = new TimeSpan();
-
+       
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
         DialogOptions FullView = new DialogOptions() { MaxWidth = MaxWidth.ExtraExtraLarge, FullWidth = true, CloseButton = true, DisableBackdropClick = true, CloseOnEscapeKey = true };
 
@@ -110,6 +120,43 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
 
         #region Functions
+        private async Task OpenDialog(DialogOptions options)
+        {
+            try
+            {
+                var parameters = new DialogParameters();
+                parameters.Add("DialogFor", "EmployeeReHireEdit");
+                var dialog = Dialog.Show<DialogBox>("", parameters, options);
+                var result = await dialog.Result;
+                if (!result.Cancelled)
+                {
+                    var res = (TrnsEmployeeReHire)result.Data;
+                    oModel = res;
+                    oModelMstEmployee = oListEmployee.Where(x => x.Id == res.EmpId).FirstOrDefault();
+                    EmpName = oModelMstEmployee.FirstName + " " + oModelMstEmployee.MiddleName + " " + oModelMstEmployee.LastName;
+                    oModelDepartment.Id = (int)res.DepartmentIdnew;
+                    oModelDepartment.DeptName = res.DepartmentNameNew;
+                    oModelDesignation.Id = (int)res.DesignationIdnew;
+                    oModelDesignation.Description = res.DesignationNameNew;
+                    oModelBranch.Id= (int)res.BranchIdnew;
+                    oModelBranch.Description= res.BranchNameNew;
+                    oModelLocation.Id = (int)res.LocationIdnew;
+                    oModelLocation.Description = res.LocationNameNew;
+                    oModelPosition.Id = (int)res.PositionIdNew;
+                    oModelPosition.Description = res.PositionNameNew;
+                    oModelPayroll.Id = (int)res.PayrollIdNew;
+                    oModelPayroll.PayrollName = res.PayrollNameNew;
+                    oModelUser.Id= (int)res.ManagerIdnew;
+                    oModelUser.UserName= res.ManagerNameNew;
+                    //oModelPayroll.Id = res.;
+                    //oModelPayroll.Id = res.PayrollIdNew;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
         private async Task OpenDialogEmployee(DialogOptions options)
         {
             try
@@ -225,11 +272,23 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 Logs.GenerateLogs(ex);
             }
         }
+        private async Task GetAllUser()
+        {
+            try
+            {
+                oListUser = await _mstUser.GetAllData();
+                oListUser = oListUser.Where(x => x.FlgActiveUser == true).ToList();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
         private Task SetDocNo()
         {
             try
             {
-                oModel.DocNum = oList.Count() + 1;
+                oModel.DocNo = oList.Count() + 1;
             }
             catch (Exception ex)
             {
@@ -337,6 +396,30 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 {
                     Id = x.Id,
                     DeptName = x.DeptName,
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return null;
+            }
+        }
+        private async Task<IEnumerable<MstUser>> SearchUser(string value)
+        {
+            try
+            {
+                await Task.Delay(1);
+                if (string.IsNullOrWhiteSpace(value))
+                    return oListUser.Select(o => new MstUser
+                    {
+                        Id = o.Id,
+                        UserName = o.UserName,
+                    }).ToList();
+                var res = oListUser.Where(x => x.UserName.ToUpper().Contains(value.ToUpper())).ToList();
+                return res.Select(x => new MstUser
+                {
+                    Id = x.Id,
+                    UserName = x.UserName,
                 }).ToList();
             }
             catch (Exception ex)
@@ -465,41 +548,57 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 await Task.Delay(3);
 
                 oModel.EmpId = oModelMstEmployee.Id;
-                oModel.UserId = LoginUser;
-                oDetail.ReHireId = oModel.Id;
-                oDetail.DesignationId = oModelMstEmployee.DesignationId;
-                oDetail.NewDesignationId = oModelDesignation.Id;
-                oDetail.DeptId = oModelMstEmployee.DepartmentId;
-                oDetail.NewDeptId = oModelDepartment.Id;
+                oModel.EmployeeName = EmpName;
+                oModel.DepartmentOld = oModelMstEmployee.DepartmentId;
+                oModel.DepartNameOld= oModelMstEmployee.DepartmentName;
+                oModel.DepartmentIdnew= oModelDepartment.Id;
+                oModel.DepartmentNameNew= oModelDepartment.DeptName;
+               
+                oModel.DesignationOld= oModelMstEmployee.DesignationId;
+                oModel.DesigNameOld= oModelMstEmployee.DesignationName;
+                oModel.DesignationIdnew= oModelDesignation.Id;
+                oModel.DesignationNameNew= oModelDesignation.Description;
 
-                oDetail.LocationId = oModelMstEmployee.LocationName;
+                oModel.LocationOld = oModelMstEmployee.Location;
+                oModel.LocNameOld = oModelMstEmployee.LocationName;
+                oModel.LocationIdnew = oModelLocation.Id;
+                oModel.LocationNameNew = oModelLocation.Description;
 
-                oDetail.NewLocaitonId = oModelLocation.Id;
-                oDetail.BranchId = oModelMstEmployee.BranchId;
-                oDetail.NewBranchId = oModelBranch.Id;
+                oModel.BranchOld = oModelMstEmployee.BranchId;
+                oModel.BranchNameOld = oModelMstEmployee.BranchName;
+                oModel.BranchIdnew = oModelBranch.Id;
+                oModel.BranchNameNew = oModelBranch.Description;
+
+                oModel.PositionIdOld  = oModelMstEmployee.PositionId;
+                oModel.PositionNameOld = oModelMstEmployee.PositionName;
+                oModel.PositionIdNew  = oModelPosition.Id;
+                oModel.PositionNameNew = oModelPosition.Description;
+
+                oModel.ManagerIdold = oModelMstEmployee.Manager;
+                oModel.ManagerNameOld = oModelMstEmployee.ManagerName;
+                oModel.ManagerIdnew = oModelUser.Id;
+                oModel.ManagerNameNew = oModelUser.UserName;
+
+                oModel.PayrollIdOld = oModelMstEmployee.PayrollId;
+                oModel.PayrollNameOld = oModelMstEmployee.PayrollName;
+                oModel.PayrollIdNew = oModelPayroll.Id;
+                oModel.PayrollNameNew = oModelPayroll.PayrollName;
+
+
+                oModel.Bsold = oModelMstEmployee.BasicSalary;
+                oModel.Gsold= oModelMstEmployee.GrossSalary;
+                oModel.JoiningDtOld = oModelMstEmployee.JoiningDate;
+                oModel.JoiningDtNew = DateTime.Now;
+                oModel.ResignationDtOld = oModelMstEmployee.ResignDate;
+                oModel.TerminationDtOld = oModelMstEmployee.TerminationDate;
+               
+              
 
                 if (oModel.EmpId != null)
                 {
-                    //foreach (var item in oDetailList)
-                    //{
-                    //    if (oModel.Id == 0)
-                    //    {
-                    //        item.CreateDt = DateTime.Now;
-                    //        item.CreatedBy = LoginUser;
-                    //    }
-                    //    else
-                    //    {
-                    //        item.UpdateDt = DateTime.Now;
-                    //        item.UpdatedBy = LoginUser;
-                    //    }
-                    //}
-
-
-
-                    oModel.TrnsReHireEmployeeDetails.Add(oDetail);
-                    if (oModel.Id == 0)
+                    if (oModel.InternalId == 0)
                     {
-                        oModel.UserId = LoginUser;
+                        oModel.CreatedBy = LoginUser;
                         res = await _trnsReHireEmployee.Insert(oModel);
                     }
                     else
@@ -519,10 +618,10 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                         Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
                 }
-                //else
-                //{
-                //    Snackbar.Add("Please fill the required field(s)", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                //}
+                else
+                {
+                    Snackbar.Add("Please fill the required field(s)", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
                 Loading = false;
                 return res;
             }
@@ -548,6 +647,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 {
                     LoginUser = Session.UserCode;
                     await GetAllEmployees();
+                    await GetAllEmployeeReHire();
                     await SetDocNo();
                     await GetAllDesignation();
                     await GetAllDepartments();
@@ -555,6 +655,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     await GetAllBranches();
                     await GetAllPosition();
                     await GetAllPayroll();
+                    await GetAllUser();
                 }
                 else
                 {

@@ -1,4 +1,5 @@
 ﻿using HCM.API.General;
+using HCM.API.Interfaces.ApprovalSetup;
 using HCM.API.Interfaces.EmployeeMasterSetup;
 using HCM.API.Models;
 using Microsoft.EntityFrameworkCore;
@@ -8,10 +9,12 @@ namespace HCM.API.Repository.EmployeeMasterSetup
     public class TrnsLeaveRequestRepo : ITrnsLeaveRequest
     {
         private HCMOneContext _DBContext;
+        private ICfgApprovalTemplate _CfgApprovalTemplateRepo;
 
-        public TrnsLeaveRequestRepo(HCMOneContext DBContext)
+        public TrnsLeaveRequestRepo(HCMOneContext DBContext,ICfgApprovalTemplate cfgApprovalTemplate)
         {
             _DBContext = DBContext;
+            _CfgApprovalTemplateRepo = cfgApprovalTemplate;
         }
 
         public async Task<List<TrnsLeavesRequest>> GetAllData()
@@ -38,10 +41,27 @@ namespace HCM.API.Repository.EmployeeMasterSetup
                 await Task.Run(() =>
                 {
                     oTrnsLeavesRequest.CreateDate = DateTime.Now;
+                    oTrnsLeavesRequest.DocStatus = "Draft";
+                    oTrnsLeavesRequest.DocAprStatus = "Pending";
                     _DBContext.TrnsLeavesRequests.Add(oTrnsLeavesRequest);
                     _DBContext.SaveChanges();
-                    response.Id = 1;
-                    response.Message = "Saved successfully";
+                    var EmployeeID = oTrnsLeavesRequest.EmpId;//_DBContext.TrnsLeavesRequests.Where(x => x.CreatedBy == oTrnsLeavesRequest.CreatedBy).FirstOrDefault();
+                    var EmpID = oTrnsLeavesRequest.CreatedBy;
+                    var chkStatus = _CfgApprovalTemplateRepo.InsertDocApprovalDecesion(EmpID, Convert.ToInt32(oTrnsLeavesRequest.DocNum), "flgEmpLeave", 2, "Leave Request", (int)EmployeeID);
+                    if (chkStatus == 2)
+                    {
+                        oTrnsLeavesRequest.DocStatus = "Opened";
+                        oTrnsLeavesRequest.DocAprStatus = "Approved";
+                        _DBContext.TrnsLeavesRequests.Update(oTrnsLeavesRequest);
+                        _DBContext.SaveChanges();
+                        response.Id = 1;
+                        response.Message = "Saved successfully";
+                    }
+                    else
+                    {
+                        response.Id = 1;
+                        response.Message = "Saved successfully wating for approval.";
+                    }
                 });
             }
             catch (Exception ex)

@@ -3,6 +3,7 @@ using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.API.Models;
 using Microsoft.EntityFrameworkCore;
 using RestSharp;
+using HCM.API.HCMModels;
 
 
 namespace HCM.UI.Data.EmployeeMasterSetup
@@ -16,15 +17,15 @@ namespace HCM.UI.Data.EmployeeMasterSetup
             _restClient = new RestClient(Settings.APIBaseURL);
         }
 
-        public async Task<List<TrnsReHireEmployee>> GetAllData()
+        public async Task<List<TrnsEmployeeReHire>> GetAllData()
         {
             try
             {
-                List<TrnsReHireEmployee> oList = new List<TrnsReHireEmployee>();
+                List<TrnsEmployeeReHire> oList = new List<TrnsEmployeeReHire>();
 
                 var request = new RestRequest("EmployeeMasterData/getAllEmpReHire", Method.Get) { RequestFormat = DataFormat.Json };
 
-                var response = await _restClient.ExecuteAsync<List<TrnsReHireEmployee>>(request);
+                var response = await _restClient.ExecuteAsync<List<TrnsEmployeeReHire>>(request);
 
                 if (response.IsSuccessful)
                 {
@@ -42,13 +43,13 @@ namespace HCM.UI.Data.EmployeeMasterSetup
             }
         }
 
-        public async Task<ApiResponseModel> Insert(TrnsReHireEmployee oTrnsReHireEmployee)
+        public async Task<ApiResponseModel> Insert(TrnsEmployeeReHire oTrnsEmployeeReHire)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 var request = new RestRequest("EmployeeMasterData/addEmpReHire", Method.Post);
-                request.AddJsonBody(oTrnsReHireEmployee);
+                request.AddJsonBody(oTrnsEmployeeReHire);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {
@@ -72,13 +73,13 @@ namespace HCM.UI.Data.EmployeeMasterSetup
             }
         }
 
-        public async Task<ApiResponseModel> Update(TrnsReHireEmployee oTrnsReHireEmployee)
+        public async Task<ApiResponseModel> Update(TrnsEmployeeReHire oTrnsEmployeeReHire)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 var request = new RestRequest("EmployeeMasterData/updateEmpReHire", Method.Post);
-                request.AddJsonBody(oTrnsReHireEmployee);
+                request.AddJsonBody(oTrnsEmployeeReHire);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {

@@ -1,4 +1,5 @@
 ﻿using HCM.API.General;
+using HCM.API.HCMModels;
 using HCM.API.Interfaces.EmployeeMasterSetup;
 using HCM.API.Interfaces.MasterData;
 using HCM.API.Models;
@@ -559,17 +560,17 @@ namespace HCM.API.Controllers
         [HttpGet]
         public async Task<IActionResult> getAllEmpReHire()
         {
-            List<TrnsReHireEmployee> oTrnsReHireEmployee = new List<TrnsReHireEmployee>();
+            List<TrnsEmployeeReHire> oTrnsEmployeeReHire = new List<TrnsEmployeeReHire>();
             try
             {
-                oTrnsReHireEmployee = await _trnsReHireEmployee.GetAllData();
-                if (oTrnsReHireEmployee == null)
+                oTrnsEmployeeReHire = await _trnsReHireEmployee.GetAllData();
+                if (oTrnsEmployeeReHire == null)
                 {
-                    return BadRequest(oTrnsReHireEmployee);
+                    return BadRequest(oTrnsEmployeeReHire);
                 }
                 else
                 {
-                    return Ok(oTrnsReHireEmployee);
+                    return Ok(oTrnsEmployeeReHire);
                 }
             }
             catch (Exception ex)
@@ -581,12 +582,12 @@ namespace HCM.API.Controllers
 
         [Route("addEmpReHire")]
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] TrnsReHireEmployee pTrnsReHireEmployee)
+        public async Task<IActionResult> Add([FromBody] TrnsEmployeeReHire pTrnsEmployeeReHire)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                response = await _trnsReHireEmployee.Insert(pTrnsReHireEmployee);
+                response = await _trnsReHireEmployee.Insert(pTrnsEmployeeReHire);
                 if (response == null)
                 {
                     return BadRequest(response);
@@ -605,12 +606,12 @@ namespace HCM.API.Controllers
 
         [Route("updateEmpReHire")]
         [HttpPost]
-        public async Task<IActionResult> Update([FromBody] TrnsReHireEmployee pTrnsReHireEmployee)
+        public async Task<IActionResult> Update([FromBody] TrnsEmployeeReHire pTrnsEmployeeReHire)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                response = await _trnsReHireEmployee.Update(pTrnsReHireEmployee);
+                response = await _trnsReHireEmployee.Update(pTrnsEmployeeReHire);
                 if (response == null)
                 {
                     return BadRequest(response);

@@ -9,12 +9,12 @@
             <MudDivider />
         </div>
         <div class="col-sm-2 custom-btn-design text-right">
-         
+            <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Filled.RemoveRedEye" Color="Color.Info" Size="Size.Small">View All</MudButton>
         </div>
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
-            <h3>Header</h3>
+            <h3>Employee Selection</h3>
             <MudDivider />
         </div>
         <div class="col-sm-12">
@@ -39,11 +39,11 @@
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
                  <MudItem xs="2" sm="2" md="2" lg="2">
-                    <MudAutocomplete T="string" @bind-Value="oModelMstEmployee.PositionName" ReadOnly="@true" Immediate="true" Clearable="true" Label="Department" Variant="Variant.Text"
+                    <MudAutocomplete T="string" @bind-Value="oModelMstEmployee.PositionName" ReadOnly="@true" Immediate="true" Clearable="true" Label="Position" Variant="Variant.Text"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
                  <MudItem xs="2" sm="2" md="2" lg="2">
-                    <MudAutocomplete T="string" @bind-Value="oModelMstEmployee.PayrollName" ReadOnly="@true" Immediate="true" Clearable="true" Label="Department" Variant="Variant.Text"
+                    <MudAutocomplete T="string" @bind-Value="oModelMstEmployee.PayrollName" ReadOnly="@true" Immediate="true" Clearable="true" Label="Payroll" Variant="Variant.Text"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
 
@@ -52,39 +52,31 @@
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
                 <MudItem xs="2" sm="2" md="2" lg="2">
-                    <MudAutocomplete T="string" @bind-Value="oModelMstEmployee.ManagerName" ReadOnly="@true" Immediate="true" Clearable="true" Label="Branch" Variant="Variant.Text"
+                    <MudAutocomplete T="string" @bind-Value="oModelMstEmployee.ManagerName" ReadOnly="@true" Immediate="true" Clearable="true" Label="Manager Name" Variant="Variant.Text"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
 
                 <MudItem xs="2" sm="2" md="2" lg="2">
-                    <MudTextField @bind-Value="oModel.DocNum" Disabled="true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields"
+                    <MudTextField @bind-Value="oModel.DocNo" ReadOnly="@true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields"
                                   Label="Doc No*" Variant="Variant.Text"> </MudTextField>
                 </MudItem>
                 
-                @*<MudItem xs="2" sm="2" md="2" lg="2">
-                    <MudAutocomplete T="int" @bind-Value="oModelMstEmployee.Manager" ReadOnly="@true" Immediate="true" Clearable="true" Label="Branch" Variant="Variant.Text"
-                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
-                </MudItem>*@
-
-                <MudItem xs="2" sm="2" md="2" lg="2">
-                    <MudTextField @bind-Value="oModelMstEmployee.JoiningDate" Disabled="true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange"
-                                  Label="Date of Joining*" Variant="Variant.Text"> </MudTextField>
-                </MudItem> <MudItem xs="2" sm="2" md="2" lg="2">
-                    <MudTextField @bind-Value="oModelMstEmployee.ResignDate" Disabled="true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange"
-                                  Label="Date of Joining*" Variant="Variant.Text"> </MudTextField>
-                </MudItem> <MudItem xs="2" sm="2" md="2" lg="2">
-                    <MudTextField @bind-Value="oModelMstEmployee.TerminationDate" Disabled="true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange"
-                                  Label="Date of Joining*" Variant="Variant.Text"> </MudTextField>
-                </MudItem>
-
-                @*<MudItem xs="2" sm="2" md="2" lg="2">
-                    <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModelMstEmployee.ResignDate" MinDate="DateTime.Today" Label="Resign Date*" HelperText="Enter Resign Date" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
+                  <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.DocDate" MinDate="DateTime.Today" Label="Doc Date*" HelperText="Enter Resign Date" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
                                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
                 </MudItem>
+
                 <MudItem xs="2" sm="2" md="2" lg="2">
-                    <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModelMstEmployee.TerminationDate" MinDate="DateTime.Today" Label="Termination Date*" HelperText="Enter Resign Date" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
-                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
-                </MudItem>*@
+                    <MudTextField @bind-Value="oModelMstEmployee.JoiningDate" ReadOnly="@true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange"
+                                  Label="Date of Joining" Variant="Variant.Text"> </MudTextField>
+                </MudItem> <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudTextField @bind-Value="oModelMstEmployee.ResignDate" ReadOnly="@true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange"
+                                  Label="Date of ResignDate" Variant="Variant.Text"> </MudTextField>
+                </MudItem> <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudTextField @bind-Value="oModelMstEmployee.TerminationDate" ReadOnly="@true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange"
+                                  Label="Date of TerminationDate" Variant="Variant.Text"> </MudTextField>
+                </MudItem>
+
                 <MudItem xs="2" sm="2" md="2" lg="2">
                     <MudNumericField @bind-Value="oModelMstEmployee.BasicSalary" Min="0" ReadOnly="true" Immediate="true" Clearable="true" Label="Basic Salary" Variant="Variant.Text"
                                      Adornment="Adornment.Start" AdornmentText="Rs" Format="0.00" />
@@ -120,17 +112,17 @@
     <MudDivider />
 
     <div class="row mt-5">
-        <div class="col-sm-12">
+        @*<div class="col-sm-12">
             <h3>Detail</h3>
             <MudDivider />
-        </div>
+        </div>*@
         <div class="col-sm-12">
             <MudGrid class="search-action-block align-items-center block-design">
-                <MudItem xs="3" sm="3" md="3" lg="3">
+                <MudItem xs="2" sm="2" md="2" lg="2">
                     <MudAutocomplete T="MstDesignation" @bind-Value="oModelDesignation" SearchFunc="@SearchDesignation" Clearable="true" Label="Select Designation" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true"
                                      CoerceValue="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
                 </MudItem>
-                 <MudItem xs="3" sm="3" md="3" lg="3">
+                <MudItem xs="2" sm="2" md="2" lg="2">
                    <MudAutocomplete T="CfgPayrollDefination" @bind-Value="oModelPayroll" SearchFunc="@SearchPayroll" Clearable="true" Label="Select Payroll" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.PayrollName}")" />
                 </MudItem>
@@ -138,26 +130,35 @@
                     <MudAutocomplete T="MstPosition" @bind-Value="oModelPosition" SearchFunc="@SearchPosition" Clearable="true" Label="Select Position*" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
                 </MudItem>
-                <MudItem xs="3" sm="3" md="3" lg="3">
+                <MudItem xs="2" sm="2" md="2" lg="2">
                     <MudAutocomplete T="MstDepartment" @bind-Value="oModelDepartment" SearchFunc="@SearchDepartment" Clearable="true" Label="Select Department" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.DeptName}")" />
                 </MudItem>
-                <MudItem xs="3" sm="3" md="3" lg="3">
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudAutocomplete T="MstUser" @bind-Value="oModelUser" SearchFunc="@SearchUser" Clearable="true" Label="Select Manager*" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.UserName}")" />
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2">
                     <MudAutocomplete T="MstLocation" @bind-Value="oModelLocation" SearchFunc="@SearchLocation" Clearable="true" Label="Select Location" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
                 </MudItem>
-                <MudItem xs="3" sm="3" md="3" lg="3">
+                <MudItem xs="2" sm="2" md="2" lg="2">
                     <MudAutocomplete T="MstBranch" @bind-Value="oModelBranch" SearchFunc="@SearchBranch" Clearable="true" Label="Select Branch" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
                 </MudItem>
-                <MudItem xs="3" sm="3" md="3" lg="3">
-                    <MudNumericField @bind-Value="oDetail.BasicSalary" Min="0" Immediate="true" Clearable="true" Label="Basic Salary" Variant="Variant.Text"
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudNumericField @bind-Value="oModel.Bsnew" Min="0" Immediate="true" Clearable="true" Label="Basic Salary" Variant="Variant.Text"
                                      Adornment="Adornment.Start" AdornmentText="Rs" Format="0.00" />
                 </MudItem>
 
-                <MudItem xs="3" sm="3" md="3" lg="3">
-                    <MudNumericField @bind-Value="oDetail.GrossSalary" Min="0" Immediate="true" Clearable="true" Label="Gross Salary" Variant="Variant.Text"
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudNumericField @bind-Value="oModel.Gsnew" Min="0" Immediate="true" Clearable="true" Label="Gross Salary" Variant="Variant.Text"
                                      Adornment="Adornment.Start" AdornmentText="Rs" Format="0.00" />
+                </MudItem> 
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudSwitch @bind-Checked="@oModel.FlgReHire" ThumbIcon="@(oModel.FlgReHire==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgReHire==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgReHire==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgReHire == true ? "Active" : "In Active")</span>
+                    </MudSwitch>
                 </MudItem>
                 <MudItem xs="12" sm="12" md="12" lg="12">
 

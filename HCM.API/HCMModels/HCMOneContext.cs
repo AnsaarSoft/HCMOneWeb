@@ -65,6 +65,7 @@ namespace HCM.API.HCMModels
         public virtual DbSet<CnfHistory> CnfHistories { get; set; }
         public virtual DbSet<Cnotifiy> Cnotifiys { get; set; }
         public virtual DbSet<CompetencyLevelSetup> CompetencyLevelSetups { get; set; }
+        public virtual DbSet<DocApprovalDecesion> DocApprovalDecesions { get; set; }
         public virtual DbSet<DocumentTemplate> DocumentTemplates { get; set; }
         public virtual DbSet<DocumentTemplateDetail> DocumentTemplateDetails { get; set; }
         public virtual DbSet<DynamicApprovalHierarchy> DynamicApprovalHierarchies { get; set; }
@@ -606,7 +607,7 @@ namespace HCM.API.HCMModels
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=PK-LHR-MME-133;Database=HCMOne;User ID=sa;Password=super;");
+                optionsBuilder.UseSqlServer("Server=10.3.182.41;Database=HCMOne;User ID=sa;Password=super;");
             }
         }
 
@@ -1313,6 +1314,11 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Atid).HasColumnName("ATID");
+
+                entity.Property(e => e.EmpId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("EmpID");
 
                 entity.HasOne(d => d.At)
                     .WithMany(p => p.CfgApprovalTemplateOriginators)
@@ -2211,6 +2217,65 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
 
                 entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<DocApprovalDecesion>(entity =>
+            {
+                entity.ToTable("DocApprovalDecesion");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CappStamp)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("CAppStamp");
+
+                entity.Property(e => e.CreatedBy)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.DocStatus)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.EmpId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("EmpID");
+
+                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
+
+                entity.Property(e => e.FkapprovalId).HasColumnName("FKApprovalID");
+
+                entity.Property(e => e.FkdocNum).HasColumnName("FKDocNum");
+
+                entity.Property(e => e.FkformId).HasColumnName("FKFormID");
+
+                entity.Property(e => e.FkformName)
+                    .HasMaxLength(150)
+                    .IsUnicode(false)
+                    .HasColumnName("FKFormName");
+
+                entity.Property(e => e.FkstageId).HasColumnName("FKStageID");
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.Remarks)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UappStamp)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("UAppStamp");
+
+                entity.Property(e => e.UpdatedBy)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
@@ -16207,6 +16272,10 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.PayrollNameOld).HasMaxLength(50);
 
+                entity.Property(e => e.PositionNameNew).HasMaxLength(500);
+
+                entity.Property(e => e.PositionNameOld).HasMaxLength(500);
+
                 entity.Property(e => e.ResignationDtOld).HasColumnType("datetime");
 
                 entity.Property(e => e.TerminationDtOld).HasColumnType("datetime");
@@ -20891,6 +20960,8 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.BasicSalary).HasColumnType("numeric(18, 6)");
 
+                entity.Property(e => e.BranchName).HasMaxLength(30);
+
                 entity.Property(e => e.Category).HasMaxLength(10);
 
                 entity.Property(e => e.ConfirmationDate).HasColumnType("datetime");
@@ -20900,6 +20971,10 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.ContractType).HasMaxLength(50);
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.DeptName).HasMaxLength(30);
+
+                entity.Property(e => e.DesignationName).HasMaxLength(30);
 
                 entity.Property(e => e.EmpName).HasMaxLength(50);
 
@@ -20923,9 +20998,15 @@ namespace HCM.API.HCMModels
                     .HasMaxLength(10)
                     .IsFixedLength();
 
+                entity.Property(e => e.LocationName).HasMaxLength(30);
+
                 entity.Property(e => e.ManagerId).HasColumnName("ManagerID");
 
+                entity.Property(e => e.ManagerName).HasMaxLength(30);
+
                 entity.Property(e => e.NewBasicSalary).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.NewBranchName).HasMaxLength(30);
 
                 entity.Property(e => e.NewConfirmationDate).HasColumnType("datetime");
 
@@ -20933,11 +21014,21 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.NewContractType).HasMaxLength(50);
 
+                entity.Property(e => e.NewDeptName).HasMaxLength(30);
+
+                entity.Property(e => e.NewDesignationName).HasMaxLength(30);
+
                 entity.Property(e => e.NewJoiningDate).HasColumnType("datetime");
+
+                entity.Property(e => e.NewLocationName).HasMaxLength(30);
+
+                entity.Property(e => e.NewManagerName).HasMaxLength(30);
 
                 entity.Property(e => e.NewPayRollMode).HasMaxLength(50);
 
                 entity.Property(e => e.NewPayRollName).HasMaxLength(50);
+
+                entity.Property(e => e.NewPositionName).HasMaxLength(30);
 
                 entity.Property(e => e.OtherIncome).HasMaxLength(10);
 
@@ -20946,6 +21037,8 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.PayrollId).HasColumnName("PayrollID");
 
                 entity.Property(e => e.PayrollName).HasMaxLength(30);
+
+                entity.Property(e => e.PositionName).HasMaxLength(30);
 
                 entity.Property(e => e.ProvidentFundBalance).HasMaxLength(10);
 

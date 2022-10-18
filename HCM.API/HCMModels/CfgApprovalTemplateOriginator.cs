@@ -8,6 +8,7 @@ namespace HCM.API.HCMModels
         public int Id { get; set; }
         public int? Atid { get; set; }
         public int? Originator { get; set; }
+        public string EmpId { get; set; }
 
         public virtual CfgApprovalTemplate At { get; set; }
     }

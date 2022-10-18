@@ -1,7 +1,6 @@
 ﻿using HCM.API.Models;
 using HCM.UI.Interfaces.Advance;
 using HCM.UI.Interfaces.ApprovalSetup;
-using HCM.UI.Interfaces.Bonus;
 using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.Loan;
 using HCM.UI.Interfaces.MasterData;
@@ -75,9 +74,8 @@ namespace HCM.UI.General
 
         [Inject]
         public ICfgApprovalTemplate _cfgApprovalTemplate { get; set; }
-
         [Inject]
-        public ITrnsEmployeeBonus _trnsEmployeeBonus { get; set; }
+        public ITrnsReHireEmployee _trnsReHireEmployee { get; set; }
 
         #endregion
 
@@ -104,7 +102,7 @@ namespace HCM.UI.General
         private bool FilterFuncTrnsTaxAdjustment(TrnsTaxAdjustment element) => FilterFuncTrnsTaxAdjustment(element, searchString1);
         private bool FilterFuncCfgApprovalStage(CfgApprovalStage element) => FilterFuncCfgApprovalStage(element, searchString1);
         private bool FilterFuncCfgApprovalTemplate(CfgApprovalTemplate element) => FilterFuncCfgApprovalTemplate(element, searchString1);
-        private bool FilterFuncEmployeeBonus(TrnsEmployeeBonu element) => FilterFuncEmployeeBonus(element, searchString1);
+        private bool FilterFuncTrnsEmployeeReHire(TrnsEmployeeReHire element) => FilterFuncTrnsEmployeeReHire(element, searchString1);
         void Cancel() => MudDialog.Cancel();
 
         private MudTable<MstElement> _tableElement;
@@ -169,10 +167,10 @@ namespace HCM.UI.General
         private MudTable<CfgApprovalTemplate> _tableCfgApprovalTemplate;
         CfgApprovalTemplate oModelCfgApprovalTemplate = new CfgApprovalTemplate();
         List<CfgApprovalTemplate> oListCfgApprovalTemplate = new List<CfgApprovalTemplate>();
-
-        private MudTable<TrnsEmployeeBonu> _tableEmployeeBonus;
-        TrnsEmployeeBonu oModelEmployeeBonus = new TrnsEmployeeBonu();
-        List<TrnsEmployeeBonu> oListEmployeeBonus = new List<TrnsEmployeeBonu>();
+        
+        private MudTable<TrnsEmployeeReHire> _tableTrnsEmployeeReHire;
+        TrnsEmployeeReHire oModelTrnsEmployeeReHire = new TrnsEmployeeReHire();
+        List<TrnsEmployeeReHire> oListTrnsEmployeeReHire = new List<TrnsEmployeeReHire>();
 
         #region Functions
 
@@ -674,13 +672,13 @@ namespace HCM.UI.General
                 return true;
             return false;
         }
-
-        private async Task GetAllEmployeeBonus()
+      
+        private async Task GetAllTrnsEmployeeReHire()
         {
             try
             {
-                oListEmployeeBonus = await _trnsEmployeeBonus.GetAllData();
-                if (oListEmployeeBonus?.Count == 0 || oListEmployeeBonus == null)
+                oListTrnsEmployeeReHire = await _trnsReHireEmployee.GetAllData();
+                if (oListTrnsEmployeeReHire?.Count == 0 || oListTrnsEmployeeReHire == null)
                 {
                     Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
                 }
@@ -690,19 +688,11 @@ namespace HCM.UI.General
                 Logs.GenerateLogs(ex);
             }
         }
-        private bool FilterFuncEmployeeBonus(TrnsEmployeeBonu element, string searchString1)
+        private bool FilterFuncTrnsEmployeeReHire(TrnsEmployeeReHire element, string searchString1)
         {
             if (string.IsNullOrWhiteSpace(searchString1))
                 return true;
-            if (element.DocumentNo.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
-                return true;
-            if (element.CalendarCode.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
-                return true;
-            if (element.PayrollCode.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
-                return true;
-            if (element.PaysInPeriodCode.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
-                return true;
-            if (element.Status.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            if (element.EmployeeName.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
             return false;
         }
@@ -790,9 +780,9 @@ namespace HCM.UI.General
                 {
                     await GetAllCfgApprovalTemplate();
                 }
-                else if (DialogFor == "EmployeeBonus")
+                else if (DialogFor == "EmployeeReHireEdit")
                 {
-                    await GetAllEmployeeBonus();
+                    await GetAllTrnsEmployeeReHire();
                 }
                 Loading = false;
             }
@@ -1313,8 +1303,7 @@ namespace HCM.UI.General
                 return string.Empty;
             }
         }
-
-        public void RowClickEventEmployeeBonus(TableRowClickEventArgs<TrnsEmployeeBonu> tableRowClickEventArgs)
+        public void RowClickEventTrnsEmployeeReHire(TableRowClickEventArgs<TrnsEmployeeReHire> tableRowClickEventArgs)
         {
             try
             {
@@ -1326,7 +1315,7 @@ namespace HCM.UI.General
             }
 
         }
-        private string SelectedRowClassFuncFilterFuncEmployeeBonus(TrnsEmployeeBonu element, int rowNumber)
+        private string SelectedRowClassFuncFilterFuncTrnsEmployeeReHire(TrnsEmployeeReHire element, int rowNumber)
         {
             if (selectedRowNumber == rowNumber)
             {
@@ -1334,7 +1323,7 @@ namespace HCM.UI.General
                 clickedEvents.Add("Selected Row: None");
                 return string.Empty;
             }
-            else if (_tableEmployeeBonus.SelectedItem != null && _tableEmployeeBonus.SelectedItem.Equals(element))
+            else if (_tableTrnsEmployeeReHire.SelectedItem != null && _tableTrnsEmployeeReHire.SelectedItem.Equals(element))
             {
                 selectedRowNumber = rowNumber;
                 clickedEvents.Add($"Selected Row: {rowNumber}");
@@ -1425,10 +1414,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "ApprovalTemplate" && oModelCfgApprovalTemplate.Id > 0)
                 {
                     MudDialog.Close(DialogResult.Ok<CfgApprovalTemplate>(oModelCfgApprovalTemplate));
-                }
-                else if (DialogFor == "EmployeeBonus" && oModelEmployeeBonus.Id > 0)
+                } 
+                else if (DialogFor == "EmployeeReHireEdit" && oModelTrnsEmployeeReHire.InternalId> 0)
                 {
-                    MudDialog.Close(DialogResult.Ok<TrnsEmployeeBonu>(oModelEmployeeBonus));
+                    MudDialog.Close(DialogResult.Ok<TrnsEmployeeReHire>(oModelTrnsEmployeeReHire));
                 }
                 else
                 {

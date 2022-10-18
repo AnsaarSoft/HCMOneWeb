@@ -9,8 +9,6 @@ namespace HCM.API.HCMModels
         public int? ReHireId { get; set; }
         public string EmpName { get; set; }
         public DateTime? ServiceEndDate { get; set; }
-        public int? PayrollId { get; set; }
-        public string PayrollName { get; set; }
         public DateTime? JoinningDate { get; set; }
         public DateTime? ConfirmationDate { get; set; }
         public DateTime? ContractEndDate { get; set; }
@@ -35,28 +33,42 @@ namespace HCM.API.HCMModels
         public DateTime? TerminationDate { get; set; }
         public DateTime? ResignaitonDate { get; set; }
         public string ContractType { get; set; }
-        public int? DeptId { get; set; }
-        public string LocationId { get; set; }
-        public int? ManagerId { get; set; }
         public string PaymentMode { get; set; }
         public DateTime? NewConfirmationDate { get; set; }
         public DateTime? NewContractEndDate { get; set; }
         public DateTime? NewJoiningDate { get; set; }
         public string NewContractType { get; set; }
         public decimal? NewBasicSalary { get; set; }
-        public int? NewDeptId { get; set; }
-        public int? NewLocaitonId { get; set; }
-        public int? NewManagerId { get; set; }
         public int? ReportToId { get; set; }
+        public bool? FlgActive { get; set; }
+        public int? PositionId { get; set; }
+        public string PositionName { get; set; }
+        public int? NewPositionId { get; set; }
+        public string NewPositionName { get; set; }
+        public int? BranchId { get; set; }
+        public string BranchName { get; set; }
+        public int? NewBranchId { get; set; }
+        public string NewBranchName { get; set; }
+        public int? DesignationId { get; set; }
+        public string DesignationName { get; set; }
+        public int? NewDesignationId { get; set; }
+        public string NewDesignationName { get; set; }
+        public int? DeptId { get; set; }
+        public string DeptName { get; set; }
+        public int? NewDeptId { get; set; }
+        public string NewDeptName { get; set; }
+        public int? ManagerId { get; set; }
+        public string ManagerName { get; set; }
+        public int? NewManagerId { get; set; }
+        public string NewManagerName { get; set; }
+        public string LocationId { get; set; }
+        public string LocationName { get; set; }
+        public int? NewLocaitonId { get; set; }
+        public string NewLocationName { get; set; }
+        public int? PayrollId { get; set; }
+        public string PayrollName { get; set; }
         public string NewPayRollName { get; set; }
         public string NewPayRollMode { get; set; }
-        public bool? FlgActive { get; set; }
-        public int? NewPositionId { get; set; }
-        public int? NewBranchId { get; set; }
-        public int? NewDesignationId { get; set; }
-        public int? PositionId { get; set; }
-        public int? BranchId { get; set; }
-        public int? DesignationId { get; set; }
 
         public virtual CfgPayrollDefination Payroll { get; set; }
         public virtual TrnsReHireEmployee ReHire { get; set; }
