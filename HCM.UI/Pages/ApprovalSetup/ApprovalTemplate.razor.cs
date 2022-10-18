@@ -64,77 +64,60 @@ namespace HCM.UI.Pages.ApprovalSetup
         {
             try
             {
-                //var parameters = new DialogParameters();
-                //parameters.Add("DialogFor", "ApprovalSetup");
-                //var dialog = Dialog.Show<SaveDataDialog>("", parameters, options);
-                //var result = await dialog.Result;
-                //if (!result.Cancelled)
-                //{
-                //    var res = (MstApprovalSetup)result.Data;
-                //    oModel = res;
-
-                //    UserNames = new HashSet<MstUserProfile>();
-                //    List<MstUserProfile> oList = new List<MstUserProfile>();
-                //    foreach (var item in oModel.MstApprovalOriginators)
-                //    {
-                //        MstUserProfile LineUser = new MstUserProfile();
-                //        LineUser = oUserList.Where(a => a.Id == item.OriginatorId).FirstOrDefault();
-                //        oList.Add(LineUser);
-                //    }
-                //    UserNames = oList;
-                //    DocNames = new HashSet<MstForm>();
-                //    List<MstForm> oListForm = new List<MstForm>();
-                //    if (oModel.FlgSalesQuatation == true)
-                //    {
-                //        MstForm LineDoc = new MstForm();
-                //        LineDoc = oDocList.Where(x => x.FormCode == 1).FirstOrDefault();
-                //        oListForm.Add(LineDoc);
-                //    }
-                //    if (oModel.FlgMonthlyVohcalc == true)
-                //    {
-                //        MstForm LineDoc = new MstForm();
-                //        LineDoc = oDocList.Where(x => x.FormCode == 2).FirstOrDefault();
-                //        oListForm.Add(LineDoc);
-                //    }
-                //    if (oModel.FlgItemPriceList == true)
-                //    {
-                //        MstForm LineDoc = new MstForm();
-                //        LineDoc = oDocList.Where(x => x.FormCode == 3).FirstOrDefault();
-                //        oListForm.Add(LineDoc);
-                //    }
-                //    if (oModel.FlgResourceMasterData == true)
-                //    {
-                //        MstForm LineDoc = new MstForm();
-                //        LineDoc = oDocList.Where(x => x.FormCode == 4).FirstOrDefault();
-                //        oListForm.Add(LineDoc);
-                //    }
-                //    if (oModel.FlgMonthlyFohdriverRateCalc == true)
-                //    {
-                //        MstForm LineDoc = new MstForm();
-                //        LineDoc = oDocList.Where(x => x.FormCode == 5).FirstOrDefault();
-                //        oListForm.Add(LineDoc);
-                //    }
-                //    if (oModel.FlgMonthlyFohcostCalc == true)
-                //    {
-                //        MstForm LineDoc = new MstForm();
-                //        LineDoc = oDocList.Where(x => x.FormCode == 6).FirstOrDefault();
-                //        oListForm.Add(LineDoc);
-                //    }
-                //    if (oModel.FlgFohrateCalc == true)
-                //    {
-                //        MstForm LineDoc = new MstForm();
-                //        LineDoc = oDocList.Where(x => x.FormCode == 7).FirstOrDefault();
-                //        oListForm.Add(LineDoc);
-                //    }
-                //    if (oModel.FlgVariableOverheadCost == true)
-                //    {
-                //        MstForm LineDoc = new MstForm();
-                //        LineDoc = oDocList.Where(x => x.FormCode == 8).FirstOrDefault();
-                //        oListForm.Add(LineDoc);
-                //    }
-                //    DocNames = oListForm;
-                //    oCfgApprovalTemplateStageList = oModel.MstApprovalStages.ToList();
-                //}
+                var parameters = new DialogParameters();
+                parameters.Add("DialogFor", "ApprovalTemplate");
+                var dialog = Dialog.Show<DialogBox>("", parameters, options);
+                var result = await dialog.Result;
+                if (!result.Cancelled)
+                {
+                    var res = (CfgApprovalTemplate)result.Data;
+                    oModel = res;
+                    List<MstEmployee> oListTemp = new List<MstEmployee>();
+                    foreach (var item in oModel.CfgApprovalTemplateOriginators)
+                    {
+                        MstEmployee obj = new MstEmployee();
+                        obj.Id = (int)item.Originator;
+                        oListTemp.Add(obj);
+                    }
+                    SelectedEmployee = oListTemp.ToList();
+                    DocNames = new HashSet<MstForm>();
+                    List<MstForm> oListForm = new List<MstForm>();
+                    foreach (var item in oModel.CfgApprovalTemplateDocuments)
+                    {
+                        if (item.FlgEmpLeave == true)
+                        {
+                            MstForm LineDoc = new MstForm();
+                            LineDoc = oDocList.Where(x => x.FormCode == 2).FirstOrDefault();
+                            oListForm.Add(LineDoc);
+                        }
+                        if (item.FlgLoan == true)
+                        {
+                            MstForm LineDoc = new MstForm();
+                            LineDoc = oDocList.Where(x => x.FormCode == 3).FirstOrDefault();
+                            oListForm.Add(LineDoc);
+                        }
+                        if (item.FlgAdvance == true)
+                        {
+                            MstForm LineDoc = new MstForm();
+                            LineDoc = oDocList.Where(x => x.FormCode == 4).FirstOrDefault();
+                            oListForm.Add(LineDoc);
+                        }
+                        if (item.FlgEmpTransfer == true)
+                        {
+                            MstForm LineDoc = new MstForm();
+                            LineDoc = oDocList.Where(x => x.FormCode == 5).FirstOrDefault();
+                            oListForm.Add(LineDoc);
+                        }
+                        if (item.FlgResignation == true)
+                        {
+                            MstForm LineDoc = new MstForm();
+                            LineDoc = oDocList.Where(x => x.FormCode == 6).FirstOrDefault();
+                            oListForm.Add(LineDoc);
+                        }
+                    }
+                    DocNames = oListForm;
+                    oCfgApprovalTemplateStageList = oModel.CfgApprovalTemplateStages.ToList();
+                }
             }
             catch (Exception ex)
             {

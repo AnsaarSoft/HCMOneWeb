@@ -501,6 +501,28 @@
                         </PagerContent>
                     </MudTable>
                 }
+                @if (oListCfgApprovalTemplate?.Count > 0 && DialogFor == "ApprovalTemplate")
+                {
+                    <MudTable Items="@oListCfgApprovalTemplate" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<CfgApprovalTemplate,bool>(FilterFuncCfgApprovalTemplate)"
+                      Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableCfgApprovalTemplate" RowClassFunc="@SelectedRowClassFuncFilterFuncCfgApprovalTemplate" OnRowClick="RowClickEventCfgApprovalTemplate" T="CfgApprovalTemplate" @bind-SelectedItem="oModelCfgApprovalTemplate">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Approval Stages</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Name</MudTh>
+                            <MudTh>Active</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code">@context.Name</MudTd>
+                            <MudTd DataLabel="Code">@context.FlgActive</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                }
             }
         </MudContainer>
     </DialogContent>
