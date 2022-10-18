@@ -1,6 +1,8 @@
 ﻿using Blazored.LocalStorage;
 using DocumentFormat.OpenXml.InkML;
 using HCM.API.HCMModels;
+//using HCM.API.Interfaces.EmployeeMasterSetup;
+//using HCM.API.Interfaces.MasterData;
 using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.EmployeeMasterSetup;
@@ -11,7 +13,6 @@ using Microsoft.VisualBasic;
 using MudBlazor;
 using System.Collections.Immutable;
 using static MudBlazor.CategoryTypes;
-
 
 namespace HCM.UI.Pages.EmployeeMasterSetup
 {
@@ -30,7 +31,8 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
         [Inject]
         public IMstEmployeeMasterData _mstEmployeeMaster { get; set; }
-
+        [Inject]
+        public IMstPosition _mstPosition { get; set; }
         [Inject]
         public IMstDesignation _mstDesignation { get; set; }
 
@@ -39,7 +41,8 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
         [Inject]
         public IMstLocation _mstLocation { get; set; }
-
+        [Inject]
+        public ICfgPayrollDefination _CfgPayrollDefination { get; set; }
         [Inject]
         public IMstBranch _mstBranch { get; set; } 
         [Inject]
@@ -77,8 +80,14 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         MstDesignation oModelDesignation = new MstDesignation();
         private IEnumerable<MstDesignation> oListDesignation = new List<MstDesignation>();
 
+        MstPosition oModelPosition = new MstPosition();
+        private IEnumerable<MstPosition> oListPosition = new List<MstPosition>();
+
         MstDepartment oModelDepartment = new MstDepartment();
         private IEnumerable<MstDepartment> oListDepartment = new List<MstDepartment>();
+        
+        CfgPayrollDefination oModelPayroll = new CfgPayrollDefination();
+        private IEnumerable<CfgPayrollDefination> oListPayroll = new List<CfgPayrollDefination>();
 
         MstLocation oModelLocation = new MstLocation();
         private IEnumerable<MstLocation> oListLocation = new List<MstLocation>();
@@ -181,6 +190,41 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 Logs.GenerateLogs(ex);
             }
         }
+        private async Task GetAllPosition()
+        {
+            try
+            {
+                oListPosition = await _mstPosition.GetAllData();
+                oListPosition = oListPosition.Where(x => x.FlgActive == true).ToList();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private async Task GetAllPayroll()
+        {
+            try
+            {
+                oListPayroll = await _CfgPayrollDefination.GetAllData();
+                oListPayroll = oListPayroll.Where(x => x.FlgActive == true).ToList();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private async Task GetAllEmployeeReHire()
+        {
+            try
+            {
+                oList = await _trnsReHireEmployee.GetAllData();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
         private Task SetDocNo()
         {
             try
@@ -253,6 +297,30 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 return null;
             }
         }
+        private async Task<IEnumerable<CfgPayrollDefination>> SearchPayroll(string value)
+        {
+            try
+            {
+                await Task.Delay(1);
+                if (string.IsNullOrWhiteSpace(value))
+                    return oListPayroll.Select(o => new CfgPayrollDefination
+                    {
+                        Id = o.Id,
+                        PayrollName = o.PayrollName,
+                    }).ToList();
+                var res = oListPayroll.Where(x => x.PayrollName.ToUpper().Contains(value.ToUpper())).ToList();
+                return res.Select(x => new CfgPayrollDefination
+                {
+                    Id = x.Id,
+                    PayrollName = x.PayrollName,
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return null;
+            }
+        }
         private async Task<IEnumerable<MstDepartment>> SearchDepartment(string value)
         {
             try
@@ -277,6 +345,31 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 return null;
             }
         }
+        private async Task<IEnumerable<MstPosition>> SearchPosition(string value)
+        {
+            try
+            {
+                await Task.Delay(1);
+                if (string.IsNullOrWhiteSpace(value))
+                    return oListPosition.Select(o => new MstPosition
+                    {
+                        Id = o.Id,
+                        Description = o.Description,
+                    }).ToList();
+                var res = oListPosition.Where(x => x.Description.ToUpper().Contains(value.ToUpper())).ToList();
+                return res.Select(x => new MstPosition
+                {
+                    Id = x.Id,
+                    Description = x.Description,
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return null;
+            }
+        }
+
         private async Task<IEnumerable<MstLocation>> SearchLocation(string value)
         {
             try
@@ -460,7 +553,8 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     await GetAllDepartments();
                     await GetAllLocation();
                     await GetAllBranches();
-                    //await GetAllCalendar();
+                    await GetAllPosition();
+                    await GetAllPayroll();
                 }
                 else
                 {
