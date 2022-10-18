@@ -57,7 +57,7 @@
                 </MudItem>
 
                 <MudItem xs="2" sm="2" md="2" lg="2">
-                    <MudTextField @bind-Value="oModel.DocNum" Disabled="true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields"
+                    <MudTextField @bind-Value="oModel.DocNum" ReadOnly="@true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields"
                                   Label="Doc No*" Variant="Variant.Text"> </MudTextField>
                 </MudItem>
                 
@@ -67,13 +67,13 @@
                 </MudItem>*@
 
                 <MudItem xs="2" sm="2" md="2" lg="2">
-                    <MudTextField @bind-Value="oModelMstEmployee.JoiningDate" Disabled="true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange"
+                    <MudTextField @bind-Value="oModelMstEmployee.JoiningDate" ReadOnly="@true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange"
                                   Label="Date of Joining*" Variant="Variant.Text"> </MudTextField>
                 </MudItem> <MudItem xs="2" sm="2" md="2" lg="2">
-                    <MudTextField @bind-Value="oModelMstEmployee.ResignDate" Disabled="true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange"
+                    <MudTextField @bind-Value="oModelMstEmployee.ResignDate" ReadOnly="@true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange"
                                   Label="Date of Joining*" Variant="Variant.Text"> </MudTextField>
                 </MudItem> <MudItem xs="2" sm="2" md="2" lg="2">
-                    <MudTextField @bind-Value="oModelMstEmployee.TerminationDate" Disabled="true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange"
+                    <MudTextField @bind-Value="oModelMstEmployee.TerminationDate" ReadOnly="@true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange"
                                   Label="Date of Joining*" Variant="Variant.Text"> </MudTextField>
                 </MudItem>
 

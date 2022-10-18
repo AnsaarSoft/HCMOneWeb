@@ -548,6 +548,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 {
                     LoginUser = Session.UserCode;
                     await GetAllEmployees();
+                    await GetAllEmployeeReHire();
                     await SetDocNo();
                     await GetAllDesignation();
                     await GetAllDepartments();
