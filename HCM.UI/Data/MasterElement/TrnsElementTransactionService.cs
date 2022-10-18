@@ -99,5 +99,64 @@ namespace HCM.UI.Data.MasterElement
                 return response;
             }
         }
+        public async Task<ApiResponseModel> Insert(List<TrnsEmployeeElement> oTrnsEmployeeElement)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                var request = new RestRequest("MasterElement/addElementTransList", Method.Post);
+                request.AddJsonBody(oTrnsEmployeeElement);
+                var res = await _restClient.ExecuteAsync(request);
+                if (res.IsSuccessful)
+                {
+                    response.Id = 1;
+                    response.Message = "Saved successfully";
+                    return response;
+                }
+                else
+                {
+                    response.Id = 0;
+                    response.Message = "Failed to save successfully";
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                response.Id = 0;
+                response.Message = "Failed to save successfully";
+                return response;
+            }
+        }
+
+        public async Task<ApiResponseModel> Update(List<TrnsEmployeeElement> oTrnsEmployeeElement)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                var request = new RestRequest("MasterElement/updateElementTransList", Method.Post);
+                request.AddJsonBody(oTrnsEmployeeElement);
+                var res = await _restClient.ExecuteAsync(request);
+                if (res.IsSuccessful)
+                {
+                    response.Id = 1;
+                    response.Message = "Update successfully";
+                    return response;
+                }
+                else
+                {
+                    response.Id = 0;
+                    response.Message = "Failed to Update successfully";
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                response.Id = 0;
+                response.Message = "Failed to Update successfully";
+                return response;
+            }
+        }
     }
 }

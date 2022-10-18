@@ -58,17 +58,13 @@
                     else
                     {
                         <MudItem xs="12" sm="12" md="12" lg="12" class="text-right custom-btn-design" style="justify-content: flex-end;">
-
-                            @*<MudButton Color="Color.Primary" OnClick="SearchCriteria" StartIcon="@Icons.Material.Filled.Search" Title="Search" IconSize="Size.Small">Search</MudButton>*@
-
-                            <MudButton Variant="Variant.Filled" OnClick="SearchCriteria" StartIcon="@Icons.Material.Filled.Search" Color="Color.Info" Size="Size.Small">Search</MudButton>
-                            <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Save</MudButton>
-                            <MudButton Variant="Variant.Filled" OnClick="ProcessedInSalary" StartIcon="@Icons.Material.Filled.Approval" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Processed in Salary</MudButton>
+                            @if (oModel.Status != "Posted")
+                            {
+                                <MudButton Variant="Variant.Filled" OnClick="SearchCriteria" StartIcon="@Icons.Material.Filled.Search" Color="Color.Info" Size="Size.Small">Search</MudButton>
+                                <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Save</MudButton>
+                                <MudButton Variant="Variant.Filled" OnClick="ProcessedInSalary" StartIcon="@Icons.Material.Filled.Approval" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Processed in Salary</MudButton>
+                            }
                             <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
-
-                            @*       <MudFab Color="Color.Primary" OnClick="SearchCriteria" StartIcon="@Icons.Material.Filled.Search" Title="Search" IconSize="Size.Small" />
-                        <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
-                        <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />*@
                         </MudItem>
                     }
                 </MudItem>
@@ -95,7 +91,7 @@
                     </MudSelect>
                 </MudItem>
                 <MudItem xs="2" sm="2" md="2" lg="2">
-                    <MudSelect @bind-Value="oModel.PayrollCode" Label="Payroll" HelperText="Select Payroll" AdornmentIcon="@Icons.Material.Filled.RollerSkating" Adornment="Adornment.Start">
+                    <MudSelect @bind-Value="oModel.PayrollCode" Label="Payroll" OnClose="GetAllPayrollElements" HelperText="Select Payroll" AdornmentIcon="@Icons.Material.Filled.RollerSkating" Adornment="Adornment.Start">
                         @foreach (CfgPayrollDefination Payroll in oListPayroll.ToList())
                         {
                             <MudSelectItem Value="Payroll.PayrollName">@Payroll.PayrollName</MudSelectItem>
@@ -112,7 +108,7 @@
                 </MudItem>
                 <MudItem xs="2" sm="2" md="2" lg="2">
                     <MudSelect @bind-Value="oModel.ElementType" Label="Element Type*" HelperText="Select Element Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
-                        @foreach (MstElement Element in oElementList.Where(x => x.FlgActive == true).ToList())
+                        @foreach (MstElement Element in oElementListFilter.ToList())
                         {
                             <MudSelectItem Value="(int?)Element.Id">@Element.Code - @Element.Description</MudSelectItem>
                         }

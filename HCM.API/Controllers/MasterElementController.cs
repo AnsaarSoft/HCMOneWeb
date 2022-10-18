@@ -173,6 +173,54 @@ namespace HCM.API.Controllers
                 return BadRequest("Something went wrong.");
             }
         }
+        
+        [Route("addElementTransList")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] List<TrnsEmployeeElement> pTrnsEmployeeElement)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _trnsElementTransaction.Insert(pTrnsEmployeeElement);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateElementTransList")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] List<TrnsEmployeeElement> pTrnsEmployeeElement)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _trnsElementTransaction.Update(pTrnsEmployeeElement);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
 
         #endregion
 

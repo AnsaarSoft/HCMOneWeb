@@ -61,14 +61,14 @@
                     <MudNumericField @bind-Value="oModel.MinimumMonthsDuration" Min="0" HelperText="Enter Month Duartion" Immediate="true" Clearable="true"
                                      Label="Min Months Duration*" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text"> </MudNumericField>
                 </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4">
+               @* <MudItem xs="4" sm="4" md="4" lg="4">
                     <MudSelect @bind-Value="oModel.ElementType" Label="Element Type*" HelperText="Select Element Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                         @foreach (MstElement Element in oElementList.Where(x => x.FlgActive == true).ToList())
                         {
                             <MudSelectItem Value="(int?)Element.Id">@Element.Code - @Element.Description</MudSelectItem>
                         }
                     </MudSelect>
-                </MudItem>
+                </MudItem>*@
                 <MudItem xs="12" sm="12" md="12" lg="12">
                     @if (Loading)
                     {
@@ -111,7 +111,7 @@
                             <MudTh>Scale From</MudTh>
                             <MudTh>Scale To</MudTh>
                             <MudTh>Bonus %</MudTh>
-                            <MudTh>Element Type</MudTh>
+                            @*<MudTh>Element Type</MudTh>*@
                             <MudTh>Active</MudTh>
                             <MudTh>Action</MudTh>
                         </HeaderContent>
@@ -124,7 +124,7 @@
                             <MudTd DataLabel="GracePeriod">@context.ScaleFrom</MudTd>
                             <MudTd DataLabel="GracePeriod">@context.ScaleTo</MudTd>
                             <MudTd DataLabel="LeaveCount">@context.BonusPercentage</MudTd>
-                            <MudTd DataLabel="Deduction">@context.ElementType</MudTd>
+                            @*<MudTd DataLabel="Deduction">@context.ElementType</MudTd>*@
                             <MudTd DataLabel="Deduction">@context.FlgActive</MudTd>
                             <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id))" Title="Edit"></MudIconButton></MudTd>
                         </RowTemplate>

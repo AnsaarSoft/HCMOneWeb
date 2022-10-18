@@ -239,7 +239,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     await GetAllBonus();
                     await SetDocNo();
                     await GetAllLove();
-                    await GetAllElement();
+                    //await GetAllElement();
                     oModel.FlgActive = true;
                 }
                 else

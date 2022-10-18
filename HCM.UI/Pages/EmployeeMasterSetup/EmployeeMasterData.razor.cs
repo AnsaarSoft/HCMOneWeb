@@ -55,6 +55,9 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         public ICfgPayrollDefination _CfgPayrollDefination { get; set; }
 
         [Inject]
+        public ICfgPayrollDefinationinit _CfgPayrollDefinationinit { get; set; }
+
+        [Inject]
         public IMstElement _mstElement { get; set; }
 
         [Inject]
@@ -93,6 +96,8 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
         private string searchString1 = "";
         private bool FilterFunc(MstEmployeeLeaf element) => FilterFunc(element, searchString1);
+
+        CfgPayrollBasicInitialization oModelPayrollInit = new CfgPayrollBasicInitialization();
 
         MstDocumentNumberSeries oModelDocumentNumberSeries = new MstDocumentNumberSeries();
         private IEnumerable<MstDocumentNumberSeries> oListDocumentNumberSeries = new List<MstDocumentNumberSeries>();
@@ -624,6 +629,22 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             {
                 Logs.GenerateLogs(ex);
                 return null;
+            }
+        }
+
+        private async Task GetPayrollinit()
+        {
+            try
+            {
+                oModelPayrollInit = await _CfgPayrollDefinationinit.GetData();
+                if (oModelPayrollInit.FlgEmployeeCodeSeries == true)
+                {
+                    DisbaledCode = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
             }
         }
 
@@ -1254,7 +1275,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             {
                 Loading = true;
                 var res = new ApiResponseModel();
-                if (!string.IsNullOrWhiteSpace(oModelDocumentNumberSeries.Prefix) && !string.IsNullOrWhiteSpace(oModel.EmpId) && !string.IsNullOrWhiteSpace(oModel.FirstName) && !string.IsNullOrWhiteSpace(oModel.LastName) && !string.IsNullOrWhiteSpace(oModelDesignation.Description)
+                if ((oModelPayrollInit.FlgEmployeeCodeSeries == true && !string.IsNullOrWhiteSpace(oModelDocumentNumberSeries.Prefix)) || !string.IsNullOrWhiteSpace(oModel.EmpId) && !string.IsNullOrWhiteSpace(oModel.FirstName) && !string.IsNullOrWhiteSpace(oModel.LastName) && !string.IsNullOrWhiteSpace(oModelDesignation.Description)
                     && !string.IsNullOrWhiteSpace(oModelPosition.Description) && !string.IsNullOrWhiteSpace(oModelDepartment.DeptName) && !string.IsNullOrWhiteSpace(oModelLocation.Description)
                     && !string.IsNullOrWhiteSpace(oModelBranch.Description) && !string.IsNullOrWhiteSpace(oModelUser.UserName) && !string.IsNullOrWhiteSpace(oModelPayroll.PayrollName) && !string.IsNullOrWhiteSpace(oModel.FatherName)
                     && !string.IsNullOrWhiteSpace(oModel.MotherName) && !string.IsNullOrWhiteSpace(oModel.GenderId) && !string.IsNullOrWhiteSpace(oModel.MartialStatusId) && !string.IsNullOrWhiteSpace(oModel.ReligionId)
@@ -1408,6 +1429,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 {
                     LoginUser = Session.UserCode;
                     oModel.FlgActive = true;
+                    await GetPayrollinit();
                     await GetAllDocumentNumberSeriess();
                     await GetAllEmployees();
                     await GetAllLove();

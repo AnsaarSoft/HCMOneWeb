@@ -2,6 +2,7 @@
 using HCM.API.Interfaces.Attendance;
 using HCM.API.Interfaces.Bonus;
 using HCM.API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HCM.API.Repository.Bonus
 {
@@ -20,7 +21,7 @@ namespace HCM.API.Repository.Bonus
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.TrnsEmployeeBonus.ToList();
+                    oList = _DBContext.TrnsEmployeeBonus.Include(x => x.TrnsEmployeeBonusDetails).ToList();
                 });
             }
             catch (Exception ex)

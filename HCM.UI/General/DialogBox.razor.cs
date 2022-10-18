@@ -1,6 +1,7 @@
 ﻿using HCM.API.Models;
 using HCM.UI.Interfaces.Advance;
 using HCM.UI.Interfaces.ApprovalSetup;
+using HCM.UI.Interfaces.Bonus;
 using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.Loan;
 using HCM.UI.Interfaces.MasterData;
@@ -75,6 +76,9 @@ namespace HCM.UI.General
         [Inject]
         public ICfgApprovalTemplate _cfgApprovalTemplate { get; set; }
 
+        [Inject]
+        public ITrnsEmployeeBonus _trnsEmployeeBonus { get; set; }
+
         #endregion
 
         #region Variables
@@ -100,6 +104,7 @@ namespace HCM.UI.General
         private bool FilterFuncTrnsTaxAdjustment(TrnsTaxAdjustment element) => FilterFuncTrnsTaxAdjustment(element, searchString1);
         private bool FilterFuncCfgApprovalStage(CfgApprovalStage element) => FilterFuncCfgApprovalStage(element, searchString1);
         private bool FilterFuncCfgApprovalTemplate(CfgApprovalTemplate element) => FilterFuncCfgApprovalTemplate(element, searchString1);
+        private bool FilterFuncEmployeeBonus(TrnsEmployeeBonu element) => FilterFuncEmployeeBonus(element, searchString1);
         void Cancel() => MudDialog.Cancel();
 
         private MudTable<MstElement> _tableElement;
@@ -164,6 +169,10 @@ namespace HCM.UI.General
         private MudTable<CfgApprovalTemplate> _tableCfgApprovalTemplate;
         CfgApprovalTemplate oModelCfgApprovalTemplate = new CfgApprovalTemplate();
         List<CfgApprovalTemplate> oListCfgApprovalTemplate = new List<CfgApprovalTemplate>();
+
+        private MudTable<TrnsEmployeeBonu> _tableEmployeeBonus;
+        TrnsEmployeeBonu oModelEmployeeBonus = new TrnsEmployeeBonu();
+        List<TrnsEmployeeBonu> oListEmployeeBonus = new List<TrnsEmployeeBonu>();
 
         #region Functions
 
@@ -666,6 +675,38 @@ namespace HCM.UI.General
             return false;
         }
 
+        private async Task GetAllEmployeeBonus()
+        {
+            try
+            {
+                oListEmployeeBonus = await _trnsEmployeeBonus.GetAllData();
+                if (oListEmployeeBonus?.Count == 0 || oListEmployeeBonus == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncEmployeeBonus(TrnsEmployeeBonu element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.DocumentNo.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.CalendarCode.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.PayrollCode.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.PaysInPeriodCode.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.Status.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
+        }
+
         #endregion
 
         #endregion
@@ -748,6 +789,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "ApprovalTemplate")
                 {
                     await GetAllCfgApprovalTemplate();
+                }
+                else if (DialogFor == "EmployeeBonus")
+                {
+                    await GetAllEmployeeBonus();
                 }
                 Loading = false;
             }
@@ -1269,6 +1314,38 @@ namespace HCM.UI.General
             }
         }
 
+        public void RowClickEventEmployeeBonus(TableRowClickEventArgs<TrnsEmployeeBonu> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncFilterFuncEmployeeBonus(TrnsEmployeeBonu element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableEmployeeBonus.SelectedItem != null && _tableEmployeeBonus.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
         private void Submit()
         {
             try
@@ -1348,6 +1425,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "ApprovalTemplate" && oModelCfgApprovalTemplate.Id > 0)
                 {
                     MudDialog.Close(DialogResult.Ok<CfgApprovalTemplate>(oModelCfgApprovalTemplate));
+                }
+                else if (DialogFor == "EmployeeBonus" && oModelEmployeeBonus.Id > 0)
+                {
+                    MudDialog.Close(DialogResult.Ok<TrnsEmployeeBonu>(oModelEmployeeBonus));
                 }
                 else
                 {
