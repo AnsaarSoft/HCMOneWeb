@@ -16272,6 +16272,10 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.PayrollNameOld).HasMaxLength(50);
 
+                entity.Property(e => e.PositionNameNew).HasMaxLength(500);
+
+                entity.Property(e => e.PositionNameOld).HasMaxLength(500);
+
                 entity.Property(e => e.ResignationDtOld).HasColumnType("datetime");
 
                 entity.Property(e => e.TerminationDtOld).HasColumnType("datetime");

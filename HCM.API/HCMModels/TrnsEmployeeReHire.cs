@@ -59,6 +59,8 @@ namespace HCM.API.HCMModels
         public int? PayrollIdNew { get; set; }
         public decimal? Gsnew { get; set; }
         public string EmployeeContractType { get; set; }
+        public string PositionNameOld { get; set; }
+        public string PositionNameNew { get; set; }
 
         public virtual MstEmployee Emp { get; set; }
     }

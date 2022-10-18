@@ -2,6 +2,7 @@
 using HCM.API.Interfaces.EmployeeMasterSetup;
 using Microsoft.EntityFrameworkCore;
 using HCM.API.Models;
+using HCM.API.HCMModels;
 
 
 namespace HCM.API.Repository.EmployeeMasterSetup
@@ -14,14 +15,14 @@ namespace HCM.API.Repository.EmployeeMasterSetup
         {
             _DBContext = DBContext;
         }
-        public async Task<List<TrnsReHireEmployee>> GetAllData()
+        public async Task<List<TrnsEmployeeReHire>> GetAllData()
         {
-            List<TrnsReHireEmployee> oList = new List<TrnsReHireEmployee>();
+            List<TrnsEmployeeReHire> oList = new List<TrnsEmployeeReHire>();
             try
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.TrnsReHireEmployees.Include(t=>t.TrnsReHireEmployeeDetails).ToList();
+                    oList = _DBContext.TrnsEmployeeReHires.ToList();
                 });
             }
             catch (Exception ex)
@@ -30,15 +31,15 @@ namespace HCM.API.Repository.EmployeeMasterSetup
             }
             return oList;
         }
-        public async Task<ApiResponseModel> Insert(TrnsReHireEmployee oTrnsReHireEmployee)
+        public async Task<ApiResponseModel> Insert(TrnsEmployeeReHire oTrnsEmployeeReHire)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    oTrnsReHireEmployee.CreateDate = DateTime.Now;
-                    _DBContext.TrnsReHireEmployees.Add(oTrnsReHireEmployee);
+                    oTrnsEmployeeReHire.CreateDt = DateTime.Now;
+                    _DBContext.TrnsEmployeeReHires.Add(oTrnsEmployeeReHire);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";
@@ -52,17 +53,14 @@ namespace HCM.API.Repository.EmployeeMasterSetup
             }
             return response;
         }
-        public async Task<ApiResponseModel> Update(TrnsReHireEmployee oTrnsReHireEmployee)
+        public async Task<ApiResponseModel> Update(TrnsEmployeeReHire oTrnsEmployeeReHire)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
-                {
-                    oTrnsReHireEmployee.UpdateDate = DateTime.Now;
-                    var Detail = _DBContext.TrnsReHireEmployeeDetails.Where(x => x.ReHireId == oTrnsReHireEmployee.Id).ToList();
-                    _DBContext.TrnsReHireEmployeeDetails.RemoveRange(Detail);
-                    _DBContext.TrnsReHireEmployees.Update(oTrnsReHireEmployee);
+                {   oTrnsEmployeeReHire.UpdateDt= DateTime.Now;
+                    _DBContext.TrnsEmployeeReHires.Update(oTrnsEmployeeReHire);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";
