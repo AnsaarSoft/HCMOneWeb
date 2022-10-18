@@ -72,6 +72,9 @@ namespace HCM.UI.General
         [Inject]
         public ICfgApprovalStage _mstStages { get; set; }
 
+        [Inject]
+        public ICfgApprovalTemplate _cfgApprovalTemplate { get; set; }
+
         #endregion
 
         #region Variables
@@ -95,8 +98,8 @@ namespace HCM.UI.General
         private bool FilterFuncTrnsEmployeeOvertime(TrnsEmployeeOvertime element) => FilterFuncTrnsEmployeeOvertime(element, searchString1);
         private bool FilterFuncTrnsEmployeeResign(TrnsResignation element) => FilterFuncTrnsEmployeeResign(element, searchString1);
         private bool FilterFuncTrnsTaxAdjustment(TrnsTaxAdjustment element) => FilterFuncTrnsTaxAdjustment(element, searchString1);
-
         private bool FilterFuncCfgApprovalStage(CfgApprovalStage element) => FilterFuncCfgApprovalStage(element, searchString1);
+        private bool FilterFuncCfgApprovalTemplate(CfgApprovalTemplate element) => FilterFuncCfgApprovalTemplate(element, searchString1);
         void Cancel() => MudDialog.Cancel();
 
         private MudTable<MstElement> _tableElement;
@@ -147,7 +150,7 @@ namespace HCM.UI.General
         private MudTable<TrnsEmployeeOvertime> _tableTrnsEmployeeOvertime;
         TrnsEmployeeOvertime oModelTrnsEmployeeOvertime = new TrnsEmployeeOvertime();
         List<TrnsEmployeeOvertime> oListTrnsEmployeeOvertime = new List<TrnsEmployeeOvertime>();
-        
+
         private MudTable<TrnsTaxAdjustment> _tableTaxAdjustment;
         TrnsTaxAdjustment oModelTrnsTaxAdjustment = new TrnsTaxAdjustment();
         List<TrnsTaxAdjustment> oListTrnsTaxAdjustment = new List<TrnsTaxAdjustment>();
@@ -158,7 +161,9 @@ namespace HCM.UI.General
         CfgApprovalStage oModelCfgApprovalStage = new CfgApprovalStage();
         List<CfgApprovalStage> oListCfgApprovalStage = new List<CfgApprovalStage>();
 
-        #endregion
+        private MudTable<CfgApprovalTemplate> _tableCfgApprovalTemplate;
+        CfgApprovalTemplate oModelCfgApprovalTemplate = new CfgApprovalTemplate();
+        List<CfgApprovalTemplate> oListCfgApprovalTemplate = new List<CfgApprovalTemplate>();
 
         #region Functions
 
@@ -326,7 +331,7 @@ namespace HCM.UI.General
         {
             try
             {
-                oListMstEmployee = await _mstEmployee.GetAllData();                
+                oListMstEmployee = await _mstEmployee.GetAllData();
                 if (oListMstEmployee?.Count == 0 || oListMstEmployee == null)
                 {
                     Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
@@ -637,6 +642,32 @@ namespace HCM.UI.General
             return false;
         }
 
+        private async Task GetAllCfgApprovalTemplate()
+        {
+            try
+            {
+                oListCfgApprovalTemplate = await _cfgApprovalTemplate.GetAllData();
+                if (oListCfgApprovalTemplate?.Count == 0 || oListCfgApprovalTemplate == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncCfgApprovalTemplate(CfgApprovalTemplate element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.Name.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
+        }
+
+        #endregion
+
         #endregion
 
         #region Events
@@ -713,6 +744,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "ApprovalStages")
                 {
                     await GetAllMstStages();
+                }
+                else if (DialogFor == "ApprovalTemplate")
+                {
+                    await GetAllCfgApprovalTemplate();
                 }
                 Loading = false;
             }
@@ -1182,7 +1217,6 @@ namespace HCM.UI.General
             }
 
         }
-
         private string SelectedRowClassFuncFilterFuncCfgApprovalStage(CfgApprovalStage element, int rowNumber)
         {
             if (selectedRowNumber == rowNumber)
@@ -1192,6 +1226,38 @@ namespace HCM.UI.General
                 return string.Empty;
             }
             else if (_tableCfgApprovalStage.SelectedItem != null && _tableCfgApprovalStage.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public void RowClickEventCfgApprovalTemplate(TableRowClickEventArgs<CfgApprovalTemplate> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncFilterFuncCfgApprovalTemplate(CfgApprovalTemplate element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableCfgApprovalTemplate.SelectedItem != null && _tableCfgApprovalTemplate.SelectedItem.Equals(element))
             {
                 selectedRowNumber = rowNumber;
                 clickedEvents.Add($"Selected Row: {rowNumber}");
@@ -1278,6 +1344,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "ApprovalStages" && oModelCfgApprovalStage.Id > 0)
                 {
                     MudDialog.Close(DialogResult.Ok<CfgApprovalStage>(oModelCfgApprovalStage));
+                }
+                else if (DialogFor == "ApprovalTemplate" && oModelCfgApprovalTemplate.Id > 0)
+                {
+                    MudDialog.Close(DialogResult.Ok<CfgApprovalTemplate>(oModelCfgApprovalTemplate));
                 }
                 else
                 {
