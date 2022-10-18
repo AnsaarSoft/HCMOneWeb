@@ -65,6 +65,7 @@ namespace HCM.API.HCMModels
         public virtual DbSet<CnfHistory> CnfHistories { get; set; }
         public virtual DbSet<Cnotifiy> Cnotifiys { get; set; }
         public virtual DbSet<CompetencyLevelSetup> CompetencyLevelSetups { get; set; }
+        public virtual DbSet<DocApprovalDecesion> DocApprovalDecesions { get; set; }
         public virtual DbSet<DocumentTemplate> DocumentTemplates { get; set; }
         public virtual DbSet<DocumentTemplateDetail> DocumentTemplateDetails { get; set; }
         public virtual DbSet<DynamicApprovalHierarchy> DynamicApprovalHierarchies { get; set; }
@@ -2216,6 +2217,65 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.FlgActive).HasColumnName("flgActive");
 
                 entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<DocApprovalDecesion>(entity =>
+            {
+                entity.ToTable("DocApprovalDecesion");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CappStamp)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("CAppStamp");
+
+                entity.Property(e => e.CreatedBy)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.DocStatus)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.EmpId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("EmpID");
+
+                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
+
+                entity.Property(e => e.FkapprovalId).HasColumnName("FKApprovalID");
+
+                entity.Property(e => e.FkdocNum).HasColumnName("FKDocNum");
+
+                entity.Property(e => e.FkformId).HasColumnName("FKFormID");
+
+                entity.Property(e => e.FkformName)
+                    .HasMaxLength(150)
+                    .IsUnicode(false)
+                    .HasColumnName("FKFormName");
+
+                entity.Property(e => e.FkstageId).HasColumnName("FKStageID");
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.Remarks)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UappStamp)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("UAppStamp");
+
+                entity.Property(e => e.UpdatedBy)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
@@ -16211,6 +16271,10 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.PayrollNameNew).HasMaxLength(50);
 
                 entity.Property(e => e.PayrollNameOld).HasMaxLength(50);
+
+                entity.Property(e => e.PositionNameNew).HasMaxLength(500);
+
+                entity.Property(e => e.PositionNameOld).HasMaxLength(500);
 
                 entity.Property(e => e.ResignationDtOld).HasColumnType("datetime");
 

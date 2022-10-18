@@ -523,6 +523,34 @@
                         </PagerContent>
                     </MudTable>
                 }
+                @if (oListTrnsEmployeeReHire?.Count > 0 && DialogFor == "EmployeeReHireEdit")
+                {
+                    <MudTable Items="@oListTrnsEmployeeReHire" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsEmployeeReHire,bool>(FilterFuncTrnsEmployeeReHire)"
+                      Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableTrnsEmployeeReHire" RowClassFunc="@SelectedRowClassFuncFilterFuncTrnsEmployeeReHire" OnRowClick="RowClickEventTrnsEmployeeReHire" T="TrnsEmployeeReHire" @bind-SelectedItem="oModelTrnsEmployeeReHire">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Employees</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Employee Code</MudTh>
+                            <MudTh>Name</MudTh>
+                            <MudTh>Date of Joining</MudTh>
+                            <MudTh>Designation</MudTh>
+                            <MudTh>Location</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code">@context.EmpId</MudTd>
+                            <MudTd DataLabel="Code">@context.EmployeeName</MudTd>
+                            <MudTd DataLabel="Code">@Convert.ToDateTime(context.JoiningDtNew).ToString("MM/dd/yyyy")</MudTd>
+                            <MudTd DataLabel="Code">@context.DesignationNameNew</MudTd>
+                            <MudTd DataLabel="Code">@context.LocationNameNew</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                }
             }
         </MudContainer>
     </DialogContent>

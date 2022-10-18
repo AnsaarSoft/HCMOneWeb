@@ -74,6 +74,8 @@ namespace HCM.UI.General
 
         [Inject]
         public ICfgApprovalTemplate _cfgApprovalTemplate { get; set; }
+        [Inject]
+        public ITrnsReHireEmployee _trnsReHireEmployee { get; set; }
 
         #endregion
 
@@ -100,6 +102,7 @@ namespace HCM.UI.General
         private bool FilterFuncTrnsTaxAdjustment(TrnsTaxAdjustment element) => FilterFuncTrnsTaxAdjustment(element, searchString1);
         private bool FilterFuncCfgApprovalStage(CfgApprovalStage element) => FilterFuncCfgApprovalStage(element, searchString1);
         private bool FilterFuncCfgApprovalTemplate(CfgApprovalTemplate element) => FilterFuncCfgApprovalTemplate(element, searchString1);
+        private bool FilterFuncTrnsEmployeeReHire(TrnsEmployeeReHire element) => FilterFuncTrnsEmployeeReHire(element, searchString1);
         void Cancel() => MudDialog.Cancel();
 
         private MudTable<MstElement> _tableElement;
@@ -164,6 +167,10 @@ namespace HCM.UI.General
         private MudTable<CfgApprovalTemplate> _tableCfgApprovalTemplate;
         CfgApprovalTemplate oModelCfgApprovalTemplate = new CfgApprovalTemplate();
         List<CfgApprovalTemplate> oListCfgApprovalTemplate = new List<CfgApprovalTemplate>();
+        
+        private MudTable<TrnsEmployeeReHire> _tableTrnsEmployeeReHire;
+        TrnsEmployeeReHire oModelTrnsEmployeeReHire = new TrnsEmployeeReHire();
+        List<TrnsEmployeeReHire> oListTrnsEmployeeReHire = new List<TrnsEmployeeReHire>();
 
         #region Functions
 
@@ -665,6 +672,30 @@ namespace HCM.UI.General
                 return true;
             return false;
         }
+      
+        private async Task GetAllTrnsEmployeeReHire()
+        {
+            try
+            {
+                oListTrnsEmployeeReHire = await _trnsReHireEmployee.GetAllData();
+                if (oListTrnsEmployeeReHire?.Count == 0 || oListTrnsEmployeeReHire == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncTrnsEmployeeReHire(TrnsEmployeeReHire element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.EmployeeName.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
+        }
 
         #endregion
 
@@ -748,6 +779,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "ApprovalTemplate")
                 {
                     await GetAllCfgApprovalTemplate();
+                }
+                else if (DialogFor == "EmployeeReHireEdit")
+                {
+                    await GetAllTrnsEmployeeReHire();
                 }
                 Loading = false;
             }
@@ -1268,6 +1303,37 @@ namespace HCM.UI.General
                 return string.Empty;
             }
         }
+        public void RowClickEventTrnsEmployeeReHire(TableRowClickEventArgs<TrnsEmployeeReHire> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncFilterFuncTrnsEmployeeReHire(TrnsEmployeeReHire element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableTrnsEmployeeReHire.SelectedItem != null && _tableTrnsEmployeeReHire.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
 
         private void Submit()
         {
@@ -1348,6 +1414,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "ApprovalTemplate" && oModelCfgApprovalTemplate.Id > 0)
                 {
                     MudDialog.Close(DialogResult.Ok<CfgApprovalTemplate>(oModelCfgApprovalTemplate));
+                } 
+                else if (DialogFor == "EmployeeReHireEdit" && oModelTrnsEmployeeReHire.InternalId> 0)
+                {
+                    MudDialog.Close(DialogResult.Ok<TrnsEmployeeReHire>(oModelTrnsEmployeeReHire));
                 }
                 else
                 {
