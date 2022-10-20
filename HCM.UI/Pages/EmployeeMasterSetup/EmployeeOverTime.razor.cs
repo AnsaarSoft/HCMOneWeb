@@ -86,6 +86,8 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         DateTime? docdate;
         TimeSpan? timefrom = new TimeSpan();
         TimeSpan? timeto = new TimeSpan();
+        string createby, updateby;
+        DateTime createdate, updatedate;
 
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
         DialogOptions FullView = new DialogOptions() { MaxWidth = MaxWidth.ExtraExtraLarge, FullWidth = true, CloseButton = true, DisableBackdropClick = true, CloseOnEscapeKey = true };
@@ -338,10 +340,13 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     timeto = TimeSpan.Parse(res.ToTime);
                     Hours = (decimal)res.Othours;
                     IsFlg = (bool)res.FlgActive;
-                    //string createby = res.UserId;
-                    //DateTime createdate = (DateTime)res.CreateDate;
-                    //string updateby = res.UserId;
-                    //DateTime updatedate = (DateTime)res.UpdateDate;
+                    if (oModel.Id != 0)
+                    {
+                        createby = res.UserId;
+                        createdate = (DateTime)res.CreateDate;
+                       // updateby = res.UserId;
+                       // updatedate = (DateTime)res.UpdateDate;
+                    }
 
                     var filterRecord = oListTrnsEmployeeOvertimeDetail.Where(x => x.Id == res.Id).FirstOrDefault();
                     oListTrnsEmployeeOtDetail.Remove(filterRecord);
@@ -377,80 +382,6 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 Loading = false;
             }
         }
-        private async Task<ApiResponseModel> Save()
-        {
-            try
-            {
-
-                Loading = true;
-                var res = new ApiResponseModel();
-                await Task.Delay(3);
-
-
-                if (oListTrnsEmployeeOvertimeDetail.Count() > 0)
-                {
-                    oModel.EmployeeId = oModelMstEmployee.Id;
-
-                    oListTrnsEmployeeOtDetail.Clear();
-                    foreach (var item in oListTrnsEmployeeOvertimeDetail)
-                    {
-                        if (oModel.Id == 0)
-                        {
-                            item.UserId = LoginUser;
-                            item.CreateDate = DateTime.Now.Date;
-                            oListTrnsEmployeeOtDetail.Add(item);
-                            oModel.TrnsEmployeeOvertimeDetails = oListTrnsEmployeeOtDetail.ToList();
-
-                        }
-                        else
-                        {
-                            item.UpdatedBy = LoginUser;
-                            item.UpdateDate = DateTime.Now.Date;
-                            oListTrnsEmployeeOtDetail.Add(item);
-                            oModel.TrnsEmployeeOvertimeDetails = oListTrnsEmployeeOtDetail.ToList();
-                        }
-                    }
-                    if (oModel.Id == 0)
-                    {
-                        oModel.UserId = LoginUser;
-                        res = await _TrnsEmployeeOverTime.Insert(oModel);
-                    }
-                    else
-                    {
-                        oModel.UpdatedBy = LoginUser;
-                        res = await _TrnsEmployeeOverTime.Update(oModel);
-                    }
-
-                    if (res != null && res.Id == 1)
-                    {
-                        Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
-                        await Task.Delay(3000);
-                        Navigation.NavigateTo("/EmployeeOverTime", forceLoad: true);
-                    }
-                    else
-                    {
-                        Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                    }
-                }
-
-                else
-                {
-                    Snackbar.Add("Please Fill Field.", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                }
-
-
-
-
-                Loading = false;
-                return res;
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-                Loading = false;
-                return null;
-            }
-        }
         private async Task<ApiResponseModel> AddList()
         {
             try
@@ -480,6 +411,14 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     && (trnsEmployeeOvertimeDetail.Amount != null && trnsEmployeeOvertimeDetail.Amount > 0)
                     && (trnsEmployeeOvertimeDetail.FlgActive != null && trnsEmployeeOvertimeDetail.FlgActive != false))
                 {
+                    if (oModel.Id != 0)
+                    {
+                        trnsEmployeeOvertimeDetail.UserId = createby  ;
+                        trnsEmployeeOvertimeDetail.CreateDate = createdate;
+                        //trnsEmployeeOvertimeDetail.UpdatedBy = updateby  ;
+                        //trnsEmployeeOvertimeDetail.UpdateDate = updatedate;
+                    }
+
 
                     oListTrnsEmployeeOtDetail.Add(trnsEmployeeOvertimeDetail);
                     oListTrnsEmployeeOvertimeDetail = oListTrnsEmployeeOtDetail.ToList();
@@ -495,6 +434,80 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 else
                 {
                     Snackbar.Add("Please Fill Field.", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+
+
+
+
+                Loading = false;
+                return res;
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                Loading = false;
+                return null;
+            }
+        }
+        private async Task<ApiResponseModel> Save()
+        {
+            try
+            {
+
+                Loading = true;
+                var res = new ApiResponseModel();
+                await Task.Delay(3);
+
+
+                if (oListTrnsEmployeeOvertimeDetail.Count() > 0)
+                {
+                    oModel.EmployeeId = oModelMstEmployee.Id;
+
+                    oListTrnsEmployeeOtDetail.Clear();
+                    foreach (var item in oListTrnsEmployeeOvertimeDetail)
+                    {
+                        if (oModel.Id == 0)
+                        {
+                            item.UserId = LoginUser;
+                            item.CreateDate = DateTime.Now;
+                            oListTrnsEmployeeOtDetail.Add(item);
+                            oModel.TrnsEmployeeOvertimeDetails = oListTrnsEmployeeOtDetail.ToList();
+
+                        }
+                        else
+                        {
+                            item.UpdatedBy = LoginUser;
+                            item.UpdateDate = DateTime.Now;
+                            oListTrnsEmployeeOtDetail.Add(item);
+                            oModel.TrnsEmployeeOvertimeDetails = oListTrnsEmployeeOtDetail.ToList();
+                        }
+                    }
+                    if (oModel.Id == 0)
+                    {
+                        oModel.UserId = LoginUser;
+                        res = await _TrnsEmployeeOverTime.Insert(oModel);
+                    }
+                    else
+                    {
+                        oModel.UpdatedBy = LoginUser;
+                        res = await _TrnsEmployeeOverTime.Update(oModel);
+                    }
+
+                    if (res != null && res.Id == 1)
+                    {
+                        Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+                        await Task.Delay(3000);
+                        Navigation.NavigateTo("/EmployeeOverTime", forceLoad: true);
+                    }
+                    else
+                    {
+                        Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                    }
+                }
+
+                else
+                {
+                    Snackbar.Add("Please Add Detail.", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                 }
 
 
