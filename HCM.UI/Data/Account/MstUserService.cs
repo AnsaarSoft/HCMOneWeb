@@ -21,7 +21,7 @@ namespace HCM.UI.Data.Account
             _oAuth = oAuth;
         }
 
-        public async Task<List<MstUser>> GetAllData()
+        public async Task<List<MstEmployee>> GetAllData()
         {
             try
             {
@@ -29,7 +29,7 @@ namespace HCM.UI.Data.Account
 
                 var request = new RestRequest("Account/getAllUser", Method.Get) { RequestFormat = DataFormat.Json };
 
-                var response = await _restClient.ExecuteAsync<List<MstUser>>(request);
+                var response = await _restClient.ExecuteAsync<List<MstEmployee>>(request);
 
                 if (response.IsSuccessful)
                 {
@@ -47,20 +47,20 @@ namespace HCM.UI.Data.Account
             }
         }
 
-        public async Task<MstUser> Login(MstUser oMstUser)
+        public async Task<MstEmployee> Login(MstEmployee oMstUser)
         {
             try
             {
                 var request = new RestRequest("Account/validateLogin", Method.Get) { RequestFormat = DataFormat.Json };
                 request.AddBody(oMstUser);
-                var response = await _restClient.ExecuteAsync<MstUser>(request);
+                var response = await _restClient.ExecuteAsync<MstEmployee>(request);
 
                 if (response.IsSuccessful)
                 {
                     if (response.Data.Id != 0)
                     {
                         await _oLocalStorage.SetItemAsync("User", response.Data);
-                        ((AuthStateProvider)_oAuth).NotifyUserAuthentication(response.Data.UserName);
+                        ((AuthStateProvider)_oAuth).NotifyUserAuthentication(response.Data.MoajibEmail);
                         return response.Data;
                     }
                     else
@@ -80,7 +80,7 @@ namespace HCM.UI.Data.Account
             }
         }
 
-        public async Task<ApiResponseModel> GenerateOTP(MstUser oMstUser)
+        public async Task<ApiResponseModel> GenerateOTP(MstEmployee oMstUser)
         {
             try
             {
@@ -128,7 +128,7 @@ namespace HCM.UI.Data.Account
             }
         }
 
-        public async Task<ApiResponseModel> ChangePassword(MstUser oMstUser)
+        public async Task<ApiResponseModel> ChangePassword(MstEmployee oMstUser)
         {
             try
             {
@@ -167,7 +167,7 @@ namespace HCM.UI.Data.Account
             }
         }
 
-        public async Task<ApiResponseModel> Insert(MstUser oMstUser)
+        public async Task<ApiResponseModel> Insert(MstEmployee oMstUser)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
@@ -197,7 +197,7 @@ namespace HCM.UI.Data.Account
             }
         }
 
-        public async Task<ApiResponseModel> Update(MstUser oMstUser)
+        public async Task<ApiResponseModel> Update(MstEmployee oMstUser)
         {
             ApiResponseModel response = new ApiResponseModel();
             try

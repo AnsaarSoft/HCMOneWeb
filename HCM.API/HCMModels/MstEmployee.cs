@@ -431,6 +431,7 @@ namespace HCM.API.HCMModels
         public string Prefix { get; set; }
         public int? SeriesNumber { get; set; }
         public string HolidayCalendar { get; set; }
+        public string Password { get; set; }
 
         public virtual MstBranch Branch { get; set; }
         public virtual MstDepartment Department { get; set; }

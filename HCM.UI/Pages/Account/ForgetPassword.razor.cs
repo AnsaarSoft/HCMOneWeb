@@ -36,7 +36,7 @@ namespace HCM.UI.Pages.Account
         InputType PasswordInput = InputType.Password;
         string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
 
-        MstUser oModel = new MstUser();
+        MstEmployee oModel = new MstEmployee();
         PasswordReset oPassword = new PasswordReset();
 
         #endregion
@@ -66,13 +66,12 @@ namespace HCM.UI.Pages.Account
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(1);
-                if (!string.IsNullOrWhiteSpace(oModel.Email))
+                if (!string.IsNullOrWhiteSpace(oModel.OfficeEmail))
                 {
-                    oModel.UserName = "";
-                    oModel.UserCode = "";
-                    oModel.PassCode = "";
-                    oModel.FlgActiveUser = true;
-                    oModel.FlgPasswordRequest = false;
+                    oModel.EmpId = "";
+                    oModel.Password = "";
+                    oModel.FlgActive = true;
+                    //oModel.FlgPasswordRequest = false;
                     res = await _mstUser.GenerateOTP(oModel);
 
                     if (res != null && res.Id == 1)
@@ -110,9 +109,9 @@ namespace HCM.UI.Pages.Account
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(1);
-                if (!string.IsNullOrWhiteSpace(oModel.Email))
+                if (!string.IsNullOrWhiteSpace(oModel.OfficeEmail))
                 {
-                    oPassword.Email = oModel.Email;
+                    oPassword.Email = oModel.OfficeEmail;
                     oPassword.UserCode = "";
                     oPassword.FlgActive = true;
                     res = await _mstUser.AuthenticateOTP(oPassword);
@@ -129,7 +128,7 @@ namespace HCM.UI.Pages.Account
                     {
                         Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
-                    oModel.FlgActiveUser = true;
+                    oModel.FlgActive = true;
                 }
                 else
                 {
@@ -153,14 +152,14 @@ namespace HCM.UI.Pages.Account
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(1);
-                if (!string.IsNullOrWhiteSpace(oModel.PassCode) && !string.IsNullOrWhiteSpace(ConfirmPassword))
+                if (!string.IsNullOrWhiteSpace(oModel.Password) && !string.IsNullOrWhiteSpace(ConfirmPassword))
                 {
-                    if (oModel.PassCode == ConfirmPassword)
+                    if (oModel.Password == ConfirmPassword)
                     {
-                        oModel.UserCode = "";
-                        oModel.UserName = "";
-                        oModel.FlgActiveUser = true;
-                        oModel.FlgPasswordRequest = true;
+                        //oModel.UserCode = "";
+                        oModel.EmpId = "";
+                        oModel.FlgActive = true;
+                        //oModel.FlgPasswordRequest = true;
                         res = await _mstUser.ChangePassword(oModel);
 
                         if (res != null && res.Id == 1)
@@ -198,7 +197,7 @@ namespace HCM.UI.Pages.Account
             try
             {
                 Loading = true;
-                oModel.Email = "";
+                oModel.OfficeEmail = "";
                 oPassword.EncryptKey = "";
                 DisplayEmail = true;
                 DisplayOTP = false;

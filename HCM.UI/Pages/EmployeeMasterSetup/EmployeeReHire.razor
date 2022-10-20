@@ -135,8 +135,8 @@
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.DeptName}")" />
                 </MudItem>
                 <MudItem xs="2" sm="2" md="2" lg="2">
-                    <MudAutocomplete T="MstUser" @bind-Value="oModelUser" SearchFunc="@SearchUser" Clearable="true" Label="Select Manager*" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
-                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.UserName}")" />
+                    <MudAutocomplete T="MstEmployee" @bind-Value="oModelUser" SearchFunc="@SearchUser" Clearable="true" Label="Select Manager*" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.FirstName}")" />
                 </MudItem>
                 <MudItem xs="2" sm="2" md="2" lg="2">
                     <MudAutocomplete T="MstLocation" @bind-Value="oModelLocation" SearchFunc="@SearchLocation" Clearable="true" Label="Select Location*" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"

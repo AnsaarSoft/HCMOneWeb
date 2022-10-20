@@ -11,29 +11,28 @@ namespace HCM.API.Controllers
     public class AccountController : ControllerBase
     {
         private IMstUser _mstUser;
-
         public AccountController(IMstUser mstUser)
         {
             _mstUser = mstUser;
         }
 
-        #region MST Department
+        #region MST User
 
         [Route("getAllUser")]
         [HttpGet]
         public async Task<IActionResult> GetAllUser()
         {
-            List<MstUser> oMstUser = new List<MstUser>();
+            List<MstEmployee> oMstEmployee = new List<MstEmployee>();
             try
             {
-                oMstUser = await _mstUser.GetAllData();
-                if (oMstUser == null)
+                oMstEmployee = await _mstUser.GetAllData();
+                if (oMstEmployee == null)
                 {
-                    return BadRequest(oMstUser);
+                    return BadRequest(oMstEmployee);
                 }
                 else
                 {
-                    return Ok(oMstUser);
+                    return Ok(oMstEmployee);
                 }
             }
             catch (Exception ex)
@@ -45,19 +44,19 @@ namespace HCM.API.Controllers
 
         [Route("validateLogin")]
         [HttpGet]
-        public async Task<IActionResult> ValidateLogin([FromBody] MstUser pMstUser)
+        public async Task<IActionResult> ValidateLogin([FromBody] MstEmployee pMstEmployee)
         {
-            MstUser oMstUser = new MstUser();
+            MstEmployee oMstEmployee = new MstEmployee();
             try
             {
-                oMstUser = await _mstUser.Login(pMstUser);
-                if (oMstUser == null)
+                oMstEmployee = await _mstUser.Login(pMstEmployee);
+                if (oMstEmployee == null)
                 {
-                    return BadRequest(oMstUser);
+                    return BadRequest(oMstEmployee);
                 }
                 else
                 {
-                    return Ok(oMstUser);
+                    return Ok(oMstEmployee);
                 }
             }
             catch (Exception ex)
@@ -69,12 +68,12 @@ namespace HCM.API.Controllers
 
         [Route("generateOTP")]
         [HttpGet]
-        public async Task<IActionResult> GenerateOTP([FromBody] MstUser pMstUser)
+        public async Task<IActionResult> GenerateOTP([FromBody] MstEmployee pMstEmployee)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                response = await _mstUser.GenerateOTP(pMstUser);
+                response = await _mstUser.GenerateOTP(pMstEmployee);
                 if (response == null)
                 {
                     return BadRequest(response);
@@ -117,12 +116,12 @@ namespace HCM.API.Controllers
 
         [Route("changePassword")]
         [HttpGet]
-        public async Task<IActionResult> ChangePassword([FromBody] MstUser pMstUser)
+        public async Task<IActionResult> ChangePassword([FromBody] MstEmployee pMstEmployee)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                response = await _mstUser.ChangePassword(pMstUser);
+                response = await _mstUser.ChangePassword(pMstEmployee);
                 if (response == null)
                 {
                     return BadRequest(response);
@@ -141,12 +140,12 @@ namespace HCM.API.Controllers
 
         [Route("addUser")]
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] MstUser pMstUser)
+        public async Task<IActionResult> Add([FromBody] MstEmployee pMstEmployee)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                response = await _mstUser.Insert(pMstUser);
+                response = await _mstUser.Insert(pMstEmployee);
                 if (response == null)
                 {
                     return BadRequest(response);
@@ -165,12 +164,12 @@ namespace HCM.API.Controllers
 
         [Route("updateUser")]
         [HttpPost]
-        public async Task<IActionResult> Update([FromBody] MstUser pMstUser)
+        public async Task<IActionResult> Update([FromBody] MstEmployee pMstEmployee)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                response = await _mstUser.Update(pMstUser);
+                response = await _mstUser.Update(pMstEmployee);
                 if (response == null)
                 {
                     return BadRequest(response);

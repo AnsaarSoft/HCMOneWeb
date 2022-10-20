@@ -117,7 +117,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         private IEnumerable<MstStation> oListStationGrid = new List<MstStation>();
         private IEnumerable<MstStation> oListStation = new List<MstStation>();
 
-        private IEnumerable<MstUser> oListUser = new List<MstUser>();
+        private IEnumerable<MstEmployee> oListUser = new List<MstEmployee>();
         private IEnumerable<CfgPayrollDefination> oListPayroll = new List<CfgPayrollDefination>();
 
         private string searchStringDesignation = "";
@@ -1944,7 +1944,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                                 else if (!string.IsNullOrWhiteSpace(StringValue) && PropertyName == "ManagerName")
                                 {
                                     //Set ID of line from Mst User
-                                    var CheckList = oListUser.Where(x => x.UserName == StringValue && x.FlgActiveUser == true).FirstOrDefault();
+                                    var CheckList = oListUser.Where(x => x.FirstName == StringValue && x.FlgActive == true).FirstOrDefault();
                                     if (CheckList != null)
                                     {
                                         oModelMstEmployee.Manager = CheckList.Id;

@@ -18,9 +18,9 @@ namespace HCM.API.Repository.Account
             _DBContext = DBContext;
         }
 
-        public async Task<List<MstUser>> GetAllData()
+        public async Task<List<MstEmployee>> GetAllData()
         {
-            List<MstUser> oList = new List<MstUser>();
+            List<MstEmployee> oList = new List<MstEmployee>();
             try
             {
                 await Task.Run(() =>
@@ -29,7 +29,7 @@ namespace HCM.API.Repository.Account
                     //oList = (from a in _DBContext.MstBranchs
                     //         where a.FlgActive == true
                     //         select a).ToList();
-                    oList = _DBContext.MstUsers.ToList();
+                    oList = _DBContext.MstEmployees.ToList();
                 });
             }
             catch (Exception ex)
@@ -39,14 +39,14 @@ namespace HCM.API.Repository.Account
             return oList;
         }
 
-        public async Task<ApiResponseModel> Insert(MstUser oMstUsers)
+        public async Task<ApiResponseModel> Insert(MstEmployee oMstEmployees)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    _DBContext.MstUsers.Add(oMstUsers);
+                    _DBContext.MstEmployees.Add(oMstEmployees);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";
@@ -61,14 +61,14 @@ namespace HCM.API.Repository.Account
             return response;
         }
 
-        public async Task<ApiResponseModel> Update(MstUser oMstUsers)
+        public async Task<ApiResponseModel> Update(MstEmployee oMstEmployees)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    _DBContext.MstUsers.Update(oMstUsers);
+                    _DBContext.MstEmployees.Update(oMstEmployees);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";
@@ -83,22 +83,22 @@ namespace HCM.API.Repository.Account
             return response;
         }
 
-        public async Task<MstUser> Login(MstUser oMstUsers)
+        public async Task<MstEmployee> Login(MstEmployee oMstEmployees)
         {
-            MstUser oUser = new MstUser();
+            MstEmployee oUser = new MstEmployee();
             try
             {
                 await Task.Run(() =>
                 {
-                    oUser = _DBContext.MstUsers.Where(x => x.UserCode == oMstUsers.UserCode && x.PassCode == oMstUsers.PassCode).FirstOrDefault();
+                    oUser = _DBContext.MstEmployees.Where(x => x.EmpId == oMstEmployees.EmpId && x.Password == oMstEmployees.Password).FirstOrDefault();
                 });
                 if (oUser is not null)
                 {
-                    oUser.UserName = await GenerateToken(oUser);
+                    oUser.MoajibEmail = await GenerateToken(oUser);
                 }
                 else
                 {
-                    oUser = new MstUser();
+                    oUser = new MstEmployee();
                     oUser.Id = 0;
                 }
             }
@@ -109,16 +109,16 @@ namespace HCM.API.Repository.Account
             return oUser;
         }
 
-        private async Task<string> GenerateToken(MstUser oMstUser)
+        private async Task<string> GenerateToken(MstEmployee oMstEmployee)
         {
             try
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, oMstUser.UserCode),
-                    new Claim(ClaimTypes.NameIdentifier, oMstUser.Id.ToString()),
-                    new Claim(ClaimTypes.Surname, oMstUser.UserName.ToString()),
-                    new Claim(ClaimTypes.Email, oMstUser.Email.ToString()),
+                    new Claim(ClaimTypes.Name, oMstEmployee.EmpId),
+                    new Claim(ClaimTypes.NameIdentifier, oMstEmployee.Id.ToString()),
+                    new Claim(ClaimTypes.Surname, oMstEmployee.LastName.ToString()),
+                    new Claim(ClaimTypes.Email, oMstEmployee.OfficeEmail.ToString()),
                     new Claim(JwtRegisteredClaimNames.Nbf, new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds().ToString()),
                     new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(DateTime.Now.AddHours(1)).ToUnixTimeSeconds().ToString())
                 };
@@ -140,16 +140,16 @@ namespace HCM.API.Repository.Account
             }
         }
 
-        public async Task<ApiResponseModel> GenerateOTP(MstUser oMstUser)
+        public async Task<ApiResponseModel> GenerateOTP(MstEmployee oMstEmployee)
         {
-            MstUser oUser = new MstUser();
+            MstEmployee oUser = new MstEmployee();
             PasswordReset oPassword = new PasswordReset();
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    oUser = _DBContext.MstUsers.Where(x => x.Email == oMstUser.Email).FirstOrDefault();
+                    oUser = _DBContext.MstEmployees.Where(x => x.OfficeEmail == oMstEmployee.OfficeEmail).FirstOrDefault();
                     if (oUser != null)
                     {
                         string keyString = "ShabbirTileUser123456789";
@@ -164,7 +164,7 @@ namespace HCM.API.Repository.Account
                                     using (var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
                                     using (var swEncrypt = new StreamWriter(csEncrypt))
                                     {
-                                        swEncrypt.Write(oUser.Email);
+                                        swEncrypt.Write(oUser.OfficeEmail);
                                     }
 
                                     var iv = aesAlg.IV;
@@ -178,12 +178,12 @@ namespace HCM.API.Repository.Account
 
                                     string EncryptKey = Convert.ToBase64String(result);
 
-                                    oPassword = _DBContext.PasswordResets.Where(x => x.Email == oUser.Email && x.FlgActive == true).FirstOrDefault();
+                                    oPassword = _DBContext.PasswordResets.Where(x => x.Email == oUser.OfficeEmail && x.FlgActive == true).FirstOrDefault();
                                     if (oPassword == null)
                                     {
                                         oPassword = new PasswordReset();
-                                        oPassword.Email = oUser.Email;
-                                        oPassword.UserCode = oUser.UserCode;
+                                        oPassword.Email = oUser.OfficeEmail;
+                                        oPassword.UserCode = oUser.EmpId;
                                         oPassword.EncryptKey = EncryptKey.Substring(0, 10);
                                         oPassword.FlgActive = true;
                                     }
@@ -261,19 +261,19 @@ namespace HCM.API.Repository.Account
             return response;
         }
 
-        public async Task<ApiResponseModel> ChangePassword(MstUser pMstUser)
+        public async Task<ApiResponseModel> ChangePassword(MstEmployee pMstEmployee)
         {
-            MstUser oUser = new MstUser();
+            MstEmployee oUser = new MstEmployee();
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    oUser = _DBContext.MstUsers.Where(x => x.Email == pMstUser.Email && x.FlgActiveUser == true).FirstOrDefault();
+                    oUser = _DBContext.MstEmployees.Where(x => x.OfficeEmail == pMstEmployee.OfficeEmail && x.FlgActive == true).FirstOrDefault();
                     if (oUser != null)
                     {
-                        oUser.PassCode = pMstUser.PassCode;
-                        _DBContext.MstUsers.Update(oUser);
+                        oUser.Password = pMstEmployee.Password;
+                        _DBContext.MstEmployees.Update(oUser);
                         _DBContext.SaveChanges();
                         response.Id = 1;
                         response.Message = "Password successfully update.";

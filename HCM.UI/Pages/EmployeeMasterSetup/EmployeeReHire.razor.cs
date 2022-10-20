@@ -96,8 +96,8 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         MstDepartment oModelDepartment = new MstDepartment();
         private IEnumerable<MstDepartment> oListDepartment = new List<MstDepartment>();
 
-        MstUser oModelUser = new MstUser();
-        private IEnumerable<MstUser> oListUser = new List<MstUser>();
+        MstEmployee oModelUser = new MstEmployee();
+        private IEnumerable<MstEmployee> oListUser = new List<MstEmployee>();
 
         CfgPayrollDefination oModelPayroll = new CfgPayrollDefination();
         private IEnumerable<CfgPayrollDefination> oListPayroll = new List<CfgPayrollDefination>();
@@ -149,7 +149,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                         oModelPayroll.Id = (int)res.PayrollIdNew;
                         oModelPayroll.PayrollName = res.PayrollNameNew;
                         oModelUser.Id = (int)res.ManagerIdnew;
-                        oModelUser.UserName = res.ManagerNameNew;
+                        oModelUser.FirstName = res.ManagerNameNew;
                         //oModelPayroll.Id = res.;
                         //oModelPayroll.Id = res.PayrollIdNew;
                     }
@@ -279,8 +279,9 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         {
             try
             {
-                oListUser = await _mstUser.GetAllData();
-                oListUser = oListUser.Where(x => x.FlgActiveUser == true).ToList();
+                await Task.Delay(1);
+                oListUser = oListEmployee;
+                oListUser = oListUser.Where(x => x.FlgActive == true).ToList();
             }
             catch (Exception ex)
             {
@@ -407,22 +408,24 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 return null;
             }
         }
-        private async Task<IEnumerable<MstUser>> SearchUser(string value)
+        private async Task<IEnumerable<MstEmployee>> SearchUser(string value)
         {
             try
             {
                 await Task.Delay(1);
                 if (string.IsNullOrWhiteSpace(value))
-                    return oListUser.Select(o => new MstUser
+                    return oListUser.Select(o => new MstEmployee
                     {
                         Id = o.Id,
-                        UserName = o.UserName,
+                        EmpId = o.EmpId,
+                        FirstName = o.FirstName,
                     }).ToList();
-                var res = oListUser.Where(x => x.UserName.ToUpper().Contains(value.ToUpper())).ToList();
-                return res.Select(x => new MstUser
+                var res = oListUser.Where(x => x.FirstName.ToUpper().Contains(value.ToUpper())).ToList();
+                return res.Select(x => new MstEmployee
                 {
                     Id = x.Id,
-                    UserName = x.UserName,
+                    EmpId = x.EmpId,
+                    FirstName = x.FirstName,
                 }).ToList();
             }
             catch (Exception ex)
@@ -580,7 +583,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 oModel.ManagerIdold = oModelMstEmployee.Manager;
                 oModel.ManagerNameOld = oModelMstEmployee.ManagerName;
                 oModel.ManagerIdnew = oModelUser.Id;
-                oModel.ManagerNameNew = oModelUser.UserName;
+                oModel.ManagerNameNew = oModelUser.FirstName;
 
                 oModel.PayrollIdOld = oModelMstEmployee.PayrollId;
                 oModel.PayrollNameOld = oModelMstEmployee.PayrollName;
@@ -607,7 +610,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 oModelMstEmployee.PositionId = oModelPosition.Id;
                 oModelMstEmployee.PositionName = oModelPosition.Description;
                 oModelMstEmployee.Manager = oModelUser.Id;
-                oModelMstEmployee.ManagerName = oModelUser.UserName;
+                oModelMstEmployee.ManagerName = oModelUser.FirstName;
                 oModelMstEmployee.PayrollId = oModelPayroll.Id;
                 oModelMstEmployee.PayrollName = oModelPayroll.PayrollName;
                 oModelMstEmployee.JoiningDate = oModel.JoiningDtNew;

@@ -25,10 +25,10 @@ namespace CA.UI.Authentication
         {
             try
             {
-                MstUser user = await oLocalStorage.GetItemAsync<MstUser>("User");
+                MstEmployee user = await oLocalStorage.GetItemAsync<MstEmployee>("User");
                 if (user is not null)
                 {
-                    string jwtTokenString = user.UserName;
+                    string jwtTokenString = user.MoajibEmail;
                     if (string.IsNullOrEmpty(jwtTokenString))
                     {
                         return oAuthState;

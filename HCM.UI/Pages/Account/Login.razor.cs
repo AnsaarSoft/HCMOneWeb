@@ -28,7 +28,7 @@ namespace HCM.UI.Pages.Account
         InputType PasswordInput = InputType.Password;
         string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
 
-        MstUser oModel = new MstUser();
+        MstEmployee oModel = new MstEmployee();
 
         #endregion
 
@@ -50,23 +50,23 @@ namespace HCM.UI.Pages.Account
             }
         }
 
-        private async Task<MstUser> ValidateLogin()
+        private async Task<MstEmployee> ValidateLogin()
         {
             try
             {
                 Loading = true;
-                var res = new MstUser();
+                var res = new MstEmployee();
                 await Task.Delay(1);
-                if (!string.IsNullOrWhiteSpace(oModel.UserCode) && !string.IsNullOrWhiteSpace(oModel.PassCode))
+                if (!string.IsNullOrWhiteSpace(oModel.EmpId) && !string.IsNullOrWhiteSpace(oModel.Password))
                 {
-                    oModel.UserName = "";
-                    oModel.Email = "";
-                    oModel.FlgActiveUser = true;
-                    oModel.FlgPasswordRequest = false;
+                    //oModel.EmpId = "";
+                    //oModel.OfficeEmail = "";
+                    //oModel.FlgActive = true;
+                    //oModel.FlgPasswordRequest = false;
                     res = await _mstUser.Login(oModel);
-                    if (res.Id != 0 && !string.IsNullOrWhiteSpace(res.UserName))
+                    if (res.Id != 0 && !string.IsNullOrWhiteSpace(res.FirstName))
                     {
-                        Snackbar.Add("Welcome: " + res.UserCode, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+                        Snackbar.Add("Welcome: " + res.FirstName, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
                         Navigation.NavigateTo("/Dashboard", forceLoad: true);
                     }
                     else

@@ -6371,6 +6371,8 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.PassportNo).HasMaxLength(100);
 
+                entity.Property(e => e.Password).HasMaxLength(100);
+
                 entity.Property(e => e.PayBandId).HasColumnName("PayBandID");
 
                 entity.Property(e => e.PaymentMode).HasMaxLength(10);

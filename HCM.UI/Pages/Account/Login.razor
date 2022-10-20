@@ -24,10 +24,10 @@
                             Log in
                         </span>
 
-                        <MudTextField T="string" @bind-Value="oModel.UserCode" MaxLength="100" Counter="100" HelperText="Enter Usercode*" Immediate="true" Clearable="true" Variant="Variant.Text"
+                        <MudTextField T="string" @bind-Value="oModel.EmpId" MaxLength="100" Counter="100" HelperText="Enter Usercode*" Immediate="true" Clearable="true" Variant="Variant.Text"
                                       Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Email" />
 
-                        <MudTextField T="string" @bind-Value="oModel.PassCode" MaxLength="100" Counter="100" HelperText="Enter Password*" Immediate="true" Clearable="true" Variant="Variant.Text"
+                        <MudTextField T="string" @bind-Value="oModel.Password" MaxLength="100" Counter="100" HelperText="Enter Password*" Immediate="true" Clearable="true" Variant="Variant.Text"
                                       InputType="@PasswordInput" Adornment="Adornment.Start" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="VisiblePassword" AdornmentAriaLabel="Show Password" />
                         <div class="forgot-pass-block">
                             <div class="text-center">

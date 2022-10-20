@@ -44,8 +44,8 @@
                                      CoerceValue="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
                 </MudItem>
                 <MudItem xs="2" sm="2" md="2" lg="2">
-                    <MudAutocomplete T="MstUser" @bind-Value="oModelUser" SearchFunc="@SearchUser" Clearable="true" Label="Select Manager*" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
-                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.UserName}")" />
+                    <MudAutocomplete T="MstEmployee" @bind-Value="oModelUser" SearchFunc="@SearchUser" Clearable="true" Label="Select Manager*" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.FirstName}")" />
                 </MudItem>
                 <MudItem xs="2" sm="2" md="2" lg="2">
                     <MudAutocomplete T="MstPosition" @bind-Value="oModelPosition" SearchFunc="@SearchPosition" Clearable="true" Label="Select Position*" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
@@ -174,7 +174,7 @@
                         <MudItem xs="3" sm="3" md="3" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.PersonalEmail" MaxLength="100" Counter="100" HelperText="Enter Personal Email" Immediate="true" Clearable="true" Label="Personal Email*" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Email" />
-                        </MudItem>
+                        </MudItem>                        
                         <MudItem xs="3" sm="3" md="3" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.PersonalContactNo" MaxLength="100" Counter="100" HelperText="Enter Personal Contact No" Immediate="true" Clearable="true" Label="Personal Contact No*" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Phone" />
@@ -402,12 +402,16 @@
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Phone" />
                         </MudItem>
                         <MudItem xs="3" sm="3" md="3" lg="3">
-                            <MudTextField T="string" @bind-Value="oModel.OfficeEmail" MaxLength="100" Counter="100" HelperText="Enter Office Email" Immediate="true" Clearable="true" Label="Office Email" Variant="Variant.Text"
+                            <MudTextField T="string" @bind-Value="oModel.HomePhone" MaxLength="13" Counter="13" HelperText="Enter Home Phone" Immediate="true" Clearable="true" Label="Home Phone" Variant="Variant.Text"
+                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Phone" />
+                        </MudItem>
+                        <MudItem xs="3" sm="3" md="3" lg="3">
+                            <MudTextField T="string" @bind-Value="oModel.OfficeEmail" MaxLength="100" Counter="100" HelperText="Enter Office Email*" Immediate="true" Clearable="true" Label="Office Email" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Email" />
                         </MudItem>
                         <MudItem xs="3" sm="3" md="3" lg="3">
-                            <MudTextField T="string" @bind-Value="oModel.HomePhone" MaxLength="13" Counter="13" HelperText="Enter Home Phone" Immediate="true" Clearable="true" Label="Home Phone" Variant="Variant.Text"
-                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Phone" />
+                            <MudTextField T="string" @bind-Value="oModel.Password" MaxLength="100" Counter="100" HelperText="Enter Password*" Immediate="true" Clearable="true" Variant="Variant.Text"
+                                      InputType="@PasswordInput" Adornment="Adornment.Start" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="VisiblePassword" AdornmentAriaLabel="Show Password" />
                         </MudItem>
                     </MudGrid>
                 </MudTabPanel>

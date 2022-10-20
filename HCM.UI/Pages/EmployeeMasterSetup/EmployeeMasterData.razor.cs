@@ -94,6 +94,10 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         bool DisbaledCode = false;
         public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
 
+        bool isShow;
+        InputType PasswordInput = InputType.Password;
+        string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+
         private string searchString1 = "";
         private bool FilterFunc(MstEmployeeLeaf element) => FilterFunc(element, searchString1);
 
@@ -105,8 +109,8 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         MstLove oModelLove = new MstLove();
         private IEnumerable<MstLove> oListLove = new List<MstLove>();
 
-        MstUser oModelUser = new MstUser();
-        private IEnumerable<MstUser> oListUser = new List<MstUser>();
+        MstEmployee oModelUser = new MstEmployee();
+        private IEnumerable<MstEmployee> oListUser = new List<MstEmployee>();
 
         MstDesignation oModelDesignation = new MstDesignation();
         private IEnumerable<MstDesignation> oListDesignation = new List<MstDesignation>();
@@ -179,6 +183,22 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
         #region Functions
 
+        void VisiblePassword()
+        {
+            if (isShow)
+            {
+                isShow = false;
+                PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+                PasswordInput = InputType.Password;
+            }
+            else
+            {
+                isShow = true;
+                PasswordInputIcon = Icons.Material.Filled.Visibility;
+                PasswordInput = InputType.Text;
+            }
+        }
+
         private async Task OpenDialog(DialogOptions options)
         {
             try
@@ -200,7 +220,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     if (!string.IsNullOrWhiteSpace(oModel.ManagerName))
                     {
                         oModelUser.Id = (int)oModel.Manager;
-                        oModelUser.UserName = oModel.ManagerName;
+                        oModelUser.FirstName = oModel.ManagerName;
                     }
                     if (!string.IsNullOrWhiteSpace(oModel.DesignationName))
                     {
@@ -328,22 +348,24 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             }
         }
 
-        private async Task<IEnumerable<MstUser>> SearchUser(string value)
+        private async Task<IEnumerable<MstEmployee>> SearchUser(string value)
         {
             try
             {
                 await Task.Delay(1);
                 if (string.IsNullOrWhiteSpace(value))
-                    return oListUser.Select(o => new MstUser
+                    return oListUser.Select(o => new MstEmployee
                     {
                         Id = o.Id,
-                        UserName = o.UserName,
+                        EmpId = o.EmpId,
+                        FirstName = o.FirstName,
                     }).ToList();
-                var res = oListUser.Where(x => x.UserName.ToUpper().Contains(value.ToUpper())).ToList();
-                return res.Select(x => new MstUser
+                var res = oListUser.Where(x => x.FirstName.ToUpper().Contains(value.ToUpper())).ToList();
+                return res.Select(x => new MstEmployee
                 {
                     Id = x.Id,
-                    UserName = x.UserName,
+                    EmpId = x.EmpId,
+                    FirstName = x.FirstName,
                 }).ToList();
             }
             catch (Exception ex)
@@ -685,12 +707,13 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             }
         }
 
-        private async Task GetAllUser()
+        private async Task GetAllEmpUser()
         {
             try
             {
-                oListUser = await _mstUser.GetAllData();
-                oListUser = oListUser.Where(x => x.FlgActiveUser == true).ToList();
+                await Task.Delay(1);
+                oListUser = oList;
+                oListUser = oListUser.Where(x => x.FlgActive == true).ToList();
             }
             catch (Exception ex)
             {
@@ -1277,12 +1300,13 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 var res = new ApiResponseModel();
                 if ((oModelPayrollInit.FlgEmployeeCodeSeries == true && !string.IsNullOrWhiteSpace(oModelDocumentNumberSeries.Prefix)) || !string.IsNullOrWhiteSpace(oModel.EmpId) && !string.IsNullOrWhiteSpace(oModel.FirstName) && !string.IsNullOrWhiteSpace(oModel.LastName) && !string.IsNullOrWhiteSpace(oModelDesignation.Description)
                     && !string.IsNullOrWhiteSpace(oModelPosition.Description) && !string.IsNullOrWhiteSpace(oModelDepartment.DeptName) && !string.IsNullOrWhiteSpace(oModelLocation.Description)
-                    && !string.IsNullOrWhiteSpace(oModelBranch.Description) && !string.IsNullOrWhiteSpace(oModelUser.UserName) && !string.IsNullOrWhiteSpace(oModelPayroll.PayrollName) && !string.IsNullOrWhiteSpace(oModel.FatherName)
+                    && !string.IsNullOrWhiteSpace(oModelBranch.Description) && !string.IsNullOrWhiteSpace(oModelUser.FirstName) && !string.IsNullOrWhiteSpace(oModelPayroll.PayrollName) && !string.IsNullOrWhiteSpace(oModel.FatherName)
                     && !string.IsNullOrWhiteSpace(oModel.MotherName) && !string.IsNullOrWhiteSpace(oModel.GenderId) && !string.IsNullOrWhiteSpace(oModel.MartialStatusId) && !string.IsNullOrWhiteSpace(oModel.ReligionId)
                     && !string.IsNullOrWhiteSpace(oModel.PersonalEmail) && !string.IsNullOrWhiteSpace(oModel.PersonalContactNo) && !string.IsNullOrWhiteSpace(oModel.Nationality) && oModel.BasicSalary > 0
                     && oModel.GrossSalary > 0 && !string.IsNullOrWhiteSpace(oModel.SalaryCurrency) && !string.IsNullOrWhiteSpace(oModel.PaymentMode) && !string.IsNullOrWhiteSpace(oModel.AccountTitle)
                     && !string.IsNullOrWhiteSpace(oModel.AccountNo) && !string.IsNullOrWhiteSpace(oModel.AccountType) && !string.IsNullOrWhiteSpace(oModel.BankName) && !string.IsNullOrWhiteSpace(oModel.BranchName)
-                    && !string.IsNullOrWhiteSpace(oModel.HolidayCalendar) && !string.IsNullOrWhiteSpace(oModel.EmployeeContractType) && !string.IsNullOrWhiteSpace(EmpImagePath))
+                    && !string.IsNullOrWhiteSpace(oModel.HolidayCalendar) && !string.IsNullOrWhiteSpace(oModel.EmployeeContractType) && !string.IsNullOrWhiteSpace(EmpImagePath) && !string.IsNullOrWhiteSpace(oModel.OfficeEmail)
+                    && !string.IsNullOrWhiteSpace(oModel.Password))
                 {
                     if (oModel.EmpId.Length > 20)
                     {
@@ -1291,7 +1315,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     else
                     {
                         oModel.Manager = oModelUser.Id;
-                        oModel.ManagerName = oModelUser.UserName;
+                        oModel.ManagerName = oModelUser.FirstName;
                         oModel.DesignationId = oModelDesignation.Id;
                         oModel.DesignationName = oModelDesignation.Description;
                         oModel.PositionId = oModelPosition.Id;
@@ -1424,16 +1448,16 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             try
             {
                 Loading = true;
-                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                var Session = await _localStorage.GetItemAsync<MstEmployee>("User");
                 if (Session != null)
                 {
-                    LoginUser = Session.UserCode;
+                    LoginUser = Session.EmpId;
                     oModel.FlgActive = true;
                     await GetPayrollinit();
                     await GetAllDocumentNumberSeriess();
                     await GetAllEmployees();
                     await GetAllLove();
-                    await GetAllUser();
+                    await GetAllEmpUser();
                     await GetAllDesignation();
                     await GetAllDimension();
                     await GetAllPosition();

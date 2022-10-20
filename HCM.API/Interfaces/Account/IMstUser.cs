@@ -4,12 +4,12 @@ namespace HCM.API.Interfaces.Account
 {
     public interface IMstUser
     {
-        Task<List<MstUser>> GetAllData();
-        Task<ApiResponseModel> Insert(MstUser oMstUser);
-        Task<ApiResponseModel> Update(MstUser oMstUser);
-        Task<MstUser> Login(MstUser oMstUser);
-        Task<ApiResponseModel> GenerateOTP(MstUser oMstUser);
+        Task<List<MstEmployee>> GetAllData();
+        Task<ApiResponseModel> Insert(MstEmployee oMstUser);
+        Task<ApiResponseModel> Update(MstEmployee oMstUser);
+        Task<MstEmployee> Login(MstEmployee oMstUser);
+        Task<ApiResponseModel> GenerateOTP(MstEmployee oMstUser);
         Task<ApiResponseModel> AuthenticateOTP(PasswordReset oPasswordReset);
-        Task<ApiResponseModel> ChangePassword(MstUser oMstUser);
+        Task<ApiResponseModel> ChangePassword(MstEmployee oMstUser);
     }
 }
