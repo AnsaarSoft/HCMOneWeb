@@ -8,9 +8,12 @@
             <h3>Advance Request</h3>
             <MudDivider />
         </div>
-        <div class="col-sm-2 custom-btn-design text-right">
-            <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Filled.RemoveRedEye" Color="Color.Info" Size="Size.Small">View All</MudButton>
-        </div>
+        @if (DocNum == 0)
+        {
+            <div class="col-sm-2 custom-btn-design text-right">
+                <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Filled.RemoveRedEye" Color="Color.Info" Size="Size.Small">View All</MudButton>
+            </div>
+        }
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
@@ -117,14 +120,17 @@
                     }
                     else
                     {
-                        <MudItem xs="12" sm="12" md="12" lg="12" class="text-right custom-btn-design" style="justify-content: flex-end;">
-                            <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Save</MudButton>
-                            <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error" style="margin:0 10px;">Reset</MudButton>
-                            @if (oModel.DocStatus == "Open" && oModel.DocAprStatus == "Approved")
-                            {
-                                <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.PostAdd" Color="Color.Primary">Post Payment</MudButton>
-                            }
-                        </MudItem>
+                        @if (DocNum == 0)
+                        {
+                            <MudItem xs="12" sm="12" md="12" lg="12" class="text-right custom-btn-design" style="justify-content: flex-end;">
+                                <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Save</MudButton>
+                                <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error" style="margin:0 10px;">Reset</MudButton>
+                                @if (oModel.DocStatus == "Open" && oModel.DocAprStatus == "Approved")
+                                {
+                                    <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.PostAdd" Color="Color.Primary">Post Payment</MudButton>
+                                }
+                            </MudItem>
+                        }
                     }
                 </MudItem>
             </MudGrid>

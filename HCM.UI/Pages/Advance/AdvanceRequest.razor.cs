@@ -73,6 +73,9 @@ namespace HCM.UI.Pages.Advance
         private IEnumerable<CfgPayrollDefination> oPayrollList = new List<CfgPayrollDefination>();
         private IEnumerable<CfgPeriodDate> oPayrollPeriodList = new List<CfgPeriodDate>();
 
+        [Parameter]
+        public int DocNum { get; set; }
+
         #endregion
 
         #region Functions
@@ -333,22 +336,29 @@ namespace HCM.UI.Pages.Advance
                 var Session = await _localStorage.GetItemAsync<MstUser>("User");
                 if (Session != null)
                 {
-                    LoginUser = Session.UserCode;
-                    await GetAllAdvanceRequest();
-                    await SetDocNo();
-                    await GetAllAdvanceMaster();
-                    _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date);
-                    oModel.DocStatus = "Draft";
-                    oModel.DocAprStatus = "Pending";
-                    oModel.DocDate = DateTime.Today;
-                    oModel.RequiredDate = DateTime.Today;
-                    oModel.BasicSalary = 0;
-                    oModel.GrossSalary = 0;
-                    oModel.RequestedAmount = 0;
-                    oModel.ApprovedAmount = 0;
-                    oModel.InstallmentAmount = 0;
-                    await GetAllLove();
-                    await GetPayrollInit();
+                    if (DocNum == 0)
+                    {
+                        LoginUser = Session.UserCode;
+                        await GetAllAdvanceRequest();
+                        await SetDocNo();
+                        await GetAllAdvanceMaster();
+                        _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date);
+                        oModel.DocStatus = "Draft";
+                        oModel.DocAprStatus = "Pending";
+                        oModel.DocDate = DateTime.Today;
+                        oModel.RequiredDate = DateTime.Today;
+                        oModel.BasicSalary = 0;
+                        oModel.GrossSalary = 0;
+                        oModel.RequestedAmount = 0;
+                        oModel.ApprovedAmount = 0;
+                        oModel.InstallmentAmount = 0;
+                        await GetAllLove();
+                        await GetPayrollInit();
+                    }
+                    else
+                    {
+                        //await GetLeaveRequestWithDocNum(DocNum);
+                    }
                 }
                 else
                 {

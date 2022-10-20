@@ -94,6 +94,7 @@ builder.Services.AddScoped<ITrnsTaxAdjustment, TrnsTaxAdjustmentService>();
 builder.Services.AddScoped<ITrnsEmployeeBonus, TrnsEmployeeBonusService>();
 builder.Services.AddScoped<ITrnsReHireEmployee, TrnsReHireEmployeeService>();
 builder.Services.AddScoped<ICfgApprovalTemplate, CfgApprovalTemplateService>();
+builder.Services.AddScoped<IDocApprovalDecesion, DocApprovalDecesionService>();
 //Configuration Start
 
 Settings.APIBaseURL = builder.Configuration.GetValue<string>("APIBaseUrl");

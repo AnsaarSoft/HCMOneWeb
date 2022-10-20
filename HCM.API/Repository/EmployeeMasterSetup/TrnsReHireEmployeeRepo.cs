@@ -31,15 +31,16 @@ namespace HCM.API.Repository.EmployeeMasterSetup
             }
             return oList;
         }
-        public async Task<ApiResponseModel> Insert(TrnsEmployeeReHire oTrnsEmployeeReHire)
+        public async Task<ApiResponseModel> Insert(VMEmployeeReHire pVMEmployeeReHire)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    oTrnsEmployeeReHire.CreateDt = DateTime.Now;
-                    _DBContext.TrnsEmployeeReHires.Add(oTrnsEmployeeReHire);
+                    pVMEmployeeReHire.TrnsEmployeeReHire.CreateDt = DateTime.Now;
+                    _DBContext.TrnsEmployeeReHires.Add(pVMEmployeeReHire.TrnsEmployeeReHire);
+                    _DBContext.MstEmployees.Update(pVMEmployeeReHire.MstEmployee);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";
@@ -53,14 +54,16 @@ namespace HCM.API.Repository.EmployeeMasterSetup
             }
             return response;
         }
-        public async Task<ApiResponseModel> Update(TrnsEmployeeReHire oTrnsEmployeeReHire)
+        public async Task<ApiResponseModel> Update(VMEmployeeReHire pVMEmployeeReHire)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
-                {   oTrnsEmployeeReHire.UpdateDt= DateTime.Now;
-                    _DBContext.TrnsEmployeeReHires.Update(oTrnsEmployeeReHire);
+                {
+                    pVMEmployeeReHire.TrnsEmployeeReHire.UpdateDt= DateTime.Now;
+                    _DBContext.TrnsEmployeeReHires.Update(pVMEmployeeReHire.TrnsEmployeeReHire);
+                    _DBContext.MstEmployees.Update(pVMEmployeeReHire.MstEmployee);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";

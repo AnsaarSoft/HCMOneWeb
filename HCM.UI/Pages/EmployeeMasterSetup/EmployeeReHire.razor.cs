@@ -75,6 +75,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
         private bool FilterFunc(TrnsEmployeeOvertimeDetail element) => FilterFunc(element, searchString1);
 
+        VMEmployeeReHire oModelVMEmployeeReHire = new VMEmployeeReHire();
 
         MstEmployee oModelMstEmployee = new MstEmployee();
         private IEnumerable<MstEmployee> oListEmployeeFrom = new List<MstEmployee>();
@@ -107,12 +108,11 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         MstBranch oModelBranch = new MstBranch();
         private IEnumerable<MstBranch> oListBranch = new List<MstBranch>();
 
-
         private IEnumerable<MstEmployee> oListEmployee = new List<MstEmployee>();
         private IEnumerable<MstEmployee> oListFilteredEmployee = new List<MstEmployee>();
 
-        DateTime? docdate;
-       
+       // DateTime? docdate;
+
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
         DialogOptions FullView = new DialogOptions() { MaxWidth = MaxWidth.ExtraExtraLarge, FullWidth = true, CloseButton = true, DisableBackdropClick = true, CloseOnEscapeKey = true };
 
@@ -133,23 +133,26 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     var res = (TrnsEmployeeReHire)result.Data;
                     oModel = res;
                     oModelMstEmployee = oListEmployee.Where(x => x.Id == res.EmpId).FirstOrDefault();
-                    EmpName = oModelMstEmployee.FirstName + " " + oModelMstEmployee.MiddleName + " " + oModelMstEmployee.LastName;
-                    oModelDepartment.Id = (int)res.DepartmentIdnew;
-                    oModelDepartment.DeptName = res.DepartmentNameNew;
-                    oModelDesignation.Id = (int)res.DesignationIdnew;
-                    oModelDesignation.Description = res.DesignationNameNew;
-                    oModelBranch.Id= (int)res.BranchIdnew;
-                    oModelBranch.Description= res.BranchNameNew;
-                    oModelLocation.Id = (int)res.LocationIdnew;
-                    oModelLocation.Description = res.LocationNameNew;
-                    oModelPosition.Id = (int)res.PositionIdNew;
-                    oModelPosition.Description = res.PositionNameNew;
-                    oModelPayroll.Id = (int)res.PayrollIdNew;
-                    oModelPayroll.PayrollName = res.PayrollNameNew;
-                    oModelUser.Id= (int)res.ManagerIdnew;
-                    oModelUser.UserName= res.ManagerNameNew;
-                    //oModelPayroll.Id = res.;
-                    //oModelPayroll.Id = res.PayrollIdNew;
+                    if (oModelMstEmployee != null)
+                    {
+                        EmpName = oModelMstEmployee.FirstName + " " + oModelMstEmployee.MiddleName + " " + oModelMstEmployee.LastName;
+                        oModelDepartment.Id = (int)res.DepartmentIdnew;
+                        oModelDepartment.DeptName = res.DepartmentNameNew;
+                        oModelDesignation.Id = (int)res.DesignationIdnew;
+                        oModelDesignation.Description = res.DesignationNameNew;
+                        oModelBranch.Id = (int)res.BranchIdnew;
+                        oModelBranch.Description = res.BranchNameNew;
+                        oModelLocation.Id = (int)res.LocationIdnew;
+                        oModelLocation.Description = res.LocationNameNew;
+                        oModelPosition.Id = (int)res.PositionIdNew;
+                        oModelPosition.Description = res.PositionNameNew;
+                        oModelPayroll.Id = (int)res.PayrollIdNew;
+                        oModelPayroll.PayrollName = res.PayrollNameNew;
+                        oModelUser.Id = (int)res.ManagerIdnew;
+                        oModelUser.UserName = res.ManagerNameNew;
+                        //oModelPayroll.Id = res.;
+                        //oModelPayroll.Id = res.PayrollIdNew;
+                    }
                 }
             }
             catch (Exception ex)
@@ -182,7 +185,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             try
             {
                 oListEmployee = await _mstEmployeeMaster.GetAllData();
-                oListEmployee = oListEmployee.Where(x => x.FlgActive == false && (x.ResignDate != null || x.TerminationDate != null)).ToList();
+              //  oListEmployee = oListEmployee.Where(x => x.FlgActive == false && (x.ResignDate != null || x.TerminationDate != null)).ToList();
             }
             catch (Exception ex)
             {
@@ -524,12 +527,12 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 Loading = true;
                 await Task.Delay(1);
                 List<TrnsTaxAdjustmentDetail> oListTrnsEmployeeTaxAdjustDtl = new List<TrnsTaxAdjustmentDetail>();
-              //  oListTrnsEmployeeTaxAdjustDtl = oDetailList.ToList();
+                //  oListTrnsEmployeeTaxAdjustDtl = oDetailList.ToList();
                 if (oDetailList.Count() > 0)
                 {
                     var FilterRecord = oDetailList.Where(x => x.Id == ID).FirstOrDefault();
-                  //  oListTrnsEmployeeTaxAdjustDtl.Remove(FilterRecord);
-                   // oDetailList = oListTrnsEmployeeTaxAdjustDtl;
+                    //  oListTrnsEmployeeTaxAdjustDtl.Remove(FilterRecord);
+                    // oDetailList = oListTrnsEmployeeTaxAdjustDtl;
                 }
                 Loading = false;
             }
@@ -550,14 +553,14 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 oModel.EmpId = oModelMstEmployee.Id;
                 oModel.EmployeeName = EmpName;
                 oModel.DepartmentOld = oModelMstEmployee.DepartmentId;
-                oModel.DepartNameOld= oModelMstEmployee.DepartmentName;
-                oModel.DepartmentIdnew= oModelDepartment.Id;
-                oModel.DepartmentNameNew= oModelDepartment.DeptName;
-               
-                oModel.DesignationOld= oModelMstEmployee.DesignationId;
-                oModel.DesigNameOld= oModelMstEmployee.DesignationName;
-                oModel.DesignationIdnew= oModelDesignation.Id;
-                oModel.DesignationNameNew= oModelDesignation.Description;
+                oModel.DepartNameOld = oModelMstEmployee.DepartmentName;
+                oModel.DepartmentIdnew = oModelDepartment.Id;
+                oModel.DepartmentNameNew = oModelDepartment.DeptName;
+
+                oModel.DesignationOld = oModelMstEmployee.DesignationId;
+                oModel.DesigNameOld = oModelMstEmployee.DesignationName;
+                oModel.DesignationIdnew = oModelDesignation.Id;
+                oModel.DesignationNameNew = oModelDesignation.Description;
 
                 oModel.LocationOld = oModelMstEmployee.Location;
                 oModel.LocNameOld = oModelMstEmployee.LocationName;
@@ -569,9 +572,9 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 oModel.BranchIdnew = oModelBranch.Id;
                 oModel.BranchNameNew = oModelBranch.Description;
 
-                oModel.PositionIdOld  = oModelMstEmployee.PositionId;
+                oModel.PositionIdOld = oModelMstEmployee.PositionId;
                 oModel.PositionNameOld = oModelMstEmployee.PositionName;
-                oModel.PositionIdNew  = oModelPosition.Id;
+                oModel.PositionIdNew = oModelPosition.Id;
                 oModel.PositionNameNew = oModelPosition.Description;
 
                 oModel.ManagerIdold = oModelMstEmployee.Manager;
@@ -586,25 +589,61 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
 
                 oModel.Bsold = oModelMstEmployee.BasicSalary;
-                oModel.Gsold= oModelMstEmployee.GrossSalary;
+                oModel.Gsold = oModelMstEmployee.GrossSalary;
                 oModel.JoiningDtOld = oModelMstEmployee.JoiningDate;
                 oModel.JoiningDtNew = DateTime.Now;
                 oModel.ResignationDtOld = oModelMstEmployee.ResignDate;
                 oModel.TerminationDtOld = oModelMstEmployee.TerminationDate;
-               
-              
 
-                if (oModel.EmpId != null)
+                // Update employee mst
+                oModelMstEmployee.DepartmentId = oModelDepartment.Id;
+                oModelMstEmployee.DepartmentName = oModelDepartment.DeptName;
+                oModelMstEmployee.DesignationId = oModelDesignation.Id;
+                oModelMstEmployee.DesignationName = oModelDesignation.Description;
+                oModelMstEmployee.Location = oModelLocation.Id;
+                oModelMstEmployee.LocationName = oModelLocation.Description;
+                oModelMstEmployee.BranchId = oModelBranch.Id;
+                oModelMstEmployee.BranchName = oModelBranch.Description;
+                oModelMstEmployee.PositionId = oModelPosition.Id;
+                oModelMstEmployee.PositionName = oModelPosition.Description;
+                oModelMstEmployee.Manager = oModelUser.Id;
+                oModelMstEmployee.ManagerName = oModelUser.UserName;
+                oModelMstEmployee.PayrollId = oModelPayroll.Id;
+                oModelMstEmployee.PayrollName = oModelPayroll.PayrollName;
+                oModelMstEmployee.JoiningDate = oModel.JoiningDtNew;
+                oModelMstEmployee.BasicSalary = oModel.Bsnew;
+                oModelMstEmployee.GrossSalary = oModel.Gsnew;
+                oModelMstEmployee.FlgActive = oModel.FlgReHire;
+                oModelMstEmployee.TermCount = 1;
+                oModelMstEmployee.UpdatedBy = LoginUser;
+                oModelMstEmployee.UpdateDate = DateTime.Now;
+                //oModel.Emp = oModelMstEmployee;
+
+
+                if ((oModel.EmpId != null && oModel.EmpId > 0)
+                    && (oModel.DocDate != null)
+                    && (oModel.DepartmentIdnew != null && oModel.DepartmentIdnew > 0)
+                    && (oModel.DesignationIdnew != null && oModel.DesignationIdnew > 0)
+                    && (oModel.BranchIdnew != null && oModel.BranchIdnew > 0)
+                    && (oModel.LocationIdnew != null && oModel.LocationIdnew > 0)
+                    && (oModel.PositionIdNew != null && oModel.PositionIdNew > 0)
+                    && (oModel.PayrollIdNew != null && oModel.PayrollIdNew > 0)
+                    && (oModel.Bsnew > 0 && oModel.Gsnew > 0)
+                    && (oModel.FlgReHire == true))
                 {
                     if (oModel.InternalId == 0)
                     {
+                        oModelVMEmployeeReHire.TrnsEmployeeReHire = oModel;
+                        oModelVMEmployeeReHire.MstEmployee = oModelMstEmployee;
                         oModel.CreatedBy = LoginUser;
-                        res = await _trnsReHireEmployee.Insert(oModel);
+                        res = await _trnsReHireEmployee.Insert(oModelVMEmployeeReHire);
                     }
                     else
                     {
+                        oModelVMEmployeeReHire.TrnsEmployeeReHire = oModel;
+                        oModelVMEmployeeReHire.MstEmployee = oModelMstEmployee;
                         oModel.UpdatedBy = LoginUser;
-                        res = await _trnsReHireEmployee.Update(oModel);
+                        res = await _trnsReHireEmployee.Update(oModelVMEmployeeReHire);
                     }
 
                     if (res != null && res.Id == 1)

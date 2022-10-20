@@ -2,16 +2,21 @@
 using HCM.API.Interfaces.EmployeeMasterSetup;
 using Microsoft.EntityFrameworkCore;
 using HCM.API.Models;
+using HCM.API.Repository.ApprovalSetup;
+using HCM.API.Interfaces.ApprovalSetup;
+using HCM.API.HCMModels;
 
 namespace HCM.API.Repository.EmployeeMasterSetup
 {
     public class TrnsEmployeeTransferRepo : ITrnsEmployeeTransfer
     {
         private HCMOneContext _DBContext;
+        private IDocApprovalDecesion _IDocApprovalDecesionRepo;
 
-        public TrnsEmployeeTransferRepo(HCMOneContext DBContext)
+        public TrnsEmployeeTransferRepo(HCMOneContext DBContext, IDocApprovalDecesion docApprovalDecesion)
         {
             _DBContext = DBContext;
+            _IDocApprovalDecesionRepo = docApprovalDecesion;
         }
         public async Task<List<TrnsEmployeeTransfer>> GetAllData()
         {
@@ -37,10 +42,26 @@ namespace HCM.API.Repository.EmployeeMasterSetup
                 await Task.Run(() =>
                 {
                     oTrnsEmployeeTransfer.CreateDate = DateTime.Now;
+                    oTrnsEmployeeTransfer.DocStatus = "Draft";
+                    //oTrnsEmployeeTransfer.DocAprStatus = "Pending";
                     _DBContext.TrnsEmployeeTransfers.Add(oTrnsEmployeeTransfer);
                     _DBContext.SaveChanges();
-                    response.Id = 1;
-                    response.Message = "Saved successfully";
+                    var EmpID = oTrnsEmployeeTransfer.CreatedBy;
+                    var chkStatus = _IDocApprovalDecesionRepo.InsertDocApprovalDecesion(EmpID, Convert.ToInt32(oTrnsEmployeeTransfer.DoNum), 5, "Employee Transfer");
+                    if (chkStatus == 2)
+                    {
+                        oTrnsEmployeeTransfer.DocStatus = "Opened";
+                        //oTrnsEmployeeTransfer.DocAprStatus = "Approved";
+                        _DBContext.TrnsEmployeeTransfers.Update(oTrnsEmployeeTransfer);
+                        _DBContext.SaveChanges();
+                        response.Id = 1;
+                        response.Message = "Saved successfully";
+                    }
+                    else
+                    {
+                        response.Id = 1;
+                        response.Message = "Saved successfully waiting for approval.";
+                    }
                 });
             }
             catch (Exception ex)

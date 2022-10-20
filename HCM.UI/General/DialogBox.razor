@@ -550,7 +550,8 @@
                             <MudTablePager />
                         </PagerContent>
                     </MudTable>
-                }@if (oListEmployeeBonus?.Count > 0 && DialogFor == "EmployeeBonus")
+                }
+                @if (oListEmployeeBonus?.Count > 0 && DialogFor == "EmployeeBonus")
                 {
                     <MudTable Items="@oListEmployeeBonus" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsEmployeeBonu,bool>(FilterFuncEmployeeBonus)"
                       Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableEmployeeBonus" RowClassFunc="@SelectedRowClassFuncFilterFuncEmployeeBonus" OnRowClick="RowClickEventEmployeeBonus" T="TrnsEmployeeBonu" @bind-SelectedItem="oModelEmployeeBonus">
@@ -577,6 +578,10 @@
                             <MudTablePager />
                         </PagerContent>
                     </MudTable>
+                }
+                @if (DialogFor == "ApprovalDecesion")
+                {
+                    <MudTextField @bind-Value="Remarks" T="string" Label="Remarks" Variant="Variant.Outlined" Lines="5" Margin="Margin.Dense" />
                 }
             }
         </MudContainer>

@@ -12,11 +12,13 @@ namespace HCM.API.Controllers
     {
         private ICfgApprovalStage _cfgApprovalStage;
         private ICfgApprovalTemplate _cfgApprovalTemplate;
+        private IDocApprovalDecesion _docApprovalDecesion;
 
-        public ApprovalSetupController(ICfgApprovalStage mstStages, ICfgApprovalTemplate cfgApprovalTemplate)
+        public ApprovalSetupController(ICfgApprovalStage mstStages, ICfgApprovalTemplate cfgApprovalTemplate, IDocApprovalDecesion docApprovalDecesion)
         {
             _cfgApprovalStage = mstStages;
             _cfgApprovalTemplate = cfgApprovalTemplate;
+            _docApprovalDecesion = docApprovalDecesion;
         }
 
         #region CfgApprovalStage
@@ -193,53 +195,57 @@ namespace HCM.API.Controllers
             }
         }
 
-        //[Route("getAllDocApproval")]
-        //[HttpGet]
-        //public async Task<IActionResult> GetAlerts(int UserID, string DocStatus)
-        //{
-        //    List<DocApproval> oDocApproval = new List<DocApproval>();
-        //    try
-        //    {
-        //        oDocApproval = await _mstApprovalSetup.GetAlerts(UserID, DocStatus);
-        //        if (oDocApproval == null)
-        //        {
-        //            return BadRequest(oDocApproval);
-        //        }
-        //        else
-        //        {
-        //            return Ok(oDocApproval);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logs.GenerateLogs(ex);
-        //        return BadRequest("Something went wrong.");
-        //    }
-        //}
+        #endregion
 
-        //[Route("updateDocApprovalStatus")]
-        //[HttpPost]
-        //public async Task<IActionResult> UpdateDocApprovalStatus([FromBody] DocApproval pDocApproval)
-        //{
-        //    DocApproval oDocApproval = new DocApproval();
-        //    try
-        //    {
-        //        oDocApproval = await _mstApprovalSetup.UpdateDocApprStatus(pDocApproval);
-        //        if (oDocApproval == null)
-        //        {
-        //            return BadRequest(oDocApproval);
-        //        }
-        //        else
-        //        {
-        //            return Ok(oDocApproval);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logs.GenerateLogs(ex);
-        //        return BadRequest("Something went wrong.");
-        //    }
-        //}
+        #region DocApprovalDecesion
+
+        [Route("getAllDocApprovalDecesion")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllDocApprovalDecesion(string EmpID, string DocStatus)
+        {
+            List<DocApprovalDecesion> oDocApproval = new List<DocApprovalDecesion>();
+            try
+            {
+                oDocApproval = await _docApprovalDecesion.GetAllData(EmpID, DocStatus);
+                if (oDocApproval == null)
+                {
+                    return BadRequest(oDocApproval);
+                }
+                else
+                {
+                    return Ok(oDocApproval);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateDocApprovalStatus")]
+        [HttpPost]
+        public async Task<IActionResult> UpdateDocApprovalStatus([FromBody] DocApprovalDecesion pDocApproval)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _docApprovalDecesion.UpdateDocApprStatus(pDocApproval);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
 
         #endregion
     }

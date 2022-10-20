@@ -582,12 +582,12 @@ namespace HCM.API.Controllers
 
         [Route("addEmpReHire")]
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] TrnsEmployeeReHire pTrnsEmployeeReHire)
+        public async Task<IActionResult> Add([FromBody] VMEmployeeReHire pVMEmployeeReHire)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                response = await _trnsReHireEmployee.Insert(pTrnsEmployeeReHire);
+                response = await _trnsReHireEmployee.Insert(pVMEmployeeReHire);
                 if (response == null)
                 {
                     return BadRequest(response);
@@ -606,12 +606,12 @@ namespace HCM.API.Controllers
 
         [Route("updateEmpReHire")]
         [HttpPost]
-        public async Task<IActionResult> Update([FromBody] TrnsEmployeeReHire pTrnsEmployeeReHire)
+        public async Task<IActionResult> Update([FromBody] VMEmployeeReHire pVMEmployeeReHire)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                response = await _trnsReHireEmployee.Update(pTrnsEmployeeReHire);
+                response = await _trnsReHireEmployee.Update(pVMEmployeeReHire);
                 if (response == null)
                 {
                     return BadRequest(response);

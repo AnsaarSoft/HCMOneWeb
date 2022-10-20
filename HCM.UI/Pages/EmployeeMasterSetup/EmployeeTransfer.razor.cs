@@ -108,8 +108,10 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
         DialogOptions FullView = new DialogOptions() { MaxWidth = MaxWidth.ExtraExtraLarge, FullWidth = true, CloseButton = true, DisableBackdropClick = true, CloseOnEscapeKey = true };
 
-        #endregion
+        [Parameter]
+        public int DocNum { get; set; }
 
+        #endregion
 
         #region Functions
         private async Task OpenDialog(DialogOptions options)
@@ -605,19 +607,25 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 var Session = await _localStorage.GetItemAsync<MstUser>("User");
                 if (Session != null)
                 {
-                    LoginUser = Session.UserCode;
-                    _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date);
-                    oModel.DocStatus = "Draft";
-                    await GetAllEmployees();
-                    await GetAllBranch();
-                    await GetAllDesignation();
-                    await GetAllDepartments();
-                    await GetAllLocation();
-                    await GetAllEmpTrnsfer();
-                    await GetAllDimension();
-                    var a = oModel;
-
-                    docdate = DateTime.Now.Date;
+                    if (DocNum == 0)
+                    {
+                        LoginUser = Session.UserCode;
+                        _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date);
+                        oModel.DocStatus = "Draft";
+                        await GetAllEmployees();
+                        await GetAllBranch();
+                        await GetAllDesignation();
+                        await GetAllDepartments();
+                        await GetAllLocation();
+                        await GetAllEmpTrnsfer();
+                        await GetAllDimension();
+                        var a = oModel;
+                        docdate = DateTime.Now.Date;
+                    }
+                    else
+                    {
+                        //await GetLeaveRequestWithDocNum(DocNum);
+                    }
                 }
                 else
                 {
