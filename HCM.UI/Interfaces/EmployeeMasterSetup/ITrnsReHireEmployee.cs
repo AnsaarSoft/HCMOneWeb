@@ -5,7 +5,7 @@ namespace HCM.UI.Interfaces.EmployeeMasterSetup
     public interface ITrnsReHireEmployee
     {
         Task<List<TrnsEmployeeReHire>> GetAllData();
-        Task<ApiResponseModel> Insert(TrnsEmployeeReHire pTrnsEmployeeReHire);
-        Task<ApiResponseModel> Update(TrnsEmployeeReHire pTrnsEmployeeReHire);
+        Task<ApiResponseModel> Insert(VMEmployeeReHire pVMEmployeeReHire);
+        Task<ApiResponseModel> Update(VMEmployeeReHire pVMEmployeeReHire);
     }
 }

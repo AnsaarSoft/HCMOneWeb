@@ -43,13 +43,13 @@ namespace HCM.UI.Data.EmployeeMasterSetup
             }
         }
 
-        public async Task<ApiResponseModel> Insert(TrnsEmployeeReHire oTrnsEmployeeReHire)
+        public async Task<ApiResponseModel> Insert(VMEmployeeReHire pVMEmployeeReHire)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 var request = new RestRequest("EmployeeMasterData/addEmpReHire", Method.Post);
-                request.AddJsonBody(oTrnsEmployeeReHire);
+                request.AddJsonBody(pVMEmployeeReHire);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {
@@ -73,14 +73,15 @@ namespace HCM.UI.Data.EmployeeMasterSetup
             }
         }
 
-        public async Task<ApiResponseModel> Update(TrnsEmployeeReHire oTrnsEmployeeReHire)
+        public async Task<ApiResponseModel> Update(VMEmployeeReHire pVMEmployeeReHire)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 var request = new RestRequest("EmployeeMasterData/updateEmpReHire", Method.Post);
-                request.AddJsonBody(oTrnsEmployeeReHire);
+                request.AddJsonBody(pVMEmployeeReHire);
                 var res = await _restClient.ExecuteAsync(request);
+
                 if (res.IsSuccessful)
                 {
                     response.Id = 1;
