@@ -16,12 +16,15 @@
     <div class="row mt-5">
         <div class="col-sm-12">
             <MudGrid class="search-action-block align-items-center">
+                @if (oModelPayrollInit.FlgEmployeeCodeSeries == true)
+                {
+                    <MudItem xs="1" sm="1" md="1" lg="1">
+                        <MudAutocomplete T="MstDocumentNumberSeries" Disabled="@DisbaledCode" Value="oModelDocumentNumberSeries" ValueChanged="@FillEmployeeCode" SearchFunc="@SearchDocumentNumberSeries" Clearable="true" Label="Select Series*" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true"
+                                     CoerceValue="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Prefix}")" />
+                    </MudItem>
+                }
                 <MudItem xs="1" sm="1" md="1" lg="1">
-                    <MudAutocomplete T="MstDocumentNumberSeries" Disabled="@DisbaledCode" Value="oModelDocumentNumberSeries" ValueChanged="@FillEmployeeCode" SearchFunc="@SearchDocumentNumberSeries" Clearable="true" Label="Select Series*" Variant="Variant.Text" ResetValueOnEmptyText="true"
-                            CoerceText="true" CoerceValue="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Prefix}")" />
-                </MudItem>
-                <MudItem xs="1" sm="1" md="1" lg="1">
-                    <MudTextField T="string" @bind-Value="oModel.EmpId" Disabled="@true" Immediate="true" Clearable="true" Label="Code*" Variant="Variant.Text"
+                    <MudTextField T="string" @bind-Value="oModel.EmpId" Disabled="@DisbaledCode" Immediate="true" Clearable="true" Label="Code*" HelperText="Enter Code" Variant="Variant.Text"
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
                 <MudItem xs="2" sm="2" md="2" lg="2">

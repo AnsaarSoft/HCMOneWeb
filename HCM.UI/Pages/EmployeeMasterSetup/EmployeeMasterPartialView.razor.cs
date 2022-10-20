@@ -56,6 +56,12 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         public ICfgPayrollDefination _CfgPayrollDefination { get; set; }
 
         [Inject]
+        public ICfgPayrollDefinationinit _CfgPayrollDefinationinit { get; set; }
+
+        [Inject]
+        public IMstElement _mstElement { get; set; }
+
+        [Inject]
         public IMstGratuity _mstGratuity { get; set; }
 
         [Inject]
@@ -89,6 +95,8 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         private string searchString1 = "";
         private bool FilterFunc(MstEmployeeLeaf element) => FilterFunc(element, searchString1);
 
+        CfgPayrollBasicInitialization oModelPayrollInit = new CfgPayrollBasicInitialization();
+
         MstDocumentNumberSeries oModelDocumentNumberSeries = new MstDocumentNumberSeries();
         private IEnumerable<MstDocumentNumberSeries> oListDocumentNumberSeries = new List<MstDocumentNumberSeries>();
 
@@ -115,6 +123,9 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
         CfgPayrollDefination oModelPayroll = new CfgPayrollDefination();
         private IEnumerable<CfgPayrollDefination> oListPayroll = new List<CfgPayrollDefination>();
+        private IEnumerable<MstElementLink> oMstElementLinkList = new List<MstElementLink>();
+
+        private IEnumerable<MstElement> oListElement = new List<MstElement>();
 
         MstGratuity oModelGratuity = new MstGratuity();
         private IEnumerable<MstGratuity> oListGratuity = new List<MstGratuity>();
@@ -465,12 +476,14 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     {
                         Id = o.Id,
                         PayrollName = o.PayrollName,
+                        MstElementLinks = o.MstElementLinks,
                     }).ToList();
                 var res = oListPayroll.Where(x => x.PayrollName.ToUpper().Contains(value.ToUpper())).ToList();
                 return res.Select(x => new CfgPayrollDefination
                 {
                     Id = x.Id,
                     PayrollName = x.PayrollName,
+                    MstElementLinks = x.MstElementLinks,
                 }).ToList();
             }
             catch (Exception ex)
@@ -607,6 +620,21 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             }
         }
 
+        private async Task GetPayrollinit()
+        {
+            try
+            {
+                oModelPayrollInit = await _CfgPayrollDefinationinit.GetData();
+                if (oModelPayrollInit.FlgEmployeeCodeSeries == true)
+                {
+                    DisbaledCode = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
         private async Task GetAllDocumentNumberSeriess()
         {
             try
@@ -1190,13 +1218,40 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             }
         }
 
+        private async Task GetAllPayrollElement()
+        {
+            try
+            {
+                if (oModelPayroll.Id > 0)
+                {
+                    oListElement = await _mstElement.GetAllData();
+                    oMstElementLinkList = oModelPayroll.MstElementLinks.Where(x => x.PayrollId == oModelPayroll.Id).ToList();
+
+                    List<MstElement> oTempList = new List<MstElement>();
+                    foreach (var item in oMstElementLinkList)
+                    {
+                        var Element = oListElement.Where(x => x.FlgStandardElement == true && x.Id == item.ElementId && x.Type == "Rec").FirstOrDefault();
+                        if (Element != null)
+                        {
+                            oTempList.Add(Element);
+                        }
+                    }
+                    oListElement = oTempList.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+
         private async Task<ApiResponseModel> Save()
         {
             try
             {
                 Loading = true;
                 var res = new ApiResponseModel();
-                if (!string.IsNullOrWhiteSpace(oModelDocumentNumberSeries.Prefix) && !string.IsNullOrWhiteSpace(oModel.EmpId) && !string.IsNullOrWhiteSpace(oModel.FirstName) && !string.IsNullOrWhiteSpace(oModel.LastName) && !string.IsNullOrWhiteSpace(oModelDesignation.Description)
+                if ((oModelPayrollInit.FlgEmployeeCodeSeries == true && !string.IsNullOrWhiteSpace(oModelDocumentNumberSeries.Prefix)) || !string.IsNullOrWhiteSpace(oModel.EmpId) && !string.IsNullOrWhiteSpace(oModel.FirstName) && !string.IsNullOrWhiteSpace(oModel.LastName) && !string.IsNullOrWhiteSpace(oModelDesignation.Description)
                     && !string.IsNullOrWhiteSpace(oModelPosition.Description) && !string.IsNullOrWhiteSpace(oModelDepartment.DeptName) && !string.IsNullOrWhiteSpace(oModelLocation.Description)
                     && !string.IsNullOrWhiteSpace(oModelBranch.Description) && !string.IsNullOrWhiteSpace(oModelUser.UserName) && !string.IsNullOrWhiteSpace(oModelPayroll.PayrollName) && !string.IsNullOrWhiteSpace(oModel.FatherName)
                     && !string.IsNullOrWhiteSpace(oModel.MotherName) && !string.IsNullOrWhiteSpace(oModel.GenderId) && !string.IsNullOrWhiteSpace(oModel.MartialStatusId) && !string.IsNullOrWhiteSpace(oModel.ReligionId)
@@ -1285,17 +1340,29 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                         //    oModel.SecCity = oModelCitySecondary.CityName;
                         //}
                         oModel.MstEmployeeAttachments = oListEmployeeAttachment;
-                        if (oModel.Id == 0)
+                        if (!string.IsNullOrWhiteSpace(oModelPayroll.PayrollName))
                         {
-                            oModel.CreatedBy = LoginUser;
-                            res = await _mstEmployeeMaster.Insert(oModel);
-                        }
-                        else
-                        {
-                            oModel.UpdatedBy = LoginUser;
-                            res = await _mstEmployeeMaster.Update(oModel);
-                        }
+                            #region Apply payroll Standard Elements
 
+                            await GetAllPayrollElement();
+                            if (oListElement.Count() > 0)
+                            {
+                                oModel = BusinessLogic.ApplyPayrolStdlElement(oModel, oListElement, LoginUser);
+                            }
+
+                            #endregion
+
+                            if (oModel.Id == 0)
+                            {
+                                oModel.CreatedBy = LoginUser;
+                                res = await _mstEmployeeMaster.Insert(oModel);
+                            }
+                            else
+                            {
+                                oModel.UpdatedBy = LoginUser;
+                                res = await _mstEmployeeMaster.Update(oModel);
+                            }
+                        }
                         if (res != null && res.Id == 1)
                         {
                             Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
@@ -1337,6 +1404,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 {
                     LoginUser = Session.UserCode;
                     oModel.FlgActive = true;
+                    await GetPayrollinit();
                     await GetAllDocumentNumberSeriess();
                     await GetAllEmployees();
                     await GetAllLove();
