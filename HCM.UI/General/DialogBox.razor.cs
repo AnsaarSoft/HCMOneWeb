@@ -92,6 +92,8 @@ namespace HCM.UI.General
         private int selectedRowNumber = -1;
         private List<string> clickedEvents = new();
 
+        public string Remarks { get; set; }
+
         private bool FilterFuncElement(MstElement element) => FilterFuncElement(element, searchString1);
         private bool FilterFuncShift(MstShift element) => FilterFuncShift(element, searchString1);
         private bool FilterFuncTaxSetup(CfgTaxSetup element) => FilterFuncTaxSetup(element, searchString1);
@@ -1500,6 +1502,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "EmployeeBonus" && oModelEmployeeBonus.Id > 0)
                 {
                     MudDialog.Close(DialogResult.Ok<TrnsEmployeeBonu>(oModelEmployeeBonus));
+                }
+                else if (DialogFor == "ApprovalDecesion")
+                {
+                    MudDialog.Close(DialogResult.Ok(Remarks));
                 }
                 else
                 {

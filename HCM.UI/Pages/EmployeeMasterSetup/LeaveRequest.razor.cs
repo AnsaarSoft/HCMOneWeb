@@ -96,6 +96,9 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         private IEnumerable<TrnsAttendanceRegister> oAttendanceRegisterList = new List<TrnsAttendanceRegister>();
         private IEnumerable<MstShift> oShiftList = new List<MstShift>();
 
+        [Parameter]
+        public int DocNum { get; set; }
+
         #endregion
 
         #region Functions
@@ -497,6 +500,19 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             }
         }
 
+        private async Task GetLeaveRequestWithDocNum(int DocNum)
+        {
+            try
+            {
+                var result = await _trnsLeaveRequest.GetAllData();
+                oModel = result.Where(x => x.DocNum == DocNum).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+
         #endregion
 
         #region Events
@@ -509,16 +525,23 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 var Session = await _localStorage.GetItemAsync<MstUser>("User");
                 if (Session != null)
                 {
-                    LoginUser = Session.UserCode;
-                    await GetAllLeaveRequest();
-                    await SetDocNo();
-                    _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date);
-                    oModel.DocStatus = "Draft";
-                    oModel.DocAprStatus = "Pending";
-                    oModel.DocDate = DateTime.Today;
-                    oModel.Units = 0;
-                    await GetAllLove();
-                    await GetPayrollInit();
+                    if (DocNum == 0)
+                    {
+                        LoginUser = Session.UserCode;
+                        await GetAllLeaveRequest();
+                        await SetDocNo();
+                        _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date);
+                        oModel.DocStatus = "Draft";
+                        oModel.DocAprStatus = "Pending";
+                        oModel.DocDate = DateTime.Today;
+                        oModel.Units = 0;
+                        await GetAllLove();
+                        await GetPayrollInit();
+                    }
+                    else
+                    {
+                        await GetLeaveRequestWithDocNum(DocNum);
+                    }
                 }
                 else
                 {

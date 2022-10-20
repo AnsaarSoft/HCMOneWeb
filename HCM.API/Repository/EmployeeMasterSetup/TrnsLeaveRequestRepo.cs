@@ -9,12 +9,12 @@ namespace HCM.API.Repository.EmployeeMasterSetup
     public class TrnsLeaveRequestRepo : ITrnsLeaveRequest
     {
         private HCMOneContext _DBContext;
-        private ICfgApprovalTemplate _CfgApprovalTemplateRepo;
+        private IDocApprovalDecesion _IDocApprovalDecesionRepo;
 
-        public TrnsLeaveRequestRepo(HCMOneContext DBContext,ICfgApprovalTemplate cfgApprovalTemplate)
+        public TrnsLeaveRequestRepo(HCMOneContext DBContext, IDocApprovalDecesion docApprovalDecesion)
         {
             _DBContext = DBContext;
-            _CfgApprovalTemplateRepo = cfgApprovalTemplate;
+            _IDocApprovalDecesionRepo = docApprovalDecesion;
         }
 
         public async Task<List<TrnsLeavesRequest>> GetAllData()
@@ -45,9 +45,8 @@ namespace HCM.API.Repository.EmployeeMasterSetup
                     oTrnsLeavesRequest.DocAprStatus = "Pending";
                     _DBContext.TrnsLeavesRequests.Add(oTrnsLeavesRequest);
                     _DBContext.SaveChanges();
-                    var EmployeeID = oTrnsLeavesRequest.EmpId;//_DBContext.TrnsLeavesRequests.Where(x => x.CreatedBy == oTrnsLeavesRequest.CreatedBy).FirstOrDefault();
                     var EmpID = oTrnsLeavesRequest.CreatedBy;
-                    var chkStatus = _CfgApprovalTemplateRepo.InsertDocApprovalDecesion(EmpID, Convert.ToInt32(oTrnsLeavesRequest.DocNum), "flgEmpLeave", 2, "Leave Request", (int)EmployeeID);
+                    var chkStatus = _IDocApprovalDecesionRepo.InsertDocApprovalDecesion(EmpID, Convert.ToInt32(oTrnsLeavesRequest.DocNum), 2, "Leave Request");
                     if (chkStatus == 2)
                     {
                         oTrnsLeavesRequest.DocStatus = "Opened";
@@ -60,7 +59,7 @@ namespace HCM.API.Repository.EmployeeMasterSetup
                     else
                     {
                         response.Id = 1;
-                        response.Message = "Saved successfully wating for approval.";
+                        response.Message = "Saved successfully waiting for approval.";
                     }
                 });
             }

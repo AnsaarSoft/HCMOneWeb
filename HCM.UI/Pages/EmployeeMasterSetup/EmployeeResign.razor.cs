@@ -48,6 +48,9 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
         MstEmployee oModelEmployee = new MstEmployee();
 
+        [Parameter]
+        public int DocNum { get; set; }
+
         #endregion
 
         #region Functions
@@ -202,18 +205,25 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 var Session = await _localStorage.GetItemAsync<MstUser>("User");
                 if (Session != null)
                 {
-                    LoginUser = Session.UserCode;
-                    await GetAllEmployeeResign();
-                    await SetDocNo();
-                    await GetAllLove();
-                    _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date);
-                    oModel.DocStatus = "Draft";
-                    oModel.DocAprStatus = "Pending";
-                    oModel.DocDate = DateTime.Today;
-                    oModel.ResignDate = DateTime.Today;
-                    oModel.NoticeDays = 0;
-                    oModel.StopSalary = false;
-                    oModel.FlgOption1 = true;
+                    if (DocNum == 0)
+                    {
+                        LoginUser = Session.UserCode;
+                        await GetAllEmployeeResign();
+                        await SetDocNo();
+                        await GetAllLove();
+                        _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date);
+                        oModel.DocStatus = "Draft";
+                        oModel.DocAprStatus = "Pending";
+                        oModel.DocDate = DateTime.Today;
+                        oModel.ResignDate = DateTime.Today;
+                        oModel.NoticeDays = 0;
+                        oModel.StopSalary = false;
+                        oModel.FlgOption1 = true;
+                    }
+                    else
+                    {
+                        //await GetLeaveRequestWithDocNum(DocNum);
+                    }
                 }
                 else
                 {

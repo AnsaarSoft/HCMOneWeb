@@ -1,0 +1,47 @@
+﻿@page "/ApprovalDecesion"
+@using HCM.API.Models
+
+<div class="container w-98">
+    @if (Loading)
+    {
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    }
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <MudTable Items="@oDocApprovalDecesionList" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" @ref="@_table"
+                      Loading="@Loading" LoadingProgressColor="Color.Primary" T="DocApprovalDecesion" @bind-SelectedItem="oModel" Filter="new Func<DocApprovalDecesion,bool>(FilterFunc1)">
+                <ToolBarContent>
+                    <MudText Typo="Typo.h6">Document Approval</MudText>
+                    <MudSpacer />
+                    <MudTextField T="string" Placeholder="Search" @bind-Value="searchString1" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                </ToolBarContent>
+                <HeaderContent>
+                    <MudTh>Form Name</MudTh>
+                    <MudTh>Doc Status</MudTh>
+                    <MudTh>Doc #</MudTh>
+                    <MudTh>Created By</MudTh>
+                    <MudTh>Created Date</MudTh>
+                    <MudTh>View</MudTh>
+                    <MudTh>Approve</MudTh>
+                    <MudTh>Reject</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Code">@context.FkformName</MudTd>
+                    <MudTd DataLabel="Code">@context.DocStatus</MudTd>
+                    <MudTd DataLabel="Code">@context.FkdocNum</MudTd>
+                    <MudTd DataLabel="Code">@context.CreatedBy</MudTd>
+                    <MudTd DataLabel="Code">@context.CreatedDate</MudTd>
+                    <MudTd><MudIconButton Color="Color.Primary" Icon="@Icons.Material.Filled.Preview" Title="View" OnClick="@((e) => ViewApprovalDocument(maxWidth,(int)@context.FkdocNum,(int)@context.FkformId))"></MudIconButton></MudTd>
+                    <MudTd><MudIconButton Color="Color.Primary" Icon="@Icons.Material.Filled.CheckCircle" Title="Approve" OnClick="@((e) => OpenDialog(maxWidth,@context.Id,"Approved"))"></MudIconButton></MudTd>
+                    <MudTd><MudIconButton Color="Color.Error" Icon="@Icons.Material.Filled.RemoveCircle" Title="Reject" OnClick="@((e) => OpenDialog(maxWidth,@context.Id,"Rejected"))"></MudIconButton></MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudPagination SelectedChanged="PageChanged" Count="@((_table.GetFilteredItemsCount() + _table.RowsPerPage - 1) / _table.RowsPerPage)" Class="pa-4" />
+                </PagerContent>
+                <PagerContent>
+                    <MudTablePager />
+                </PagerContent>
+            </MudTable>
+        </div>
+    </div>
+</div>
