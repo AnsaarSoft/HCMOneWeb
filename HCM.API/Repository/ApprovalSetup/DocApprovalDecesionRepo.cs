@@ -187,7 +187,7 @@ namespace HCM.API.Repository.ApprovalSetup
                                     var result5 = _DBContext.TrnsEmployeeTransfers.SingleOrDefault(b => b.DoNum == oDocApprovalDecesion.FkdocNum);
                                     if (result5 != null)
                                     {
-                                        //result5.DocAprStatus = rejected;
+                                        result5.DocAprStatus = rejected;
                                     }
                                     break;
                                 case 6:
@@ -283,7 +283,7 @@ namespace HCM.API.Repository.ApprovalSetup
                                             var result5 = _DBContext.TrnsEmployeeTransfers.SingleOrDefault(b => b.DoNum == oDocApprovalDecesion.FkdocNum);
                                             if (result5 != null)
                                             {
-                                                //result5.DocAprStatus = approved;
+                                                result5.DocAprStatus = approved;
                                                 result5.DocStatus = opened;
                                             }
                                             break;

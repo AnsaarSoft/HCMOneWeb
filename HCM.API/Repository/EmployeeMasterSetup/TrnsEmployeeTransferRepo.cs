@@ -43,7 +43,7 @@ namespace HCM.API.Repository.EmployeeMasterSetup
                 {
                     oTrnsEmployeeTransfer.CreateDate = DateTime.Now;
                     oTrnsEmployeeTransfer.DocStatus = "Draft";
-                    //oTrnsEmployeeTransfer.DocAprStatus = "Pending";
+                    oTrnsEmployeeTransfer.DocAprStatus = "Pending";
                     _DBContext.TrnsEmployeeTransfers.Add(oTrnsEmployeeTransfer);
                     _DBContext.SaveChanges();
                     var EmpID = oTrnsEmployeeTransfer.CreatedBy;
@@ -51,7 +51,7 @@ namespace HCM.API.Repository.EmployeeMasterSetup
                     if (chkStatus == 2)
                     {
                         oTrnsEmployeeTransfer.DocStatus = "Opened";
-                        //oTrnsEmployeeTransfer.DocAprStatus = "Approved";
+                        oTrnsEmployeeTransfer.DocAprStatus = "Approved";
                         _DBContext.TrnsEmployeeTransfers.Update(oTrnsEmployeeTransfer);
                         _DBContext.SaveChanges();
                         response.Id = 1;

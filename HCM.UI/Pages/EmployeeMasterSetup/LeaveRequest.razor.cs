@@ -462,7 +462,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             {
                 Loading = true;
                 var res = new ApiResponseModel();
-                if (!string.IsNullOrWhiteSpace(oModelEmployee.EmpId) && !string.IsNullOrWhiteSpace(oModel.Value))
+                if (!string.IsNullOrWhiteSpace(oModelEmployee.EmpId) && !string.IsNullOrWhiteSpace(oModel.Value) && !string.IsNullOrWhiteSpace(oModel.LeavesType) && oAttendanceRegisterList.Count() > 0)
                 {
                     if (oModel.Id > 0)
                     {

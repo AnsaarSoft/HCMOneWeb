@@ -607,7 +607,7 @@ namespace HCM.API.HCMModels
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=10.3.182.41;Database=HCMOne;User ID=sa;Password=super;");
+                optionsBuilder.UseSqlServer("Server=PK-LHR-MME-133;Database=HCMOne;User ID=sa;Password=super;");
             }
         }
 
@@ -16299,6 +16299,8 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(50);
+
+                entity.Property(e => e.DocAprStatus).HasMaxLength(10);
 
                 entity.Property(e => e.DocDate).HasColumnType("datetime");
 

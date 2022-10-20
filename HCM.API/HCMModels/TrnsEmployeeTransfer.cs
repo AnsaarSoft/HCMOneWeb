@@ -14,6 +14,7 @@ namespace HCM.API.HCMModels
         public int? DoNum { get; set; }
         public DateTime? DocDate { get; set; }
         public string DocStatus { get; set; }
+        public string DocAprStatus { get; set; }
         public int? StatusRec { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? UpdateDate { get; set; }
