@@ -183,10 +183,10 @@ namespace HCM.UI.Pages.MasterDataSetup
         {
             try
             {
-                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                var Session = await _localStorage.GetItemAsync<MstEmployee>("User");
                 if (Session != null)
                 {
-                    LoginUser = Session.UserCode;
+                    LoginUser = Session.EmpId;
                     //var res = await _administrationService.FetchUserAuth(Session.UserCode);
                     Loading = true;
                     oModel.FlgActive = true;

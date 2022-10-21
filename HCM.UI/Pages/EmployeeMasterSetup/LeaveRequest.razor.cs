@@ -522,12 +522,12 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             try
             {
                 Loading = true;
-                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                var Session = await _localStorage.GetItemAsync<MstEmployee>("User");
                 if (Session != null)
                 {
                     if (DocNum == 0)
                     {
-                        LoginUser = Session.UserCode;
+                        LoginUser = Session.EmpId;
                         await GetAllLeaveRequest();
                         await SetDocNo();
                         _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date);

@@ -2689,10 +2689,10 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = true;
                 oModelpayroll = await _CfgPayrollDefinationinit.GetData();
                 oListMstDocumentNumberSeries = await _mstDocumentNumberSeries.GetAllData();
-                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                var Session = await _localStorage.GetItemAsync<MstEmployee>("User");
                 if (Session != null)
                 {
-                    LoginUser = Session.UserCode;
+                    LoginUser = Session.EmpId;
                     await GetAllUsers();
                     await GetAllPayroll();
                     await GetPayrollinit();

@@ -417,10 +417,10 @@ namespace HCM.UI.Pages.ApprovalSetup
             try
             {
                 Loading = true;
-                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                var Session = await _localStorage.GetItemAsync<MstEmployee>("User");
                 if (Session != null)
                 {
-                    LoginUser = Session.UserCode;
+                    LoginUser = Session.EmpId;
                     oModel.FlgActive = true;
                     await GetApprovalDocs();
                     await GetAllStages();

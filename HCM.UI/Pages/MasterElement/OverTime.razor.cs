@@ -242,10 +242,10 @@ namespace HCM.UI.Pages.MasterElement
             try
             {
                 Loading = true;
-                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                var Session = await _localStorage.GetItemAsync<MstEmployee>("User");
                 if (Session != null)
                 {
-                    LoginUser = Session.UserCode;
+                    LoginUser = Session.EmpId;
                     oModel.Value = 0;
                     oModel.PerDayCap = 0;
                     oModel.PerMonthCap = 0;

@@ -389,12 +389,12 @@ namespace HCM.UI.Pages.Loan
             try
             {
                 Loading = true;
-                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                var Session = await _localStorage.GetItemAsync<MstEmployee>("User");
                 if (Session != null)
                 {
                     if (DocNum == 0)
                     {
-                        LoginUser = Session.UserCode;
+                        LoginUser = Session.EmpId;
                         await GetAllLoanRequest();
                         await SetDocNo();
                         await GetAllLoanMaster();

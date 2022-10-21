@@ -228,10 +228,10 @@ namespace HCM.UI.Pages.Attendance
             try
             {
                 Loading = true;
-                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                var Session = await _localStorage.GetItemAsync<MstEmployee>("User");
                 if (Session != null)
                 {
-                    LoginUser = Session.UserCode;
+                    LoginUser = Session.EmpId;
                     oModel.PunchedDate = DateTime.Now;
                     //var res = await _administrationService.FetchUserAuth(Session.UserCode);
                     oModel.FlgProcessed = false;

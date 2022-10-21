@@ -62,7 +62,7 @@ namespace HCM.UI.Pages.Account
                     //oModel.EmpId = "";
                     //oModel.OfficeEmail = "";
                     //oModel.FlgActive = true;
-                    //oModel.FlgPasswordRequest = false;
+                    //oModel.FlgPasswordRequest = false;                    
                     res = await _mstUser.Login(oModel);
                     if (res.Id != 0 && !string.IsNullOrWhiteSpace(res.FirstName))
                     {
@@ -86,6 +86,27 @@ namespace HCM.UI.Pages.Account
                 Logs.GenerateLogs(ex);
                 Loading = false;
                 return null;
+            }
+        }
+
+        #endregion
+
+        #region Events
+
+        protected async override Task OnInitializedAsync()
+        {
+            try
+            {
+                await Task.Delay(1);
+                if (1 == 1)
+                {
+                    oModel.EmpId = "FT-00001";
+                    oModel.Password = "123456";
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
             }
         }
 

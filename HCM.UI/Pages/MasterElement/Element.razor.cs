@@ -180,10 +180,10 @@ namespace HCM.UI.Pages.MasterElement
             try
             {
                 Loading = true;
-                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                var Session = await _localStorage.GetItemAsync<MstEmployee>("User");
                 if (Session != null)
                 {
-                    LoginUser = Session.UserCode;
+                    LoginUser = Session.EmpId;
                     oModel.Value = 0;
                     oModel.EmployeeContribution = 0;
                     oModel.EmployeeContributionMax = 0;
