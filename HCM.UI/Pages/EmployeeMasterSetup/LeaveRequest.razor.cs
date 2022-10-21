@@ -467,6 +467,12 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             {
                 Loading = true;
                 var res = new ApiResponseModel();
+                if (oModel.DocStatus == "Opened")
+                {
+                    Snackbar.Add("Opened document can't be update, select cancel to update", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                    Loading = false;
+                    return null;
+                }
                 if (oModelEmployee.Id > 0 && !string.IsNullOrWhiteSpace(oModel.Value) && !string.IsNullOrWhiteSpace(oModel.LeavesType) && oAttendanceRegisterList.Count() > 0)
                 {
                     if (oModel.Id > 0)

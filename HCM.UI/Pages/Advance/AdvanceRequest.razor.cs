@@ -282,6 +282,12 @@ namespace HCM.UI.Pages.Advance
             {
                 Loading = true;
                 var res = new ApiResponseModel();
+                if (oModel.DocStatus == "Opened")
+                {
+                    Snackbar.Add("Opened document can't be update, select cancel to update", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                    Loading = false;
+                    return null;
+                }
                 if (!string.IsNullOrWhiteSpace(oModelEmployee.EmpId) && !string.IsNullOrWhiteSpace(oModel.AdvanceCode) && oModel.RequestedAmount > 0)
                 {
                     if (oModel.DocStatus == "Open" && oModel.DocAprStatus == "Approved" && !string.IsNullOrWhiteSpace(oModel.PaymentMode))
