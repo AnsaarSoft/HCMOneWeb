@@ -111,7 +111,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         private IEnumerable<MstEmployee> oListEmployee = new List<MstEmployee>();
         private IEnumerable<MstEmployee> oListFilteredEmployee = new List<MstEmployee>();
 
-       // DateTime? docdate;
+        // DateTime? docdate;
 
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
         DialogOptions FullView = new DialogOptions() { MaxWidth = MaxWidth.ExtraExtraLarge, FullWidth = true, CloseButton = true, DisableBackdropClick = true, CloseOnEscapeKey = true };
@@ -185,7 +185,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             try
             {
                 oListEmployee = await _mstEmployeeMaster.GetAllData();
-              //  oListEmployee = oListEmployee.Where(x => x.FlgActive == false && (x.ResignDate != null || x.TerminationDate != null)).ToList();
+                //  oListEmployee = oListEmployee.Where(x => x.FlgActive == false && (x.ResignDate != null || x.TerminationDate != null)).ToList();
             }
             catch (Exception ex)
             {
@@ -597,7 +597,15 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 oModel.JoiningDtNew = DateTime.Now;
                 oModel.ResignationDtOld = oModelMstEmployee.ResignDate;
                 oModel.TerminationDtOld = oModelMstEmployee.TerminationDate;
-
+                if (oModelMstEmployee.TermCount != null)
+                {
+                    oModelMstEmployee.TermCount += 1;
+                }
+                else
+                {
+                    oModelMstEmployee.TermCount = 1;
+                }
+                oModel.TermCount = oModelMstEmployee.TermCount;
                 // Update employee mst
                 oModelMstEmployee.DepartmentId = oModelDepartment.Id;
                 oModelMstEmployee.DepartmentName = oModelDepartment.DeptName;
@@ -617,7 +625,6 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 oModelMstEmployee.BasicSalary = oModel.Bsnew;
                 oModelMstEmployee.GrossSalary = oModel.Gsnew;
                 oModelMstEmployee.FlgActive = oModel.FlgReHire;
-                oModelMstEmployee.TermCount = 1;
                 oModelMstEmployee.UpdatedBy = LoginUser;
                 oModelMstEmployee.UpdateDate = DateTime.Now;
                 //oModel.Emp = oModelMstEmployee;

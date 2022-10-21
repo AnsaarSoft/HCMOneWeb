@@ -27,7 +27,7 @@
                     <MudAutocomplete T="MstEmployee" @bind-Value="oModelEmployeeTo" SearchFunc="@SearchEmployeeTo" Clearable="true" Label="Select Employee To" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.EmpId}")" />
                 </MudItem>
-                 <MudItem xs="3" sm="3" md="3" lg="3">
+                <MudItem xs="3" sm="3" md="3" lg="3">
                     <MudAutocomplete T="MstDepartment" @bind-Value="oModelDepartment" SearchFunc="@SearchDepartment" Clearable="true" Label="Select Department" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.DeptName}")" />
                 </MudItem>
@@ -35,9 +35,13 @@
                     <MudAutocomplete T="MstLocation" @bind-Value="oModelLocation" SearchFunc="@SearchLocation" Clearable="true" Label="Select Location" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
                 </MudItem>
-
+                 <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudAutocomplete T="MstOverTime" @bind-Value="oModelmstOvertime" SearchFunc="@SearchOvertime" Clearable="true" Label="OverTime" HelperText="Select OverTime" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
+                </MudItem>
+@*
                 <MudItem xs="3" sm="3" md="3" lg="3">
-                    <MudAutocomplete T="CfgPayrollDefination" @bind-Value="oModelPayroll" SearchFunc="@SearchPayroll" Clearable="true" Label="Select Payroll*" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
+                    <MudAutocomplete T="CfgPayrollDefination" Value="oModelPayroll" SearchFunc="@SearchPayroll" ValueChanged="@FillPayrollCode" Clearable="true" Label="Select Payroll*" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.PayrollName}")" />
                 </MudItem>
                 <MudItem xs="3" sm="3" md="3" lg="3">
@@ -47,19 +51,14 @@
                             <MudSelectItem Value="@period.PeriodName">@period.PeriodName</MudSelectItem>
                         }
                     </MudSelect>
-                </MudItem>
+                </MudItem>*@
                 <MudItem xs="3" sm="3" md="3" lg="3">
                     <MudTextField @bind-Value="oModel.DocNum" ReadOnly="@true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields"
                                   Label="Doc No*" Variant="Variant.Text"> </MudTextField>
                 </MudItem>
-                 <MudItem xs="3" sm="3" md="3" lg="3">
-
-                    <MudSelect @bind-Value="oModel.DocStatus" Disabled="true" Label="Doc Status*" HelperText="Doc Status" AdornmentIcon="@Icons.Material.Filled.DocumentScanner" Adornment="Adornment.Start">
-                        <MudSelectItem Value="@("Open")">Open</MudSelectItem>
-                        <MudSelectItem Value="@("Closed")">Closed</MudSelectItem>
-                        <MudSelectItem Value="@("Draft")">Draft</MudSelectItem>
-                        <MudSelectItem Value="@("Cancelled")">Cancelled</MudSelectItem>
-                    </MudSelect>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                     <MudTextField T="string" @bind-Value="oModel.DocStatus" ReadOnly="true" HelperText="Document Status" Immediate="true" Label="Status*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
                 <MudItem xs="12" sm="12" md="12" lg="12">
                     @if (Loading)
@@ -72,6 +71,7 @@
                     else
                     {
                         <MudItem xs="12" sm="12" md="12" lg="12" class="text-right custom-btn-design" style="justify-content: flex-end;">
+                            <MudButton Variant="Variant.Filled" OnClick="SearchCriteria" StartIcon="@Icons.Material.Filled.Search" Color="Color.Info" Size="Size.Small">Search</MudButton>
                             <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Save</MudButton>
                             <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
 
@@ -127,7 +127,7 @@
                     </MudSwitch>
                 </MudItem>
                 <MudItem xs="12" sm="12" md="12" lg="12" class="text-right custom-btn-design" style="justify-content: flex-end;">
-                    <MudButton Variant="Variant.Filled" OnClick="AddList" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Add Detail</MudButton>
+                    @*<MudButton Variant="Variant.Filled" OnClick="AddList" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Add Detail</MudButton>*@
                 </MudItem>
             </MudGrid>
         </div>
@@ -136,34 +136,42 @@
         <div class="col-sm-12">
             <MudCard Elevation="6">
                 <MudCardContent>
-                    <MudTable Items="@oListTrnsEmployeeOvertimeDetail" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsEmployeeOvertimeDetail,bool>(FilterFunc)">
+                    <MudTable Items="@oModel.TrnsSingleEntryOtdetails" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsSingleEntryOtdetail,bool>(FilterFuncTrnsSingleEntryOtdetail)">
                         <ToolBarContent>
-                            <MudText Typo="Typo.h6">Employee Detail List</MudText>
+                            <MudText Typo="Typo.h6">Detail List</MudText>
                             <MudSpacer />
                             <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
                         </ToolBarContent>
                         <HeaderContent>
-                            <MudTh>Overtime</MudTh>
-                            <MudTh>OT Date</MudTh>
-                            <MudTh>Time From</MudTh>
-                            <MudTh>Time To</MudTh>
+                            <MudTh>Emp Code</MudTh>
+                            <MudTh>Emp Name</MudTh>
+                           @* <MudTh>Payroll Name</MudTh>*@
+                            <MudTh>Over Time</MudTh>
                             <MudTh>Hours</MudTh>
                             <MudTh>Amount</MudTh>
                             <MudTh>Active</MudTh>
-                            <MudTh>Action</MudTh>
+                            @*<MudTh>Action</MudTh>*@
                         </HeaderContent>
                         <RowTemplate>
-                            <MudTd DataLabel="Description">@context.OvertimeId</MudTd>
-                            <MudTd DataLabel="OT Date">@context.Otdate</MudTd>
-                            <MudTd DataLabel="Hours">@context.FromTime</MudTd>
-                            <MudTd DataLabel="Hours">@context.ToTime</MudTd>
-                            <MudTd DataLabel="Hours">@context.Othours</MudTd>
+                            <MudTd DataLabel="EmpCode">@context.EmpId</MudTd>
+                            <MudTd DataLabel="EmpName">@context.EmpName</MudTd>
+                           @* <MudTd DataLabel="PayrollName">@context.PayrollName</MudTd>*@
+                            <MudTd DataLabel="OverTime">@context.OverTimeId</MudTd>
+                            <MudTd DataLabel="Hours">
+                              <MudNumericField @bind-Value="@context.Hours" Min="0" Immediate="true" Clearable="true" Label="Hours" Variant="Variant.Text"
+                                     Adornment="Adornment.Start" Format="0.00" />
+                            </MudTd>
                             <MudTd DataLabel="Amount">@context.Amount</MudTd>
-                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
-                            <MudTd DataLabel="Action">
+                            <MudTd DataLabel="Active">
+                              <MudSwitch @bind-Checked="@context.FlgActive" Disabled="true" ThumbIcon="@(context.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
+                                           ThumbIconColor="@(context.FlgActive==true ? Color.Primary : Color.Error)" Color="@(context.FlgActive==true ? Color.Info : Color.Error)">
+                                    <span>@(context.FlgActive == true ? "Active" : "In Active")</span>
+                                </MudSwitch>
+                            </MudTd>
+                           @* <MudTd DataLabel="Action">
                                 <MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteFromFilter(context.Id) )" Title="Delete"></MudIconButton>
                                 <MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id) )" Title="Edit"></MudIconButton>
-                            </MudTd>
+                            </MudTd>*@
                         </RowTemplate>
                         <PagerContent>
                             <MudTablePager />
