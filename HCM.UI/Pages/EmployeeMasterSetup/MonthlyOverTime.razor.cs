@@ -738,11 +738,11 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             try
             {
                 Loading = true;
-                var Session = await _localStorage.GetItemAsync<MstUser>("User");
+                var Session = await _localStorage.GetItemAsync<MstEmployee>("User");
                 if (Session != null)
                 {
+                    LoginUser = Session.EmpId;
                     oModel.DocStatus = "Created";
-                    LoginUser = Session.UserCode;
                     await GetAllEmployees();
                     await GetAllEmployeesPayroll();
                     await GetAllOvertime();
