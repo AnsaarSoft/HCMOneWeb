@@ -583,6 +583,31 @@
                 {
                     <MudTextField @bind-Value="Remarks" T="string" Label="Remarks" Variant="Variant.Outlined" Lines="5" Margin="Margin.Dense" />
                 }
+
+                @if (oListTrnsSingleEntryOtrequest?.Count > 0 && DialogFor == "MonthlyOT")
+                {
+                    <MudTable Items="@oListTrnsSingleEntryOtrequest" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsSingleEntryOtrequest,bool>(FilterFuncMonthlyOT)"
+                      Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableTrnsSingleEntryOtrequest" RowClassFunc="@SelectedRowClassFuncFilterFuncMonthlyOT" OnRowClick="RowClickEventMonthlyOT" T="TrnsSingleEntryOtrequest" @bind-SelectedItem="oModelTrnsSingleEntryOtrequest">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Monthly OverTime</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Document No</MudTh>
+                            <MudTh>Status</MudTh>
+                            <MudTh>OverTime Type</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code">@context.DocNum</MudTd>
+                            <MudTd DataLabel="Code">@context.DocStatus</MudTd>
+                            <MudTd DataLabel="Code">@context.Ottype</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                }
             }
         </MudContainer>
     </DialogContent>

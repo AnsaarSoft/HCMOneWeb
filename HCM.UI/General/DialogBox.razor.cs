@@ -82,6 +82,9 @@ namespace HCM.UI.General
         [Inject]
         public ITrnsEmployeeBonus _trnsEmployeeBonus { get; set; }
 
+        [Inject]
+        public ITrnsSingleEntryOtrequest _trnsSingleEntryOtrequest { get; set; }
+
         #endregion
 
         #region Variables
@@ -111,6 +114,7 @@ namespace HCM.UI.General
         private bool FilterFuncCfgApprovalTemplate(CfgApprovalTemplate element) => FilterFuncCfgApprovalTemplate(element, searchString1);
         private bool FilterFuncTrnsEmployeeReHire(TrnsEmployeeReHire element) => FilterFuncTrnsEmployeeReHire(element, searchString1);
         private bool FilterFuncEmployeeBonus(TrnsEmployeeBonu element) => FilterFuncEmployeeBonus(element, searchString1);
+        private bool FilterFuncMonthlyOT(TrnsSingleEntryOtrequest element) => FilterFuncMonthlyOT(element, searchString1);
         void Cancel() => MudDialog.Cancel();
 
         private MudTable<MstElement> _tableElement;
@@ -183,6 +187,10 @@ namespace HCM.UI.General
         private MudTable<TrnsEmployeeBonu> _tableEmployeeBonus;
         TrnsEmployeeBonu oModelEmployeeBonus = new TrnsEmployeeBonu();
         List<TrnsEmployeeBonu> oListEmployeeBonus = new List<TrnsEmployeeBonu>();
+
+        private MudTable<TrnsSingleEntryOtrequest> _tableTrnsSingleEntryOtrequest;
+        TrnsSingleEntryOtrequest oModelTrnsSingleEntryOtrequest = new TrnsSingleEntryOtrequest();
+        List<TrnsSingleEntryOtrequest> oListTrnsSingleEntryOtrequest = new List<TrnsSingleEntryOtrequest>();
 
         #region Functions
 
@@ -741,6 +749,32 @@ namespace HCM.UI.General
             return false;
         }
 
+        private async Task GetAllFilterFuncMonthlyOT()
+        {
+            try
+            {
+                oListTrnsSingleEntryOtrequest = await _trnsSingleEntryOtrequest.GetAllData();
+                if (oListTrnsSingleEntryOtrequest?.Count == 0 || oListTrnsSingleEntryOtrequest == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncMonthlyOT(TrnsSingleEntryOtrequest element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.DocStatus.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.Ottype.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
+        }
+
         #endregion
 
         #endregion
@@ -831,6 +865,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "EmployeeBonus")
                 {
                     await GetAllEmployeeBonus();
+                }
+                else if (DialogFor == "MonthlyOT")
+                {
+                    await GetAllFilterFuncMonthlyOT();
                 }
                 Loading = false;
             }
@@ -1415,6 +1453,38 @@ namespace HCM.UI.General
                 return string.Empty;
             }
         }
+
+        public void RowClickEventMonthlyOT(TableRowClickEventArgs<TrnsSingleEntryOtrequest> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncFilterFuncMonthlyOT(TrnsSingleEntryOtrequest element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableTrnsSingleEntryOtrequest.SelectedItem != null && _tableTrnsSingleEntryOtrequest.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
         private void Submit()
         {
             try
@@ -1506,6 +1576,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "ApprovalDecesion")
                 {
                     MudDialog.Close(DialogResult.Ok(Remarks));
+                }
+                else if (DialogFor == "MonthlyOT")
+                {
+                    MudDialog.Close(DialogResult.Ok(oModelTrnsSingleEntryOtrequest));
                 }
                 else
                 {
