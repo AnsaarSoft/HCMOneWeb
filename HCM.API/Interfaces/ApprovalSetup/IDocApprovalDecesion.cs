@@ -7,5 +7,6 @@ namespace HCM.API.Interfaces.ApprovalSetup
         Task<List<DocApprovalDecesion>> GetAllData(string EmpID, string DocStatus);
         int InsertDocApprovalDecesion(string OriginatorID, int DocNum, int FormCode, string FoamName);
         Task<ApiResponseModel> UpdateDocApprStatus(DocApprovalDecesion oDocApproval);
+        int CheckDocApprovalDecesion(int DocNum,int formCode);
     }
 }

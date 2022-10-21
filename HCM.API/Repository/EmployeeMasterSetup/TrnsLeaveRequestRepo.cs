@@ -1,4 +1,5 @@
 ﻿using HCM.API.General;
+using HCM.API.HCMModels;
 using HCM.API.Interfaces.ApprovalSetup;
 using HCM.API.Interfaces.EmployeeMasterSetup;
 using HCM.API.Models;
@@ -78,11 +79,20 @@ namespace HCM.API.Repository.EmployeeMasterSetup
             {
                 await Task.Run(() =>
                 {
-                    oTrnsLeavesRequest.UpdateDate = DateTime.Now;                    
-                    _DBContext.TrnsLeavesRequests.Update(oTrnsLeavesRequest);
-                    _DBContext.SaveChanges();
-                    response.Id = 1;
-                    response.Message = "Update successfully";
+                    int chkStatus = _IDocApprovalDecesionRepo.CheckDocApprovalDecesion((int)oTrnsLeavesRequest.DocNum, 2);
+                    if (chkStatus == 0)
+                    {
+                        oTrnsLeavesRequest.UpdateDate = DateTime.Now;
+                        _DBContext.TrnsLeavesRequests.Update(oTrnsLeavesRequest);
+                        _DBContext.SaveChanges();
+                        response.Id = 1;
+                        response.Message = "Update successfully";
+                    }
+                    else
+                    {
+                        response.Id = 2;
+                        response.Message = "Cant update document, pending for approval";
+                    }
                 });
             }
             catch (Exception ex)

@@ -5,6 +5,7 @@ using HCM.UI.Interfaces.Loan;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
 using Microsoft.AspNetCore.Components;
+using Microsoft.VisualBasic;
 using MudBlazor;
 using System.Globalization;
 
@@ -380,6 +381,19 @@ namespace HCM.UI.Pages.Loan
             }
         }
 
+        private async Task GetDataWithDocNum(int DocNum)
+        {
+            try
+            {
+                var result = await _trnsLoanRequest.GetAllData();
+                oModel = result.Where(x => x.DocNum == DocNum).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+
         #endregion
 
         #region Events
@@ -415,7 +429,17 @@ namespace HCM.UI.Pages.Loan
                     }
                     else
                     {
-                        //await GetLeaveRequestWithDocNum(DocNum);
+                        _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date);
+                        oModel.DocDate = DateTime.Today;
+                        oModel.RequiredDate = DateTime.Today;
+                        oModel.BasicSalary = 0;
+                        oModel.GrossSalary = 0;
+                        oModel.NoOfInstallments = 0;
+                        oModel.RequestedAmount = 0;
+                        oModel.ApprovedAmount = 0;
+                        oModel.InstallmentAmount = 0;
+                        oModel.FlgStopInstallment = true;
+                        await GetDataWithDocNum(DocNum);
                     }
                 }
                 else

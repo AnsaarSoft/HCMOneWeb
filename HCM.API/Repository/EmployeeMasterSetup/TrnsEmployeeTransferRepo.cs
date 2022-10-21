@@ -5,6 +5,7 @@ using HCM.API.Models;
 using HCM.API.Repository.ApprovalSetup;
 using HCM.API.Interfaces.ApprovalSetup;
 using HCM.API.HCMModels;
+using HCM.API.Interfaces.Advance;
 
 namespace HCM.API.Repository.EmployeeMasterSetup
 {
@@ -79,13 +80,22 @@ namespace HCM.API.Repository.EmployeeMasterSetup
             {
                 await Task.Run(() =>
                 {
-                    oTrnsEmployeeTransfer.UpdateDate = DateTime.Now;
-                    var Detail = _DBContext.TrnsEmployeeTransferDetails.Where(x => x.ParentId == oTrnsEmployeeTransfer.Id).ToList();
-                    _DBContext.TrnsEmployeeTransferDetails.RemoveRange(Detail);
-                    _DBContext.TrnsEmployeeTransfers.Update(oTrnsEmployeeTransfer);
-                    _DBContext.SaveChanges();
-                    response.Id = 1;
-                    response.Message = "Saved successfully";
+                    int chkStatus = _IDocApprovalDecesionRepo.CheckDocApprovalDecesion((int)oTrnsEmployeeTransfer.DoNum, 5);
+                    if (chkStatus == 0)
+                    {
+                        oTrnsEmployeeTransfer.UpdateDate = DateTime.Now;
+                        var Detail = _DBContext.TrnsEmployeeTransferDetails.Where(x => x.ParentId == oTrnsEmployeeTransfer.Id).ToList();
+                        _DBContext.TrnsEmployeeTransferDetails.RemoveRange(Detail);
+                        _DBContext.TrnsEmployeeTransfers.Update(oTrnsEmployeeTransfer);
+                        _DBContext.SaveChanges();
+                        response.Id = 1;
+                        response.Message = "Saved successfully";
+                    }
+                    else
+                    {
+                        response.Id = 2;
+                        response.Message = "Cant update document, pending for approval";
+                    }
                 });
             }
             catch (Exception ex)

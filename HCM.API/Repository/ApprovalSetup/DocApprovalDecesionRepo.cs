@@ -313,5 +313,22 @@ namespace HCM.API.Repository.ApprovalSetup
             }
             return response;
         }
+
+        public int CheckDocApprovalDecesion(int DocNum,int formCode)
+        {
+            int chkCount = 1;
+            try
+            {
+                var count = (from a in _DBContext.DocApprovalDecesions
+                             where a.FkdocNum == DocNum && a.FkformId == formCode && a.FlgActive == false
+                             select a).Count();
+                return count;
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return chkCount;
+            }
+        }
     }
 }
