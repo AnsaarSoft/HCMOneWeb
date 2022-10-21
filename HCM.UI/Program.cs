@@ -95,6 +95,7 @@ builder.Services.AddScoped<ITrnsEmployeeBonus, TrnsEmployeeBonusService>();
 builder.Services.AddScoped<ITrnsReHireEmployee, TrnsReHireEmployeeService>();
 builder.Services.AddScoped<ICfgApprovalTemplate, CfgApprovalTemplateService>();
 builder.Services.AddScoped<IDocApprovalDecesion, DocApprovalDecesionService>();
+builder.Services.AddScoped<ITrnsSingleEntryOtrequest, TrnsSingleEntryOtrequestService>();
 //Configuration Start
 
 Settings.APIBaseURL = builder.Configuration.GetValue<string>("APIBaseUrl");

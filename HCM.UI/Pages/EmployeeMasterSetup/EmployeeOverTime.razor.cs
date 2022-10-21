@@ -56,7 +56,6 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         string EmpName = "";
         private decimal Amount;
         private decimal Hours;
-        private string PayrollPeriodstr = "Select Period";
         private string FullName = "";
         private string searchString1 = "";
 
@@ -86,8 +85,8 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         DateTime? docdate;
         TimeSpan? timefrom = new TimeSpan();
         TimeSpan? timeto = new TimeSpan();
-        string createby, updateby;
-        DateTime createdate, updatedate;
+        string createby;
+        DateTime createdate;
 
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
         DialogOptions FullView = new DialogOptions() { MaxWidth = MaxWidth.ExtraExtraLarge, FullWidth = true, CloseButton = true, DisableBackdropClick = true, CloseOnEscapeKey = true };
@@ -262,30 +261,30 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 return null;
             }
         }
-        private async Task FillEmployeeCode(MstEmployee oModelMstEmpCode)
-        {
-            try
-            {
-                if (oModelMstEmpCode != null)
-                {
-                    var EmpDetail = oListEmployee.Where(x => x.EmpId == oModelMstEmpCode.EmpId).FirstOrDefault();
-                    oPayroll = oListPayroll.Where(x => x.Id == EmpDetail.PayrollId).FirstOrDefault();
-                    CfgPeriodDate mstPayrollPeriod = new CfgPeriodDate();
-                    oListPayrollPeriod = oPayroll.CfgPeriodDates.Where(x => x.PayrollId == oPayroll.Id).ToList();
-                    //DateTime dt = (DateTime)oPayroll.FirstPeriodEndDt;
-                    FullName = EmpDetail.FirstName + " " + EmpDetail.MiddleName + " " + EmpDetail.LastName;
-                    oModelMstEmployee.PayrollName = EmpDetail.PayrollName;
-                    oModelMstEmployee = EmpDetail;
+        //private async Task FillEmployeeCode(MstEmployee oModelMstEmpCode)
+        //{
+        //    try
+        //    {
+        //        if (oModelMstEmpCode != null)
+        //        {
+        //            var EmpDetail = oListEmployee.Where(x => x.EmpId == oModelMstEmpCode.EmpId).FirstOrDefault();
+        //            oPayroll = oListPayroll.Where(x => x.Id == EmpDetail.PayrollId).FirstOrDefault();
+        //            CfgPeriodDate mstPayrollPeriod = new CfgPeriodDate();
+        //            oListPayrollPeriod = oPayroll.CfgPeriodDates.Where(x => x.PayrollId == oPayroll.Id).ToList();
+        //            //DateTime dt = (DateTime)oPayroll.FirstPeriodEndDt;
+        //            FullName = EmpDetail.FirstName + " " + EmpDetail.MiddleName + " " + EmpDetail.LastName;
+        //            oModelMstEmployee.PayrollName = EmpDetail.PayrollName;
+        //            oModelMstEmployee = EmpDetail;
 
-                    await Task.Delay(1);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-            }
-            _ = InvokeAsync(StateHasChanged);
-        }
+        //            await Task.Delay(1);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logs.GenerateLogs(ex);
+        //    }
+        //    _ = InvokeAsync(StateHasChanged);
+        //}
         private async Task CalHour()
         {
             try

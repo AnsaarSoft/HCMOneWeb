@@ -107,6 +107,7 @@ builder.Services.AddScoped<ITrnsEmployeeBonus, TrnsEmployeeBonusRepo>();
 builder.Services.AddScoped<ITrnsReHireEmployee, TrnsReHireEmployeeRepo>();
 builder.Services.AddScoped<ICfgApprovalTemplate, CfgApprovalTemplateRepo>();
 builder.Services.AddScoped<IDocApprovalDecesion, DocApprovalDecesionRepo>();
+builder.Services.AddScoped<ITrnsSingleEntryOtrequest, TrnsSingleEntryOtrequestRepo>();
 
 Settings.TitleConfig = builder.Configuration.GetValue<string>("TitleConfig");
 Settings.EmailConfig = builder.Configuration.GetValue<string>("EmailConfig");

@@ -18,9 +18,10 @@ namespace HCM.API.Controllers
         private ITrnsEmployeeOverTime _TrnsEmployeeOverTime;
         private ITrnsEmployeeResign _trnsEmployeeResign;
         private ITrnsReHireEmployee _trnsReHireEmployee;
+        private ITrnsSingleEntryOtrequest _trnsSingleEntryOtrequest;
 
 
-        public EmployeeMasterDataController(IMstEmployeeMasterData mstEmployee, ITrnsLeaveRequest trnsLeaveRequest, ITrnsEmployeeTransfer TrnsEmployeeTransfer, ITrnsEmployeeResign trnsEmployeeResign, ITrnsEmployeeOverTime trnsEmployeeOverTime, ITrnsReHireEmployee trnsReHireEmployee)
+        public EmployeeMasterDataController(IMstEmployeeMasterData mstEmployee, ITrnsLeaveRequest trnsLeaveRequest, ITrnsEmployeeTransfer TrnsEmployeeTransfer, ITrnsEmployeeResign trnsEmployeeResign, ITrnsEmployeeOverTime trnsEmployeeOverTime, ITrnsReHireEmployee trnsReHireEmployee, ITrnsSingleEntryOtrequest trnsSingleEntryOtrequest)
         {
             _mstEmployee = mstEmployee;
             _TrnsEmployeeTransfer = TrnsEmployeeTransfer;
@@ -28,6 +29,7 @@ namespace HCM.API.Controllers
             _trnsEmployeeResign = trnsEmployeeResign;
             _TrnsEmployeeOverTime = trnsEmployeeOverTime;
             _trnsReHireEmployee = trnsReHireEmployee;
+            _trnsSingleEntryOtrequest = trnsSingleEntryOtrequest;
         }
 
         #region MST Employee
@@ -612,6 +614,82 @@ namespace HCM.API.Controllers
             try
             {
                 response = await _trnsReHireEmployee.Update(pVMEmployeeReHire);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
+
+        #region Monthly OverTIme
+
+        [Route("getAllMonthlyOT")]
+        [HttpGet]
+        public async Task<IActionResult> getAllMonthlyOT()
+        {
+            List<TrnsSingleEntryOtrequest> oTrnsSingleEntryOtrequest = new List<TrnsSingleEntryOtrequest>();
+            try
+            {
+                oTrnsSingleEntryOtrequest = await _trnsSingleEntryOtrequest.GetAllData();
+                if (oTrnsSingleEntryOtrequest == null)
+                {
+                    return BadRequest(oTrnsSingleEntryOtrequest);
+                }
+                else
+                {
+                    return Ok(oTrnsSingleEntryOtrequest);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addMonthlyOT")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] TrnsSingleEntryOtrequest pTrnsSingleEntryOtrequest)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _trnsSingleEntryOtrequest.Insert(pTrnsSingleEntryOtrequest);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateMonthlyOT")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] TrnsSingleEntryOtrequest pTrnsSingleEntryOtrequest)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _trnsSingleEntryOtrequest.Update(pTrnsSingleEntryOtrequest);
                 if (response == null)
                 {
                     return BadRequest(response);
