@@ -90,6 +90,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
         bool Loading = false;
         bool DisbaledCode = false;
+        bool DisableSeries = false;
         public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
 
         bool isShow;
@@ -206,6 +207,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 if (!result.Cancelled)
                 {
                     DisbaledCode = true;
+                    DisableSeries = true;
                     var res = (MstEmployee)result.Data;
                     oModel = res;
                     oModelDocumentNumberSeries.Prefix = oModel.Prefix;
