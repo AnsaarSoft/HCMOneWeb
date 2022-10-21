@@ -80,11 +80,20 @@ namespace HCM.API.Repository.EmployeeMasterSetup
             {
                 await Task.Run(() =>
                 {
-                    oTrnsResignation.UpdateDate = DateTime.Now;                    
-                    _DBContext.TrnsResignations.Update(oTrnsResignation);
-                    _DBContext.SaveChanges();
-                    response.Id = 1;
-                    response.Message = "Update successfully";
+                    int chkStatus = _IDocApprovalDecesionRepo.CheckDocApprovalDecesion((int)oTrnsResignation.DocNum, 6);
+                    if (chkStatus == 0)
+                    {
+                        oTrnsResignation.UpdateDate = DateTime.Now;
+                        _DBContext.TrnsResignations.Update(oTrnsResignation);
+                        _DBContext.SaveChanges();
+                        response.Id = 1;
+                        response.Message = "Update successfully";
+                    }
+                    else
+                    {
+                        response.Id = 2;
+                        response.Message = "Cant update document, pending for approval";
+                    }
                 });
             }
             catch (Exception ex)

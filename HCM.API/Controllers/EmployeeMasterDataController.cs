@@ -218,6 +218,10 @@ namespace HCM.API.Controllers
                 {
                     return BadRequest(response);
                 }
+                else if (response.Id == 2)
+                {
+                    return BadRequest("Cant update document, pending for approval");
+                }
                 else
                 {
                     return Ok(response);
@@ -293,6 +297,10 @@ namespace HCM.API.Controllers
                 if (response == null)
                 {
                     return BadRequest(response);
+                }
+                else if (response.Id == 2)
+                {
+                    return BadRequest("Cant update document, pending for approval");
                 }
                 else
                 {
@@ -493,6 +501,10 @@ namespace HCM.API.Controllers
                 if (response == null)
                 {
                     return BadRequest(response);
+                }
+                else if (response.Id == 2)
+                {
+                    return BadRequest("Cant update document, pending for approval");
                 }
                 else
                 {

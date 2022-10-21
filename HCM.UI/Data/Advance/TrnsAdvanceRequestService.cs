@@ -87,8 +87,16 @@ namespace HCM.UI.Data.Advance
                 }
                 else
                 {
-                    response.Id = 0;
-                    response.Message = "Failed to Update successfully";
+                    if (res.Content == "\"Cant update document, pending for approval\"")
+                    {
+                        response.Id = 2;
+                        response.Message = "Cant update document, pending for approval";
+                    }
+                    else
+                    {
+                        response.Id = 0;
+                        response.Message = "Failed to Update successfully";
+                    }
                     return response;
                 }
             }

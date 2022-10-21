@@ -193,6 +193,19 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             }
         }
 
+        private async Task GetDataWithDocNum(int DocNum)
+        {
+            try
+            {
+                var result = await _trnsEmployeeResign.GetAllData();
+                oModel = result.Where(x => x.DocNum == DocNum).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+
         #endregion
 
         #region Events
@@ -222,7 +235,13 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     }
                     else
                     {
-                        //await GetLeaveRequestWithDocNum(DocNum);
+                        oModel.DocDate = DateTime.Today;
+                        oModel.ResignDate = DateTime.Today;
+                        oModel.NoticeDays = 0;
+                        oModel.StopSalary = false;
+                        oModel.FlgOption1 = true;
+                        _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date);
+                        await GetDataWithDocNum(DocNum);
                     }
                 }
                 else

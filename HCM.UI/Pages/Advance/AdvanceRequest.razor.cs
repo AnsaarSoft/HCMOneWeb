@@ -324,6 +324,19 @@ namespace HCM.UI.Pages.Advance
             }
         }
 
+        private async Task GetDataWithDocNum(int DocNum)
+        {
+            try
+            {
+                var result = await _trnsAdvanceRequest.GetAllData();
+                oModel = result.Where(x => x.DocNum == DocNum).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+
         #endregion
 
         #region Events
@@ -357,7 +370,15 @@ namespace HCM.UI.Pages.Advance
                     }
                     else
                     {
-                        //await GetLeaveRequestWithDocNum(DocNum);
+                        _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date);
+                        oModel.DocDate = DateTime.Today;
+                        oModel.RequiredDate = DateTime.Today;
+                        oModel.BasicSalary = 0;
+                        oModel.GrossSalary = 0;
+                        oModel.RequestedAmount = 0;
+                        oModel.ApprovedAmount = 0;
+                        oModel.InstallmentAmount = 0;
+                        await GetDataWithDocNum(DocNum);
                     }
                 }
                 else

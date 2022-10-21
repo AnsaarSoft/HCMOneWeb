@@ -115,6 +115,11 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 {
                     var res = (TrnsLeavesRequest)result.Data;
                     oModel = res;
+                    oModelEmployee.Id = (int)oModel.EmpId;
+                    oModelEmployee.FirstName = oModel.EmpName;
+                    oModelEmployee.DepartmentName = oModel.EmpDept;
+                    oModelEmployee.DesignationName = oModel.EmpDesg;
+                    oModelEmployee.LocationName = oModel.EmpLoc;
                     _dateRange.Start = oModel.LeaveFrom;
                     _dateRange.End = oModel.LeaveTo;
                     SetEmployeeLeaves();
@@ -462,7 +467,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             {
                 Loading = true;
                 var res = new ApiResponseModel();
-                if (!string.IsNullOrWhiteSpace(oModelEmployee.EmpId) && !string.IsNullOrWhiteSpace(oModel.Value) && !string.IsNullOrWhiteSpace(oModel.LeavesType) && oAttendanceRegisterList.Count() > 0)
+                if (oModelEmployee.Id > 0 && !string.IsNullOrWhiteSpace(oModel.Value) && !string.IsNullOrWhiteSpace(oModel.LeavesType) && oAttendanceRegisterList.Count() > 0)
                 {
                     if (oModel.Id > 0)
                     {
@@ -500,12 +505,32 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             }
         }
 
-        private async Task GetLeaveRequestWithDocNum(int DocNum)
+        private async Task GetDataWithDocNum(int DocNum)
         {
             try
             {
                 var result = await _trnsLeaveRequest.GetAllData();
                 oModel = result.Where(x => x.DocNum == DocNum).FirstOrDefault();
+                oModelEmployee.Id = (int)oModel.EmpId;
+                oModelEmployee.FirstName = oModel.EmpName;
+                oModelEmployee.DepartmentName = oModel.EmpDept;
+                oModelEmployee.DesignationName = oModel.EmpDesg;
+                oModelEmployee.LocationName = oModel.EmpLoc;
+                _dateRange.Start = oModel.LeaveFrom;
+                _dateRange.End = oModel.LeaveTo;
+                SetEmployeeLeaves();
+                if (!string.IsNullOrWhiteSpace(oModel.FromTime) && !string.IsNullOrWhiteSpace(oModel.ToTime))
+                {
+                    string[] spFromTime = oModel.FromTime.Split(':');
+                    TimeSpan FromTime = new TimeSpan(Convert.ToInt32(spFromTime[0]), Convert.ToInt32(spFromTime[1]), 0);
+                    TSFromTime = FromTime;
+
+                    string[] spToTime = oModel.ToTime.Split(':');
+                    TimeSpan ToTime = new TimeSpan(Convert.ToInt32(spToTime[0]), Convert.ToInt32(spToTime[1]), 0);
+                    TSToTime = ToTime;
+                }
+
+
             }
             catch (Exception ex)
             {
@@ -540,7 +565,8 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     }
                     else
                     {
-                        await GetLeaveRequestWithDocNum(DocNum);
+                        _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date);
+                        await GetDataWithDocNum(DocNum);
                     }
                 }
                 else

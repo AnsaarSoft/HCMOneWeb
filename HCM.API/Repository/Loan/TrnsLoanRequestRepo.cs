@@ -80,11 +80,20 @@ namespace HCM.API.Repository.Loan
             {
                 await Task.Run(() =>
                 {
-                    oTrnsLoanRequest.UpdateDate = DateTime.Now;
-                    _DBContext.TrnsLoanRequests.Update(oTrnsLoanRequest);
-                    _DBContext.SaveChanges();
-                    response.Id = 1;
-                    response.Message = "Update successfully";
+                    int chkStatus = _IDocApprovalDecesionRepo.CheckDocApprovalDecesion((int)oTrnsLoanRequest.DocNum, 3);
+                    if (chkStatus == 0)
+                    {
+                        oTrnsLoanRequest.UpdateDate = DateTime.Now;
+                        _DBContext.TrnsLoanRequests.Update(oTrnsLoanRequest);
+                        _DBContext.SaveChanges();
+                        response.Id = 1;
+                        response.Message = "Update successfully";
+                    }
+                    else
+                    {
+                        response.Id = 2;
+                        response.Message = "Cant update document, pending for approval";
+                    }
                 });
             }
             catch (Exception ex)

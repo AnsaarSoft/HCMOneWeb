@@ -595,6 +595,22 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             }
         }
 
+        private async Task GetDataWithDocNum(int DocNum)
+        {
+            try
+            {
+                var result = await _trnsEmployeeTransfer.GetAllData();
+                oModel = result.Where(x => x.DoNum == DocNum).FirstOrDefault();
+                docdate = oModel.DocDate;
+                oListFilteredEmployeeTransferDetail = oModel.TrnsEmployeeTransferDetails;
+                oListFilteredEmployeeTransferDetail = oListFilteredEmployeeTransferDetail.ToList();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+
         #endregion
 
         #region Events
@@ -624,7 +640,9 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     }
                     else
                     {
-                        //await GetLeaveRequestWithDocNum(DocNum);
+                        _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date);
+                        docdate = DateTime.Now.Date;
+                        await GetDataWithDocNum(DocNum);
                     }
                 }
                 else
