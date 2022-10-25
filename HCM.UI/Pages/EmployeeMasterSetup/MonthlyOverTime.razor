@@ -68,6 +68,26 @@
                      <MudTextField T="string" @bind-Value="oModel.DocStatus" ReadOnly="true" HelperText="Document Status" Immediate="true" Label="Status*" Variant="Variant.Text"
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
+
+                <MudItem xs="4" sm="4" md="4" lg="4" class="input-btns">
+                    <InputFile id="excelFile" OnChange="UploadFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden multiple="false" />
+                    <MudFab HtmlTag="label" Color="Color.Dark" Icon="@Icons.Custom.FileFormats.FileExcel" Label="Import Excel" for="excelFile" />
+                    <MudFab HtmlTag="label" Color="Color.Primary" OnClick="MonthlyOverTimeTemplate" StartIcon="@Icons.Material.Filled.ImportExport" Label="Generate Template" />
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    @if (excelSheet != null)
+                    {
+                        @foreach (var file in excelSheet)
+                        {
+                            <MudText @key="@file" Typo="@Typo.caption">Template :  @file.Name</MudText>
+                        }
+                        @if (excelSheet.Count == 0)
+                        {
+                            <MudText Typo="@Typo.caption">No Template selected</MudText>
+                        }
+                    }
+                </MudItem>
+
                 <MudItem xs="12" sm="12" md="12" lg="12">
                     @if (Loading)
                     {
@@ -79,6 +99,16 @@
                     else
                     {
                         <MudItem xs="12" sm="12" md="12" lg="12" class="text-right custom-btn-design" style="justify-content: flex-end;">
+                          @if(oModel.Id != 0 )
+                          {@if(oModel.DocStatus == "Draft")
+                          {
+                            <MudButton Variant="Variant.Filled"  StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small">Post</MudButton>
+                          }
+                          else{
+                          }
+                            <MudButton Variant="Variant.Filled"  StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small">Avoid</MudButton>
+                          }
+                            
                             <MudButton Variant="Variant.Filled" OnClick="SearchCriteria" StartIcon="@Icons.Material.Filled.Search" Color="Color.Info" Size="Size.Small">Search</MudButton>
                             <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Save</MudButton>
                             <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>

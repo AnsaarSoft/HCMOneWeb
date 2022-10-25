@@ -12,9 +12,14 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.VisualBasic;
 using MudBlazor;
+using System.Reflection;
 using System.Collections.Immutable;
 using static MudBlazor.CategoryTypes;
-
+using Microsoft.JSInterop;
+using Microsoft.AspNetCore.Components.Forms;
+using ClosedXML.Excel;
+using System.Text.RegularExpressions;
+using DocumentFormat.OpenXml;
 
 namespace HCM.UI.Pages.EmployeeMasterSetup
 {
@@ -33,7 +38,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
         [Inject]
         public ITrnsSingleEntryOtrequest _TrnsSingleEntryOtrequest { get; set; }
-        
+
         [Inject]
         public IMstEmployeeMasterData _mstEmployeeMaster { get; set; }
 
@@ -57,7 +62,6 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
         [Inject]
         public IMstDesignation _mstDesignation { get; set; }
-
 
         [Inject]
         public ILocalStorageService _localStorage { get; set; }
@@ -99,8 +103,10 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         private IEnumerable<TrnsSingleEntryOtrequest> oList = new List<TrnsSingleEntryOtrequest>();
 
         TrnsSingleEntryOtdetail oModelTrnsSingleEntryOtdetail = new TrnsSingleEntryOtdetail();
-        private IEnumerable<TrnsSingleEntryOtdetail> oListTrnsSingleEntryOtdetail = new List<TrnsSingleEntryOtdetail>();
+        private IEnumerable<TrnsSingleEntryOtdetail> oListdetail = new List<TrnsSingleEntryOtdetail>();
         private List<TrnsSingleEntryOtdetail> oListTrnsSingleEntryOvertimedetail = new List<TrnsSingleEntryOtdetail>();
+        List<TrnsSingleEntryOtdetail> oTrnsTrnsSingleEntryOtdetailAddList = new List<TrnsSingleEntryOtdetail>();
+        List<TrnsSingleEntryOtdetail> oTrnsTrnsSingleEntryOtdetailUpdateList = new List<TrnsSingleEntryOtdetail>();
 
         MstDepartment oModelDepartment = new MstDepartment();
         private IEnumerable<MstDepartment> oListDepartment = new List<MstDepartment>();
@@ -126,7 +132,6 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         DialogOptions FullView = new DialogOptions() { MaxWidth = MaxWidth.ExtraExtraLarge, FullWidth = true, CloseButton = true, DisableBackdropClick = true, CloseOnEscapeKey = true };
 
         #endregion
-
 
         #region Functions
         private async Task<IEnumerable<MstOverTime>> SearchOvertime(string value)
@@ -434,6 +439,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             {
                 oList = await _TrnsSingleEntryOtrequest.GetAllData();
                 oList = oList.ToList();//oList.Where(x => x.FlgActive == true).ToList();
+                                       // oListdetail = oList.Select(x => x.TrnsSingleEntryOtdetails).ToList();
             }
             catch (Exception ex)
             {
@@ -568,6 +574,8 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                             oTrnsSingleEntryOtdetail.EmpId = item.Id;
                             oTrnsSingleEntryOtdetail.EmpName = item.FirstName + " " + item.MiddleName + " " + item.LastName;
                             oTrnsSingleEntryOtdetail.OverTimeId = oModelmstOvertime.Id;
+                            //oTrnsSingleEntryOtdetail. = oModelmstOvertime.Description;
+                            oTrnsSingleEntryOtdetail.FlgActive = true;
                             oModel.Ottype = oModelmstOvertime.Id;
                             oModel.TrnsSingleEntryOtdetails.Add(oTrnsSingleEntryOtdetail);
                         }
@@ -588,28 +596,6 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 Logs.GenerateLogs(ex);
                 Loading = false;
             }
-        }
-       
-        private async Task CalHour()
-        {
-            try
-            {
-                await Task.Delay(1);
-                //if ((timefrom != null && timeto != null))
-                //{
-
-                //    string totalhour = (timeto - timefrom).ToString();
-                //    Hours = Convert.ToDecimal(TimeSpan.Parse(totalhour).TotalHours);
-                //}
-
-
-
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-            }
-            _ = InvokeAsync(StateHasChanged);
         }
         private async void Reset()
         {
@@ -640,7 +626,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     oListTrnsSingleEntryOtdetail.Remove(FilterRecord);
                     oModel.TrnsSingleEntryOtdetails = oListTrnsSingleEntryOtdetail;
                 }
-              //  List<TrnsEmployeeOvertimeDetail> oListTrnsEmployeeOTDtl = new List<TrnsEmployeeOvertimeDetail>();
+                //  List<TrnsEmployeeOvertimeDetail> oListTrnsEmployeeOTDtl = new List<TrnsEmployeeOvertimeDetail>();
                 //oListTrnsEmployeeOTDtl = oListTrnsEmployeeOvertimeDetail.ToList();
                 //if (oListTrnsEmployeeOvertimeDetail.Count() > 0)
                 //{
@@ -671,7 +657,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                         {
 
                             oModelMstEmployee = oListEmployee.Where(x => x.Id == item.EmpId).FirstOrDefault();
-                            oModelmstOvertime = oListmstOverTime.Where(x => x.Id == oModelmstOvertime.Id).FirstOrDefault();
+                            oModelmstOvertime = oListmstOverTime.Where(x => x.Id == item.OverTimeId).FirstOrDefault();
                             item.Amount = BusinessLogic.GetOverTimeAmount(oModelMstEmployee, oModelmstOvertime, (decimal)item.Hours);
                             if (oModel.Id == 0)
                             {
@@ -715,43 +701,105 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
                 if (oModel.TrnsSingleEntryOtdetails.Count > 0)
                 {
+                    int LineNumber = 1;
                     foreach (var item in oModel.TrnsSingleEntryOtdetails)
                     {
-                        if (item.Hours != null && item.Hours > 0 && item.FlgActive == true)
-                        {
-                            if (oModel.Id == 0)
-                            {
-                                oModel.CreatedBy = LoginUser;
-                                res = await _TrnsSingleEntryOtrequest.Insert(oModel);
-                            }
-                            else
-                            {
-                                oModel.UpdatedBy = LoginUser;
-                                res = await _TrnsSingleEntryOtrequest.Update(oModel);
-                            }
+                        //if (item.Hours != null && item.Hours > 0 && item.FlgActive == true)
+                        //{
 
-                            if (res != null && res.Id == 1)
-                            {
-                                Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
-                                await Task.Delay(3000);
-                                Navigation.NavigateTo("/MonthlyOverTime", forceLoad: true);
-                            }
-                            else
-                            {
-                                Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                            }
-
-                        }
-                        else
+                        //}
+                        //else
+                        //{
+                        //   Snackbar.Add("Please First Calculate OverTime. or Active True", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                        //}
+                        //if(string.IsNullOrEmpty( item.EmpName) )
+                        //{
+                        //    res.Message = $"Employee not selected Line Number {LineNumber}";
+                        //    Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+                        //    return res;
+                        //}
+                        if (item.Hours.GetValueOrDefault() == 0)
                         {
-                            Snackbar.Add("Please First Calculate OverTime.", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                            res.Message = $"Hour is mandatory. Line Number {LineNumber}";
+                            Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Info; });
+                            Loading = false;
+                            return res;
                         }
+                        if (item.Amount.GetValueOrDefault() == 0)
+                        {
+                            res.Message = $"Hour Calculation is mandatory. Line Number {LineNumber}";
+                            Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Info; });
+                            Loading = false;
+                            return res;
+                        }
+                        LineNumber++;
+                    }
+
+                    if (oModel.Id == 0)
+                    {
+                        oModel.CreatedBy = LoginUser;
+                        res = await _TrnsSingleEntryOtrequest.Insert(oModel);
+                    }
+                    else
+                    {
+                        oModel.UpdatedBy = LoginUser;
+                        res = await _TrnsSingleEntryOtrequest.Update(oModel);
+                    }
+
+                    if (res != null && res.Id == 1)
+                    {
+                        Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+                        await Task.Delay(3000);
+                        Navigation.NavigateTo("/MonthlyOverTime", forceLoad: true);
+                    }
+                    else
+                    {
+                        Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
                 }
                 else
                 {
                     Snackbar.Add("Please Select Filteration.", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                 }
+                Loading = false;
+                return res;
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                Loading = false;
+                return null;
+            }
+        }
+        private async Task<ApiResponseModel> Post()
+        {
+            try
+            {
+                Loading = true;
+                var res = new ApiResponseModel();
+                await Task.Delay(3);
+              
+                    if (oModel.Id == 0)
+                    {
+                        oModel.CreatedBy = LoginUser;
+                       // res = await _trnsEmployeeTransfer.Insert(oModel);
+                    }
+                    else
+                    {
+                        oModel.UpdatedBy = LoginUser;
+                      //  res = await _trnsEmployeeTransfer.Update(oModel);
+                    }
+
+                    if (res != null && res.Id == 1)
+                    {
+                        Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+                        await Task.Delay(3000);
+                        Navigation.NavigateTo("/EmployeeTransfer", forceLoad: true);
+                    }
+                    else
+                    {
+                        Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                    }
                 Loading = false;
                 return res;
             }
@@ -775,7 +823,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    oModel.DocStatus = "Created";
+                    oModel.DocStatus = "Draft";
                     await GetAllMonthlyOT();
                     await SetDocNo();
                     await GetAllEmployees();
@@ -800,6 +848,255 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         }
 
         #endregion
+
+        [Inject]
+        IJSRuntime JS { get; set; }
+        IList<IBrowserFile> excelSheet = new List<IBrowserFile>();
+        string AlphanumericMask = @"^[a-zA-Z0-9_]*$";
+        private async Task UploadFile(InputFileChangeEventArgs e)
+        {
+            try
+            {
+                Loading = true;
+                if (excelSheet.Count > 0)
+                {
+                    Snackbar.Add("Template already selected, refresh the page for new template to import.", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+                else
+                {
+                    var TemplateFile = e.File.Name;
+                    excelSheet.Add(e.File);
+                    //if (ModuleType > 0)
+                    //{
+                    if (!string.IsNullOrWhiteSpace(TemplateFile))
+                    {
+                        Snackbar.Add("Please wait template uploading in process...", Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+                        await FillMonthlyOverTimeTemplateGrid();
+
+                    }
+                    else
+                    {
+                        Snackbar.Add("Select template to import", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                        excelSheet.Clear();
+                    }
+                    //}
+                    //else
+                    //{
+                    //    Snackbar.Add("Select Module to import", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                    //    excelSheet.Clear();
+                    //}
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+            Loading = false;
+        }
+        private async Task FillMonthlyOverTimeTemplateGrid()
+        {
+            try
+            {
+
+                Loading = true;
+                _ = InvokeAsync(StateHasChanged);
+                await Task.Delay(1);
+                bool IsForUpdate = false;
+                var TemplateFile = excelSheet.Select(x => x.Name).FirstOrDefault();
+                TemplateFile = Path.GetFullPath("wwwroot\\Templates\\" + TemplateFile);
+                if (!string.IsNullOrWhiteSpace(TemplateFile))
+                {
+                    Stream stream = excelSheet.FirstOrDefault().OpenReadStream();
+                    FileStream fs = File.Create(TemplateFile);
+                    await stream.CopyToAsync(fs);
+                    stream.Close();
+                    fs.Close();
+                    using var workBook = new XLWorkbook(TemplateFile);
+                    var ws = workBook.Worksheet("MonthlyOverTimeTemplate");
+                    // var ws = workBook.Worksheet("MonthlyOverTimeTemplate");
+
+                    Type type = typeof(VMMonthlyOTImport);
+                    int NumberOfRecords = type.GetProperties().Length;
+                    var a = ws.Rows().Count();
+                    // string CustomPropertyName = "";
+                    for (int i = 2; i <= ws.Rows().Count() - 1; i++)
+                    {
+
+                        IsForUpdate = false;
+                        oModelTrnsSingleEntryOtdetail = new TrnsSingleEntryOtdetail();
+                        int empid = 0;
+                        for (int j = 1; j < ws.Rows().Cells().Count(); j++)
+                        {
+                            if (NumberOfRecords == j)//Read column only based on Model Properties
+                            {
+                                break;
+                            }
+                            string PropertyName = type.GetProperties()[j].Name;
+                            PropertyInfo PropertyInfo = type.GetProperties()[j];
+
+                            var CreatingDynamicModel = "oModelTrnsSingleEntryOtrequest." + PropertyName;
+
+                            if (PropertyInfo.PropertyType == typeof(string)) //(PropertyInfo.PropertyType == typeof(Int32))
+                            {
+                                var StringValue = ws.Cell(i, j).Value.ToString();
+                                if (StringValue == null)
+                                {
+                                    StringValue = "";
+                                }
+                                else if (!Regex.IsMatch(StringValue, AlphanumericMask) && PropertyName == "EmpCode")
+                                {
+                                    //Skip the line if Code has special character
+                                    break;
+                                }
+                                else if (StringValue.Contains("Null", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    //Skip the line if Code has Null String
+                                    break;
+                                }
+
+                                else if (!string.IsNullOrWhiteSpace(StringValue) && PropertyName == "EmpCode")
+                                {
+
+                                    // var GetEmp = oListEmployee.Where(x => x.EmpId == StringValue).FirstOrDefault();
+                                    var CheckList = oListEmployee.Where(x => x.EmpId == StringValue).FirstOrDefault();
+                                    if (CheckList != null)
+                                    {
+                                        oModelTrnsSingleEntryOtdetail.EmpId = CheckList.Id;
+                                        oModelTrnsSingleEntryOtdetail.EmpName = CheckList.FirstName + " " + CheckList.MiddleName + " " + CheckList.LastName;
+                                        empid = CheckList.Id;
+                                        IsForUpdate = true;
+                                        PropertyName = "EmpId";
+                                        oModelTrnsSingleEntryOtdetail.GetType().GetProperty(PropertyName).SetValue(oModelTrnsSingleEntryOtdetail, Convert.ToInt32(empid), null);
+                                        continue;
+                                    }
+                                }
+                                else if (!string.IsNullOrWhiteSpace(StringValue) && PropertyName == "OverTimeType")
+                                {
+                                    var CheckList = oListmstOverTime.Where(x => x.Description == StringValue).FirstOrDefault();
+                                    // var CheckList1 = oList.Where(x => x.TrnsSingleEntryOtdetails.Where(x=>x.OverTimeId == CheckList.Id)).FirstOrDefault();
+                                    if (CheckList != null)
+                                    {
+                                        oModel.Ottype = CheckList.Id;
+                                        oModelTrnsSingleEntryOtdetail.OverTimeId = CheckList.Id;
+                                        PropertyName = "OverTimeId";
+                                        oModelTrnsSingleEntryOtdetail.GetType().GetProperty(PropertyName).SetValue(oModelTrnsSingleEntryOtdetail, oModelTrnsSingleEntryOtdetail.OverTimeId, null);
+                                        continue;
+                                    }
+                                }
+                            }
+                            else if (PropertyInfo.PropertyType == typeof(decimal))
+                            {
+                                if (PropertyName == "TotalHours")
+                                {
+
+                                    var hour = Convert.ToDecimal(ws.Cell(i, j).Value.ToString());
+                                    if (hour != null && hour > 0)
+                                    {
+                                        oModelTrnsSingleEntryOtdetail.FlgActive = true;
+                                         PropertyName = "Hours";
+                                        oModelTrnsSingleEntryOtdetail.GetType().GetProperty(PropertyName).SetValue(oModelTrnsSingleEntryOtdetail, Convert.ToDecimal(hour), null);
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+                       oTrnsTrnsSingleEntryOtdetailAddList.Add(oModelTrnsSingleEntryOtdetail);
+                        if (oModelTrnsSingleEntryOtdetail.Id > 0 && !IsForUpdate)
+                        {
+
+                            var CheckDuplicate = oTrnsTrnsSingleEntryOtdetailAddList;//.Where(x => x.SingleEntryOtid == oMode&& x.PunchedDate == oModelTrnsTempAttendance.PunchedDate
+                            //                           && x.InOut == oModelTrnsTempAttendance.InOut).FirstOrDefault();
+                            //if (CheckDuplicate == null)
+                            //{
+                            //    oTrnsTempAttendanceAddList.Add(oModelTrnsTempAttendance);
+                            //}
+                        }//!string.IsNullOrWhiteSpace(oModelTrnsTempAttendance.FkempId)
+                         //    else if (oModelTrnsTempAttendance.FkempId > 0 && IsForUpdate)
+                         //    {
+                         //        var CheckDuplicate = oTrnsTempAttendanceUpdateList.Where(x => x.FkempId == oModelTrnsTempAttendance.FkempId && x.PunchedDate == oModelTrnsTempAttendance.PunchedDate
+                         //                                   && x.InOut == oModelTrnsTempAttendance.InOut).FirstOrDefault();
+                         //        if (CheckDuplicate == null)
+                         //        {
+                         //            oTrnsTempAttendanceUpdateList.Add(oModelTrnsTempAttendance);
+                         //        }
+                         //    }
+                    }
+                    //if (oTrnsTempAttendanceUpdateList.Count >= 0 && oTrnsTempAttendanceAddList.Count >= 0)
+                    //{
+                    //    oListTrnsTempAttendanceGridTemp.AddRange(oTrnsTempAttendanceAddList);
+                    //    oListTrnsTempAttendanceGridTemp.AddRange(oTrnsTempAttendanceUpdateList);
+                    //}
+                    ////else if(!IsForUpdate && oDepartmentAddList.Count > 0)
+                    ////{
+                    ////        oListDepartmentGridTemp.AddRange(oDepartmentAddList);
+                    ////}
+                    
+                    //oModel.TrnsSingleEntryOtdetails.Add(oModelTrnsSingleEntryOtdetail);
+                    oModel.TrnsSingleEntryOtdetails = oTrnsTrnsSingleEntryOtdetailAddList;
+
+                    File.Delete(TemplateFile);
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+            Loading = false;
+            _ = InvokeAsync(StateHasChanged);
+        }
+        private async Task MonthlyOverTimeTemplate()
+        {
+            try
+            {
+                await Task.Delay(1);
+                string FileName = "MonthlyOverTimeTemplate";
+                //string excelFilePath = "..\\wwwroot\\Templates\\" + FileName + ".xlsx";
+                string excelFilePath = Path.GetFullPath("wwwroot\\Templates\\" + FileName + ".xlsx");
+                using var workBook = new XLWorkbook();
+                var ws = workBook.Worksheets.Add(FileName);
+                Type type = typeof(VMMonthlyOTImport);
+                //int SetColumnIndex = 0;
+                int prvNum = 0, NumberOfRecords = type.GetProperties().Length;
+                for (int i = 1; i <= NumberOfRecords - 1; i++)
+                {
+
+                    var PropertyName = type.GetProperties()[i].Name;
+                    //if (PropertyName == "FkempId")
+                    //{
+                    //    PropertyName = "EmpCode";
+                    //}
+                    //if (PropertyName == "EmpId" || PropertyName == "FlgProcessed" || PropertyName == "CreatedDate" || PropertyName == "CreatedBy" || PropertyName == "UpdatedDate" || PropertyName == "UpdatedBy")
+                    //{
+                    //    continue;
+                    //}
+                    //if ((prvNum+1)!= i)
+                    //{
+                    //    ws.Cell(1, (prvNum + 1)).Value = PropertyName;
+                    //    ws.Cell(1, (prvNum + 1)).Style.Border.OutsideBorder = XLBorderStyleValues.Double;
+                    //    prvNum = i;
+                    //    continue;
+                    //}
+                    ws.Cell(1, i).Value = PropertyName;
+                    ws.Cell(1, i).Style.Border.OutsideBorder = XLBorderStyleValues.Double;
+
+                }
+                //workBook.SaveAs(excelFilePath); 
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    //Save the created Excel document to MemoryStream.
+                    workBook.SaveAs(stream);
+                    await JS.SaveAs(FileName + ".xlsx", stream.ToArray());
+                }
+                Snackbar.Add("Template saved: " + excelFilePath, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+            Loading = false;
+        }
+
     }
 }
 

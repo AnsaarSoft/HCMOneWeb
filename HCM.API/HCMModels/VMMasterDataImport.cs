@@ -27,4 +27,13 @@
 
     }
 
+    public class VMMonthlyOTImport
+    {
+        public int Id { get; set; }
+        public string EmpCode { get; set; }
+        public string OverTimeType { get; set; }
+        public decimal TotalHours { get; set; }
+
+
+    }
 }
