@@ -21,6 +21,7 @@ namespace HCM.API.HCMModels
         public string CalculatedOt { get; set; }
         public int? AttendanceId { get; set; }
         public string Remarks { get; set; }
+        public string OverTimeDescription { get; set; }
 
         public virtual MstEmployee Emp { get; set; }
         public virtual MstOverTime OverTime { get; set; }

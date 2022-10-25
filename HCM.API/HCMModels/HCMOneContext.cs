@@ -257,6 +257,7 @@ namespace HCM.API.HCMModels
         public virtual DbSet<MstLocation> MstLocations { get; set; }
         public virtual DbSet<MstLove> MstLoves { get; set; }
         public virtual DbSet<MstMemberShip> MstMemberShips { get; set; }
+        public virtual DbSet<MstMenu> MstMenus { get; set; }
         public virtual DbSet<MstMenuList> MstMenuLists { get; set; }
         public virtual DbSet<MstMpp> MstMpps { get; set; }
         public virtual DbSet<MstNoficationCategory> MstNoficationCategories { get; set; }
@@ -598,6 +599,7 @@ namespace HCM.API.HCMModels
         public virtual DbSet<TrnsWarningLetter> TrnsWarningLetters { get; set; }
         public virtual DbSet<TrnsWorkInQuarter> TrnsWorkInQuarters { get; set; }
         public virtual DbSet<TrnsleaveEncashment> TrnsleaveEncashments { get; set; }
+        public virtual DbSet<UserAuthorization> UserAuthorizations { get; set; }
         public virtual DbSet<VacancyEmailNotification> VacancyEmailNotifications { get; set; }
         public virtual DbSet<ViewApprovalTemplate> ViewApprovalTemplates { get; set; }
         public virtual DbSet<ViewDeptHiearcy> ViewDeptHiearcies { get; set; }
@@ -9608,6 +9610,51 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.UserId)
                     .HasMaxLength(10)
                     .HasColumnName("UserID");
+            });
+
+            modelBuilder.Entity<MstMenu>(entity =>
+            {
+                entity.ToTable("MstMenu");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("ID");
+
+                entity.Property(e => e.CappStamp)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("CAppStamp");
+
+                entity.Property(e => e.CreatedBy)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Icon)
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MenuId).HasColumnName("MenuID");
+
+                entity.Property(e => e.MenuLink)
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MenuName)
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UappStamp)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("UAppStamp");
+
+                entity.Property(e => e.UpdatedBy)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<MstMenuList>(entity =>
@@ -21964,6 +22011,8 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.Hours).HasColumnType("decimal(18, 2)");
 
+                entity.Property(e => e.OverTimeDescription).HasMaxLength(150);
+
                 entity.Property(e => e.OverTimeId).HasColumnName("OverTimeID");
 
                 entity.Property(e => e.Remarks).HasMaxLength(250);
@@ -23285,6 +23334,47 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.UpdatedBy).HasMaxLength(50);
 
                 entity.Property(e => e.UpdatedDt).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<UserAuthorization>(entity =>
+            {
+                entity.ToTable("UserAuthorization");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CappStamp)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("CAppStamp");
+
+                entity.Property(e => e.CreatedBy)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.FkmenuId).HasColumnName("FKMenuID");
+
+                entity.Property(e => e.FkuserId).HasColumnName("FKUserID");
+
+                entity.Property(e => e.MenuLink)
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MenuName)
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UappStamp)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("UAppStamp");
+
+                entity.Property(e => e.UpdatedBy)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<VacancyEmailNotification>(entity =>
