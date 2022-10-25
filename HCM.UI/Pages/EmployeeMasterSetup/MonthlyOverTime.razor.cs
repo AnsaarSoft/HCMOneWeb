@@ -177,55 +177,6 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             //    return true;
             return false;
         }
-        //private async Task<IEnumerable<MstEmployee>> SearchEmployee(string value)
-        //{
-        //    try
-        //    {
-        //        await Task.Delay(1);
-        //        if (string.IsNullOrWhiteSpace(value))
-        //            return oListEmployee.Select(o => new MstEmployee
-        //            {
-        //                Id = o.Id,
-        //                EmpId = o.EmpId,
-        //            }).ToList();
-
-        //        var res = oListEmployee.Where(x => x.EmpId.ToUpper().Contains(value.ToUpper())).ToList();
-        //        return res.Select(x => new MstEmployee
-        //        {
-        //            Id = x.Id,
-        //            EmpId = x.EmpId,
-        //        }).ToList();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logs.GenerateLogs(ex);
-        //        return null;
-        //    }
-        //}
-        //private async Task FillEmployeeCode(MstEmployee oModelMstEmpCode)
-        //{
-        //    try
-        //    {
-        //        if (oModelMstEmpCode != null)
-        //        {
-        //            var EmpDetail = oListEmployee.Where(x => x.EmpId == oModelMstEmpCode.EmpId).FirstOrDefault();
-        //            oModelPayroll = oListPayroll.Where(x => x.Id == EmpDetail.PayrollId).FirstOrDefault();
-        //            CfgPeriodDate mstPayrollPeriod = new CfgPeriodDate();
-        //            oListPayrollPeriod = oModelPayroll.CfgPeriodDates.Where(x => x.PayrollId == oModelPayroll.Id).ToList();
-        //            //DateTime dt = (DateTime)oPayroll.FirstPeriodEndDt;
-        //            FullName = EmpDetail.FirstName + " " + EmpDetail.MiddleName + " " + EmpDetail.LastName;
-        //            oModelMstEmployee.PayrollName = EmpDetail.PayrollName;
-        //            oModelMstEmployee = EmpDetail;
-
-        //            await Task.Delay(1);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logs.GenerateLogs(ex);
-        //    }
-        //    _ = InvokeAsync(StateHasChanged);
-        //}
         private async Task<IEnumerable<MstEmployee>> SearchEmployeeFrom(string value)
         {
             try
@@ -370,51 +321,6 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 return null;
             }
         }
-        //private async Task<IEnumerable<CfgPayrollDefination>> SearchPayroll(string value)
-        //{
-        //    try
-        //    {
-        //        await Task.Delay(1);
-        //        if (string.IsNullOrWhiteSpace(value))
-        //            return oListPayroll.Select(o => new CfgPayrollDefination
-        //            {
-        //                Id = o.Id,
-        //                PayrollName = o.PayrollName,
-        //                MstElementLinks = o.MstElementLinks,
-        //            }).ToList();
-        //        var res = oListPayroll.Where(x => x.PayrollName.ToUpper().Contains(value.ToUpper())).ToList();
-
-
-        //        return res.Select(x => new CfgPayrollDefination
-        //        {
-        //            Id = x.Id,
-        //            PayrollName = x.PayrollName,
-        //            MstElementLinks = x.MstElementLinks,
-        //        }).ToList();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logs.GenerateLogs(ex);
-        //        return null;
-        //    }
-        //}
-        //private async Task FillPayrollCode(CfgPayrollDefination CfgPayrollDefination)
-        //{
-        //    try
-        //    {
-        //        if (CfgPayrollDefination != null)
-        //        {
-        //            var Selectedpayroll = oListPayroll.Where(x => x.Id == CfgPayrollDefination.Id).FirstOrDefault();
-        //            oListPayrollPeriod = Selectedpayroll.CfgPeriodDates.ToList();
-        //            await Task.Delay(1);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logs.GenerateLogs(ex);
-        //    }
-        //    _ = InvokeAsync(StateHasChanged);
-        //}
         private async Task OpenDialog(DialogOptions options)
         {
             try
@@ -431,11 +337,21 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     TrnsEmployeeOvertime trnsEmployeeOvertime = new TrnsEmployeeOvertime();
                     foreach (var item in oModel.TrnsSingleEntryOtdetails)
                     {
+                        //oModelPayroll = oListPayroll.Where(x => x.Id == item.PayrollId).FirstOrDefault();
+                        //oListPayrollPeriod = oModelPayroll.CfgPeriodDates.Where(x => x.PayrollId == oModelPayroll.Id).ToList();
+                        //var SelectedPeriod = oListPayrollPeriod.Where(x => DateTime.Now.Date >= x.StartDate && DateTime.Now.Date <= x.EndDate).FirstOrDefault();
+
+
                         trnsEmployeeOvertime.EmployeeId = item.EmpId;
+                        trnsEmployeeOvertime.PeriodId = item.Periodid;
+                        trnsEmployeeOvertime.PeriodName= item.PeriodName;
+
                         TrnsEmployeeOvertimeDetail trnsEmployeeOvertimeDetail = new TrnsEmployeeOvertimeDetail();
                         trnsEmployeeOvertimeDetail.OvertimeId = item.OverTimeId;
                         trnsEmployeeOvertimeDetail.Othours = item.Hours;
                         trnsEmployeeOvertimeDetail.Amount = item.Amount;
+
+
                         trnsEmployeeOvertimeDetail.FlgActive = item.FlgActive;
                         trnsEmployeeOvertimeDetail.CreateDate = DateTime.Now;
                         trnsEmployeeOvertimeDetail.UserId= LoginUser;
@@ -518,6 +434,24 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             {
                 oListPayroll = await _CfgPayrollDefination.GetAllData();
                 oListPayroll = oListPayroll.Where(x => x.FlgActive == true).ToList();
+
+
+                //foreach (var PayrollElement in oListPayrollElementLink)
+                //{
+                //    var SelectedElement = oElementListPer.Where(x => x.Id == PayrollElement.ElementId).FirstOrDefault();
+                //    if (SelectedElement != null)
+                //    {
+                //        oListTemp.Add(SelectedElement);
+                //    }
+                //}
+                //oElementListFilter = oListTemp.ToList();
+
+                //oModelPayroll.PayrollId = SelectedPayroll.Id;
+                //oModelPayroll.PayrollCode = SelectedPayroll.PayrollName;
+                //oListPayrollPeriod = SelectedPayroll.CfgPeriodDates.Where(x => x.PayrollId == oModel.PayrollId).ToList();
+                //var SelectedPeriod = oListPayrollPeriod.Where(x => DateTime.Now.Date >= x.StartDate && DateTime.Now.Date <= x.EndDate).FirstOrDefault();
+                //oModel.PaysInPeriodId = SelectedPeriod.Id;
+                //oModel.PaysInPeriodCode = SelectedPeriod.PeriodName;
             }
             catch (Exception ex)
             {
@@ -600,10 +534,18 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                         foreach (var item in oListFilteredEmployee)
                         {
                             TrnsSingleEntryOtdetail oTrnsSingleEntryOtdetail = new TrnsSingleEntryOtdetail();
+                            oModelPayroll = oListPayroll.Where(x => x.Id == item.PayrollId).FirstOrDefault();
+                            oListPayrollPeriod = oModelPayroll.CfgPeriodDates.Where(x => x.PayrollId == oModelPayroll.Id).ToList();
+                            var SelectedPeriod = oListPayrollPeriod.Where(x => DateTime.Now.Date >= x.StartDate && DateTime.Now.Date <= x.EndDate).FirstOrDefault();
+                            
                             oTrnsSingleEntryOtdetail.EmpId = item.Id;
                             oTrnsSingleEntryOtdetail.EmpName = item.FirstName + " " + item.MiddleName + " " + item.LastName;
                             oTrnsSingleEntryOtdetail.OverTimeId = oModelmstOvertime.Id;
-                            //oTrnsSingleEntryOtdetail. = oModelmstOvertime.Description;
+                            oTrnsSingleEntryOtdetail.OverTimeDescription = oModelmstOvertime.Description;
+                            oTrnsSingleEntryOtdetail.PayrollId = item.PayrollId;
+                            oTrnsSingleEntryOtdetail.PayrollName = item.PayrollName;
+                            oTrnsSingleEntryOtdetail.Periodid = SelectedPeriod.Id;
+                            oTrnsSingleEntryOtdetail.PeriodName = SelectedPeriod.PeriodName;
                             oTrnsSingleEntryOtdetail.FlgActive = true;
                             oModel.Ottype = oModelmstOvertime.Id;
 
@@ -847,7 +789,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
                 if (oModel.Id != 0)
                 {
-                    //oListEmployeeOvertime = oListEmployeeOvertime.Where(x=>x.EmployeeId == )
+                    //oModelEmployeeOvertime = oListEmployeeOvertime.Where(x=>x.EmployeeId == )
 
                    // res = await _TrnsSingleEntryOtrequest.InsertUpdate(vMMonthlyOverTime);
                 }
@@ -975,12 +917,24 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                                 else if (!string.IsNullOrWhiteSpace(StringValue) && PropertyName == "EmpCode")
                                 {
 
-                                    // var GetEmp = oListEmployee.Where(x => x.EmpId == StringValue).FirstOrDefault();
+                                    var GetEmp = oListEmployee.Where(x => x.EmpId == StringValue).FirstOrDefault();
+
                                     var CheckList = oListEmployee.Where(x => x.EmpId == StringValue).FirstOrDefault();
                                     if (CheckList != null)
                                     {
                                         oModelTrnsSingleEntryOtdetail.EmpId = CheckList.Id;
                                         oModelTrnsSingleEntryOtdetail.EmpName = CheckList.FirstName + " " + CheckList.MiddleName + " " + CheckList.LastName;
+                                        
+                                        oModelPayroll = oListPayroll.Where(x => x.Id == CheckList.PayrollId).FirstOrDefault();
+                                        oListPayrollPeriod = oModelPayroll.CfgPeriodDates.Where(x => x.PayrollId == oModelPayroll.Id).ToList();
+                                        var SelectedPeriod = oListPayrollPeriod.Where(x => DateTime.Now.Date >= x.StartDate && DateTime.Now.Date <= x.EndDate).FirstOrDefault();
+
+                                        oModelTrnsSingleEntryOtdetail.PayrollId = CheckList.PayrollId;
+                                        oModelTrnsSingleEntryOtdetail.PayrollName = CheckList.PayrollName;
+                                        oModelTrnsSingleEntryOtdetail.Periodid = SelectedPeriod.Id;
+                                        oModelTrnsSingleEntryOtdetail.PeriodName = SelectedPeriod.PeriodName;
+
+
                                         empid = CheckList.Id;
                                         IsForUpdate = true;
                                         PropertyName = "EmpId";
@@ -996,6 +950,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                                     {
                                         oModel.Ottype = CheckList.Id;
                                         oModelTrnsSingleEntryOtdetail.OverTimeId = CheckList.Id;
+                                        oModelTrnsSingleEntryOtdetail.OverTimeDescription = CheckList.Description;
                                         PropertyName = "OverTimeId";
                                         oModelTrnsSingleEntryOtdetail.GetType().GetProperty(PropertyName).SetValue(oModelTrnsSingleEntryOtdetail, oModelTrnsSingleEntryOtdetail.OverTimeId, null);
                                         continue;
@@ -1152,7 +1107,6 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             }
         }
         #endregion
-
     }
 }
 
