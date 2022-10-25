@@ -718,6 +718,29 @@ namespace HCM.API.Controllers
             }
         }
 
+        [Route("addUpdateMonthlyOT")]
+        [HttpPost]
+        public async Task<IActionResult> AddUpdate([FromBody] VMMonthlyOverTime vMMonthlyOverTime)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _trnsSingleEntryOtrequest.InsertUpdate(vMMonthlyOverTime);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
         #endregion
     }
 }
