@@ -64,6 +64,9 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         public IMstDesignation _mstDesignation { get; set; }
 
         [Inject]
+        IJSRuntime JS { get; set; }
+
+        [Inject]
         public ILocalStorageService _localStorage { get; set; }
 
         private string LoginUser = "";
@@ -75,16 +78,19 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         bool Loading = false;
         bool IsFlg = false;
 
-        public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
-        string EmpName = "";
-        private decimal Amount;
-        private decimal Hours;
-        private string PayrollPeriodstr = "Select Period";
+       // public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
+        //string EmpName = "";
+        //private decimal Amount;
+        //private decimal Hours;
+        //private string PayrollPeriodstr = "Select Period";
         private string FullName = "";
         private string searchString1 = "";
 
+        string AlphanumericMask = @"^[a-zA-Z0-9_]*$";
+        IList<IBrowserFile> excelSheet = new List<IBrowserFile>();
         private bool FilterFuncTrnsSingleEntryOtdetail(TrnsSingleEntryOtdetail element) => FilterFuncTrnsSingleEntryOtdetail(element, searchString1);
 
+        VMMonthlyOverTime vMMonthlyOverTime = new VMMonthlyOverTime();
 
         MstEmployee oModelMstEmployee = new MstEmployee();
         private IEnumerable<MstEmployee> oListEmployee = new List<MstEmployee>();
@@ -98,6 +104,9 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
         MstEmployee oModelEmployeeTo = new MstEmployee();
         private IEnumerable<MstEmployee> oListEmployeeTo = new List<MstEmployee>();
+
+        TrnsEmployeeOvertime oModelEmployeeOvertime = new TrnsEmployeeOvertime();
+        private IEnumerable<TrnsEmployeeOvertime> oListEmployeeOvertime = new List<TrnsEmployeeOvertime>();
 
         TrnsSingleEntryOtrequest oModel = new TrnsSingleEntryOtrequest();
         private IEnumerable<TrnsSingleEntryOtrequest> oList = new List<TrnsSingleEntryOtrequest>();
@@ -125,9 +134,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         CfgPeriodDate oModelPayrollPeriod = new CfgPeriodDate();
         private IEnumerable<CfgPeriodDate> oListPayrollPeriod = new List<CfgPeriodDate>();
 
-
-
-        DateTime? docdate;
+       // DateTime? docdate;
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
         DialogOptions FullView = new DialogOptions() { MaxWidth = MaxWidth.ExtraExtraLarge, FullWidth = true, CloseButton = true, DisableBackdropClick = true, CloseOnEscapeKey = true };
 
@@ -170,55 +177,55 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             //    return true;
             return false;
         }
-        private async Task<IEnumerable<MstEmployee>> SearchEmployee(string value)
-        {
-            try
-            {
-                await Task.Delay(1);
-                if (string.IsNullOrWhiteSpace(value))
-                    return oListEmployee.Select(o => new MstEmployee
-                    {
-                        Id = o.Id,
-                        EmpId = o.EmpId,
-                    }).ToList();
+        //private async Task<IEnumerable<MstEmployee>> SearchEmployee(string value)
+        //{
+        //    try
+        //    {
+        //        await Task.Delay(1);
+        //        if (string.IsNullOrWhiteSpace(value))
+        //            return oListEmployee.Select(o => new MstEmployee
+        //            {
+        //                Id = o.Id,
+        //                EmpId = o.EmpId,
+        //            }).ToList();
 
-                var res = oListEmployee.Where(x => x.EmpId.ToUpper().Contains(value.ToUpper())).ToList();
-                return res.Select(x => new MstEmployee
-                {
-                    Id = x.Id,
-                    EmpId = x.EmpId,
-                }).ToList();
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-                return null;
-            }
-        }
-        private async Task FillEmployeeCode(MstEmployee oModelMstEmpCode)
-        {
-            try
-            {
-                if (oModelMstEmpCode != null)
-                {
-                    var EmpDetail = oListEmployee.Where(x => x.EmpId == oModelMstEmpCode.EmpId).FirstOrDefault();
-                    oModelPayroll = oListPayroll.Where(x => x.Id == EmpDetail.PayrollId).FirstOrDefault();
-                    CfgPeriodDate mstPayrollPeriod = new CfgPeriodDate();
-                    oListPayrollPeriod = oModelPayroll.CfgPeriodDates.Where(x => x.PayrollId == oModelPayroll.Id).ToList();
-                    //DateTime dt = (DateTime)oPayroll.FirstPeriodEndDt;
-                    FullName = EmpDetail.FirstName + " " + EmpDetail.MiddleName + " " + EmpDetail.LastName;
-                    oModelMstEmployee.PayrollName = EmpDetail.PayrollName;
-                    oModelMstEmployee = EmpDetail;
+        //        var res = oListEmployee.Where(x => x.EmpId.ToUpper().Contains(value.ToUpper())).ToList();
+        //        return res.Select(x => new MstEmployee
+        //        {
+        //            Id = x.Id,
+        //            EmpId = x.EmpId,
+        //        }).ToList();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logs.GenerateLogs(ex);
+        //        return null;
+        //    }
+        //}
+        //private async Task FillEmployeeCode(MstEmployee oModelMstEmpCode)
+        //{
+        //    try
+        //    {
+        //        if (oModelMstEmpCode != null)
+        //        {
+        //            var EmpDetail = oListEmployee.Where(x => x.EmpId == oModelMstEmpCode.EmpId).FirstOrDefault();
+        //            oModelPayroll = oListPayroll.Where(x => x.Id == EmpDetail.PayrollId).FirstOrDefault();
+        //            CfgPeriodDate mstPayrollPeriod = new CfgPeriodDate();
+        //            oListPayrollPeriod = oModelPayroll.CfgPeriodDates.Where(x => x.PayrollId == oModelPayroll.Id).ToList();
+        //            //DateTime dt = (DateTime)oPayroll.FirstPeriodEndDt;
+        //            FullName = EmpDetail.FirstName + " " + EmpDetail.MiddleName + " " + EmpDetail.LastName;
+        //            oModelMstEmployee.PayrollName = EmpDetail.PayrollName;
+        //            oModelMstEmployee = EmpDetail;
 
-                    await Task.Delay(1);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-            }
-            _ = InvokeAsync(StateHasChanged);
-        }
+        //            await Task.Delay(1);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logs.GenerateLogs(ex);
+        //    }
+        //    _ = InvokeAsync(StateHasChanged);
+        //}
         private async Task<IEnumerable<MstEmployee>> SearchEmployeeFrom(string value)
         {
             try
@@ -363,51 +370,51 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 return null;
             }
         }
-        private async Task<IEnumerable<CfgPayrollDefination>> SearchPayroll(string value)
-        {
-            try
-            {
-                await Task.Delay(1);
-                if (string.IsNullOrWhiteSpace(value))
-                    return oListPayroll.Select(o => new CfgPayrollDefination
-                    {
-                        Id = o.Id,
-                        PayrollName = o.PayrollName,
-                        MstElementLinks = o.MstElementLinks,
-                    }).ToList();
-                var res = oListPayroll.Where(x => x.PayrollName.ToUpper().Contains(value.ToUpper())).ToList();
+        //private async Task<IEnumerable<CfgPayrollDefination>> SearchPayroll(string value)
+        //{
+        //    try
+        //    {
+        //        await Task.Delay(1);
+        //        if (string.IsNullOrWhiteSpace(value))
+        //            return oListPayroll.Select(o => new CfgPayrollDefination
+        //            {
+        //                Id = o.Id,
+        //                PayrollName = o.PayrollName,
+        //                MstElementLinks = o.MstElementLinks,
+        //            }).ToList();
+        //        var res = oListPayroll.Where(x => x.PayrollName.ToUpper().Contains(value.ToUpper())).ToList();
 
 
-                return res.Select(x => new CfgPayrollDefination
-                {
-                    Id = x.Id,
-                    PayrollName = x.PayrollName,
-                    MstElementLinks = x.MstElementLinks,
-                }).ToList();
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-                return null;
-            }
-        }
-        private async Task FillPayrollCode(CfgPayrollDefination CfgPayrollDefination)
-        {
-            try
-            {
-                if (CfgPayrollDefination != null)
-                {
-                    var Selectedpayroll = oListPayroll.Where(x => x.Id == CfgPayrollDefination.Id).FirstOrDefault();
-                    oListPayrollPeriod = Selectedpayroll.CfgPeriodDates.ToList();
-                    await Task.Delay(1);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-            }
-            _ = InvokeAsync(StateHasChanged);
-        }
+        //        return res.Select(x => new CfgPayrollDefination
+        //        {
+        //            Id = x.Id,
+        //            PayrollName = x.PayrollName,
+        //            MstElementLinks = x.MstElementLinks,
+        //        }).ToList();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logs.GenerateLogs(ex);
+        //        return null;
+        //    }
+        //}
+        //private async Task FillPayrollCode(CfgPayrollDefination CfgPayrollDefination)
+        //{
+        //    try
+        //    {
+        //        if (CfgPayrollDefination != null)
+        //        {
+        //            var Selectedpayroll = oListPayroll.Where(x => x.Id == CfgPayrollDefination.Id).FirstOrDefault();
+        //            oListPayrollPeriod = Selectedpayroll.CfgPeriodDates.ToList();
+        //            await Task.Delay(1);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logs.GenerateLogs(ex);
+        //    }
+        //    _ = InvokeAsync(StateHasChanged);
+        //}
         private async Task OpenDialog(DialogOptions options)
         {
             try
@@ -421,11 +428,21 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     var res = (TrnsSingleEntryOtrequest)result.Data;
                     oModel = res;
                     oModelmstOvertime = oListmstOverTime.Where(x => x.Id == oModel.Ottype).FirstOrDefault();
-                    //oModelMstEmployee = oListEmployee.Where(x => x.Id == oModel.EmployeeId).FirstOrDefault();
-                    //EmpName = oModelMstEmployee.FirstName + " " + oModelMstEmployee.MiddleName + " " + oModelMstEmployee.LastName;
-
-                    // oListTrnsEmployeeOvertimeDetail = oModel.TrnsEmployeeOvertimeDetails.ToList();
-                    //oModelTrnsEmployeeOvertimeDetail = oListTrnsEmployeeOvertimeDetail.Where(x => x.EmpOvertimeId == oModel.Id).FirstOrDefault();
+                    TrnsEmployeeOvertime trnsEmployeeOvertime = new TrnsEmployeeOvertime();
+                    foreach (var item in oModel.TrnsSingleEntryOtdetails)
+                    {
+                        trnsEmployeeOvertime.EmployeeId = item.EmpId;
+                        TrnsEmployeeOvertimeDetail trnsEmployeeOvertimeDetail = new TrnsEmployeeOvertimeDetail();
+                        trnsEmployeeOvertimeDetail.OvertimeId = item.OverTimeId;
+                        trnsEmployeeOvertimeDetail.Othours = item.Hours;
+                        trnsEmployeeOvertimeDetail.Amount = item.Amount;
+                        trnsEmployeeOvertimeDetail.FlgActive = item.FlgActive;
+                        trnsEmployeeOvertimeDetail.CreateDate = DateTime.Now;
+                        trnsEmployeeOvertimeDetail.UserId= LoginUser;
+                        trnsEmployeeOvertime.TrnsEmployeeOvertimeDetails.Add(trnsEmployeeOvertimeDetail);
+                    }
+                    vMMonthlyOverTime.TrnsEmployeeOvertime = trnsEmployeeOvertime;
+                    vMMonthlyOverTime.TrnsSingleEntryOtrequest = oModel;
                 }
             }
             catch (Exception ex)
@@ -465,6 +482,18 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             {
                 oListEmployee = await _mstEmployeeMaster.GetAllData();
                 oListEmployee = oListEmployee.Where(x => x.FlgActive == true).ToList();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private async Task GetAllEmployeeOvertime()
+        {
+            try
+            {
+                oListEmployeeOvertime = await _TrnsEmployeeOverTime.GetAllData();
+                oListEmployeeOvertime = oListEmployeeOvertime.ToList();
             }
             catch (Exception ex)
             {
@@ -577,6 +606,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                             //oTrnsSingleEntryOtdetail. = oModelmstOvertime.Description;
                             oTrnsSingleEntryOtdetail.FlgActive = true;
                             oModel.Ottype = oModelmstOvertime.Id;
+
                             oModel.TrnsSingleEntryOtdetails.Add(oTrnsSingleEntryOtdetail);
                         }
                     }
@@ -779,22 +809,18 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
               
-                    if (oModel.Id == 0)
+                    if (oModel.Id != 0)
                     {
-                        oModel.CreatedBy = LoginUser;
-                       // res = await _trnsEmployeeTransfer.Insert(oModel);
+                    vMMonthlyOverTime.TrnsSingleEntryOtrequest.DocStatus = "Closed";
+                    vMMonthlyOverTime.TrnsSingleEntryOtrequest.UpdatedBy = LoginUser;
+                    vMMonthlyOverTime.TrnsEmployeeOvertime.UserId = LoginUser;
+                     res = await _TrnsSingleEntryOtrequest.InsertUpdate(vMMonthlyOverTime);
                     }
-                    else
-                    {
-                        oModel.UpdatedBy = LoginUser;
-                      //  res = await _trnsEmployeeTransfer.Update(oModel);
-                    }
-
                     if (res != null && res.Id == 1)
                     {
                         Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
                         await Task.Delay(3000);
-                        Navigation.NavigateTo("/EmployeeTransfer", forceLoad: true);
+                        Navigation.NavigateTo("/MonthlyOverTime", forceLoad: true);
                     }
                     else
                     {
@@ -810,49 +836,41 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 return null;
             }
         }
-        #endregion
 
-        #region Events
-
-        protected async override Task OnInitializedAsync()
+        private async Task<ApiResponseModel> Void()
         {
             try
             {
                 Loading = true;
-                var Session = await _localStorage.GetItemAsync<MstEmployee>("User");
-                if (Session != null)
+                var res = new ApiResponseModel();
+                await Task.Delay(3);
+
+                if (oModel.Id != 0)
                 {
-                    LoginUser = Session.EmpId;
-                    oModel.DocStatus = "Draft";
-                    await GetAllMonthlyOT();
-                    await SetDocNo();
-                    await GetAllEmployees();
-                    await GetAllEmployeesPayroll();
-                    await GetAllOvertime();
-                    await GetAllBranch();
-                    await GetAllDesignation();
-                    await GetAllDepartments();
-                    await GetAllLocation();
+                    //oListEmployeeOvertime = oListEmployeeOvertime.Where(x=>x.EmployeeId == )
+
+                   // res = await _TrnsSingleEntryOtrequest.InsertUpdate(vMMonthlyOverTime);
+                }
+                if (res != null && res.Id == 1)
+                {
+                    Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+                    await Task.Delay(3000);
+                    Navigation.NavigateTo("/MonthlyOverTime", forceLoad: true);
                 }
                 else
                 {
-                    Navigation.NavigateTo("/Login", forceLoad: true);
+                    Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                 }
                 Loading = false;
+                return res;
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 Loading = false;
+                return null;
             }
         }
-
-        #endregion
-
-        [Inject]
-        IJSRuntime JS { get; set; }
-        IList<IBrowserFile> excelSheet = new List<IBrowserFile>();
-        string AlphanumericMask = @"^[a-zA-Z0-9_]*$";
         private async Task UploadFile(InputFileChangeEventArgs e)
         {
             try
@@ -1096,6 +1114,44 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             }
             Loading = false;
         }
+
+        #endregion
+
+        #region Events
+        protected async override Task OnInitializedAsync()
+        {
+            try
+            {
+                Loading = true;
+                var Session = await _localStorage.GetItemAsync<MstEmployee>("User");
+                if (Session != null)
+                {
+                    LoginUser = Session.EmpId;
+                    oModel.DocStatus = "Draft";
+                    await GetAllMonthlyOT();
+                    await GetAllEmployeeOvertime();
+                    await SetDocNo();
+                    await GetAllEmployees();
+                    await GetAllEmployeesPayroll();
+                    await GetAllOvertime();
+                    await GetAllBranch();
+                    await GetAllDesignation();
+                    await GetAllDepartments();
+                    await GetAllLocation();
+                }
+                else
+                {
+                    Navigation.NavigateTo("/Login", forceLoad: true);
+                }
+                Loading = false;
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                Loading = false;
+            }
+        }
+        #endregion
 
     }
 }
