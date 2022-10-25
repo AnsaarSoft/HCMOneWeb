@@ -1,73 +1,195 @@
 ﻿<MudNavMenu>
-    
     <MudNavLink Href="Dashboard" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
     <MudNavGroup Title="Administration" Expanded="false" class="parent-icon" Icon="@Icons.Rounded.SupervisedUserCircle" IconColor="Color.Inherit">
-        <MudNavLink Href="EmailConfig"  Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Email Configuration</MudNavLink>
-        <MudNavLink Href="DocumentNumberSeries" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Document Number Series</MudNavLink>
         <MudNavLink Href="Payrollinit" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Payroll Initialization</MudNavLink>
+        <MudNavLink Href="EmailConfig" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Email Configuration</MudNavLink>
+        <MudNavLink Href="DocumentNumberSeries" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Document Number Series</MudNavLink>
         <MudNavLink Href="ApprovalStages" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Approval Stages</MudNavLink>
         <MudNavLink Href="ApprovalTemplate" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Approval Template</MudNavLink>
         <MudNavLink Href="ApprovalDecesion" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Approval Decesion</MudNavLink>
+        <MudNavLink Href="UserAuthorization" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">User Authorization</MudNavLink>
+        <MudNavLink Href="UserDataAccess" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">User Data Access</MudNavLink>
     </MudNavGroup>
-    <MudNavGroup Title="Master Setup" Expanded="false" class="parent-icon" Icon="@Icons.Filled.Settings" IconColor="Color.Inherit">        
+    <MudNavGroup Title="Master Setup" Expanded="false" class="parent-icon" Icon="@Icons.Filled.Settings" IconColor="Color.Inherit">
         <MudNavLink Href="Department" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Department</MudNavLink>
-        <MudNavLink Href="Dimension" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Dimension</MudNavLink>
-        <MudNavLink Href="Contractor" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Contractor</MudNavLink>
-        <MudNavLink Href="Station" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Station</MudNavLink>
         <MudNavLink Href="Designation" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Designation</MudNavLink>
         <MudNavLink Href="Location" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Location</MudNavLink>
-        <MudNavLink Href="Position" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Position</MudNavLink>
         <MudNavLink Href="Branch" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Branch</MudNavLink>
+        <MudNavLink Href="Position" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Position</MudNavLink>
         <MudNavLink Href="Grading" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Grading</MudNavLink>
+        <MudNavLink Href="Dimension" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Dimension</MudNavLink>
         <MudNavLink Href="Gratuity" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Gratuity</MudNavLink>
-        <MudNavLink Href="Bonus" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Bonus</MudNavLink>  
-        <MudNavLink Href="TaxSetup" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Tax Setup</MudNavLink> 
-        <MudNavLink Href="Calendar" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Calendar Setup</MudNavLink>    
-        <MudNavLink Href="PayrollSetup" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Payroll Setup</MudNavLink>  
+        <MudNavLink Href="TaxSetup" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Tax Setup</MudNavLink>
+        <MudNavLink Href="Contractor" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Contractor</MudNavLink>
+        <MudNavLink Href="Station" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Station</MudNavLink>
+        <MudNavLink Href="Bonus" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Bonus</MudNavLink>
+        <MudNavLink Href="Calendar" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Calendar Setup</MudNavLink>
     </MudNavGroup>
     <MudNavGroup Title="Data Import" Expanded="false" class="parent-icon" Icon="@Icons.Filled.ImportExport" IconColor="Color.Inherit">
-         <MudNavLink Href="MasterData" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Master Data</MudNavLink>
-        <MudNavLink Href="OpeningBalanceData" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Opening Balance Data</MudNavLink>
-    </MudNavGroup>                   
-     <MudNavGroup Title="Leave Setup" Expanded="false" class="parent-icon" Icon="@Icons.Filled.SettingsSuggest" IconColor="Color.Inherit">
-         <MudNavLink Href="LeaveCalendar" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Leave Calendar</MudNavLink>        
-          <MudNavLink Href="LeaveDeduction" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Leave Deduction</MudNavLink>  
-        <MudNavLink Href="LeaveType" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Leave Type</MudNavLink> 
-        <MudNavLink Href="LeaveAllocation" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Leave Allocation</MudNavLink> 
-    </MudNavGroup>  
-    <MudNavGroup Title="Loan / Advance Setup" class="parent-icon" Expanded="false" Icon="@Icons.Sharp.AdminPanelSettings" IconColor="Color.Inherit">
-         <MudNavLink Href="Loans" Match="NavLinkMatch.Prefix"class="child-icons" Icon="@Icons.Filled.Circle">Loan Master</MudNavLink>   
-         <MudNavLink Href="LoanRequest" Match="NavLinkMatch.Prefix"class="child-icons" Icon="@Icons.Filled.Circle">Loan Request</MudNavLink>   
-         <MudNavLink Href="Advance" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Advance Master</MudNavLink>
-        <MudNavLink Href="AdvanceRequest" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Advance Request</MudNavLink>
+        <MudNavLink Href="MasterData" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Master Data</MudNavLink>
+        <MudNavLink Href="OpeningBalanceData" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Opening Balance</MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="Leave Setup" Expanded="false" class="parent-icon" Icon="@Icons.Filled.SettingsSuggest" IconColor="Color.Inherit">
+        <MudNavLink Href="LeaveType" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Leave Type</MudNavLink>
+        <MudNavLink Href="LeaveDeduction" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Leave Deduction</MudNavLink>
+        <MudNavLink Href="LeaveCalendar" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Leave Calendar</MudNavLink>
+        <MudNavLink Href="LeaveAllocation" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Leave Allocation</MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="Payroll Setup" class="parent-icon" Expanded="false" Icon="@Icons.Sharp.AdminPanelSettings" IconColor="Color.Inherit">
+        <MudNavLink Href="Element" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Element</MudNavLink>
+        <MudNavLink Href="PayrollSetup" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Payroll Setup</MudNavLink>
+        <MudNavLink Href="Loans" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Loan Master</MudNavLink>
+        <MudNavLink Href="Advance" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Advance Master</MudNavLink>
+        <MudNavLink Href="OverTime" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">OverTime</MudNavLink>
     </MudNavGroup>
     <MudNavGroup Title="Attendance Setup" class="parent-icon" Expanded="false" Icon="@Icons.Filled.SettingsSuggest" IconColor="Color.Inherit">
-         <MudNavLink Href="Shifts" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Shift Master</MudNavLink>
-         <MudNavLink Href="DeductionRule" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Deduction Rule</MudNavLink> 
-         <MudNavLink Href="AttendanceRule" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Attendance Rules</MudNavLink>
-    </MudNavGroup>
-    <MudNavGroup Title="Element Setup" class="parent-icon" Expanded="false" Icon="@Icons.Filled.Settings" IconColor="Color.Inherit">
-        <MudNavLink Href="Element" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Element</MudNavLink>
-        <MudNavLink Href="OverTime" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">OverTime</MudNavLink>
-        <MudNavLink Href="ElementTransaction" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Element Transaction</MudNavLink>
-        <MudNavLink Href="TaxAdjustment" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Tax Adjustment</MudNavLink>
+        <MudNavLink Href="Shifts" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Shift Master</MudNavLink>
+        <MudNavLink Href="DeductionRule" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Deduction Rule</MudNavLink>
+        <MudNavLink Href="AttendanceRule" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Attendance Rules</MudNavLink>
     </MudNavGroup>
     <MudNavGroup Title="Employee Master" class="parent-icon" Expanded="false" Icon="@Icons.Sharp.AdminPanelSettings" IconColor="Color.Inherit">
         <MudNavLink Href="EmployeeMasterData" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Employee Master Data</MudNavLink>
         <MudNavLink Href="EmployeeMasterPartialView" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Employee Partial View</MudNavLink>
-        <MudNavLink Href="EmployeeTransfer" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Employee Transfer</MudNavLink>
-        <MudNavLink Href="EmployeeOverTime" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Employee OverTime</MudNavLink>
-        <MudNavLink Href="MonthlyOverTime" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Monthly OverTime</MudNavLink>
-        <MudNavLink Href="LeaveRequest" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Leave Request</MudNavLink>
-        <MudNavLink Href="EmployeeResign" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Employee Resign</MudNavLink>
-        <MudNavLink Href="EmployeeBonus" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Employee Bonus</MudNavLink>
-        <MudNavLink Href="EmployeeReHire" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Employee ReHire</MudNavLink>
     </MudNavGroup>
     <MudNavGroup Title="Shift Management" class="parent-icon" Expanded="false" Icon="@Icons.Filled.ManageAccounts" IconColor="Color.Inherit">
         <MudNavLink Href="ShiftScheduler" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Shift Scheduler</MudNavLink>
     </MudNavGroup>
-    <MudNavGroup Title="Attendance Processing" class="parent-icon" Expanded="false" Icon="@Icons.Filled.SyncProblem" IconColor="Color.Inherit">
-        <MudNavLink Href="ManualAttendance" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Manual Attendance</MudNavLink>
+    <MudNavGroup Title="Payroll Transactions" class="parent-icon" Expanded="false" Icon="@Icons.Filled.SyncProblem" IconColor="Color.Inherit">
+        <MudNavLink Href="ElementTransaction" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Element Transaction</MudNavLink>
+        <MudNavLink Href="LoanRequest" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Loan Request</MudNavLink>
+        <MudNavLink Href="AdvanceRequest" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Advance Request</MudNavLink>
+        <MudNavLink Href="LeaveRequest" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Leave Request</MudNavLink>
+        <MudNavLink Href="EmployeeBonus" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Employee Bonus</MudNavLink>
+        <MudNavLink Href="EmployeeTransfer" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Employee Transfer</MudNavLink>
+        <MudNavLink Href="EmployeeOverTime" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Employee OverTime</MudNavLink>
+        <MudNavLink Href="MonthlyOverTime" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Monthly OverTime</MudNavLink>
+        <MudNavLink Href="TaxAdjustment" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Tax Adjustment</MudNavLink>
     </MudNavGroup>
-  
+    <MudNavGroup Title="Processing" class="parent-icon" Expanded="false" Icon="@Icons.Filled.SyncProblem" IconColor="Color.Inherit">
+        <MudNavLink Href="ManualAttendance" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Manual Attendance</MudNavLink>
+        <MudNavLink Href="AttendceProcessing" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Attendce Processing</MudNavLink>
+        <MudNavLink Href="SalaryProcessing" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Salary Processing</MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="Employee Exit" class="parent-icon" Expanded="false" Icon="@Icons.Filled.SyncProblem" IconColor="Color.Inherit">
+        <MudNavLink Href="EmployeeResign" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Employee Resign</MudNavLink>
+        <MudNavLink Href="Final Settlement" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Final Settlement</MudNavLink>
+        <MudNavLink Href="EmployeeReHire" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Employee ReHire</MudNavLink>
+    </MudNavGroup>
 </MudNavMenu>
+
+@*<MudPaper Class="py-3 nav-custom" Square="false">
+
+    <MudNavMenu>
+        @if (AuthMenus != null)
+        {
+            <MudNavLink Href="Dashboard" Icon="@Icons.Sharp.Dashboard" IconColor="Color.Inherit">Dashboard</MudNavLink>
+            if (AuthMenus.Where(x => x.MenuParent == 1).ToList().Count > 0)
+            {
+                <MudNavGroup Title="Administration" Expanded="false" Icon="@Icons.Sharp.AdminPanelSettings" IconColor="Color.Inherit">
+                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 1))
+                    {
+                        @if (item.MenuName == "Approval Decesion")
+                        {
+                            <MudNavLink Href=@item.MenuLink>@item.MenuName <span class="bg-info p-2"><b>@oUserAlertList.Count</b></span></MudNavLink>
+                        }
+                        else
+                        {
+
+                            <MudNavLink Href=@item.MenuLink>@item.MenuName</MudNavLink>
+                        }
+                    }
+                </MudNavGroup>
+            }
+            if (AuthMenus.Where(x => x.MenuParent == 10).ToList().Count > 0)
+            {
+                <MudNavGroup Title="Master Setup" Expanded="false" Icon="@Icons.Sharp.Description" IconColor="Color.Inherit">
+                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 9))
+                    {
+                        <MudNavLink Href=@item.MenuLink>@item.MenuName</MudNavLink>
+                    }
+                </MudNavGroup>
+            }
+            if (AuthMenus.Where(x => x.MenuParent == 24).ToList().Count > 0)
+            {
+                <MudNavGroup Title="Data Import" Expanded="false" Icon="@Icons.Sharp.Description" IconColor="Color.Inherit">
+                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 18))
+                    {
+                        <MudNavLink Href=@item.MenuLink>@item.MenuName</MudNavLink>
+                    }
+                </MudNavGroup>
+            }
+            if (AuthMenus.Where(x => x.MenuParent == 27).ToList().Count > 0)
+            {
+                <MudNavGroup Title="Leave Setup" Expanded="false" Icon="@Icons.Sharp.Description" IconColor="Color.Inherit">
+                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 18))
+                    {
+                        <MudNavLink Href=@item.MenuLink>@item.MenuName</MudNavLink>
+                    }
+                </MudNavGroup>
+            }
+              if (AuthMenus.Where(x => x.MenuParent == 32).ToList().Count > 0)
+            {
+                <MudNavGroup Title="Payroll Setup" Expanded="false" Icon="@Icons.Sharp.Description" IconColor="Color.Inherit">
+                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 18))
+                    {
+                        <MudNavLink Href=@item.MenuLink>@item.MenuName</MudNavLink>
+                    }
+                </MudNavGroup>
+            }
+              if (AuthMenus.Where(x => x.MenuParent == 38).ToList().Count > 0)
+            {
+                <MudNavGroup Title="Attendance Setup" Expanded="false" Icon="@Icons.Sharp.Description" IconColor="Color.Inherit">
+                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 18))
+                    {
+                        <MudNavLink Href=@item.MenuLink>@item.MenuName</MudNavLink>
+                    }
+                </MudNavGroup>
+            }
+            if (AuthMenus.Where(x => x.MenuParent == 42).ToList().Count > 0)
+            {
+                <MudNavGroup Title="Employee Master" Expanded="false" Icon="@Icons.Sharp.Description" IconColor="Color.Inherit">
+                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 18))
+                    {
+                        <MudNavLink Href=@item.MenuLink>@item.MenuName</MudNavLink>
+                    }
+                </MudNavGroup>
+            }
+            if (AuthMenus.Where(x => x.MenuParent == 45).ToList().Count > 0)
+            {
+                <MudNavGroup Title="Shift Management" Expanded="false" Icon="@Icons.Sharp.Description" IconColor="Color.Inherit">
+                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 18))
+                    {
+                        <MudNavLink Href=@item.MenuLink>@item.MenuName</MudNavLink>
+                    }
+                </MudNavGroup>
+            }
+            if (AuthMenus.Where(x => x.MenuParent == 47).ToList().Count > 0)
+            {
+                <MudNavGroup Title="Payroll Transaction" Expanded="false" Icon="@Icons.Sharp.Description" IconColor="Color.Inherit">
+                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 18))
+                    {
+                        <MudNavLink Href=@item.MenuLink>@item.MenuName</MudNavLink>
+                    }
+                </MudNavGroup>
+            }
+            if (AuthMenus.Where(x => x.MenuParent == 57).ToList().Count > 0)
+            {
+                <MudNavGroup Title="Processing" Expanded="false" Icon="@Icons.Sharp.Description" IconColor="Color.Inherit">
+                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 18))
+                    {
+                        <MudNavLink Href=@item.MenuLink>@item.MenuName</MudNavLink>
+                    }
+                </MudNavGroup>
+            }
+            if (AuthMenus.Where(x => x.MenuParent == 61).ToList().Count > 0)
+            {
+                <MudNavGroup Title="Employee Exit" Expanded="false" Icon="@Icons.Sharp.Description" IconColor="Color.Inherit">
+                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 18))
+                    {
+                        <MudNavLink Href=@item.MenuLink>@item.MenuName</MudNavLink>
+                    }
+                </MudNavGroup>
+            }
+        }
+    </MudNavMenu>
+</MudPaper>*@
