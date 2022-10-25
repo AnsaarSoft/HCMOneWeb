@@ -151,7 +151,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             {
                 Logs.GenerateLogs(ex);
             }
-        }       
+        }
         private async Task GetAllEmployees()
         {
             try
@@ -424,7 +424,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             {
                 Loading = true;
                 await Task.Delay(1);
-                
+
                 if ((!string.IsNullOrWhiteSpace(oModelEmployeeFrom.EmpId) && !string.IsNullOrWhiteSpace(oModelEmployeeTo.EmpId)) || !string.IsNullOrWhiteSpace(oModel.DocStatus)
 
                     || !string.IsNullOrWhiteSpace(oModelDesignation.Description) || !string.IsNullOrWhiteSpace(oModelDepartment.DeptName) || !string.IsNullOrWhiteSpace(oModelLocation.Description)
@@ -485,7 +485,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         //    try
         //    {
         //        var res = oList.Where(x => x.Id == LineNum).FirstOrDefault();
-                
+
         //        if (res != null)
         //        {
         //            oModel.Id = res.Id;
@@ -493,7 +493,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         //            oModel.DocDate= res.DocDate;
         //            oModel.TrnsEmployeeTransferDetails = res.TrnsEmployeeTransferDetails;
         //            oListFilteredEmployeeTransferDetail = res.TrnsEmployeeTransferDetails;
-                    
+
         //            oList = oList.Where(x => x.Id != LineNum);
         //        }
         //    }
@@ -532,6 +532,12 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
+                if (oModel.DocStatus == "Opened")
+                {
+                    Snackbar.Add("Opened document can't be update, select cancel to update", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                    Loading = false;
+                    return null;
+                }
                 if (oListFilteredEmployeeTransferDetail.Count() > 0)
                 {
                     oDetailListadd.Clear();
@@ -539,7 +545,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     foreach (var item in oListFilteredEmployeeTransferDetail)
                     {
                         oModel.TrnsEmployeeTransferDetails = oListFilteredEmployeeTransferDetail.ToList();
-                            //oDetailList.ToList();                        
+                        //oDetailList.ToList();                        
                         if (oModel.Id == 0)
                         {
                             item.CreatedBy = LoginUser;
