@@ -1,0 +1,110 @@
+﻿@page "/BatchProcessing"
+@using HCM.API.Models
+
+
+<div class="container-fluid page-content-setting shift-scheduler">
+    <div class="row">
+        <div class="col-sm-10">
+            <h3>Batch Processing</h3>
+            <MudDivider />
+        </div>
+        <div class="col-sm-2 custom-btn-design text-right">
+            <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Filled.RemoveRedEye" Color="Color.Info" Size="Size.Small">View All</MudButton>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <h3>Header</h3>
+            <MudDivider />
+        </div>
+        <div class="col-sm-12">
+            <MudGrid class="search-action-block align-items-center block-design">
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudNumericField Label="Doc Num*" @bind-Value="oModel.DocNum" Variant="Variant.Text" ReadOnly="true" />
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudSelect @bind-Value="oModel.PayrollName" Label="Payroll" OnClose="GetAllPayrollElements" HelperText="Select Payroll" AdornmentIcon="@Icons.Material.Filled.RollerSkating" Adornment="Adornment.Start">
+                        @foreach (CfgPayrollDefination Payroll in oListPayroll.ToList())
+                        {
+                            <MudSelectItem Value="Payroll.PayrollName">@Payroll.PayrollName</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudSelect @bind-Value="oModel.PayrollPeriod" Disabled="true" Label="Payroll Period*" HelperText="Select Payroll Periods" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (var period in oListPayrollPeriod.ToList())
+                        {
+                            <MudSelectItem Value="period.PeriodName">@period.PeriodName</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudSelect @bind-Value="oModel.ElementId" Label="Element Type*" HelperText="Select Element Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (MstElement Element in oElementListFilter.ToList())
+                        {
+                            <MudSelectItem Value="(int?)Element.Id">@Element.Code - @Element.Description</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudTextField T="string" @bind-Value="oModel.DocStatus" HelperText="Document Status" Immediate="true" Label="Status*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2" class="input-btns">
+                    <InputFile id="excelFile" OnChange="UploadFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden multiple="false" />
+                    <MudFab HtmlTag="label" Color="Color.Dark" Icon="@Icons.Custom.FileFormats.FileExcel" Label="Import Excel" for="excelFile" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    @if (excelSheet != null)
+                    {
+                        @foreach (var file in excelSheet)
+                        {
+                            <MudText @key="@file" Typo="@Typo.caption">Template :  @file.Name</MudText>
+                        }
+                        @if (excelSheet.Count == 0)
+                        {
+                            <MudText Typo="@Typo.caption">No Template selected</MudText>
+                        }
+                    }
+                </MudItem>
+            </MudGrid>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudCard Elevation="5">
+                <MudCardContent>
+                    <MudTable Items="@oModel.TrnsBatchesDetails" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsBatchesDetail,bool>(FilterFuncFiltered)">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Detail</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Employee Code</MudTh>
+                            <MudTh>Employee Name</MudTh>
+                            <MudTh>Value Type</MudTh>
+                            <MudTh>Employee Value</MudTh>
+                            <MudTh>Employeer Value</MudTh>
+                            <MudTh>Active</MudTh>
+                            @*<MudTh>Action</MudTh>*@
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Department Code">@context.EmployeeCode</MudTd>
+                            <MudTd DataLabel="Department Name">@context.EmployeeName</MudTd>
+                            <MudTd DataLabel="Department Name">@context.ValueType</MudTd>
+                            <MudTd DataLabel="Department Name">@context.EmplCont</MudTd>
+                            <MudTd DataLabel="Department Name">@context.EmplrCont</MudTd>
+                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                            @*<MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id) )" Title="Edit"></MudIconButton></MudTd>*@
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                </MudCardContent>
+            </MudCard>
+        </div>
+    </div>
+</div>

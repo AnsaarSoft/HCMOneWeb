@@ -36,4 +36,17 @@
 
 
     }
+    
+    public class VMTrnsBatchesDetail
+    {
+        public int Id { get; set; }
+        public string EmployeeCode { get; set; }
+        public string EmployeeName { get; set; }
+        public string ValueType { get; set; }
+        public decimal EmplCont { get; set; }
+        public decimal EmplrCont { get; set; }
+        public string Remarks { get; set; }
+
+
+    }
 }

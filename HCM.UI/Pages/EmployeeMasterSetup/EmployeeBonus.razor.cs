@@ -555,7 +555,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             {
                 Loading = true;
                 await Task.Delay(3);
-                Navigation.NavigateTo("/ShiftScheduler", forceLoad: true);
+                Navigation.NavigateTo("/EmployeeBonus", forceLoad: true);
                 Loading = false;
             }
             catch (Exception ex)

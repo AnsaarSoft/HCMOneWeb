@@ -13872,7 +13872,13 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
+                entity.Property(e => e.EmplCont).HasColumnType("numeric(19, 6)");
+
+                entity.Property(e => e.EmployeeCode).HasMaxLength(100);
+
                 entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
+
+                entity.Property(e => e.EmployeeName).HasMaxLength(100);
 
                 entity.Property(e => e.EmplrCont).HasColumnType("numeric(19, 6)");
 
@@ -22011,9 +22017,13 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.Hours).HasColumnType("decimal(18, 2)");
 
-                entity.Property(e => e.OverTimeDescription).HasMaxLength(150);
+                entity.Property(e => e.OverTimeDescription).HasMaxLength(250);
 
                 entity.Property(e => e.OverTimeId).HasColumnName("OverTimeID");
+
+                entity.Property(e => e.PayrollName).HasMaxLength(250);
+
+                entity.Property(e => e.PeriodName).HasMaxLength(250);
 
                 entity.Property(e => e.Remarks).HasMaxLength(250);
 
@@ -23355,7 +23365,10 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.FkmenuId).HasColumnName("FKMenuID");
 
-                entity.Property(e => e.FkuserId).HasColumnName("FKUserID");
+                entity.Property(e => e.FkuserId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("FKUserID");
 
                 entity.Property(e => e.MenuLink)
                     .HasMaxLength(150)

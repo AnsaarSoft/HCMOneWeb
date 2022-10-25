@@ -77,6 +77,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
         CfgPayrollDefination oPayroll = new CfgPayrollDefination();
         private List<CfgPayrollDefination> oListPayroll = new List<CfgPayrollDefination>();
+        CfgPeriodDate oPayrollPeriod = new CfgPeriodDate();
         private IEnumerable<CfgPeriodDate> oListPayrollPeriod = new List<CfgPeriodDate>();
 
         private IEnumerable<MstEmployee> oListEmployee = new List<MstEmployee>();
@@ -392,6 +393,8 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
 
                 //  oModel.EmployeeId = oModelMstEmployee.Id;
+                oModel.PeriodId = oPayroll.Id;
+                oModel.PeriodName = oPayroll.PayrollName;
                 TrnsEmployeeOvertimeDetail trnsEmployeeOvertimeDetail = new TrnsEmployeeOvertimeDetail();
                 trnsEmployeeOvertimeDetail.OvertimeId = oModelmstOvertime.Id;
                 trnsEmployeeOvertimeDetail.EmpOvertimeId = oModel.Id;

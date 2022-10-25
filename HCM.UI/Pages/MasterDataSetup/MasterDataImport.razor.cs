@@ -326,7 +326,6 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
             Loading = false;
         }
-
         private async Task GetAllUsers()
         {
             try
@@ -2449,12 +2448,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                         oListTrnsTempAttendanceGridTemp.AddRange(oTrnsTempAttendanceAddList);
                         oListTrnsTempAttendanceGridTemp.AddRange(oTrnsTempAttendanceUpdateList);
                     }
-                    //else if(!IsForUpdate && oDepartmentAddList.Count > 0)
-                    //{
-                    //        oListDepartmentGridTemp.AddRange(oDepartmentAddList);
-                    //}
                     oListTrnsTempAttendanceGrid = oListTrnsTempAttendanceGridTemp;
-
                     File.Delete(TemplateFile);
                 }
             }

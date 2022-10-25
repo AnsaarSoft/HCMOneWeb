@@ -100,7 +100,36 @@ namespace HCM.UI.Data.EmployeeMasterSetup
                 response.Message = "Failed to Update successfully";
                 return response;
             }
-        }        
+        }
 
+        public async Task<ApiResponseModel> InsertUpdate(VMMonthlyOverTime vMMonthlyOverTime)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                var request = new RestRequest("EmployeeMasterData/addUpdateMonthlyOT", Method.Post);
+                request.AddJsonBody(vMMonthlyOverTime);
+                var res = await _restClient.ExecuteAsync(request);
+                if (res.IsSuccessful)
+                {
+                    response.Id = 1;
+                    response.Message = "Saved successfully";
+                    return response;
+                }
+                else
+                {
+                    response.Id = 0;
+                    response.Message = "Failed to save successfully";
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                response.Id = 0;
+                response.Message = "Failed to save successfully";
+                return response;
+            }
+        }
     }
 }
