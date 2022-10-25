@@ -6,7 +6,7 @@ namespace HCM.API.HCMModels
     public partial class UserAuthorization
     {
         public int Id { get; set; }
-        public int? FkuserId { get; set; }
+        public string? FkuserId { get; set; }
         public int? UserRights { get; set; }
         public int? FkmenuId { get; set; }
         public string CreatedBy { get; set; }

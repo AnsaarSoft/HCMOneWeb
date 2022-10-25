@@ -117,7 +117,7 @@ namespace HCM.API.Repository.Account
                 {
                     new Claim(ClaimTypes.Name, oMstEmployee.EmpId),
                     new Claim(ClaimTypes.NameIdentifier, oMstEmployee.Id.ToString()),
-                    new Claim(ClaimTypes.Surname, oMstEmployee.LastName.ToString()),
+                    //new Claim(ClaimTypes.Surname, oMstEmployee.LastName.ToString()),
                     new Claim(ClaimTypes.Email, oMstEmployee.OfficeEmail.ToString()),
                     new Claim(JwtRegisteredClaimNames.Nbf, new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds().ToString()),
                     new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(DateTime.Now.AddHours(1)).ToUnixTimeSeconds().ToString())

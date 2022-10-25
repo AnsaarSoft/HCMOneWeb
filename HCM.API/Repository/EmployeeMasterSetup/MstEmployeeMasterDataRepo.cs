@@ -20,7 +20,7 @@ namespace HCM.API.Repository.EmployeeMasterSetup
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.MstEmployees.Include(x => x.MstEmployeeAttachments).Include(x => x.MstEmployeeLeaves).Include(x => x.TrnsEmployeeElements).ThenInclude(x=> x.TrnsEmployeeElementDetails).ToList();
+                    oList = _DBContext.MstEmployees.Where(x=>x.EmpId != "manager").Include(x => x.MstEmployeeAttachments).Include(x => x.MstEmployeeLeaves).Include(x => x.TrnsEmployeeElements).ThenInclude(x=> x.TrnsEmployeeElementDetails).ToList();
                 });
             }
             catch (Exception ex)

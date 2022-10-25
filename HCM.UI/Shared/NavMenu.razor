@@ -1,4 +1,4 @@
-﻿<MudNavMenu>
+﻿@*<MudNavMenu>
     <MudNavLink Href="Dashboard" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
     <MudNavGroup Title="Administration" Expanded="false" class="parent-icon" Icon="@Icons.Rounded.SupervisedUserCircle" IconColor="Color.Inherit">
         <MudNavLink Href="Payrollinit" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Payroll Initialization</MudNavLink>
@@ -72,17 +72,15 @@
     </MudNavGroup>
     <MudNavGroup Title="Employee Exit" class="parent-icon" Expanded="false" Icon="@Icons.Filled.SyncProblem" IconColor="Color.Inherit">
         <MudNavLink Href="EmployeeResign" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Employee Resign</MudNavLink>
-        <MudNavLink Href="Final Settlement" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Final Settlement</MudNavLink>
+        <MudNavLink Href="FinalSettlement" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Final Settlement</MudNavLink>
         <MudNavLink Href="EmployeeReHire" Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">Employee ReHire</MudNavLink>
     </MudNavGroup>
-</MudNavMenu>
-
-@*<MudPaper Class="py-3 nav-custom" Square="false">
-
+</MudNavMenu>*@
+<MudPaper Class="py-3 nav-custom" Square="false">
     <MudNavMenu>
         @if (AuthMenus != null)
         {
-            <MudNavLink Href="Dashboard" Icon="@Icons.Sharp.Dashboard" IconColor="Color.Inherit">Dashboard</MudNavLink>
+            <MudNavLink Href="Dashboard" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Dashboard</MudNavLink>
             if (AuthMenus.Where(x => x.MenuParent == 1).ToList().Count > 0)
             {
                 <MudNavGroup Title="Administration" Expanded="false" Icon="@Icons.Sharp.AdminPanelSettings" IconColor="Color.Inherit">
@@ -90,106 +88,106 @@
                     {
                         @if (item.MenuName == "Approval Decesion")
                         {
-                            <MudNavLink Href=@item.MenuLink>@item.MenuName <span class="bg-info p-2"><b>@oUserAlertList.Count</b></span></MudNavLink>
+                            <MudNavLink Href=@item.MenuLink Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">@item.MenuName  <span class="bg-info p-2"><b>@oDocApprovalDecesionList.Count</b></span></MudNavLink>
                         }
                         else
                         {
 
-                            <MudNavLink Href=@item.MenuLink>@item.MenuName</MudNavLink>
+                            <MudNavLink Href=@item.MenuLink Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">@item.MenuName</MudNavLink>
                         }
                     }
                 </MudNavGroup>
             }
             if (AuthMenus.Where(x => x.MenuParent == 10).ToList().Count > 0)
             {
-                <MudNavGroup Title="Master Setup" Expanded="false" Icon="@Icons.Sharp.Description" IconColor="Color.Inherit">
-                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 9))
+                <MudNavGroup Title="Master Setup" Expanded="false" class="parent-icon" Icon="@Icons.Filled.Settings" IconColor="Color.Inherit">
+                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 10))
                     {
-                        <MudNavLink Href=@item.MenuLink>@item.MenuName</MudNavLink>
+                        <MudNavLink Href=@item.MenuLink Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">@item.MenuName</MudNavLink>
                     }
                 </MudNavGroup>
             }
             if (AuthMenus.Where(x => x.MenuParent == 24).ToList().Count > 0)
             {
-                <MudNavGroup Title="Data Import" Expanded="false" Icon="@Icons.Sharp.Description" IconColor="Color.Inherit">
-                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 18))
+                <MudNavGroup Title="Data Import" Expanded="false" class="parent-icon" Icon="@Icons.Filled.ImportExport" IconColor="Color.Inherit">
+                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 24))
                     {
-                        <MudNavLink Href=@item.MenuLink>@item.MenuName</MudNavLink>
+                        <MudNavLink Href=@item.MenuLink Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">@item.MenuName</MudNavLink>
                     }
                 </MudNavGroup>
             }
             if (AuthMenus.Where(x => x.MenuParent == 27).ToList().Count > 0)
             {
-                <MudNavGroup Title="Leave Setup" Expanded="false" Icon="@Icons.Sharp.Description" IconColor="Color.Inherit">
-                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 18))
+                <MudNavGroup Title="Leave Setup" Expanded="false" class="parent-icon" Icon="@Icons.Filled.SettingsSuggest" IconColor="Color.Inherit">
+                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 27))
                     {
-                        <MudNavLink Href=@item.MenuLink>@item.MenuName</MudNavLink>
+                        <MudNavLink Href=@item.MenuLink Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">@item.MenuName</MudNavLink>
                     }
                 </MudNavGroup>
             }
-              if (AuthMenus.Where(x => x.MenuParent == 32).ToList().Count > 0)
+            if (AuthMenus.Where(x => x.MenuParent == 32).ToList().Count > 0)
             {
-                <MudNavGroup Title="Payroll Setup" Expanded="false" Icon="@Icons.Sharp.Description" IconColor="Color.Inherit">
-                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 18))
+                <MudNavGroup Title="Payroll Setup" class="parent-icon" Expanded="false" Icon="@Icons.Sharp.AdminPanelSettings" IconColor="Color.Inherit">
+                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 32))
                     {
-                        <MudNavLink Href=@item.MenuLink>@item.MenuName</MudNavLink>
+                        <MudNavLink Href=@item.MenuLink Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">@item.MenuName</MudNavLink>
                     }
                 </MudNavGroup>
             }
-              if (AuthMenus.Where(x => x.MenuParent == 38).ToList().Count > 0)
+            if (AuthMenus.Where(x => x.MenuParent == 38).ToList().Count > 0)
             {
-                <MudNavGroup Title="Attendance Setup" Expanded="false" Icon="@Icons.Sharp.Description" IconColor="Color.Inherit">
-                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 18))
+                <MudNavGroup Title="Attendance Setup" class="parent-icon" Expanded="false" Icon="@Icons.Filled.SettingsSuggest" IconColor="Color.Inherit">
+                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 38))
                     {
-                        <MudNavLink Href=@item.MenuLink>@item.MenuName</MudNavLink>
+                        <MudNavLink Href=@item.MenuLink Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">@item.MenuName</MudNavLink>
                     }
                 </MudNavGroup>
             }
             if (AuthMenus.Where(x => x.MenuParent == 42).ToList().Count > 0)
             {
-                <MudNavGroup Title="Employee Master" Expanded="false" Icon="@Icons.Sharp.Description" IconColor="Color.Inherit">
-                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 18))
+                <MudNavGroup Title="Employee Master" class="parent-icon" Expanded="false" Icon="@Icons.Sharp.AdminPanelSettings" IconColor="Color.Inherit">
+                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 42))
                     {
-                        <MudNavLink Href=@item.MenuLink>@item.MenuName</MudNavLink>
+                        <MudNavLink Href=@item.MenuLink Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">@item.MenuName</MudNavLink>
                     }
                 </MudNavGroup>
             }
             if (AuthMenus.Where(x => x.MenuParent == 45).ToList().Count > 0)
             {
-                <MudNavGroup Title="Shift Management" Expanded="false" Icon="@Icons.Sharp.Description" IconColor="Color.Inherit">
-                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 18))
+                <MudNavGroup Title="Shift Management" class="parent-icon" Expanded="false" Icon="@Icons.Filled.ManageAccounts" IconColor="Color.Inherit">
+                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 45))
                     {
-                        <MudNavLink Href=@item.MenuLink>@item.MenuName</MudNavLink>
+                        <MudNavLink Href=@item.MenuLink Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">@item.MenuName</MudNavLink>
                     }
                 </MudNavGroup>
             }
             if (AuthMenus.Where(x => x.MenuParent == 47).ToList().Count > 0)
             {
-                <MudNavGroup Title="Payroll Transaction" Expanded="false" Icon="@Icons.Sharp.Description" IconColor="Color.Inherit">
-                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 18))
+                <MudNavGroup Title="Payroll Transactions" class="parent-icon" Expanded="false" Icon="@Icons.Filled.SyncProblem" IconColor="Color.Inherit">
+                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 47))
                     {
-                        <MudNavLink Href=@item.MenuLink>@item.MenuName</MudNavLink>
+                        <MudNavLink Href=@item.MenuLink Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">@item.MenuName</MudNavLink>
                     }
                 </MudNavGroup>
             }
             if (AuthMenus.Where(x => x.MenuParent == 57).ToList().Count > 0)
             {
-                <MudNavGroup Title="Processing" Expanded="false" Icon="@Icons.Sharp.Description" IconColor="Color.Inherit">
-                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 18))
+                <MudNavGroup Title="Processing" class="parent-icon" Expanded="false" Icon="@Icons.Filled.SyncProblem" IconColor="Color.Inherit">
+                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 57))
                     {
-                        <MudNavLink Href=@item.MenuLink>@item.MenuName</MudNavLink>
+                        <MudNavLink Href=@item.MenuLink Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">@item.MenuName</MudNavLink>
                     }
                 </MudNavGroup>
             }
             if (AuthMenus.Where(x => x.MenuParent == 61).ToList().Count > 0)
             {
-                <MudNavGroup Title="Employee Exit" Expanded="false" Icon="@Icons.Sharp.Description" IconColor="Color.Inherit">
-                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 18))
+                <MudNavGroup Title="Employee Exit" class="parent-icon" Expanded="false" Icon="@Icons.Filled.SyncProblem" IconColor="Color.Inherit">
+                    @foreach (var item in AuthMenus.Where(x => x.MenuParent == 61))
                     {
-                        <MudNavLink Href=@item.MenuLink>@item.MenuName</MudNavLink>
+                        <MudNavLink Href=@item.MenuLink Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">@item.MenuName</MudNavLink>
                     }
                 </MudNavGroup>
             }
         }
     </MudNavMenu>
-</MudPaper>*@
+</MudPaper>

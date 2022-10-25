@@ -1,0 +1,66 @@
+﻿@page "/UserAuth"
+@using HCM.API.Models
+<div class="input-field-setting">
+    <h3>User Authorization</h3>
+    <MudDivider />
+    @if (Loading)
+    {
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    }
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudGrid class="search-action-block align-items-center block-design">
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" ReadOnly="true" @bind-Value="oModelEmployee.EmpId" HelperText="Employee ID" Immediate="true" Label="Select Employee*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Person" OnAdornmentClick="@((e) => OpenDialogEmployee(maxWidth))" AdornmentAriaLabel="Select Employee" />
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4" Class="text-right custom-btn-design">
+                    <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenCopyDialog(maxWidth))" StartIcon="@Icons.Material.Filled.ContentCopy" Color="Color.Success" Size="Size.Small">Copy Authorization</MudButton>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    </MudItem>
+                <MudItem xs="12" sm="12" md="12" lg="12">
+                    @if (Loading)
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudText>Loading...</MudText>
+                            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudItem xs="12" sm="12" md="12" lg="12" class="text-right custom-btn-design" style="justify-content: flex-end;">
+                            <MudButton Variant="Variant.Filled"  OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Save</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
+                        </MudItem>
+                    }
+                </MudItem>
+            </MudGrid>
+        </div>
+    </div>
+       <div class="row">
+        <div class="col-sm-12">
+            <MudTable Items="@oList" T="VMUserAuthorization" Dense="true"
+                      Hover="true" GroupHeaderStyle="background-color:var(--mud-palette-background-grey)"
+                      FixedHeader="true" LoadingProgressColor="Color.Info" GroupBy="@_groupDefinition" @ref="TableRef">
+                <ColGroup>
+                    <col style="width: 60px;" />
+                    <col style="width: 60px;" />
+                </ColGroup>
+                <HeaderContent>
+                    <MudTh>Select</MudTh>
+                    <MudTh>Foam Name</MudTh>
+                </HeaderContent>
+                <GroupHeaderTemplate>
+                    <MudTh colspan="5">@($"{context.GroupName}: {context.Key}")</MudTh>
+                    </GroupHeaderTemplate>
+                    <RowTemplate>
+                        <MudTd>
+                            <MudCheckBox @bind-Checked="@context.UserRights" Dense="true" Color="Color.Primary"></MudCheckBox>
+                        </MudTd>
+                        <MudTd DataLabel="Menu Name">@context.CMenuName </MudTd>
+                    </RowTemplate>
+                </MudTable>
+            </div>
+        </div>
+</div>
