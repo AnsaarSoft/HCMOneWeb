@@ -1,11 +1,16 @@
 ﻿using Blazored.LocalStorage;
+using ClosedXML.Excel;
 using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
+using System.Text.RegularExpressions;
+using System.Reflection;
+using DocumentFormat.OpenXml;
 
 namespace HCM.UI.Pages.Batch
 {
@@ -38,6 +43,7 @@ namespace HCM.UI.Pages.Batch
         public ILocalStorageService _localStorage { get; set; }
 
         private string LoginUser = "";
+        IList<IBrowserFile> excelSheet = new List<IBrowserFile>();
 
         #endregion
 
@@ -48,12 +54,12 @@ namespace HCM.UI.Pages.Batch
         public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
 
         private string searchString = "";
-        private bool FilterFuncFiltered(TrnsBatchesDetail element) => FilterFuncFiltered(element, searchString);        
+        private bool FilterFuncFiltered(TrnsBatchesDetail element) => FilterFuncFiltered(element, searchString);
 
         CfgPayrollDefination oModelPayroll = new CfgPayrollDefination();
         private IEnumerable<CfgPayrollDefination> oListPayroll = new List<CfgPayrollDefination>();
         private IEnumerable<MstElementLink> oListPayrollElementLink = new List<MstElementLink>();
-        private IEnumerable<CfgPeriodDate> oListPayrollPeriod = new List<CfgPeriodDate>();        
+        private IEnumerable<CfgPeriodDate> oListPayrollPeriod = new List<CfgPeriodDate>();
 
         private IEnumerable<MstElement> oElementListPer = new List<MstElement>();
         private IEnumerable<MstElement> oElementListFilter = new List<MstElement>();
@@ -65,9 +71,13 @@ namespace HCM.UI.Pages.Batch
         private IEnumerable<TrnsEmployeeElementDetail> oListEmployeeElementDetail = new List<TrnsEmployeeElementDetail>();
 
         TrnsBatch oModel = new TrnsBatch();
+        TrnsBatchesDetail oModelDetail = new TrnsBatchesDetail();
         List<TrnsBatch> oBatchAddList = new List<TrnsBatch>();
         List<TrnsBatch> oBatchUpdateList = new List<TrnsBatch>();
+        List<TrnsBatch> oListGridTemp = new List<TrnsBatch>();
+        private IEnumerable<TrnsBatch> oListGrid = new List<TrnsBatch>();
         private IEnumerable<TrnsBatch> oList = new List<TrnsBatch>();
+
 
         MudDateRangePicker _picker;
         DateRange _dateRange;
@@ -583,6 +593,178 @@ namespace HCM.UI.Pages.Batch
                 Loading = false;
                 return null;
             }
+        }
+
+        private async Task UploadFile(InputFileChangeEventArgs e)
+        {
+            try
+            {
+                Loading = true;
+                if (excelSheet.Count > 0)
+                {
+                    Snackbar.Add("Template already selected, refresh the page for new template to import.", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+                else
+                {
+                    var TemplateFile = e.File.Name;
+                    excelSheet.Add(e.File);
+                    if (!string.IsNullOrWhiteSpace(TemplateFile))
+                    {
+                        Snackbar.Add("Please wait template uploading in process...", Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+                        await FillBatchDetailGrid();
+                    }
+                    else
+                    {
+                        Snackbar.Add("Select template to import", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                        excelSheet.Clear();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+            Loading = false;
+        }
+
+        private async Task FillBatchDetailGrid()
+        {
+            try
+            {
+                Loading = true;
+                _ = InvokeAsync(StateHasChanged);
+                await Task.Delay(1);
+                bool IsForUpdate = false;
+                var TemplateFile = excelSheet.Select(x => x.Name).FirstOrDefault();
+                TemplateFile = Path.GetFullPath("wwwroot\\Templates\\" + TemplateFile);
+                if (!string.IsNullOrWhiteSpace(TemplateFile))
+                {
+                    Stream stream = excelSheet.FirstOrDefault().OpenReadStream();
+                    FileStream fs = File.Create(TemplateFile);
+                    await stream.CopyToAsync(fs);
+                    stream.Close();
+                    fs.Close();
+                    using var workBook = new XLWorkbook(TemplateFile);
+                    var ws = workBook.Worksheet("Batch");
+
+                    Type type = typeof(VMTrnsBatchesDetail);
+                    int NumberOfRecords = type.GetProperties().Length;
+                    for (int i = 2; i <= ws.Rows().Count(); i++)
+                    {
+                        IsForUpdate = false;
+                        oModelDetail = new TrnsBatchesDetail();
+                        for (int j = 1; j < ws.Rows().Cells().Count(); j++)
+                        {
+                            if (NumberOfRecords == j)//Read column only based on Model Properties
+                            {
+                                break;
+                            }
+                            string PropertyName = type.GetProperties()[j].Name;
+
+                            PropertyInfo PropertyInfo = type.GetProperties()[j];
+
+                            var CreatingDynamicModel = "oModelDetail." + PropertyName;
+
+                            if (PropertyInfo.PropertyType == typeof(string))
+                            {
+                                var StringValue = ws.Cell(i, j).Value.ToString();
+                                if (StringValue == null)
+                                {
+                                    StringValue = "";
+                                }
+                                else if (string.IsNullOrWhiteSpace(StringValue) && PropertyName == "EmployeeCode")
+                                {
+                                    //Skip the line if Code is Null or Empty
+                                    break;
+                                }
+                                //else if (!Regex.IsMatch(StringValue, AlphanumericMask) && PropertyName == "EmpCode")
+                                //{
+                                //    //Skip the line if Code has special character
+                                //    break;
+                                //}
+                                else if (StringValue.Contains("Null", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    //Skip the line if Code has Null String
+                                    break;
+                                }
+                                //Check for Employee and his payroll
+                                if (!string.IsNullOrWhiteSpace(StringValue) && PropertyName == "EmployeeCode")
+                                {
+                                    var CheckList = oListEmployee.Where(x => x.EmpId == StringValue).FirstOrDefault();
+                                    if (CheckList != null)
+                                    {
+                                        if (CheckList.PayrollName == oModel.PayrollName)
+                                        {
+                                            oModelDetail.GetType().GetProperty(PropertyName).SetValue(oModelDetail, StringValue, null);
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+                                }
+                                if (!string.IsNullOrWhiteSpace(StringValue) && PropertyName == "EmployeeName")
+                                {
+                                    var CheckList = oListEmployee.Where(x => x.EmpId == oModelDetail.EmployeeCode).FirstOrDefault();
+                                    if (CheckList != null)
+                                    {
+                                        StringValue = CheckList.FirstName;
+                                        oModelDetail.GetType().GetProperty(PropertyName).SetValue(oModelDetail, StringValue, null);
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+                                }                                
+                                continue;
+                            }
+                            else if (PropertyInfo.PropertyType == typeof(decimal))
+                            {
+                                var DecimalValue = Convert.ToDecimal(ws.Cell(i, j).Value.ToString());
+                                oModelDetail.GetType().GetProperty(PropertyName).SetValue(oModelDetail, DecimalValue, null);
+                            }
+                        }
+                        //if (!string.IsNullOrWhiteSpace(oModelContractor.Code) && !IsForUpdate)
+                        //{
+                        //    var CheckDuplicate = oContractorAddList.Where(x => x.Code == oModelContractor.Code).FirstOrDefault();
+                        //    if (CheckDuplicate == null)
+                        //    {
+                        //        oContractorAddList.Add(oModelContractor);
+                        //    }
+                        //}
+                        //else if (!string.IsNullOrWhiteSpace(oModelContractor.Code) && IsForUpdate)
+                        //{
+                        //    var CheckDuplicate = oContractorUpdateList.Where(x => x.Code == oModelContractor.Code).FirstOrDefault();
+                        //    if (CheckDuplicate == null)
+                        //    {
+                        //        oContractorUpdateList.Add(oModelContractor);
+                        //    }
+                        //}
+                        oModel.TrnsBatchesDetails.Add(oModelDetail);
+                    }
+                    //if (oContractorUpdateList.Count >= 0 && oContractorAddList.Count >= 0)
+                    //{
+                    //    oListContractorGridTemp.AddRange(oContractorAddList);
+                    //    oListContractorGridTemp.AddRange(oContractorUpdateList);
+                    //}
+                    ////else if(!IsForUpdate && oContractorAddList.Count > 0)
+                    ////{
+                    ////        oListContractorGridTemp.AddRange(oContractorAddList);
+                    ////}
+                    //oListContractorGrid = oListContractorGridTemp;
+                    File.Delete(TemplateFile);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+            Loading = false;
+            _ = InvokeAsync(StateHasChanged);
         }
 
         #endregion

@@ -50,6 +50,23 @@
                     <MudTextField T="string" @bind-Value="oModel.DocStatus" HelperText="Document Status" Immediate="true" Label="Status*" Variant="Variant.Text"
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2" class="input-btns">
+                    <InputFile id="excelFile" OnChange="UploadFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden multiple="false" />
+                    <MudFab HtmlTag="label" Color="Color.Dark" Icon="@Icons.Custom.FileFormats.FileExcel" Label="Import Excel" for="excelFile" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    @if (excelSheet != null)
+                    {
+                        @foreach (var file in excelSheet)
+                        {
+                            <MudText @key="@file" Typo="@Typo.caption">Template :  @file.Name</MudText>
+                        }
+                        @if (excelSheet.Count == 0)
+                        {
+                            <MudText Typo="@Typo.caption">No Template selected</MudText>
+                        }
+                    }
+                </MudItem>
             </MudGrid>
         </div>
     </div>
@@ -74,10 +91,10 @@
                             @*<MudTh>Action</MudTh>*@
                         </HeaderContent>
                         <RowTemplate>
-                            <MudTd DataLabel="Department Code">@context.EmployeeId</MudTd>
+                            <MudTd DataLabel="Department Code">@context.EmployeeCode</MudTd>
                             <MudTd DataLabel="Department Name">@context.EmployeeName</MudTd>
                             <MudTd DataLabel="Department Name">@context.ValueType</MudTd>
-                            <MudTd DataLabel="Department Name">@context.Value</MudTd>
+                            <MudTd DataLabel="Department Name">@context.EmplCont</MudTd>
                             <MudTd DataLabel="Department Name">@context.EmplrCont</MudTd>
                             <MudTd DataLabel="Active">@context.FlgActive</MudTd>
                             @*<MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id) )" Title="Edit"></MudIconButton></MudTd>*@

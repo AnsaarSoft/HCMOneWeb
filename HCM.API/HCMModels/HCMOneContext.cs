@@ -13872,6 +13872,10 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
+                entity.Property(e => e.EmplCont).HasColumnType("numeric(19, 6)");
+
+                entity.Property(e => e.EmployeeCode).HasMaxLength(100);
+
                 entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
 
                 entity.Property(e => e.EmployeeName).HasMaxLength(100);
