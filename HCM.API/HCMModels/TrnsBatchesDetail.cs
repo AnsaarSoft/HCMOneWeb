@@ -8,6 +8,7 @@ namespace HCM.API.HCMModels
         public int Id { get; set; }
         public int? BatchesId { get; set; }
         public int? EmployeeId { get; set; }
+        public string EmployeeName { get; set; }
         public string ValueType { get; set; }
         public decimal? Value { get; set; }
         public bool? FlgActive { get; set; }

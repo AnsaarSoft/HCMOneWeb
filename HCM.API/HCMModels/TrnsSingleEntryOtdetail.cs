@@ -22,6 +22,10 @@ namespace HCM.API.HCMModels
         public int? AttendanceId { get; set; }
         public string Remarks { get; set; }
         public string OverTimeDescription { get; set; }
+        public int? PayrollId { get; set; }
+        public string PayrollName { get; set; }
+        public int? Periodid { get; set; }
+        public string PeriodName { get; set; }
 
         public virtual MstEmployee Emp { get; set; }
         public virtual MstOverTime OverTime { get; set; }
