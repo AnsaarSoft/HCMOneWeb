@@ -9616,9 +9616,7 @@ namespace HCM.API.HCMModels
             {
                 entity.ToTable("MstMenu");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.CappStamp)
                     .HasMaxLength(100)
@@ -22064,6 +22062,10 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.DocStatus).HasMaxLength(150);
 
                 entity.Property(e => e.Ottype).HasColumnName("OTType");
+
+                entity.Property(e => e.OttypeDescription)
+                    .HasMaxLength(250)
+                    .HasColumnName("OTTypeDescription");
 
                 entity.Property(e => e.UpdatedBy).HasMaxLength(150);
 
