@@ -22,6 +22,10 @@
                 <MudItem xs="2" sm="2" md="2" lg="2">
                     <MudNumericField Label="Doc Num*" @bind-Value="oModel.DocNum" Variant="Variant.Text" ReadOnly="true" />
                 </MudItem>
+                 <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" @bind-Value="oModel.BatchName" MaxLength="100" Counter="100" HelperText="Enter Batch Name" Immediate="true" Clearable="true" Label="Batch Name*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>
                 <MudItem xs="2" sm="2" md="2" lg="2">
                     <MudSelect @bind-Value="oModel.PayrollName" Label="Payroll" OnClose="GetAllPayrollElements" HelperText="Select Payroll" AdornmentIcon="@Icons.Material.Filled.RollerSkating" Adornment="Adornment.Start">
                         @foreach (CfgPayrollDefination Payroll in oListPayroll.ToList())
@@ -65,6 +69,26 @@
                         {
                             <MudText Typo="@Typo.caption">No Template selected</MudText>
                         }
+                    }
+                </MudItem>
+                <MudItem xs="12" sm="12" md="12" lg="12">
+                    @if (Loading)
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudText>Loading...</MudText>
+                            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudItem xs="12" sm="12" md="12" lg="12" class="text-right custom-btn-design" style="justify-content: flex-end;">
+                            @if (oModel.DocStatus != "Posted")
+                            {                                
+                                <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Save</MudButton>
+                                <MudButton Variant="Variant.Filled" OnClick="ProcessedInSalary" StartIcon="@Icons.Material.Filled.Approval" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Processed in Salary</MudButton>
+                            }
+                            <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
+                        </MudItem>
                     }
                 </MudItem>
             </MudGrid>

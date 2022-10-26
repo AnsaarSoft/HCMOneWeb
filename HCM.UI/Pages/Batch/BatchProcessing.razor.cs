@@ -11,6 +11,7 @@ using MudBlazor;
 using System.Text.RegularExpressions;
 using System.Reflection;
 using DocumentFormat.OpenXml;
+using HCM.UI.Interfaces.Batch;
 
 namespace HCM.UI.Pages.Batch
 {
@@ -38,6 +39,9 @@ namespace HCM.UI.Pages.Batch
 
         [Inject]
         public ITrnsElementTransaction _trnsElementTransaction { get; set; }
+
+        [Inject]
+        public ITrnsBatchProcess _trnsBatchProcess { get; set; }
 
         [Inject]
         public ILocalStorageService _localStorage { get; set; }
@@ -72,16 +76,7 @@ namespace HCM.UI.Pages.Batch
 
         TrnsBatch oModel = new TrnsBatch();
         TrnsBatchesDetail oModelDetail = new TrnsBatchesDetail();
-        List<TrnsBatch> oBatchAddList = new List<TrnsBatch>();
-        List<TrnsBatch> oBatchUpdateList = new List<TrnsBatch>();
-        List<TrnsBatch> oListGridTemp = new List<TrnsBatch>();
-        private IEnumerable<TrnsBatch> oListGrid = new List<TrnsBatch>();
         private IEnumerable<TrnsBatch> oList = new List<TrnsBatch>();
-
-
-        MudDateRangePicker _picker;
-        DateRange _dateRange;
-        DateTime MinDate;
 
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
@@ -121,6 +116,18 @@ namespace HCM.UI.Pages.Batch
             }
 
             return Task.CompletedTask;
+        }
+
+        private async Task GetAllBatch()
+        {
+            try
+            {
+                oList = await _trnsBatchProcess.GetAllData();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
         }
 
         private async Task GetAllEmployees()
@@ -255,15 +262,18 @@ namespace HCM.UI.Pages.Batch
                 return null;
             }
         }
+
         private bool FilterFuncFiltered(TrnsBatchesDetail element, string searchString1)
         {
             if (string.IsNullOrWhiteSpace(searchString1))
                 return true;
-            if (element.EmployeeId.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            if (element.EmployeeCode.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.EmployeeName.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
             if (element.ValueType.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
-            if (element.Value.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            if (element.EmplCont.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
             if (element.EmplrCont.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
@@ -271,6 +281,7 @@ namespace HCM.UI.Pages.Batch
                 return true;
             return false;
         }
+
         private async void Reset()
         {
             try
@@ -286,6 +297,7 @@ namespace HCM.UI.Pages.Batch
                 Loading = false;
             }
         }
+
         private async Task SearchCriteria()
         {
             //try
@@ -376,28 +388,7 @@ namespace HCM.UI.Pages.Batch
             //    Loading = false;
             //}
         }
-        private async Task DeleteFromFilter(int? ID)
-        {
-            //try
-            //{
-            //    Loading = true;
-            //    await Task.Delay(1);
-            //    List<TrnsEmployeeBonusDetail> oListEmployeeBonusTemp = new List<TrnsEmployeeBonusDetail>();
-            //    oListEmployeeBonusTemp = oModel.TrnsEmployeeBonusDetails.ToList();
-            //    if (oModel.TrnsEmployeeBonusDetails.Count() > 0)
-            //    {
-            //        var FilterRecord = oModel.TrnsEmployeeBonusDetails.Where(x => x.EmployeeId == ID).FirstOrDefault();
-            //        oListEmployeeBonusTemp.Remove(FilterRecord);
-            //        oModel.TrnsEmployeeBonusDetails = oListEmployeeBonusTemp;
-            //    }
-            //    Loading = false;
-            //}
-            //catch (Exception ex)
-            //{
-            //    Logs.GenerateLogs(ex);
-            //    Loading = false;
-            //}
-        }
+
         private async Task EmployeeValidation()
         {
             try
@@ -418,39 +409,40 @@ namespace HCM.UI.Pages.Batch
                 IsEmployeeValidate = false;
             }
         }
+
         private async Task<ApiResponseModel> Save()
         {
             try
             {
                 Loading = true;
                 var res = new ApiResponseModel();
-                //if (oModel.TrnsBatchesDetails.Count() > 0 && oModel.ElementType > 0)
-                //{
-                //    oModel.UserId = LoginUser;
-                //    if (oModel.Id > 0)
-                //    {
-                //        res = await _trnsEmployeeBonus.Update(oModel);
-                //    }
-                //    else
-                //    {
-                //        res = await _trnsEmployeeBonus.Insert(oModel);
-                //    }
+                if (oModel.TrnsBatchesDetails.Count() > 0 && oModel.ElementId > 0 && !string.IsNullOrWhiteSpace(oModel.BatchName))
+                {
+                    oModel.UserId = LoginUser;
+                    if (oModel.Id > 0)
+                    {
+                        res = await _trnsBatchProcess.Update(oModel);
+                    }
+                    else
+                    {
+                        res = await _trnsBatchProcess.Insert(oModel);
+                    }
 
-                //    if (res != null && res.Id == 1)
-                //    {
-                //        Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
-                //        await Task.Delay(3000);
-                //        Navigation.NavigateTo("/BatchProcessing", forceLoad: true);
-                //    }
-                //    else
-                //    {
-                //        Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                //    }
-                //}
-                //else
-                //{
-                //    Snackbar.Add("Please fill the required field(s).", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                //}
+                    if (res != null && res.Id == 1)
+                    {
+                        Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+                        await Task.Delay(3000);
+                        Navigation.NavigateTo("/BatchProcessing", forceLoad: true);
+                    }
+                    else
+                    {
+                        Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                    }
+                }
+                else
+                {
+                    Snackbar.Add("Please fill the required field(s).", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
                 Loading = false;
                 return res;
             }
@@ -461,6 +453,7 @@ namespace HCM.UI.Pages.Batch
                 return null;
             }
         }
+
         private async Task<ApiResponseModel> ProcessedInSalary()
         {
             try
@@ -677,27 +670,18 @@ namespace HCM.UI.Pages.Batch
                                     //Skip the line if Code is Null or Empty
                                     break;
                                 }
-                                //else if (!Regex.IsMatch(StringValue, AlphanumericMask) && PropertyName == "EmpCode")
-                                //{
-                                //    //Skip the line if Code has special character
-                                //    break;
-                                //}
                                 else if (StringValue.Contains("Null", StringComparison.OrdinalIgnoreCase))
                                 {
                                     //Skip the line if Code has Null String
                                     break;
                                 }
                                 //Check for Employee and his payroll
-                                if (!string.IsNullOrWhiteSpace(StringValue) && PropertyName == "EmployeeCode")
+                                else if (!string.IsNullOrWhiteSpace(StringValue) && PropertyName == "EmployeeCode")
                                 {
                                     var CheckList = oListEmployee.Where(x => x.EmpId == StringValue).FirstOrDefault();
                                     if (CheckList != null)
                                     {
-                                        if (CheckList.PayrollName == oModel.PayrollName)
-                                        {
-                                            oModelDetail.GetType().GetProperty(PropertyName).SetValue(oModelDetail, StringValue, null);
-                                        }
-                                        else
+                                        if (CheckList.PayrollName != oModel.PayrollName)
                                         {
                                             break;
                                         }
@@ -707,19 +691,19 @@ namespace HCM.UI.Pages.Batch
                                         break;
                                     }
                                 }
-                                if (!string.IsNullOrWhiteSpace(StringValue) && PropertyName == "EmployeeName")
+                                else if (!string.IsNullOrWhiteSpace(StringValue) && PropertyName == "EmployeeName")
                                 {
                                     var CheckList = oListEmployee.Where(x => x.EmpId == oModelDetail.EmployeeCode).FirstOrDefault();
                                     if (CheckList != null)
                                     {
                                         StringValue = CheckList.FirstName;
-                                        oModelDetail.GetType().GetProperty(PropertyName).SetValue(oModelDetail, StringValue, null);
                                     }
                                     else
                                     {
                                         break;
                                     }
-                                }                                
+                                }
+                                oModelDetail.GetType().GetProperty(PropertyName).SetValue(oModelDetail, StringValue, null);
                                 continue;
                             }
                             else if (PropertyInfo.PropertyType == typeof(decimal))
@@ -728,34 +712,18 @@ namespace HCM.UI.Pages.Batch
                                 oModelDetail.GetType().GetProperty(PropertyName).SetValue(oModelDetail, DecimalValue, null);
                             }
                         }
-                        //if (!string.IsNullOrWhiteSpace(oModelContractor.Code) && !IsForUpdate)
-                        //{
-                        //    var CheckDuplicate = oContractorAddList.Where(x => x.Code == oModelContractor.Code).FirstOrDefault();
-                        //    if (CheckDuplicate == null)
-                        //    {
-                        //        oContractorAddList.Add(oModelContractor);
-                        //    }
-                        //}
-                        //else if (!string.IsNullOrWhiteSpace(oModelContractor.Code) && IsForUpdate)
-                        //{
-                        //    var CheckDuplicate = oContractorUpdateList.Where(x => x.Code == oModelContractor.Code).FirstOrDefault();
-                        //    if (CheckDuplicate == null)
-                        //    {
-                        //        oContractorUpdateList.Add(oModelContractor);
-                        //    }
-                        //}
-                        oModel.TrnsBatchesDetails.Add(oModelDetail);
+                        if (oModelDetail.EmployeeCode != null)
+                        {
+                            var CheckEmployeeExist = oModel.TrnsBatchesDetails.Where(x => x.EmployeeCode == oModelDetail.EmployeeCode).FirstOrDefault();
+                            if (CheckEmployeeExist == null)
+                            {
+                                oModelDetail.CreateDate = DateTime.Now;
+                                oModelDetail.UserId = LoginUser;
+                                oModelDetail.FlgActive = true;
+                                oModel.TrnsBatchesDetails.Add(oModelDetail);
+                            }
+                        }
                     }
-                    //if (oContractorUpdateList.Count >= 0 && oContractorAddList.Count >= 0)
-                    //{
-                    //    oListContractorGridTemp.AddRange(oContractorAddList);
-                    //    oListContractorGridTemp.AddRange(oContractorUpdateList);
-                    //}
-                    ////else if(!IsForUpdate && oContractorAddList.Count > 0)
-                    ////{
-                    ////        oListContractorGridTemp.AddRange(oContractorAddList);
-                    ////}
-                    //oListContractorGrid = oListContractorGridTemp;
                     File.Delete(TemplateFile);
                 }
             }
@@ -781,6 +749,7 @@ namespace HCM.UI.Pages.Batch
                 {
                     LoginUser = Session.EmpId;
                     oModel.DocStatus = "Created";
+                    await GetAllBatch();
                     await SetDocNo();
                     await GetAllEmployees();
                     await GetAllElement();

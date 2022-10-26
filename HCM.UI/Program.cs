@@ -7,6 +7,7 @@ using HCM.UI.Data.Advance;
 using HCM.UI.Data.ApprovalSetup;
 using HCM.UI.Data.Attendance;
 using HCM.UI.Data.Authorization;
+using HCM.UI.Data.Batch;
 using HCM.UI.Data.Bonus;
 using HCM.UI.Data.EmployeeMasterSetup;
 using HCM.UI.Data.Loan;
@@ -18,6 +19,7 @@ using HCM.UI.Interfaces.Advance;
 using HCM.UI.Interfaces.ApprovalSetup;
 using HCM.UI.Interfaces.Attendance;
 using HCM.UI.Interfaces.Authorization;
+using HCM.UI.Interfaces.Batch;
 using HCM.UI.Interfaces.Bonus;
 using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.Loan;
@@ -99,6 +101,7 @@ builder.Services.AddScoped<ICfgApprovalTemplate, CfgApprovalTemplateService>();
 builder.Services.AddScoped<IDocApprovalDecesion, DocApprovalDecesionService>();
 builder.Services.AddScoped<ITrnsSingleEntryOtrequest, TrnsSingleEntryOtrequestService>();
 builder.Services.AddScoped<IUserAuthorization, UserAuthorizationService>();
+builder.Services.AddScoped<ITrnsBatchProcess, TrnsBatchProcessService>();
 //Configuration Start
 
 Settings.APIBaseURL = builder.Configuration.GetValue<string>("APIBaseUrl");
