@@ -21,30 +21,6 @@ namespace HCM.API.Controllers
 
         #region UserAuthorization
 
-        [Route("getUserAuthorization")]
-        [HttpGet]
-        public async Task<IActionResult> FetchUserAuth(string userID)
-        {
-            List<UserAuthorization> oUserAuthorization = new List<UserAuthorization>();
-            try
-            {
-                oUserAuthorization = await _UserAuthorization.FetchUserAuth(userID);
-                if (oUserAuthorization == null)
-                {
-                    return BadRequest(oUserAuthorization);
-                }
-                else
-                {
-                    return Ok(oUserAuthorization);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-                return BadRequest("Something went wrong.");
-            }
-        }
-
         [Route("addUserAuth")]
         [HttpPost]
         public async Task<IActionResult> AddUserAuth([FromBody] List<UserAuthorization> pUserAuthorization)
@@ -77,7 +53,7 @@ namespace HCM.API.Controllers
             List<VMUserAuthorization> oVMUserAuthorization = new List<VMUserAuthorization>();
             try
             {
-                oVMUserAuthorization = await _UserAuthorization.GetAllMenu(UserID);
+                oVMUserAuthorization = await _UserAuthorization.GetAllAuthorizationMenu(UserID);
                 if (oVMUserAuthorization == null)
                 {
                     return BadRequest(oVMUserAuthorization);

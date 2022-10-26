@@ -23,6 +23,7 @@ namespace HCM.API.HCMModels
         public string DcStatus { get; set; }
         public string DocAprStatus { get; set; }
         public int? DocType { get; set; }
+        public string OttypeDescription { get; set; }
 
         public virtual MstOverTime OttypeNavigation { get; set; }
         public virtual CfgPayrollDefination Payroll { get; set; }

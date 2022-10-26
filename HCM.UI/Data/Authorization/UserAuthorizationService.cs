@@ -15,32 +15,6 @@ namespace HCM.UI.Data.Authorization
             _restClient = new RestClient(Settings.APIBaseURL);
         }
 
-        public async Task<List<UserAuthorization>> FetchUserAuth(string userID)
-        {
-            try
-            {
-                List<UserAuthorization> oList = new List<UserAuthorization>();
-
-                var request = new RestRequest($"Authorization/getUserAuthorization?userID={userID}", Method.Get) { RequestFormat = DataFormat.Json };
-
-                var response = await _restClient.ExecuteAsync<List<UserAuthorization>>(request);
-
-                if (response.IsSuccessful)
-                {
-                    return response.Data;
-                }
-                else
-                {
-                    return response.Data;
-                }
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-                return null;
-            }
-        }
-
         public async Task<ApiResponseModel> AddUserAuthorization(List<UserAuthorization> oUserAuthorization)
         {
             ApiResponseModel response = new ApiResponseModel();
@@ -71,7 +45,7 @@ namespace HCM.UI.Data.Authorization
             }
         }
 
-        public async Task<List<VMUserAuthorization>> GetAllMenu(string UserID)
+        public async Task<List<VMUserAuthorization>> GetAllAuthorizationMenu(string UserID)
         {
             try
             {
