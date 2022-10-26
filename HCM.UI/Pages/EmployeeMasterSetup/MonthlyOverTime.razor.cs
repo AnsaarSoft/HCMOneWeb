@@ -107,6 +107,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
         TrnsEmployeeOvertime oModelEmployeeOvertime = new TrnsEmployeeOvertime();
         private IEnumerable<TrnsEmployeeOvertime> oListEmployeeOvertime = new List<TrnsEmployeeOvertime>();
+        List<TrnsEmployeeOvertime> oListEmployeeOt = new List<TrnsEmployeeOvertime>();
 
         TrnsSingleEntryOtrequest oModel = new TrnsSingleEntryOtrequest();
         private IEnumerable<TrnsSingleEntryOtrequest> oList = new List<TrnsSingleEntryOtrequest>();
@@ -334,7 +335,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     var res = (TrnsSingleEntryOtrequest)result.Data;
                     oModel = res;
                     oModelmstOvertime = oListmstOverTime.Where(x => x.Id == oModel.Ottype).FirstOrDefault();
-                    TrnsEmployeeOvertime trnsEmployeeOvertime = new TrnsEmployeeOvertime();
+                    oListEmployeeOt.Clear();
                     foreach (var item in oModel.TrnsSingleEntryOtdetails)
                     {
                         //oModelPayroll = oListPayroll.Where(x => x.Id == item.PayrollId).FirstOrDefault();
@@ -342,10 +343,12 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                         //var SelectedPeriod = oListPayrollPeriod.Where(x => DateTime.Now.Date >= x.StartDate && DateTime.Now.Date <= x.EndDate).FirstOrDefault();
 
 
+                    TrnsEmployeeOvertime trnsEmployeeOvertime = new TrnsEmployeeOvertime();
                         trnsEmployeeOvertime.EmployeeId = item.EmpId;
                         trnsEmployeeOvertime.PeriodId = item.Periodid;
                         trnsEmployeeOvertime.PeriodName= item.PeriodName;
-
+                        trnsEmployeeOvertime.UserId = LoginUser;
+                        trnsEmployeeOvertime.CreateDate = DateTime.Now;
                         TrnsEmployeeOvertimeDetail trnsEmployeeOvertimeDetail = new TrnsEmployeeOvertimeDetail();
                         trnsEmployeeOvertimeDetail.OvertimeId = item.OverTimeId;
                         trnsEmployeeOvertimeDetail.Othours = item.Hours;
@@ -356,8 +359,10 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                         trnsEmployeeOvertimeDetail.CreateDate = DateTime.Now;
                         trnsEmployeeOvertimeDetail.UserId= LoginUser;
                         trnsEmployeeOvertime.TrnsEmployeeOvertimeDetails.Add(trnsEmployeeOvertimeDetail);
+                        oListEmployeeOt.Add(trnsEmployeeOvertime);
                     }
-                    vMMonthlyOverTime.TrnsEmployeeOvertime = trnsEmployeeOvertime;
+                        vMMonthlyOverTime.TrnsEmployeeOvertime = oListEmployeeOt;
+                    //vMMonthlyOverTime.TrnsEmployeeOvertime = trnsEmployeeOvertime;
                     vMMonthlyOverTime.TrnsSingleEntryOtrequest = oModel;
                 }
             }
@@ -371,8 +376,9 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             try
             {
                 oList = await _TrnsSingleEntryOtrequest.GetAllData();
-                oList = oList.ToList();//oList.Where(x => x.FlgActive == true).ToList();
-                                       // oListdetail = oList.Select(x => x.TrnsSingleEntryOtdetails).ToList();
+                oList = oList.ToList();
+              // oListdetail = (IEnumerable<TrnsSingleEntryOtdetail>)oList.Select(x => x.TrnsSingleEntryOtdetails).ToList();
+                //oListdetail = (IEnumerable<TrnsSingleEntryOtdetail>)Detail;
             }
             catch (Exception ex)
             {
@@ -549,6 +555,9 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                             oTrnsSingleEntryOtdetail.FlgActive = true;
                             oModel.Ottype = oModelmstOvertime.Id;
 
+                            //oModel.PeriodId= SelectedPeriod.Id;
+                            //oModel.PayrollId = item.PayrollId;
+
                             oModel.TrnsSingleEntryOtdetails.Add(oTrnsSingleEntryOtdetail);
                         }
                     }
@@ -676,20 +685,6 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     int LineNumber = 1;
                     foreach (var item in oModel.TrnsSingleEntryOtdetails)
                     {
-                        //if (item.Hours != null && item.Hours > 0 && item.FlgActive == true)
-                        //{
-
-                        //}
-                        //else
-                        //{
-                        //   Snackbar.Add("Please First Calculate OverTime. or Active True", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                        //}
-                        //if(string.IsNullOrEmpty( item.EmpName) )
-                        //{
-                        //    res.Message = $"Employee not selected Line Number {LineNumber}";
-                        //    Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
-                        //    return res;
-                        //}
                         if (item.Hours.GetValueOrDefault() == 0)
                         {
                             res.Message = $"Hour is mandatory. Line Number {LineNumber}";
@@ -755,7 +750,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     {
                     vMMonthlyOverTime.TrnsSingleEntryOtrequest.DocStatus = "Closed";
                     vMMonthlyOverTime.TrnsSingleEntryOtrequest.UpdatedBy = LoginUser;
-                    vMMonthlyOverTime.TrnsEmployeeOvertime.UserId = LoginUser;
+                    //vMMonthlyOverTime.TrnsEmployeeOvertime.Add(oModelEmployeeOvertime); 
                      res = await _TrnsSingleEntryOtrequest.InsertUpdate(vMMonthlyOverTime);
                     }
                     if (res != null && res.Id == 1)
@@ -778,7 +773,6 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 return null;
             }
         }
-
         private async Task<ApiResponseModel> Void()
         {
             try
@@ -786,12 +780,29 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
+                oListEmployeeOt.Clear();
+                foreach (var item in oModel.TrnsSingleEntryOtdetails)
+                {
+                    //oModelPayroll = oListPayroll.Where(x => x.Id == item.PayrollId).FirstOrDefault();
+                    //oListPayrollPeriod = oModelPayroll.CfgPeriodDates.Where(x => x.PayrollId == oModelPayroll.Id).ToList();
+                    //var SelectedPeriod = oListPayrollPeriod.Where(x => DateTime.Now.Date >= x.StartDate && DateTime.Now.Date <= x.EndDate).FirstOrDefault();
+                TrnsEmployeeOvertime trnsEmployeeOvertime = new TrnsEmployeeOvertime();
+                    trnsEmployeeOvertime = oListEmployeeOvertime.Where(x => x.EmployeeId == item.EmpId && x.PeriodId == item.Periodid).FirstOrDefault();
+                    trnsEmployeeOvertime.UpdateDate = DateTime.Now;
+                    trnsEmployeeOvertime.UpdatedBy = LoginUser;
+                    foreach (var item1 in trnsEmployeeOvertime.TrnsEmployeeOvertimeDetails)
+                    {
+                        item1.FlgActive = false;
+                        item1.UpdateDate = DateTime.Now;
+                        item1.UpdatedBy = LoginUser;
+                    }
+                    oListEmployeeOt.Add(trnsEmployeeOvertime);
+                }
+
 
                 if (oModel.Id != 0)
                 {
-                    //oModelEmployeeOvertime = oListEmployeeOvertime.Where(x=>x.EmployeeId == )
-
-                   // res = await _TrnsSingleEntryOtrequest.InsertUpdate(vMMonthlyOverTime);
+                    res = await _TrnsEmployeeOverTime.Updatelist(oListEmployeeOt);
                 }
                 if (res != null && res.Id == 1)
                 {
@@ -918,6 +929,9 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                                 {
 
                                     var GetEmp = oListEmployee.Where(x => x.EmpId == StringValue).FirstOrDefault();
+                                    var detail = oList.Select(x => x.TrnsSingleEntryOtdetails).ToList();
+                                    //var CheckList1 = detail.Where(x=>)
+                                        //oList.Where(x => x.id == x.TrnsSingleEntryOtdetails.Where(x=>x.EmpId == GetEmp.Id && x.OverTimeId == ).Select(x=>x.SingleEntryOtid)).FirstOrDefault();
 
                                     var CheckList = oListEmployee.Where(x => x.EmpId == StringValue).FirstOrDefault();
                                     if (CheckList != null)

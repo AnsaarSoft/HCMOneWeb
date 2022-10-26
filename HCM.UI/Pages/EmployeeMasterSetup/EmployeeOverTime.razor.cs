@@ -262,30 +262,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 return null;
             }
         }
-        //private async Task FillEmployeeCode(MstEmployee oModelMstEmpCode)
-        //{
-        //    try
-        //    {
-        //        if (oModelMstEmpCode != null)
-        //        {
-        //            var EmpDetail = oListEmployee.Where(x => x.EmpId == oModelMstEmpCode.EmpId).FirstOrDefault();
-        //            oPayroll = oListPayroll.Where(x => x.Id == EmpDetail.PayrollId).FirstOrDefault();
-        //            CfgPeriodDate mstPayrollPeriod = new CfgPeriodDate();
-        //            oListPayrollPeriod = oPayroll.CfgPeriodDates.Where(x => x.PayrollId == oPayroll.Id).ToList();
-        //            //DateTime dt = (DateTime)oPayroll.FirstPeriodEndDt;
-        //            FullName = EmpDetail.FirstName + " " + EmpDetail.MiddleName + " " + EmpDetail.LastName;
-        //            oModelMstEmployee.PayrollName = EmpDetail.PayrollName;
-        //            oModelMstEmployee = EmpDetail;
-
-        //            await Task.Delay(1);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logs.GenerateLogs(ex);
-        //    }
-        //    _ = InvokeAsync(StateHasChanged);
-        //}
+     
         private async Task CalHour()
         {
             try
@@ -393,8 +370,16 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
 
                 //  oModel.EmployeeId = oModelMstEmployee.Id;
-                oModel.PeriodId = oPayroll.Id;
-                oModel.PeriodName = oPayroll.PayrollName;
+               // oModel.PeriodId = oPayroll.Id;
+              //  oModel.PeriodName = oPayroll.PayrollName;
+              //  oPayroll = oListPayroll.Where(x => x.Id == oPayroll.Id).FirstOrDefault();
+                oListPayrollPeriod = oPayroll.CfgPeriodDates.Where(x => x.PayrollId == oPayroll.Id).ToList();
+                var SelectedPeriod = oListPayrollPeriod.Where(x => x.PayrollId == oPayroll.Id && x.PeriodName == oModel.PeriodName).FirstOrDefault();
+               
+                oModel.PeriodId = SelectedPeriod.Id;
+                oModel.PeriodName = SelectedPeriod.PeriodName;
+
+
                 TrnsEmployeeOvertimeDetail trnsEmployeeOvertimeDetail = new TrnsEmployeeOvertimeDetail();
                 trnsEmployeeOvertimeDetail.OvertimeId = oModelmstOvertime.Id;
                 trnsEmployeeOvertimeDetail.EmpOvertimeId = oModel.Id;

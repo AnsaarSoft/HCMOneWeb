@@ -77,7 +77,6 @@ namespace HCM.API.Repository.EmployeeMasterSetup
             }
             return response;
         }
-
         public async Task<ApiResponseModel> InsertUpdate(VMMonthlyOverTime vMMonthlyOverTime)
         {
             ApiResponseModel response = new ApiResponseModel();
@@ -86,9 +85,9 @@ namespace HCM.API.Repository.EmployeeMasterSetup
                 await Task.Run(() =>
                 {
                     vMMonthlyOverTime.TrnsSingleEntryOtrequest.UpdatedDate = DateTime.Now;
-                    vMMonthlyOverTime.TrnsEmployeeOvertime.CreateDate = DateTime.Now;
+                    //vMMonthlyOverTime.TrnsEmployeeOvertime.CreateDate = DateTime.Now;
                     _DBContext.TrnsSingleEntryOtrequests.Update(vMMonthlyOverTime.TrnsSingleEntryOtrequest);
-                    _DBContext.TrnsEmployeeOvertimes.Add(vMMonthlyOverTime.TrnsEmployeeOvertime);
+                    _DBContext.TrnsEmployeeOvertimes.AddRange(vMMonthlyOverTime.TrnsEmployeeOvertime);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";
