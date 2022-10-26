@@ -25,7 +25,7 @@ namespace HCM.UI.Shared
 
         private string LoginUser = "";
 
-        List<UserAuthorization> AuthMenus;
+        List<VMUserAuthorization> AuthMenus;
 
         List<DocApprovalDecesion> oDocApprovalDecesionList = new List<DocApprovalDecesion>();
 
@@ -60,8 +60,8 @@ namespace HCM.UI.Shared
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    var res = await _UserAuthorization.FetchUserAuth(LoginUser);
-                    AuthMenus = res?.Where(x => x.UserRights != 1).ToList();
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    AuthMenus = res?.Where(x => x.UserRights != false).ToList();
                     await GetAllPendingDoc();
                 }
             }

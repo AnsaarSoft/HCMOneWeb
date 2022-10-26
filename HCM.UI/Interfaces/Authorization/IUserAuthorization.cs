@@ -4,8 +4,7 @@ namespace HCM.UI.Interfaces.Authorization
 {
     public interface IUserAuthorization
     {
-        Task<List<UserAuthorization>> FetchUserAuth(string userID);
         Task<ApiResponseModel> AddUserAuthorization(List<UserAuthorization> oUserAuthorization);
-        Task<List<VMUserAuthorization>> GetAllMenu(string userID);
+        Task<List<VMUserAuthorization>> GetAllAuthorizationMenu(string userID);
     }
 }

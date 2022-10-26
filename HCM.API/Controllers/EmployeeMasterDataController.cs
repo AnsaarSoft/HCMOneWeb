@@ -438,6 +438,53 @@ namespace HCM.API.Controllers
             }
         }
 
+        [Route("addEmpOTList")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] List<TrnsEmployeeOvertime> pTrnsEmployeeOvertime)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _TrnsEmployeeOverTime.Insertlist(pTrnsEmployeeOvertime);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateEmpOTList")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] List<TrnsEmployeeOvertime> pTrnsEmployeeOvertime)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _TrnsEmployeeOverTime.Updatelist(pTrnsEmployeeOvertime);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
         #endregion
 
         #region Trns Employee Resign

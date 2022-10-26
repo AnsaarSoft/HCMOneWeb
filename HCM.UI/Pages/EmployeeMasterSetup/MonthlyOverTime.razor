@@ -134,7 +134,8 @@
                         <HeaderContent>
                             <MudTh>Emp Code</MudTh>
                             <MudTh>Emp Name</MudTh>
-                            @* <MudTh>Payroll Name</MudTh>*@
+                             <MudTh>Payroll Name</MudTh>
+                             <MudTh>Period Name</MudTh>
                             <MudTh>Over Time</MudTh>
                             <MudTh>Hours</MudTh>
                             <MudTh>Amount</MudTh>
@@ -144,8 +145,9 @@
                         <RowTemplate>
                             <MudTd DataLabel="EmpCode">@context.EmpId</MudTd>
                             <MudTd DataLabel="EmpName">@context.EmpName</MudTd>
-                            @* <MudTd DataLabel="PayrollName">@context.PayrollName</MudTd>*@
-                            <MudTd DataLabel="OverTime">@context.OverTimeId</MudTd>
+                             <MudTd DataLabel="PayrollName">@context.PayrollName</MudTd>
+                             <MudTd DataLabel="PayrollName">@context.PeriodName</MudTd>
+                            <MudTd DataLabel="OverTime">@context.OverTimeDescription</MudTd>
                             <MudTd DataLabel="Hours">
                                 <MudNumericField @bind-Value="@context.Hours" Min="0" Immediate="true" Clearable="true" Label="" Variant="Variant.Text"
                                                  Adornment="Adornment.Start" Format="0.00" />
