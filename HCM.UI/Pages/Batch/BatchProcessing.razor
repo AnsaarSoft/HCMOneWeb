@@ -22,7 +22,7 @@
                 <MudItem xs="2" sm="2" md="2" lg="2">
                     <MudNumericField Label="Doc Num*" @bind-Value="oModel.DocNum" Variant="Variant.Text" ReadOnly="true" />
                 </MudItem>
-                 <MudItem xs="4" sm="4" md="4" lg="4">
+                <MudItem xs="2" sm="2" md="2" lg="2">
                     <MudTextField T="string" @bind-Value="oModel.BatchName" MaxLength="100" Counter="100" HelperText="Enter Batch Name" Immediate="true" Clearable="true" Label="Batch Name*" Variant="Variant.Text"
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
@@ -54,11 +54,7 @@
                     <MudTextField T="string" @bind-Value="oModel.DocStatus" HelperText="Document Status" Immediate="true" Label="Status*" Variant="Variant.Text"
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2" class="input-btns">
-                    <InputFile id="excelFile" OnChange="UploadFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden multiple="false" />
-                    <MudFab HtmlTag="label" Color="Color.Dark" Icon="@Icons.Custom.FileFormats.FileExcel" Label="Import Excel" for="excelFile" />
-                </MudItem>
-                <MudItem xs="3" sm="3" md="3" lg="3">
+                <MudItem xs="2" sm="2" md="2" lg="2">
                     @if (excelSheet != null)
                     {
                         @foreach (var file in excelSheet)
@@ -71,7 +67,11 @@
                         }
                     }
                 </MudItem>
-                <MudItem xs="12" sm="12" md="12" lg="12">
+                <MudItem xs="2" sm="2" md="2" lg="2" class="input-btns">
+                    <InputFile id="excelFile" OnChange="UploadFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden multiple="false" />
+                    <MudFab HtmlTag="label" Color="Color.Dark" Icon="@Icons.Custom.FileFormats.FileExcel" Label="Import Excel" for="excelFile" />
+                </MudItem>
+                <MudItem xs="8" sm="8" md="8" lg="8">
                     @if (Loading)
                     {
                         <MudItem xs="2" sm="2" md="2" lg="2">
