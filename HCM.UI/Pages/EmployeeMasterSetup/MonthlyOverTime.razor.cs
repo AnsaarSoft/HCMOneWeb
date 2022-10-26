@@ -554,6 +554,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                             oTrnsSingleEntryOtdetail.PeriodName = SelectedPeriod.PeriodName;
                             oTrnsSingleEntryOtdetail.FlgActive = true;
                             oModel.Ottype = oModelmstOvertime.Id;
+                            oModel.OttypeDescription= oModelmstOvertime.Description;
 
                             //oModel.PeriodId= SelectedPeriod.Id;
                             //oModel.PayrollId = item.PayrollId;
