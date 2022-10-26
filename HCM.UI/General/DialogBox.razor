@@ -579,6 +579,36 @@
                         </PagerContent>
                     </MudTable>
                 }
+                @if (oListBatch?.Count > 0 && DialogFor == "Batch")
+                {
+                    <MudTable Items="@oListBatch" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsBatch,bool>(FilterFuncBatch)"
+                      Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableBatch" RowClassFunc="@SelectedRowClassFuncFilterFuncBatch" OnRowClick="RowClickEventBatch" T="TrnsBatch" @bind-SelectedItem="oModelBatch">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Batch</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Batch No</MudTh>
+                            <MudTh>Batch Name</MudTh>
+                            <MudTh>Element Code</MudTh>
+                            <MudTh>Payroll</MudTh>
+                            <MudTh>Payroll Period</MudTh>
+                            <MudTh>Status</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code">@context.DocNum</MudTd>
+                            <MudTd DataLabel="Code">@context.BatchName</MudTd>
+                            <MudTd DataLabel="Code">@context.ElmtCode</MudTd>
+                            <MudTd DataLabel="Code">@context.PayrollName</MudTd>
+                            <MudTd DataLabel="Code">@context.PayrollPeriod</MudTd>
+                            <MudTd DataLabel="Code">@context.DocStatus</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                }
                 @if (DialogFor == "ApprovalDecesion")
                 {
                     <MudTextField @bind-Value="Remarks" T="string" Label="Remarks" Variant="Variant.Outlined" Lines="5" Margin="Margin.Dense" />

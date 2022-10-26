@@ -43,10 +43,10 @@
                     </MudSelect>
                 </MudItem>
                 <MudItem xs="2" sm="2" md="2" lg="2">
-                    <MudSelect @bind-Value="oModel.ElementId" Label="Element Type*" HelperText="Select Element Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                    <MudSelect @bind-Value="oModel.ElmtCode" Label="Element Type*" HelperText="Select Element Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                         @foreach (MstElement Element in oElementListFilter.ToList())
                         {
-                            <MudSelectItem Value="(int?)Element.Id">@Element.Code - @Element.Description</MudSelectItem>
+                            <MudSelectItem Value="Element.Code">@Element.Code - @Element.Description</MudSelectItem>
                         }
                     </MudSelect>
                 </MudItem>
