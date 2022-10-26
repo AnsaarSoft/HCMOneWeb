@@ -76,6 +76,48 @@ namespace HCM.API.Repository.EmployeeMasterSetup
             }
             return response;
         }
-        
+        public async Task<ApiResponseModel> Insertlist(List<TrnsEmployeeOvertime> oTrnsEmployeeOvertime)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                await Task.Run(() =>
+                {
+                    _DBContext.TrnsEmployeeOvertimes.AddRange(oTrnsEmployeeOvertime);
+                    _DBContext.SaveChanges();
+                    response.Id = 1;
+                    response.Message = "Saved successfully";
+                });
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                response.Id = 0;
+                response.Message = "Failed to save successfully";
+            }
+            return response;
+        }
+        public async Task<ApiResponseModel> Updatelist(List<TrnsEmployeeOvertime> oTrnsEmployeeOvertime)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                await Task.Run(() =>
+                {
+                    _DBContext.TrnsEmployeeOvertimes.UpdateRange(oTrnsEmployeeOvertime);
+                    _DBContext.SaveChanges();
+                    response.Id = 1;
+                    response.Message = "Update successfully";
+                });
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                response.Id = 0;
+                response.Message = "Failed to Update successfully";
+            }
+            return response;
+        }
+
     }
 }
