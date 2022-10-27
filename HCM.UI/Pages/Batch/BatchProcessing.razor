@@ -43,10 +43,10 @@
                     </MudSelect>
                 </MudItem>
                 <MudItem xs="2" sm="2" md="2" lg="2">
-                    <MudSelect @bind-Value="oModel.ElementId" Label="Element Type*" HelperText="Select Element Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                    <MudSelect @bind-Value="oModel.ElmtCode" Disabled="@DisableElement" Label="Element Type*" HelperText="Select Element Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                         @foreach (MstElement Element in oElementListFilter.ToList())
                         {
-                            <MudSelectItem Value="(int?)Element.Id">@Element.Code - @Element.Description</MudSelectItem>
+                            <MudSelectItem Value="Element.Code">@Element.Code - @Element.Description</MudSelectItem>
                         }
                     </MudSelect>
                 </MudItem>
@@ -107,7 +107,6 @@
                         </ToolBarContent>
                         <HeaderContent>
                             <MudTh>Employee Code</MudTh>
-                            <MudTh>Employee Name</MudTh>
                             <MudTh>Value Type</MudTh>
                             <MudTh>Employee Value</MudTh>
                             <MudTh>Employeer Value</MudTh>
@@ -116,7 +115,6 @@
                         </HeaderContent>
                         <RowTemplate>
                             <MudTd DataLabel="Department Code">@context.EmployeeCode</MudTd>
-                            <MudTd DataLabel="Department Name">@context.EmployeeName</MudTd>
                             <MudTd DataLabel="Department Name">@context.ValueType</MudTd>
                             <MudTd DataLabel="Department Name">@context.EmplCont</MudTd>
                             <MudTd DataLabel="Department Name">@context.EmplrCont</MudTd>

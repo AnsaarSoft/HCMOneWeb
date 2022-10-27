@@ -832,9 +832,9 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     }
                     if (res != null && res.Id == 1)
                     {
+                        oModel.Status = "Posted";
                         if (oModel.Id > 0)
                         {
-                            oModel.Status = "Posted";
                             res = await _trnsEmployeeBonus.Update(oModel);
                         }
                         else

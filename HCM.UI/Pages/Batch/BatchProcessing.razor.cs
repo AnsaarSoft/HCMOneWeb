@@ -54,6 +54,7 @@ namespace HCM.UI.Pages.Batch
         #region Variables
 
         bool Loading = false;
+        bool DisableElement = false;
         bool IsEmployeeValidate = false;
         public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
 
@@ -96,6 +97,14 @@ namespace HCM.UI.Pages.Batch
                 {
                     var res = (TrnsBatch)result.Data;
                     oModel = res;
+                    if (oModel.TrnsBatchesDetails.Count > 0)
+                    {
+                        DisableElement = true;
+                    }
+                    else
+                    {
+                        DisableElement = false;
+                    }
                 }
             }
             catch (Exception ex)
@@ -416,7 +425,7 @@ namespace HCM.UI.Pages.Batch
             {
                 Loading = true;
                 var res = new ApiResponseModel();
-                if (oModel.TrnsBatchesDetails.Count() > 0 && oModel.ElementId > 0 && !string.IsNullOrWhiteSpace(oModel.BatchName))
+                if (oModel.TrnsBatchesDetails.Count() > 0 && !string.IsNullOrWhiteSpace(oModel.ElmtCode) && !string.IsNullOrWhiteSpace(oModel.BatchName))
                 {
                     oModel.UserId = LoginUser;
                     if (oModel.Id > 0)
@@ -463,120 +472,198 @@ namespace HCM.UI.Pages.Batch
                 List<TrnsEmployeeElement> oListTrnsElementHeaderAdd = new List<TrnsEmployeeElement>();
                 List<TrnsEmployeeElement> oListTrnsElementHeaderUpdate = new List<TrnsEmployeeElement>();
 
-                //if (oModel.TrnsEmployeeBonusDetails.Count() > 0 && oModel.ElementType > 0)
-                //{
-                //    foreach (var EmployeeBonusDetail in oModel.TrnsEmployeeBonusDetails)
-                //    {
-                //        TrnsEmployeeElement oModelTrnsEmplElement = new TrnsEmployeeElement();
-                //        TrnsEmployeeElementDetail oModelTrnsEmplElementDetail = new TrnsEmployeeElementDetail();
-                //        oModelTrnsEmplElement = oListEmployeeElement.Where(x => x.EmployeeId == EmployeeBonusDetail.EmployeeId).FirstOrDefault();
-                //        var FilterElement = oElementListFilter.Where(x => x.Id == oModel.ElementType).FirstOrDefault();
-                //        if (oModelTrnsEmplElement.Id > 0)
-                //        {
-                //            oModelTrnsEmplElement.UpdatedBy = LoginUser;
-                //            oModelTrnsEmplElement.UpdateDate = DateTime.Now;
+                if (oModel.TrnsBatchesDetails.Count() > 0 && !string.IsNullOrWhiteSpace(oModel.ElmtCode))
+                {
+                    foreach (var BatchDetail in oModel.TrnsBatchesDetails)
+                    {
+                        TrnsEmployeeElement oModelTrnsEmplElement = new TrnsEmployeeElement();
+                        TrnsEmployeeElementDetail oModelTrnsEmplElementDetail = new TrnsEmployeeElementDetail();
+                        oModelTrnsEmplElement = oListEmployeeElement.Where(x => x.EmployeeId == BatchDetail.EmployeeId).FirstOrDefault();
+                        var FilterElement = oElementListFilter.Where(x => x.Code == oModel.ElmtCode).FirstOrDefault();
+                        var oModelEmp = oListEmployee.Where(x => x.EmpId == BatchDetail.EmployeeCode).FirstOrDefault();
+                        decimal EmpGrossSalary = (decimal)oModelEmp.BasicSalary;
+                        if (oModelTrnsEmplElement.Id > 0)
+                        {
+                            oModelTrnsEmplElement.UpdatedBy = LoginUser;
+                            oModelTrnsEmplElement.UpdateDate = DateTime.Now;
+                            if (FilterElement.Type == "Non-Rec")
+                            {
+                                oModelTrnsEmplElementDetail = oModelTrnsEmplElement.TrnsEmployeeElementDetails.Where(x => x.ElementCode == oModel.ElmtCode && x.PeriodName == oModel.PayrollPeriod).FirstOrDefault();
+                            }
+                            else
+                            {
+                                oModelTrnsEmplElementDetail = oModelTrnsEmplElement.TrnsEmployeeElementDetails.Where(x => x.ElementCode == oModel.ElmtCode).FirstOrDefault();
+                            }
+                            FilterElement.Value = BatchDetail.EmplCont;
+                            if (oModelTrnsEmplElementDetail == null)
+                            {
+                                oModelTrnsEmplElementDetail = new TrnsEmployeeElementDetail();
+                                oModelTrnsEmplElementDetail.ElementId = FilterElement.Id;
+                                oModelTrnsEmplElementDetail.ElementCode = FilterElement.Code;
+                                oModelTrnsEmplElementDetail.ElementDescription = FilterElement.Description;
 
-                //            oModelTrnsEmplElementDetail = oModelTrnsEmplElement.TrnsEmployeeElementDetails.Where(x => x.ElementId == oModel.ElementType && x.PeriodName == oModel.PaysInPeriodCode).FirstOrDefault();
-                //            if (oModelTrnsEmplElementDetail == null)
-                //            {
-                //                oModelTrnsEmplElementDetail = new TrnsEmployeeElementDetail();
-                //                oModelTrnsEmplElementDetail.ElementId = FilterElement.Id;
-                //                oModelTrnsEmplElementDetail.ElementCode = FilterElement.Code;
-                //                oModelTrnsEmplElementDetail.ElementDescription = FilterElement.Description;
-                //                oModelTrnsEmplElementDetail.ElementType = FilterElement.ElmtType;
-                //                oModelTrnsEmplElementDetail.ElementValueType = FilterElement.ValueType;
-                //                oModelTrnsEmplElementDetail.Type = FilterElement.Type;
-                //                oModelTrnsEmplElementDetail.FlgActive = FilterElement.FlgActive;
-                //                oModelTrnsEmplElementDetail.Amount = EmployeeBonusDetail.CalculatedAmount;
-                //                oModelTrnsEmplElementDetail.PeriodId = oModel.PaysInPeriodId;
-                //                oModelTrnsEmplElementDetail.PeriodName = oModel.PaysInPeriodCode;
-                //                //oModelTrnsEmplElementDetail.EmpContr = 0;
-                //                //oModelTrnsEmplElementDetail.EmplrContr = 0;
-                //                oModelTrnsEmplElement.TrnsEmployeeElementDetails.Add(oModelTrnsEmplElementDetail);
-                //                oListTrnsElementHeaderUpdate.Add(oModelTrnsEmplElement);
-                //            }
-                //            //else
-                //            //{
-                //            //    oModelTrnsEmplElementDetail.ElementId = FilterElement.Id;
-                //            //    oModelTrnsEmplElementDetail.ElementCode = FilterElement.Code;
-                //            //    oModelTrnsEmplElementDetail.ElementDescription = FilterElement.Description;
-                //            //    oModelTrnsEmplElementDetail.ElementType = FilterElement.ElmtType;
-                //            //    oModelTrnsEmplElementDetail.ElementValueType = FilterElement.ValueType;
-                //            //    oModelTrnsEmplElementDetail.Type = FilterElement.Type;
-                //            //    oModelTrnsEmplElementDetail.FlgActive = FilterElement.FlgActive;
-                //            //    oModelTrnsEmplElementDetail.Amount = EmployeeBonusDetail.CalculatedAmount;
-                //            //    oModelTrnsEmplElementDetail.PeriodId = oModel.PaysInPeriodId;
-                //            //    oModelTrnsEmplElementDetail.PeriodName = oModel.PaysInPeriodCode;
-                //            //    //oModelTrnsEmplElementDetail.EmpContr = 0;
-                //            //    //oModelTrnsEmplElementDetail.EmplrContr = 0;
-                //            //    oModelTrnsEmplElement.TrnsEmployeeElementDetails. Add(oModelTrnsEmplElementDetail);
-                //            //    oListTrnsElementHeaderUpdate.Add(oModelTrnsEmplElement);
-                //            //}
-                //        }
-                //        else
-                //        {
-                //            oModelTrnsEmplElement.EmployeeId = EmployeeBonusDetail.EmployeeId;
-                //            oModelTrnsEmplElement.UserId = LoginUser;
-                //            oModelTrnsEmplElement.CreateDate = DateTime.Now;
-                //            oModelTrnsEmplElement.FlgActive = true;
+                                if (FilterElement.ElmtType == "Ear" || FilterElement.ElmtType == "Ded")
+                                {
+                                    oModelTrnsEmplElementDetail.Amount = BusinessLogic.GetElementAmount(oModelEmp, FilterElement);
+                                    oModelTrnsEmplElementDetail.EmpContr = 0;
+                                    oModelTrnsEmplElementDetail.EmplrContr = 0;
+                                }
+                                else
+                                {
+                                    decimal emprAmount = 0;
+                                    oModelTrnsEmplElementDetail.Amount = BusinessLogic.GetElementAmount(oModelEmp, FilterElement, out emprAmount);
+                                    oModelTrnsEmplElementDetail.EmpContr = oModelTrnsEmplElementDetail.Amount;
+                                    oModelTrnsEmplElementDetail.EmplrContr = emprAmount;
+                                }
+                                if ((FilterElement.ElmtType == "Ear" || FilterElement.ElmtType == "Con") && FilterElement.FlgEffectOnGross == true)
+                                {
+                                    EmpGrossSalary = (decimal)(EmpGrossSalary + oModelTrnsEmplElementDetail.Amount);
+                                }
+                                else if (FilterElement.ElmtType == "Ded" && FilterElement.FlgEffectOnGross == true)
+                                {
+                                    EmpGrossSalary = (decimal)(EmpGrossSalary - oModelTrnsEmplElementDetail.Amount);
+                                }
 
-                //            oModelTrnsEmplElementDetail.ElementId = FilterElement.Id;
-                //            oModelTrnsEmplElementDetail.ElementCode = FilterElement.Code;
-                //            oModelTrnsEmplElementDetail.ElementDescription = FilterElement.Description;
-                //            oModelTrnsEmplElementDetail.ElementType = FilterElement.ElmtType;
-                //            oModelTrnsEmplElementDetail.ElementValueType = FilterElement.ValueType;
-                //            oModelTrnsEmplElementDetail.Type = FilterElement.Type;
-                //            oModelTrnsEmplElementDetail.FlgActive = FilterElement.FlgActive;
-                //            oModelTrnsEmplElementDetail.Amount = EmployeeBonusDetail.CalculatedAmount;
-                //            oModelTrnsEmplElementDetail.PeriodId = oModel.PaysInPeriodId;
-                //            oModelTrnsEmplElementDetail.PeriodName = oModel.PaysInPeriodCode;
-                //            oModelTrnsEmplElementDetail.EmpContr = 0;
-                //            oModelTrnsEmplElementDetail.EmplrContr = 0;
-                //            oModelTrnsEmplElement.TrnsEmployeeElementDetails.Add(oModelTrnsEmplElementDetail);
-                //            oListTrnsElementHeaderAdd.Add(oModelTrnsEmplElement);
-                //        }
-                //    }
+                                oModelTrnsEmplElementDetail.ElementType = FilterElement.ElmtType;
+                                oModelTrnsEmplElementDetail.ElementValueType = FilterElement.ValueType;
+                                oModelTrnsEmplElementDetail.Type = FilterElement.Type;
+                                oModelTrnsEmplElementDetail.FlgActive = FilterElement.FlgActive;
+                                oModelTrnsEmplElementDetail.SourceType = "Batch Processing";
+                                if (FilterElement.Type == "Non-Rec")
+                                {
+                                    oModelTrnsEmplElementDetail.PeriodId = oModel.PayrollPeriodId;
+                                    oModelTrnsEmplElementDetail.PeriodName = oModel.PayrollPeriod;
+                                }
+                                oModelTrnsEmplElement.TrnsEmployeeElementDetails.Add(oModelTrnsEmplElementDetail);
+                                oListTrnsElementHeaderUpdate.Add(oModelTrnsEmplElement);
+                            }
+                            else
+                            {
+                                oModelTrnsEmplElementDetail.ElementId = FilterElement.Id;
+                                oModelTrnsEmplElementDetail.ElementCode = FilterElement.Code;
+                                oModelTrnsEmplElementDetail.ElementDescription = FilterElement.Description;
+                                if (FilterElement.ElmtType == "Ear" || FilterElement.ElmtType == "Ded")
+                                {
+                                    oModelTrnsEmplElementDetail.Amount = BusinessLogic.GetElementAmount(oModelEmp, FilterElement);
+                                    oModelTrnsEmplElementDetail.EmpContr = 0;
+                                    oModelTrnsEmplElementDetail.EmplrContr = 0;
+                                }
+                                else
+                                {
+                                    decimal emprAmount = 0;
+                                    oModelTrnsEmplElementDetail.Amount = BusinessLogic.GetElementAmount(oModelEmp, FilterElement, out emprAmount);
+                                    oModelTrnsEmplElementDetail.EmpContr = oModelTrnsEmplElementDetail.Amount;
+                                    oModelTrnsEmplElementDetail.EmplrContr = emprAmount;
+                                }
+                                if ((FilterElement.ElmtType == "Ear" || FilterElement.ElmtType == "Con") && FilterElement.FlgEffectOnGross == true)
+                                {
+                                    EmpGrossSalary = (decimal)(EmpGrossSalary + oModelTrnsEmplElementDetail.Amount);
+                                }
+                                else if (FilterElement.ElmtType == "Ded" && FilterElement.FlgEffectOnGross == true)
+                                {
+                                    EmpGrossSalary = (decimal)(EmpGrossSalary - oModelTrnsEmplElementDetail.Amount);
+                                }
 
-                //    if (oListTrnsElementHeaderAdd.Count > 0)
-                //    {
-                //        res = await _trnsElementTransaction.Insert(oListTrnsElementHeaderAdd);
-                //    }
-                //    if (oListTrnsElementHeaderUpdate.Count > 0)
-                //    {
-                //        res = await _trnsElementTransaction.Update(oListTrnsElementHeaderUpdate);
-                //    }
-                //    if (res != null && res.Id == 1)
-                //    {
-                //        if (oModel.Id > 0)
-                //        {
-                //            oModel.Status = "Posted";
-                //            res = await _trnsEmployeeBonus.Update(oModel);
-                //        }
-                //        else
-                //        {
-                //            res = await _trnsEmployeeBonus.Insert(oModel);
-                //        }
+                                oModelTrnsEmplElementDetail.ElementType = FilterElement.ElmtType;
+                                oModelTrnsEmplElementDetail.ElementValueType = FilterElement.ValueType;
+                                oModelTrnsEmplElementDetail.Type = FilterElement.Type;
+                                oModelTrnsEmplElementDetail.FlgActive = FilterElement.FlgActive;
+                                oModelTrnsEmplElementDetail.SourceType = "Batch Processing";
+                                if (FilterElement.Type == "Non-Rec")
+                                {
+                                    oModelTrnsEmplElementDetail.PeriodId = oModel.PayrollPeriodId;
+                                    oModelTrnsEmplElementDetail.PeriodName = oModel.PayrollPeriod;
+                                }
 
-                //        if (res != null && res.Id == 1)
-                //        {
-                //            Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
-                //            await Task.Delay(3000);
-                //            Navigation.NavigateTo("/EmployeeBonus", forceLoad: true);
-                //        }
-                //        else
-                //        {
-                //            Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                //        }
-                //    }
-                //    else
-                //    {
-                //        Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                //    }
-                //}
-                //else
-                //{
-                //    Snackbar.Add("Please fill the required field(s).", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                //}
+                                oListTrnsElementHeaderUpdate.Add(oModelTrnsEmplElement);
+                            }
+                        }
+                        else
+                        {
+                            oModelTrnsEmplElement.EmployeeId = BatchDetail.EmployeeId;
+                            oModelTrnsEmplElement.UserId = LoginUser;
+                            oModelTrnsEmplElement.CreateDate = DateTime.Now;
+                            oModelTrnsEmplElement.FlgActive = true;
+
+                            oModelTrnsEmplElementDetail.ElementId = FilterElement.Id;
+                            oModelTrnsEmplElementDetail.ElementCode = FilterElement.Code;
+                            oModelTrnsEmplElementDetail.ElementDescription = FilterElement.Description;
+                            oModelTrnsEmplElementDetail.ElementType = FilterElement.ElmtType;
+                            if (FilterElement.ElmtType == "Ear" || FilterElement.ElmtType == "Ded")
+                            {
+                                oModelTrnsEmplElementDetail.Amount = BusinessLogic.GetElementAmount(oModelEmp, FilterElement);
+                                oModelTrnsEmplElementDetail.EmpContr = 0;
+                                oModelTrnsEmplElementDetail.EmplrContr = 0;
+                            }
+                            else
+                            {
+                                decimal emprAmount = 0;
+                                oModelTrnsEmplElementDetail.Amount = BusinessLogic.GetElementAmount(oModelEmp, FilterElement, out emprAmount);
+                                oModelTrnsEmplElementDetail.EmpContr = oModelTrnsEmplElementDetail.Amount;
+                                oModelTrnsEmplElementDetail.EmplrContr = emprAmount;
+                            }
+                            if ((FilterElement.ElmtType == "Ear" || FilterElement.ElmtType == "Con") && FilterElement.FlgEffectOnGross == true)
+                            {
+                                EmpGrossSalary = (decimal)(EmpGrossSalary + oModelTrnsEmplElementDetail.Amount);
+                            }
+                            else if (FilterElement.ElmtType == "Ded" && FilterElement.FlgEffectOnGross == true)
+                            {
+                                EmpGrossSalary = (decimal)(EmpGrossSalary - oModelTrnsEmplElementDetail.Amount);
+                            }
+                            oModelTrnsEmplElementDetail.ElementValueType = FilterElement.ValueType;
+                            oModelTrnsEmplElementDetail.Type = FilterElement.Type;
+                            oModelTrnsEmplElementDetail.FlgActive = FilterElement.FlgActive;
+                            oModelTrnsEmplElementDetail.SourceType = "Batch Processing";
+                            if (FilterElement.Type == "Non-Rec")
+                            {
+                                oModelTrnsEmplElementDetail.PeriodId = oModel.PayrollPeriodId;
+                                oModelTrnsEmplElementDetail.PeriodName = oModel.PayrollPeriod;
+                            }
+                            oModelTrnsEmplElement.TrnsEmployeeElementDetails.Add(oModelTrnsEmplElementDetail);
+                            oListTrnsElementHeaderAdd.Add(oModelTrnsEmplElement);
+                        }
+                    }
+
+                    if (oListTrnsElementHeaderAdd.Count > 0)
+                    {
+                        res = await _trnsElementTransaction.Insert(oListTrnsElementHeaderAdd);
+                    }
+                    if (oListTrnsElementHeaderUpdate.Count > 0)
+                    {
+                        res = await _trnsElementTransaction.Update(oListTrnsElementHeaderUpdate);
+                    }
+                    if (res != null && res.Id == 1)
+                    {
+                        oModel.DocStatus = "Posted";
+                        if (oModel.Id > 0)
+                        {
+                            res = await _trnsBatchProcess.Update(oModel);
+                        }
+                        else
+                        {
+                            res = await _trnsBatchProcess.Insert(oModel);
+                        }
+
+                        if (res != null && res.Id == 1)
+                        {
+                            Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+                            await Task.Delay(3000);
+                            Navigation.NavigateTo("/BatchProcessing", forceLoad: true);
+                        }
+                        else
+                        {
+                            Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                        }
+                    }
+                    else
+                    {
+                        Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                    }
+                }
+                else
+                {
+                    Snackbar.Add("Please fill the required field(s).", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
                 Loading = false;
                 return res;
             }
@@ -593,24 +680,31 @@ namespace HCM.UI.Pages.Batch
             try
             {
                 Loading = true;
-                if (excelSheet.Count > 0)
+                if (!string.IsNullOrWhiteSpace(oModel.ElmtCode))
                 {
-                    Snackbar.Add("Template already selected, refresh the page for new template to import.", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                }
-                else
-                {
-                    var TemplateFile = e.File.Name;
-                    excelSheet.Add(e.File);
-                    if (!string.IsNullOrWhiteSpace(TemplateFile))
+                    if (excelSheet.Count > 0)
                     {
-                        Snackbar.Add("Please wait template uploading in process...", Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
-                        await FillBatchDetailGrid();
+                        Snackbar.Add("Template already selected, refresh the page for new template to import.", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
                     else
                     {
-                        Snackbar.Add("Select template to import", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                        excelSheet.Clear();
+                        var TemplateFile = e.File.Name;
+                        excelSheet.Add(e.File);
+                        if (!string.IsNullOrWhiteSpace(TemplateFile))
+                        {
+                            Snackbar.Add("Please wait template uploading in process...", Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+                            await FillBatchDetailGrid();
+                        }
+                        else
+                        {
+                            Snackbar.Add("Select template to import", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                            excelSheet.Clear();
+                        }
                     }
+                }
+                else
+                {
+                    Snackbar.Add("Select Element first", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                 }
             }
             catch (Exception ex)
@@ -685,24 +779,25 @@ namespace HCM.UI.Pages.Batch
                                         {
                                             break;
                                         }
+                                        oModelDetail.EmployeeId = CheckList.Id;
                                     }
                                     else
                                     {
                                         break;
                                     }
                                 }
-                                else if (!string.IsNullOrWhiteSpace(StringValue) && PropertyName == "EmployeeName")
-                                {
-                                    var CheckList = oListEmployee.Where(x => x.EmpId == oModelDetail.EmployeeCode).FirstOrDefault();
-                                    if (CheckList != null)
-                                    {
-                                        StringValue = CheckList.FirstName;
-                                    }
-                                    else
-                                    {
-                                        break;
-                                    }
-                                }
+                                //else if (!string.IsNullOrWhiteSpace(StringValue) && PropertyName == "EmployeeName")
+                                //{
+                                //    var CheckList = oListEmployee.Where(x => x.EmpId == oModelDetail.EmployeeCode).FirstOrDefault();
+                                //    if (CheckList != null)
+                                //    {
+                                //        StringValue = CheckList.FirstName;
+                                //    }
+                                //    else
+                                //    {
+                                //        break;
+                                //    }
+                                //}
                                 oModelDetail.GetType().GetProperty(PropertyName).SetValue(oModelDetail, StringValue, null);
                                 continue;
                             }
@@ -719,12 +814,24 @@ namespace HCM.UI.Pages.Batch
                             {
                                 oModelDetail.CreateDate = DateTime.Now;
                                 oModelDetail.UserId = LoginUser;
+
+                                var SelectedElement = oElementListFilter.Where(x => x.Code == oModel.ElmtCode).FirstOrDefault();
+
+                                oModelDetail.ValueType = SelectedElement.ValueType;
                                 oModelDetail.FlgActive = true;
                                 oModel.TrnsBatchesDetails.Add(oModelDetail);
                             }
                         }
                     }
                     File.Delete(TemplateFile);
+                    if (oModel.TrnsBatchesDetails.Count > 0)
+                    {
+                        DisableElement = true;
+                    }
+                    else
+                    {
+                        DisableElement = false;
+                    }
                 }
             }
             catch (Exception ex)
