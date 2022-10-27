@@ -2409,6 +2409,30 @@ namespace HCM.API.Controllers
                 return BadRequest("Something went wrong.");
             }
         }
+        
+        [Route("getAllPayrollSetupByEmp")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllPayrollSetupByEmp(string EmpID)
+        {
+            List<CfgPayrollDefination> oCfgPayrollDefinationSetup = new List<CfgPayrollDefination>();
+            try
+            {
+                oCfgPayrollDefinationSetup = await _CfgPayrollDefinationSetup.GetAllData(EmpID);
+                if (oCfgPayrollDefinationSetup == null)
+                {
+                    return BadRequest(oCfgPayrollDefinationSetup);
+                }
+                else
+                {
+                    return Ok(oCfgPayrollDefinationSetup);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
 
         [Route("addPayrollSetup")]
         [HttpPost]

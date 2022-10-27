@@ -13,6 +13,26 @@ namespace HCM.API.Repository.MasterData
         {
             _DBContext = DBContext;
         }
+        public async Task<List<CfgPayrollDefination>> GetAllData(string EmpID)
+        {
+            List<CfgPayrollDefination> oList = new List<CfgPayrollDefination>();
+            try
+            {
+                await Task.Run(() =>
+                {
+                    oList = (from a in _DBContext.CfgPayrollDefinations.Include(c => c.MstElementLinks).Include(c => c.CfgPeriodDates)
+                             join d in _DBContext.UserDataAccesses on a.Id equals d.FkPayrollId
+                             where d.FlgActive == true && d.EmpId == EmpID
+                             select a
+                             ).ToList();
+                });
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+            return oList;
+        }
         public async Task<List<CfgPayrollDefination>> GetAllData()
         {
             List<CfgPayrollDefination> oList = new List<CfgPayrollDefination>();

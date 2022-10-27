@@ -38,6 +38,31 @@ namespace HCM.UI.Data.MasterData
                 return null;
             }
         }
+        public async Task<List<CfgPayrollDefination>> GetAllData(string EmpID)
+        {
+            try
+            {
+                List<CfgPayrollDefination> oList = new List<CfgPayrollDefination>();
+
+                var request = new RestRequest($"MasterData/getAllPayrollSetupByEmp?EmpID ={EmpID}", Method.Get) { RequestFormat = DataFormat.Json };
+
+                var response = await _restClient.ExecuteAsync<List<CfgPayrollDefination>>(request);
+
+                if (response.IsSuccessful)
+                {
+                    return response.Data;
+                }
+                else
+                {
+                    return response.Data;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return null;
+            }
+        }
         public async Task<ApiResponseModel> Insert(CfgPayrollDefination oCfgPayrollDefination)
         {
             ApiResponseModel response = new ApiResponseModel();
