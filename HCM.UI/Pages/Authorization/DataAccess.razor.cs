@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using DocumentFormat.OpenXml.Spreadsheet;
 using HCM.API.HCMModels;
 using HCM.API.Models;
 using HCM.UI.General;
@@ -13,22 +14,38 @@ namespace HCM.UI.Pages.Authorization
 {
     public partial class DataAccess
     {
-        #region InjectService
+        #region Inject Service
 
         [Inject]
         public NavigationManager Navigation { get; set; }
+
         [Inject]
         public ISnackbar Snackbar { get; set; }
+
         [Inject]
         public IDialogService Dialog { get; set; }
-        [Inject]
-        public ICfgPayrollDefination _ICfgPayrollDefination { get; set; }
+
         [Inject]
         public IMstEmployeeMasterData _mstEmployeeMaster { get; set; }
+
+        [Inject]
+        public IMstDepartment _mstDepartment { get; set; }
+
+        [Inject]
+        public IMstLocation _mstLocation { get; set; }
+
+        [Inject]
+        public IMstDesignation _mstDesignation { get; set; }
+
+        [Inject]
+        public ICfgPayrollDefination _ICfgPayrollDefination { get; set; }
+
         [Inject]
         public IUserDataAccess _IUserDataAccess { get; set; }
+
         [Inject]
         public ILocalStorageService _localStorage { get; set; }
+
 
         #endregion
 
@@ -37,66 +54,52 @@ namespace HCM.UI.Pages.Authorization
         private string LoginUser = "";
 
         bool Loading = false;
-        
-        private string searchStringFilteredEmployee = "";
-        private string searchStringEmplyeeTransfer = "";
 
-        private bool FilterFuncFilteredEmployee(TrnsEmployeeTransferDetail element) => FilterFuncFilteredEmployee(element, searchStringFilteredEmployee);
+        private string searchString1 = "";
 
-        
+        private bool FilterFunc(UserDataAccess element) => FilterFunc(element, searchString1);
 
-
-     
-
+        MstEmployee oModelEmployeeFrom = new MstEmployee();
+        MstEmployee oModelEmployeeTo = new MstEmployee();
         private IEnumerable<MstEmployee> oListEmployee = new List<MstEmployee>();
         private IEnumerable<MstEmployee> oListFilteredEmployee = new List<MstEmployee>();
 
-        private IEnumerable<TrnsEmployeeTransfer> oList = new List<TrnsEmployeeTransfer>();
-        private TrnsEmployeeTransfer oModel = new TrnsEmployeeTransfer();
+        MstDepartment oModelDepartment = new MstDepartment();
+        private IEnumerable<MstDepartment> oListDepartment = new List<MstDepartment>();
 
-        private IEnumerable<TrnsEmployeeTransferDetail> oDetailList = new List<TrnsEmployeeTransferDetail>();
-        
-        
-        
+        MstDesignation oModelDesignation = new MstDesignation();
+        private IEnumerable<MstDesignation> oListDesignation = new List<MstDesignation>();
 
- 
-
-
-        DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
-
-        UserDataAccess oDetail = new UserDataAccess();
-
-        private IEnumerable<UserDataAccess> oListUserDataAccess = new List<UserDataAccess>();
-
-        MstEmployee oModelEmployeeFrom = new MstEmployee();
-        private IEnumerable<MstEmployee> oListEmployeeFrom = new List<MstEmployee>();
-
-        MstEmployee oModelEmployeeTo = new MstEmployee();
-        private IEnumerable<MstEmployee> oListEmployeeTo = new List<MstEmployee>();
-
-        private IEnumerable<CfgPayrollDefination> PayrollName { get; set; } = new HashSet<CfgPayrollDefination>();
-        private IEnumerable<CfgPayrollDefination> PayrollName1 { get; set; } = new HashSet<CfgPayrollDefination>();
+        MstLocation oModelLocation = new MstLocation();
+        private IEnumerable<MstLocation> oListLocation = new List<MstLocation>();
 
         CfgPayrollDefination oPayroll = new CfgPayrollDefination();
         List<CfgPayrollDefination> oListCfgPayrollDefination = new List<CfgPayrollDefination>();
 
-        List<UserDataAccess> oDetailListadd = new List<UserDataAccess>();
+        private IEnumerable<CfgPayrollDefination> SelectedPayrollList { get; set; } = new HashSet<CfgPayrollDefination>();
+
+        UserDataAccess oModel = new UserDataAccess();
+        private List<UserDataAccess> oListUserDataAccess = new List<UserDataAccess>();
+        private IEnumerable<UserDataAccess> oListSaveUserDataAccess = new List<UserDataAccess>();
+
+        DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
         #endregion
 
         #region Functions
+
         private async Task OpenDialog(DialogOptions options)
         {
             try
             {
                 var parameters = new DialogParameters();
-                parameters.Add("DialogFor", "TrnsEmployeeTransfer");
+                parameters.Add("DialogFor", "UserDataAccess");
                 var dialog = Dialog.Show<DialogBox>("", parameters, options);
                 var result = await dialog.Result;
                 if (!result.Cancelled)
                 {
-                    var res = (TrnsEmployeeTransfer)result.Data;
-                    oModel = res;
+                    var res = (List<UserDataAccess>)result.Data;
+                    oListUserDataAccess = res;
                 }
             }
             catch (Exception ex)
@@ -118,6 +121,46 @@ namespace HCM.UI.Pages.Authorization
             }
         }
 
+        private async Task GetAllDesignation()
+        {
+            try
+            {
+                oListDesignation = await _mstDesignation.GetAllData();
+                //Where(x => x.FlgActive == true).
+                oListDesignation = oListDesignation.ToList();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+
+        private async Task GetAllDepartments()
+        {
+            try
+            {
+                oListDepartment = await _mstDepartment.GetAllData();
+                //Where(x => x.FlgActive == true).
+                oListDepartment = oListDepartment.ToList();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+
+        private async Task GetAllLocation()
+        {
+            try
+            {
+                oListLocation = await _mstLocation.GetAllData();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+
         private async Task GetAllPayroll()
         {
             try
@@ -128,6 +171,23 @@ namespace HCM.UI.Pages.Authorization
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
+            }
+        }
+
+        private string GetPayrollSelection(List<string> selectedValues)
+        {
+            try
+            {
+                if (selectedValues.Count < 1)
+                {
+                    return $"Please choose Payroll";
+                }
+                return $"{selectedValues.Count} Payroll{(selectedValues.Count > 1 ? "s have" : " has")} been selected";
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return null;
             }
         }
 
@@ -155,6 +215,7 @@ namespace HCM.UI.Pages.Authorization
                 return null;
             }
         }
+
         private async Task<IEnumerable<MstEmployee>> SearchEmployeeTo(string value)
         {
             try
@@ -180,15 +241,23 @@ namespace HCM.UI.Pages.Authorization
             }
         }
 
-        private string GetPayrollSelection(List<string> selectedValues)
+        private async Task<IEnumerable<MstDesignation>> SearchDesignation(string value)
         {
             try
             {
-                if (selectedValues.Count < 1)
+                await Task.Delay(1);
+                if (string.IsNullOrWhiteSpace(value))
+                    return oListDesignation.Select(o => new MstDesignation
+                    {
+                        Id = o.Id,
+                        Description = o.Description,
+                    }).ToList();
+                var res = oListDesignation.Where(x => x.Description.ToUpper().Contains(value.ToUpper())).ToList();
+                return res.Select(x => new MstDesignation
                 {
-                    return $"Please choose Payroll";
-                }
-                return $"{selectedValues.Count} Payroll{(selectedValues.Count > 1 ? "s have" : " has")} been selected";
+                    Id = x.Id,
+                    Description = x.Description,
+                }).ToList();
             }
             catch (Exception ex)
             {
@@ -197,41 +266,53 @@ namespace HCM.UI.Pages.Authorization
             }
         }
 
-
-        private bool FilterFuncFilteredEmployee(TrnsEmployeeTransferDetail element, string searchString1)
-        {
-            if (string.IsNullOrWhiteSpace(searchString1))
-                return true;
-            //if (element.EmpId.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
-            //    return true;
-            if (element.EmpName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
-                return true;
-            //if (element.PayrollName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
-            //    return true;
-            //if (element.BranchName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
-            //    return true;
-            if (element.ExistingLocation.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
-                return true;
-            if (element.ToLocation.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
-                return true;
-            if (element.Dimension1.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
-                return true;
-            return false;
-        }
-
-        private async void Reset()
+        private async Task<IEnumerable<MstDepartment>> SearchDepartment(string value)
         {
             try
             {
-                Loading = true;
-                await Task.Delay(3);
-                Navigation.NavigateTo("/EmployeeTransfer", forceLoad: true);
-                Loading = false;
+                await Task.Delay(1);
+                if (string.IsNullOrWhiteSpace(value))
+                    return oListDepartment.Select(o => new MstDepartment
+                    {
+                        Id = o.Id,
+                        DeptName = o.DeptName,
+                    }).ToList();
+                var res = oListDepartment.Where(x => x.DeptName.ToUpper().Contains(value.ToUpper())).ToList();
+                return res.Select(x => new MstDepartment
+                {
+                    Id = x.Id,
+                    DeptName = x.DeptName,
+                }).ToList();
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
-                Loading = false;
+                return null;
+            }
+        }
+
+        private async Task<IEnumerable<MstLocation>> SearchLocation(string value)
+        {
+            try
+            {
+                await Task.Delay(1);
+                if (string.IsNullOrWhiteSpace(value))
+                    return oListLocation.Select(o => new MstLocation
+                    {
+                        Id = o.Id,
+                        Description = o.Description,
+                    }).ToList();
+                var res = oListLocation.Where(x => x.Description.ToUpper().Contains(value.ToUpper())).ToList();
+                return res.Select(x => new MstLocation
+                {
+                    Id = x.Id,
+                    Description = x.Description,
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return null;
             }
         }
 
@@ -241,24 +322,47 @@ namespace HCM.UI.Pages.Authorization
             {
                 Loading = true;
                 await Task.Delay(1);
-                var a = PayrollName;
-                if ((!string.IsNullOrWhiteSpace(oModelEmployeeFrom.EmpId) && !string.IsNullOrWhiteSpace(oModelEmployeeTo.EmpId)))
+                var a = SelectedPayrollList;
+                if ((!string.IsNullOrWhiteSpace(oModelEmployeeFrom.EmpId) && !string.IsNullOrWhiteSpace(oModelEmployeeTo.EmpId)) 
+                    || !string.IsNullOrWhiteSpace(oModelDesignation.Description) 
+                    || !string.IsNullOrWhiteSpace(oModelDepartment.DeptName) 
+                    || !string.IsNullOrWhiteSpace(oModelLocation.Description)
+                    )
                 {
                     oListFilteredEmployee = oListEmployee.Where(
                         x => String.Compare(x.EmpId, oModelEmployeeFrom.EmpId) >= 0
-                        && String.Compare(x.EmpId, oModelEmployeeTo.EmpId) <= 0).ToList();
-                    if (PayrollName.Count() > 0)
+                        && String.Compare(x.EmpId, oModelEmployeeTo.EmpId) <= 0
+                        || x.DesignationName == oModelDesignation.Description
+                        || x.DepartmentName == oModelDepartment.DeptName
+                        || x.LocationName == oModelLocation.Description
+                        ).ToList();
+                    if (SelectedPayrollList.Count() > 0)
                     {
-                        foreach (var item in oListFilteredEmployee)
+                        oListSaveUserDataAccess = await _IUserDataAccess.GetAllData();
+                        foreach (var item in SelectedPayrollList)
                         {
-                            UserDataAccess deitaolmodel = new UserDataAccess();
-                            deitaolmodel.FkEmpId = item.Id;
-                            deitaolmodel.EmpId = item.EmpId;
-                            deitaolmodel.FkPayrollId = oPayroll.Id;
-                            oDetailListadd.Add(deitaolmodel);
+                            foreach (var item1 in oListFilteredEmployee)
+                            {
+                                var chkCount = oListUserDataAccess.Where(x=>x.EmpId == item1.EmpId && x.FkPayrollId == item.Id).Count();
+                                if (chkCount == 0)
+                                {
+                                    var chkList = oListSaveUserDataAccess.Where(x => x.EmpId == item1.EmpId && x.FkPayrollId == item.Id).Count();
+                                    if (chkList == 0)
+                                    {
+                                        UserDataAccess deitaolmodel = new UserDataAccess();
+                                        deitaolmodel.FkEmpId = item1.Id;
+                                        deitaolmodel.EmpId = item1.EmpId;
+                                        deitaolmodel.FkPayrollId = item.Id;
+                                        deitaolmodel.PayrollName = item.PayrollName;
+                                        deitaolmodel.FlgDeleted = true;
+                                        deitaolmodel.CreatedBy = LoginUser;
+                                        deitaolmodel.CreatedDate = DateTime.Now;
+                                        oListUserDataAccess.Add(deitaolmodel);
+                                    }
+                                }
+                            }
                         }
-                        oListUserDataAccess = oDetailListadd.ToList();
-
+                        oListUserDataAccess = oListUserDataAccess.OrderBy(x => x.EmpId).ToList();
                     }
                     else
                     {
@@ -278,43 +382,24 @@ namespace HCM.UI.Pages.Authorization
             }
         }
 
-        //public void EditRecord(int LineNum)
-        //{
-        //    try
-        //    {
-        //        var res = oList.Where(x => x.Id == LineNum).FirstOrDefault();
+        private bool FilterFunc(UserDataAccess element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.EmpId.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.PayrollName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
+        }
 
-        //        if (res != null)
-        //        {
-        //            oModel.Id = res.Id;
-        //            oModel.DoNum = res.DoNum;
-        //            oModel.DocDate= res.DocDate;
-        //            oModel.TrnsEmployeeTransferDetails = res.TrnsEmployeeTransferDetails;
-        //            oListFilteredEmployeeTransferDetail = res.TrnsEmployeeTransferDetails;
-
-        //            oList = oList.Where(x => x.Id != LineNum);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logs.GenerateLogs(ex);
-        //    }
-
-        //}
-        private async Task DeleteFromFilter(int ID)
+        private async void Reset()
         {
             try
             {
                 Loading = true;
-                await Task.Delay(1);
-                List<MstEmployee> oListEmployeeTemp = new List<MstEmployee>();
-                oListEmployeeTemp = oListFilteredEmployee.ToList();
-                if (oListFilteredEmployee.Count() > 0)
-                {
-                    var FilterRecord = oListFilteredEmployee.Where(x => x.Id == ID).FirstOrDefault();
-                    oListEmployeeTemp.Remove(FilterRecord);
-                    oListFilteredEmployee = oListEmployeeTemp;
-                }
+                await Task.Delay(3);
+                Navigation.NavigateTo("/DataAccess", forceLoad: true);
                 Loading = false;
             }
             catch (Exception ex)
@@ -323,72 +408,72 @@ namespace HCM.UI.Pages.Authorization
                 Loading = false;
             }
         }
+
+        private async Task DeleteFromFilter(string empID,int payrollID)
+        {
+            try
+            {
+                Loading = true;
+                await Task.Delay(1);
+                var FilterRecord = oListUserDataAccess.Where(x => x.EmpId == empID && x.FkPayrollId == payrollID).FirstOrDefault();
+                oListUserDataAccess.Remove(FilterRecord);
+                Loading = false;
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                Loading = false;
+            }
+        }
+
         private async Task<ApiResponseModel> Save()
         {
             try
             {
-                //Loading = true;
+                Loading = true;
                 var res = new ApiResponseModel();
-                //await Task.Delay(3);
-                //if (oModel.DocStatus == "Opened")
+                await Task.Delay(3);
+                if (oListUserDataAccess.Count() == 0)
+                {
+                    Snackbar.Add("Select Data Access Detail.", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                    Loading = false;
+                    return null;
+                }
+
+                var update = oListUserDataAccess.Where(x => x.Id > 0).ToList();
+                var insert = oListUserDataAccess.Where(x => x.Id == 0).ToList();
+
+                if (insert != null && insert.Count() > 0)
+                {
+                    res = await _IUserDataAccess.Insert(insert);
+                }
+                if (update != null && update.Count() > 0)
+                {
+                    update.ToList().ForEach(x => { x.UpdatedBy = LoginUser; x.UpdatedDate = DateTime.Now; });
+                    res = await _IUserDataAccess.Update(update);
+                }
+                //res = await _IUserDataAccess.Insert(oListUserDataAccess);
+                //if (oModel.Id == 0)
                 //{
-                //    Snackbar.Add("Opened document can't be update, select cancel to update", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                //    Loading = false;
-                //    return null;
-                //}
-                //if (oListFilteredEmployeeTransferDetail.Count() > 0)
-                //{
-                //    oDetailListadd.Clear();
-                //    oModel.DocDate = docdate;
-                //    foreach (var item in oListFilteredEmployeeTransferDetail)
-                //    {
-                //        oModel.TrnsEmployeeTransferDetails = oListFilteredEmployeeTransferDetail.ToList();
-                //        //oDetailList.ToList();                        
-                //        if (oModel.Id == 0)
-                //        {
-                //            item.CreatedBy = LoginUser;
-                //            item.CreateDate = DateTime.Now.Date;
-                //            oDetailListadd.Add(item);
-                //            oModel.TrnsEmployeeTransferDetails = oDetailListadd.ToList();
-
-                //        }
-                //        else
-                //        {
-                //            item.UpdatedBy = LoginUser;
-                //            item.UpdateDate = DateTime.Now.Date;
-                //            oDetailListadd.Add(item);
-                //            oModel.TrnsEmployeeTransferDetails = oDetailListadd.ToList();
-                //        }
-
-
-                //    }
-                //    if (oModel.Id == 0)
-                //    {
-                //        oModel.CreatedBy = LoginUser;
-                //        res = await _IUserDataAccess.Insert(oModel);
-                //    }
-                //    else
-                //    {
-                //        oModel.UpdatedBy = LoginUser;
-                //        res = await _IUserDataAccess.Update(oModel);
-                //    }
-
-                //    if (res != null && res.Id == 1)
-                //    {
-                //        Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
-                //        await Task.Delay(3000);
-                //        Navigation.NavigateTo("/EmployeeTransfer", forceLoad: true);
-                //    }
-                //    else
-                //    {
-                //        Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                //    }
+                //    //oListUserDataAccess.ToList().ForEach(x => { x.CreatedBy = LoginUser; x.CreatedDate = DateTime.Now; x.FlgDeleted = true; });
+                //    res = await _IUserDataAccess.Insert(oListUserDataAccess);
                 //}
                 //else
                 //{
-                //    Snackbar.Add("No Employee selected.", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                //    //oListUserDataAccess.ToList().ForEach(x => { x.UpdatedBy = LoginUser; x.UpdatedDate = DateTime.Now; });
+                //    //res = await _IUserDataAccess.Update(oListUserDataAccess);
                 //}
-                //Loading = false;
+                if (res != null && res.Id == 1)
+                {
+                    Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+                    await Task.Delay(3000);
+                    Navigation.NavigateTo("/DataAccess", forceLoad: true);
+                }
+                else
+                {
+                    Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+                Loading = false;
                 return res;
             }
             catch (Exception ex)
@@ -413,6 +498,9 @@ namespace HCM.UI.Pages.Authorization
                 {
                     LoginUser = Session.EmpId;
                     await GetAllEmployees();
+                    await GetAllDesignation();
+                    await GetAllDepartments();
+                    await GetAllLocation();
                     await GetAllPayroll();
                 }
                 else

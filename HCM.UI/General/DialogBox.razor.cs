@@ -1,4 +1,6 @@
-﻿using HCM.API.Models;
+﻿using DocumentFormat.OpenXml.ExtendedProperties;
+using HCM.UI.Interfaces.Authorization;
+using HCM.API.Models;
 using HCM.UI.Interfaces.Advance;
 using HCM.UI.Interfaces.ApprovalSetup;
 using HCM.UI.Interfaces.Batch;
@@ -89,6 +91,9 @@ namespace HCM.UI.General
         [Inject]
         public ITrnsBatchProcess _trnsBatch { get; set; }
 
+        [Inject]
+        public IUserDataAccess _userDataAccess { get; set; }
+
         #endregion
 
         #region Variables
@@ -120,6 +125,7 @@ namespace HCM.UI.General
         private bool FilterFuncEmployeeBonus(TrnsEmployeeBonu element) => FilterFuncEmployeeBonus(element, searchString1);
         private bool FilterFuncBatch(TrnsBatch element) => FilterFuncBatch(element, searchString1);
         private bool FilterFuncMonthlyOT(TrnsSingleEntryOtrequest element) => FilterFuncMonthlyOT(element, searchString1);
+        private bool FilterFuncUserDataAccess(UserDataAccess element) => FilterFuncUserDataAccess(element, searchString1);
         void Cancel() => MudDialog.Cancel();
 
         private MudTable<MstElement> _tableElement;
@@ -200,6 +206,11 @@ namespace HCM.UI.General
         private MudTable<TrnsSingleEntryOtrequest> _tableTrnsSingleEntryOtrequest;
         TrnsSingleEntryOtrequest oModelTrnsSingleEntryOtrequest = new TrnsSingleEntryOtrequest();
         List<TrnsSingleEntryOtrequest> oListTrnsSingleEntryOtrequest = new List<TrnsSingleEntryOtrequest>();
+
+        private MudTable<UserDataAccess> _tableUserDataAccess;
+        UserDataAccess oModelUserDataAccess = new UserDataAccess();
+        IEnumerable<UserDataAccess> oListUserDataAccessDistinct = new List<UserDataAccess>();
+        List<UserDataAccess> oListUserDataAccess = new List<UserDataAccess>();
 
         #region Functions
 
@@ -818,6 +829,31 @@ namespace HCM.UI.General
             return false;
         }
 
+        private async Task GetAllUserDataAccess()
+        {
+            try
+            {
+                oListUserDataAccess = await _userDataAccess.GetAllData();
+                oListUserDataAccessDistinct = oListUserDataAccess.DistinctBy(x=>x.EmpId);
+                if (oListUserDataAccess?.Count() == 0 || oListUserDataAccess == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncUserDataAccess(UserDataAccess element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.EmpId.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
+        }
+
         #endregion
 
         #endregion
@@ -916,6 +952,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "MonthlyOT")
                 {
                     await GetAllFilterFuncMonthlyOT();
+                }
+                else if (DialogFor == "UserDataAccess")
+                {
+                    await GetAllUserDataAccess();
                 }
                 Loading = false;
             }
@@ -1545,6 +1585,21 @@ namespace HCM.UI.General
             }
 
         }
+
+        public void RowClickEventMonthlyOT(TableRowClickEventArgs<UserDataAccess> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+
+
         private string SelectedRowClassFuncFilterFuncMonthlyOT(TrnsSingleEntryOtrequest element, int rowNumber)
         {
             if (selectedRowNumber == rowNumber)
@@ -1564,6 +1619,27 @@ namespace HCM.UI.General
                 return string.Empty;
             }
         }
+
+        private string SelectedRowClassFuncFilterFuncUserDataAccess(UserDataAccess element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableUserDataAccess.SelectedItem != null && _tableUserDataAccess.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
         private void Submit()
         {
             try
@@ -1663,6 +1739,12 @@ namespace HCM.UI.General
                 else if (DialogFor == "MonthlyOT")
                 {
                     MudDialog.Close(DialogResult.Ok(oModelTrnsSingleEntryOtrequest));
+                }
+                else if (DialogFor == "UserDataAccess")
+                {
+                    var a = oListUserDataAccessDistinct;
+                    oListUserDataAccess = oListUserDataAccess.Where(x => x.EmpId == oModelUserDataAccess.EmpId).ToList();
+                    MudDialog.Close(DialogResult.Ok<List<UserDataAccess>>(oListUserDataAccess));
                 }
                 else
                 {
