@@ -354,7 +354,7 @@ namespace HCM.UI.Pages.Authorization
                                         deitaolmodel.EmpId = item1.EmpId;
                                         deitaolmodel.FkPayrollId = item.Id;
                                         deitaolmodel.PayrollName = item.PayrollName;
-                                        deitaolmodel.FlgDeleted = true;
+                                        deitaolmodel.FlgActive = true;
                                         deitaolmodel.CreatedBy = LoginUser;
                                         deitaolmodel.CreatedDate = DateTime.Now;
                                         oListUserDataAccess.Add(deitaolmodel);

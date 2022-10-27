@@ -14,6 +14,6 @@ namespace HCM.API.HCMModels
         public DateTime? CreatedDate { get; set; }
         public string UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
-        public bool? FlgDeleted { get; set; }
+        public bool? FlgActive { get; set; }
     }
 }

@@ -100,8 +100,8 @@
                             <MudTd DataLabel="Employee Code">@context.EmpId</MudTd>
                             <MudTd DataLabel="Payroll">@context.PayrollName</MudTd>
                             <MudTd DataLabel="Active">
-                                <MudSwitch Disabled="@(context.Id > 0 ? false : true)" @bind-Checked="@context.FlgDeleted" ThumbIcon="@(context.FlgDeleted==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(context.FlgDeleted==true ? Color.Primary : Color.Error)" Color="@(context.FlgDeleted==true ? Color.Info : Color.Error)">
-                                    <span>@(context.FlgDeleted == true ? "Active" : "In Active")</span>
+                                <MudSwitch Disabled="@(context.Id > 0 ? false : true)" @bind-Checked="@context.FlgActive" ThumbIcon="@(context.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(context.FlgActive==true ? Color.Primary : Color.Error)" Color="@(context.FlgActive==true ? Color.Info : Color.Error)">
+                                    <span>@(context.FlgActive == true ? "Active" : "In Active")</span>
                                 </MudSwitch>
                             </MudTd>
                         </RowTemplate>
