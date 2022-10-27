@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Math;
+﻿using DocumentFormat.OpenXml.Drawing;
+using DocumentFormat.OpenXml.Math;
 using HCM.UI.Interfaces.MasterElement;
 using Microsoft.AspNetCore.Components;
 
@@ -215,6 +216,7 @@ namespace HCM.UI.General
 
                         decimal perHourSalary = (((basic / 100) * configvalue) / configMonthDays) / confighour;
                         amount = perHourSalary * TotalHour;
+                        amount=ValueRound2(amount);
                         return amount;
                     }
                     else if (oTime.ValueType == "POG")
@@ -226,6 +228,7 @@ namespace HCM.UI.General
 
                         decimal perHourSalary = (((gross / 100) * configvalue) / configMonthDays) / confighour;
                         amount = perHourSalary * TotalHour;
+                        amount = ValueRound2(amount);
                         return amount;
                     }
                     else
@@ -239,6 +242,12 @@ namespace HCM.UI.General
                 Logs.GenerateLogs(ex);
             }
             return amount;
+        }
+
+        public static decimal ValueRound2(decimal value)
+        {
+            string value1 = value.ToString("N2");
+            return Convert.ToDecimal(value1);
         }
 
         #endregion

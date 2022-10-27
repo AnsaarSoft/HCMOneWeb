@@ -68,26 +68,28 @@
                     <MudTextField T="string" @bind-Value="oModel.DocStatus" ReadOnly="true" HelperText="Document Status" Immediate="true" Label="Status*" Variant="Variant.Text"
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
-
                 <MudItem xs="4" sm="4" md="4" lg="4" class="input-btns">
-                    <InputFile id="excelFile" OnChange="UploadFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden multiple="false" />
-                    <MudFab HtmlTag="label" Color="Color.Dark" Icon="@Icons.Custom.FileFormats.FileExcel" Label="Import Excel" for="excelFile" />
-                    <MudFab HtmlTag="label" Color="Color.Primary" OnClick="MonthlyOverTimeTemplate" StartIcon="@Icons.Material.Filled.ImportExport" Label="Generate Template" />
-                </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2">
-                    @if (excelSheet != null)
+                    @if (oModel.DocStatus == "Draft")
                     {
-                        @foreach (var file in excelSheet)
-                        {
-                            <MudText @key="@file" Typo="@Typo.caption">Template :  @file.Name</MudText>
-                        }
-                        @if (excelSheet.Count == 0)
-                        {
-                            <MudText Typo="@Typo.caption">No Template selected</MudText>
-                        }
+                        <InputFile id="excelFile" OnChange="UploadFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden multiple="false" />
+                        <MudFab HtmlTag="label" Color="Color.Dark" Icon="@Icons.Custom.FileFormats.FileExcel" Label="Import Excel" for="excelFile" />
+                        <MudFab HtmlTag="label" Color="Color.Primary" OnClick="MonthlyOverTimeTemplate" StartIcon="@Icons.Material.Filled.ImportExport" Label="Generate Template" />
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+
+                            @if (excelSheet != null)
+                            {
+                                @foreach (var file in excelSheet)
+                                {
+                                    <MudText @key="@file" Typo="@Typo.caption">Template :  @file.Name</MudText>
+                                }
+                                @if (excelSheet.Count == 0)
+                                {
+                                    <MudText Typo="@Typo.caption">No Template selected</MudText>
+                                }
+                            }
+                        </MudItem>
                     }
                 </MudItem>
-
                 <MudItem xs="12" sm="12" md="12" lg="12">
                     @if (Loading)
                     {
@@ -96,27 +98,26 @@
                             <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
                         </MudItem>
                     }
-                    else
+                </MudItem>
+                <MudItem xs="12" sm="12" md="12" lg="12" class="text-right custom-btn-design" style="justify-content: flex-end;">
+                    @if (oModel.Id != 0)
                     {
-                        <MudItem xs="12" sm="12" md="12" lg="12" class="text-right custom-btn-design" style="justify-content: flex-end;">
-                            @if (oModel.Id != 0)
-                            {
-                                @if (oModel.DocStatus == "Draft")
-                                {
-                                    <MudButton Variant="Variant.Filled" OnClick="Post" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small">Post</MudButton>
-                                }
-                                else
-                                {
-                                    <MudButton Variant="Variant.Filled" OnClick="Void" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small">Void</MudButton>
-                                }
-                            }
-
-                            <MudButton Variant="Variant.Filled" OnClick="SearchCriteria" StartIcon="@Icons.Material.Filled.Search" Color="Color.Info" Size="Size.Small">Search</MudButton>
-                            <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Save</MudButton>
-                            <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
-
-                        </MudItem>
+                        @if (oModel.DocStatus == "Draft")
+                        {
+                            <MudButton Variant="Variant.Filled" OnClick="Post" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small">Post</MudButton>
+                        }
+                        else
+                        {
+                            <MudButton Variant="Variant.Filled" OnClick="Void" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small">Void</MudButton>
+                        }
                     }
+                    @if (oModel.DocStatus == "Draft")
+                    {
+
+                        <MudButton Variant="Variant.Filled" OnClick="SearchCriteria" StartIcon="@Icons.Material.Filled.Search" Color="Color.Info" Size="Size.Small">Search</MudButton>
+                        <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Save</MudButton>
+                    }
+                    <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
                 </MudItem>
             </MudGrid>
         </div>
@@ -125,7 +126,7 @@
         <div class="col-sm-12">
             <MudCard Elevation="6">
                 <MudCardContent>
-                    <MudTable Items="@oModel.TrnsSingleEntryOtdetails" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsSingleEntryOtdetail,bool>(FilterFuncTrnsSingleEntryOtdetail)">
+                    <MudTable Items="@oModel.TrnsSingleEntryOtdetails"  class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsSingleEntryOtdetail,bool>(FilterFuncTrnsSingleEntryOtdetail)">
                         <ToolBarContent>
                             <MudText Typo="Typo.h6">Detail List</MudText>
                             <MudSpacer />
@@ -134,8 +135,8 @@
                         <HeaderContent>
                             <MudTh>Emp Code</MudTh>
                             <MudTh>Emp Name</MudTh>
-                             <MudTh>Payroll Name</MudTh>
-                             <MudTh>Period Name</MudTh>
+                            <MudTh>Payroll Name</MudTh>
+                            <MudTh>Period Name</MudTh>
                             <MudTh>Over Time</MudTh>
                             <MudTh>Hours</MudTh>
                             <MudTh>Amount</MudTh>
@@ -145,11 +146,15 @@
                         <RowTemplate>
                             <MudTd DataLabel="EmpCode">@context.EmpId</MudTd>
                             <MudTd DataLabel="EmpName">@context.EmpName</MudTd>
-                             <MudTd DataLabel="PayrollName">@context.PayrollName</MudTd>
-                             <MudTd DataLabel="PayrollName">@context.PeriodName</MudTd>
+                            <MudTd DataLabel="PayrollName">@context.PayrollName</MudTd>
+                            <MudTd DataLabel="PayrollName">@context.PeriodName</MudTd>
                             <MudTd DataLabel="OverTime">@context.OverTimeDescription</MudTd>
                             <MudTd DataLabel="Hours">
-                                <MudNumericField @bind-Value="@context.Hours" Min="0" Immediate="true" Clearable="true" Label="" Variant="Variant.Text"
+                                @*  <MudNumericField @bind-Value="@context.Hours" Min="0" Immediate="true"  Clearable="true" Label="" Variant="Variant.Text"
+                                Adornment="Adornment.Start" Format="0.00" />
+                                TextChanged="@CalculateAmount"
+                                *@
+                                <MudNumericField @bind-Value="@context.Hours" Min="0" Immediate="true" TextChanged="@(()=>CalculateAmount((int)context.EmpId))" Clearable="true" Label="" Variant="Variant.Text"
                                                  Adornment="Adornment.Start" Format="0.00" />
                             </MudTd>
                             <MudTd DataLabel="Amount">@context.Amount</MudTd>
@@ -167,9 +172,9 @@
                             <MudTablePager />
                         </PagerContent>
                     </MudTable>
-                    <MudItem xs="6" sm="6" md="6" lg="6" class="text-right custom-btn-design" style="justify-content: flex-end;">
-                        <MudButton Variant="Variant.Filled" OnClick="CalculateOverTime" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Calculate OverTime</MudButton>
-                    </MudItem>
+                    @*  <MudItem xs="6" sm="6" md="6" lg="6" class="text-right custom-btn-design" style="justify-content: flex-end;">
+                    <MudButton Variant="Variant.Filled" OnClick="CalculateOverTime" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Calculate OverTime</MudButton>
+                    </MudItem>*@
                 </MudCardContent>
             </MudCard>
         </div>

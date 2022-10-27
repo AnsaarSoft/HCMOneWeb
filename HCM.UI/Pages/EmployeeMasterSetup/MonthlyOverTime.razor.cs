@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using ClosedXML.Excel;
 using System.Text.RegularExpressions;
 using DocumentFormat.OpenXml;
+using System.Linq;
 
 namespace HCM.UI.Pages.EmployeeMasterSetup
 {
@@ -76,14 +77,12 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         #region Variables
 
         bool Loading = false;
-        bool IsFlg = false;
-
-        // public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
+       // public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
         //string EmpName = "";
         //private decimal Amount;
         //private decimal Hours;
         //private string PayrollPeriodstr = "Select Period";
-        private string FullName = "";
+       // private string FullName = "";
         private string searchString1 = "";
 
         string AlphanumericMask = @"^[a-zA-Z0-9_]*$";
@@ -135,6 +134,8 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         CfgPeriodDate oModelPayrollPeriod = new CfgPeriodDate();
         private IEnumerable<CfgPeriodDate> oListPayrollPeriod = new List<CfgPeriodDate>();
 
+        private TrnsSingleEntryOtdetail selectedItem1 = null;
+     //   private HashSet<TrnsSingleEntryOtdetail> selectedItems1 = new HashSet<TrnsSingleEntryOtdetail>();
         // DateTime? docdate;
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
         DialogOptions FullView = new DialogOptions() { MaxWidth = MaxWidth.ExtraExtraLarge, FullWidth = true, CloseButton = true, DisableBackdropClick = true, CloseOnEscapeKey = true };
@@ -341,7 +342,11 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                         //oModelPayroll = oListPayroll.Where(x => x.Id == item.PayrollId).FirstOrDefault();
                         //oListPayrollPeriod = oModelPayroll.CfgPeriodDates.Where(x => x.PayrollId == oModelPayroll.Id).ToList();
                         //var SelectedPeriod = oListPayrollPeriod.Where(x => DateTime.Now.Date >= x.StartDate && DateTime.Now.Date <= x.EndDate).FirstOrDefault();
-
+                        if (oModel.Id !=0)
+                        {
+                            item.UpdatedBy = LoginUser;
+                            item.UpdatedDate = DateTime.Now;
+                        }
 
                         TrnsEmployeeOvertime trnsEmployeeOvertime = new TrnsEmployeeOvertime();
                         trnsEmployeeOvertime.EmployeeId = item.EmpId;
@@ -362,7 +367,6 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                         oListEmployeeOt.Add(trnsEmployeeOvertime);
                     }
                     vMMonthlyOverTime.TrnsEmployeeOvertime = oListEmployeeOt;
-                    //vMMonthlyOverTime.TrnsEmployeeOvertime = trnsEmployeeOvertime;
                     vMMonthlyOverTime.TrnsSingleEntryOtrequest = oModel;
                 }
             }
@@ -554,7 +558,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                             oTrnsSingleEntryOtdetail.PeriodName = SelectedPeriod.PeriodName;
                             oTrnsSingleEntryOtdetail.FlgActive = true;
                             oModel.Ottype = oModelmstOvertime.Id;
-                            oModel.OttypeDescription= oModelmstOvertime.Description;
+                            oModel.OttypeDescription = oModelmstOvertime.Description;
 
                             //oModel.PeriodId= SelectedPeriod.Id;
                             //oModel.PayrollId = item.PayrollId;
@@ -672,6 +676,27 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 return null;
             }
         }
+        public void CalculateAmount(int empid)
+      {
+            try
+            {
+         
+                //int empid = (int)selectedItem1.EmpId;
+                oModelMstEmployee = oListEmployee.Where(x => x.Id == empid).FirstOrDefault();
+
+                 oModelmstOvertime = oListmstOverTime.Where(x => x.Id == oModelmstOvertime.Id).FirstOrDefault();
+                //oModelTrnsSingleEntryOtdetail.Amount = BusinessLogic.GetOverTimeAmount(oModelMstEmployee, oModelmstOvertime, Convert.ToDecimal(hour));
+                var hour = oModel.TrnsSingleEntryOtdetails.Where(x => x.EmpId == empid).Select(x => x.Hours).FirstOrDefault();
+                    var amnt = BusinessLogic.GetOverTimeAmount(oModelMstEmployee, oModelmstOvertime, Convert.ToDecimal(hour));
+                oModel.TrnsSingleEntryOtdetails.Where(x => x.EmpId == empid).FirstOrDefault().Amount = amnt;
+
+                //selectedItem1.Amount = selectedItem1.Hours + 10;
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
         private async Task<ApiResponseModel> Save()
         {
             try
@@ -699,6 +724,16 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                             Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Info; });
                             Loading = false;
                             return res;
+                        }
+                        if (oModel.Id == 0)
+                        {
+                            item.CreatedBy = LoginUser;
+                            item.CreatedDate = DateTime.Now;
+                        }
+                        else
+                        {
+                            item.UpdatedBy = LoginUser;
+                            item.UpdatedDate = DateTime.Now;
                         }
                         LineNumber++;
                     }
@@ -928,9 +963,8 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
 
                                 else if (!string.IsNullOrWhiteSpace(StringValue) && PropertyName == "EmpCode")
                                 {
-
-                                    var GetEmp = oListEmployee.Where(x => x.EmpId == StringValue).FirstOrDefault();
-                                    var detail = oList.Select(x => x.TrnsSingleEntryOtdetails).ToList();
+                                    // var GetEmp = oListEmployee.Where(x => x.EmpId == StringValue).FirstOrDefault();
+                                    // var detail = oList.Select(x => x.TrnsSingleEntryOtdetails).ToList();
                                     //var CheckList1 = detail.Where(x=>)
                                     //oList.Where(x => x.id == x.TrnsSingleEntryOtdetails.Where(x=>x.EmpId == GetEmp.Id && x.OverTimeId == ).Select(x=>x.SingleEntryOtid)).FirstOrDefault();
 
@@ -956,6 +990,11 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                                         oModelTrnsSingleEntryOtdetail.GetType().GetProperty(PropertyName).SetValue(oModelTrnsSingleEntryOtdetail, Convert.ToInt32(empid), null);
                                         continue;
                                     }
+                                    else
+                                    {
+                                        //Skip the line if EmpCode has Not in master
+                                        break;
+                                    }
                                 }
                                 else if (!string.IsNullOrWhiteSpace(StringValue) && PropertyName == "OverTimeType")
                                 {
@@ -964,6 +1003,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                                     if (CheckList != null)
                                     {
                                         oModel.Ottype = CheckList.Id;
+                                        oModel.OttypeDescription = CheckList.Description;
                                         oModelTrnsSingleEntryOtdetail.OverTimeId = CheckList.Id;
                                         oModelTrnsSingleEntryOtdetail.OverTimeDescription = CheckList.Description;
                                         PropertyName = "OverTimeId";
@@ -981,6 +1021,11 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                                     if (hour != null && hour > 0)
                                     {
                                         oModelTrnsSingleEntryOtdetail.FlgActive = true;
+
+                                        oModelMstEmployee = oListEmployee.Where(x => x.Id == empid).FirstOrDefault();
+                                        oModelmstOvertime = oListmstOverTime.Where(x => x.Id == oModel.Ottype).FirstOrDefault();
+                                        oModelTrnsSingleEntryOtdetail.Amount = BusinessLogic.GetOverTimeAmount(oModelMstEmployee, oModelmstOvertime, Convert.ToDecimal(hour));
+
                                         PropertyName = "Hours";
                                         oModelTrnsSingleEntryOtdetail.GetType().GetProperty(PropertyName).SetValue(oModelTrnsSingleEntryOtdetail, Convert.ToDecimal(hour), null);
                                         continue;
@@ -989,16 +1034,16 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                             }
                         }
                         oTrnsTrnsSingleEntryOtdetailAddList.Add(oModelTrnsSingleEntryOtdetail);
-                        if (oModelTrnsSingleEntryOtdetail.Id > 0 && !IsForUpdate)
-                        {
+                       // if (oModelTrnsSingleEntryOtdetail.Id > 0 && !IsForUpdate)
+                        //{
 
-                            var CheckDuplicate = oTrnsTrnsSingleEntryOtdetailAddList;//.Where(x => x.SingleEntryOtid == oMode&& x.PunchedDate == oModelTrnsTempAttendance.PunchedDate
+                          //  var CheckDuplicate = oTrnsTrnsSingleEntryOtdetailAddList;//.Where(x => x.SingleEntryOtid == oMode&& x.PunchedDate == oModelTrnsTempAttendance.PunchedDate
                             //                           && x.InOut == oModelTrnsTempAttendance.InOut).FirstOrDefault();
                             //if (CheckDuplicate == null)
                             //{
                             //    oTrnsTempAttendanceAddList.Add(oModelTrnsTempAttendance);
                             //}
-                        }//!string.IsNullOrWhiteSpace(oModelTrnsTempAttendance.FkempId)
+                        //}//!string.IsNullOrWhiteSpace(oModelTrnsTempAttendance.FkempId)
                          //    else if (oModelTrnsTempAttendance.FkempId > 0 && IsForUpdate)
                          //    {
                          //        var CheckDuplicate = oTrnsTempAttendanceUpdateList.Where(x => x.FkempId == oModelTrnsTempAttendance.FkempId && x.PunchedDate == oModelTrnsTempAttendance.PunchedDate
@@ -1084,7 +1129,6 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             }
             Loading = false;
         }
-
         #endregion
 
         #region Events
