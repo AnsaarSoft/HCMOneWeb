@@ -102,6 +102,7 @@ builder.Services.AddScoped<IDocApprovalDecesion, DocApprovalDecesionService>();
 builder.Services.AddScoped<ITrnsSingleEntryOtrequest, TrnsSingleEntryOtrequestService>();
 builder.Services.AddScoped<IUserAuthorization, UserAuthorizationService>();
 builder.Services.AddScoped<ITrnsBatchProcess, TrnsBatchProcessService>();
+builder.Services.AddScoped<IUserDataAccess, UserDataAccessService>();
 //Configuration Start
 
 Settings.APIBaseURL = builder.Configuration.GetValue<string>("APIBaseUrl");

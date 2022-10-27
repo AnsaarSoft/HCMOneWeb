@@ -2,6 +2,7 @@
 using HCM.API.HCMModels;
 using HCM.API.Interfaces.ApprovalSetup;
 using HCM.API.Interfaces.Authorization;
+using HCM.API.Interfaces.MasterData;
 using HCM.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +14,12 @@ namespace HCM.API.Controllers
     public class AuthorizationController : ControllerBase
     {
         private IUserAuthorization _UserAuthorization;
+        private IUserDataAccess _UserDataAccess;
 
-        public AuthorizationController(IUserAuthorization UserAuthorization)
+        public AuthorizationController(IUserAuthorization UserAuthorization, IUserDataAccess userDataAccess)
         {
             _UserAuthorization = UserAuthorization;
+            _UserDataAccess = userDataAccess;
         }
 
         #region UserAuthorization
@@ -61,6 +64,82 @@ namespace HCM.API.Controllers
                 else
                 {
                     return Ok(oVMUserAuthorization);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
+
+        #region UserDataAccess
+
+        [Route("getAllUserDataAccess")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllDept()
+        {
+            List<UserDataAccess> oUserDataAccess = new List<UserDataAccess>();
+            try
+            {
+                oUserDataAccess = await _UserDataAccess.GetAllData();
+                if (oUserDataAccess == null)
+                {
+                    return BadRequest(oUserDataAccess);
+                }
+                else
+                {
+                    return Ok(oUserDataAccess);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addUserDataAccess")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] List<UserDataAccess> pUserDataAccess)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _UserDataAccess.Insert(pUserDataAccess);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateUserDataAccess")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] List<UserDataAccess> pUserDataAccess)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _UserDataAccess.Update(pUserDataAccess);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
                 }
             }
             catch (Exception ex)

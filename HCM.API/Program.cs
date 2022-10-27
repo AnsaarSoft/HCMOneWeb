@@ -114,6 +114,7 @@ builder.Services.AddScoped<IDocApprovalDecesion, DocApprovalDecesionRepo>();
 builder.Services.AddScoped<ITrnsSingleEntryOtrequest, TrnsSingleEntryOtrequestRepo>();
 builder.Services.AddScoped<IUserAuthorization, UserAuthorizationRepo>();
 builder.Services.AddScoped<ITrnsBatchProcess, TrnsBatchProcessRepo>();
+builder.Services.AddScoped<IUserDataAccess, UserDataAccessRepo>();
 
 Settings.TitleConfig = builder.Configuration.GetValue<string>("TitleConfig");
 Settings.EmailConfig = builder.Configuration.GetValue<string>("EmailConfig");

@@ -600,6 +600,7 @@ namespace HCM.API.HCMModels
         public virtual DbSet<TrnsWorkInQuarter> TrnsWorkInQuarters { get; set; }
         public virtual DbSet<TrnsleaveEncashment> TrnsleaveEncashments { get; set; }
         public virtual DbSet<UserAuthorization> UserAuthorizations { get; set; }
+        public virtual DbSet<UserDataAccess> UserDataAccesses { get; set; }
         public virtual DbSet<VacancyEmailNotification> VacancyEmailNotifications { get; set; }
         public virtual DbSet<ViewApprovalTemplate> ViewApprovalTemplates { get; set; }
         public virtual DbSet<ViewDeptHiearcy> ViewDeptHiearcies { get; set; }
@@ -23384,6 +23385,38 @@ namespace HCM.API.HCMModels
                     .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("UAppStamp");
+
+                entity.Property(e => e.UpdatedBy)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<UserDataAccess>(entity =>
+            {
+                entity.ToTable("UserDataAccess");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CreatedBy)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.EmpId)
+                    .HasMaxLength(150)
+                    .IsUnicode(false)
+                    .HasColumnName("EmpID");
+
+                entity.Property(e => e.FkEmpId).HasColumnName("FkEmpID");
+
+                entity.Property(e => e.FkPayrollId).HasColumnName("FkPayrollID");
+
+                entity.Property(e => e.PayrollName)
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.UpdatedBy)
                     .HasMaxLength(100)
