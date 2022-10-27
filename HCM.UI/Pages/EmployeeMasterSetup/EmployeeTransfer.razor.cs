@@ -509,13 +509,14 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             {
                 Loading = true;
                 await Task.Delay(1);
-                List<MstEmployee> oListEmployeeTemp = new List<MstEmployee>();
-                oListEmployeeTemp = oListFilteredEmployee.ToList();
-                if (oListFilteredEmployee.Count() > 0)
+
+                List<TrnsEmployeeTransferDetail> oListTrnsEmployeeTransferDtl = new List<TrnsEmployeeTransferDetail>();
+                oListTrnsEmployeeTransferDtl = oListFilteredEmployeeTransferDetail.ToList();
+                if (oListFilteredEmployeeTransferDetail.Count() > 0)
                 {
-                    var FilterRecord = oListFilteredEmployee.Where(x => x.Id == ID).FirstOrDefault();
-                    oListEmployeeTemp.Remove(FilterRecord);
-                    oListFilteredEmployee = oListEmployeeTemp;
+                    var FilterRecord = oListFilteredEmployeeTransferDetail.Where(x => x.Id == ID).FirstOrDefault();
+                    oListTrnsEmployeeTransferDtl.Remove(FilterRecord);
+                    oListFilteredEmployeeTransferDetail = oListTrnsEmployeeTransferDtl;
                 }
                 Loading = false;
             }
