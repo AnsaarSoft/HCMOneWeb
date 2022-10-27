@@ -1,6 +1,7 @@
 ﻿using HCM.API.Models;
 using HCM.UI.Interfaces.Advance;
 using HCM.UI.Interfaces.ApprovalSetup;
+using HCM.UI.Interfaces.Batch;
 using HCM.UI.Interfaces.Bonus;
 using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.Loan;
@@ -84,6 +85,9 @@ namespace HCM.UI.General
 
         [Inject]
         public ITrnsSingleEntryOtrequest _trnsSingleEntryOtrequest { get; set; }
+        
+        [Inject]
+        public ITrnsBatchProcess _trnsBatch { get; set; }
 
         #endregion
 
@@ -114,6 +118,7 @@ namespace HCM.UI.General
         private bool FilterFuncCfgApprovalTemplate(CfgApprovalTemplate element) => FilterFuncCfgApprovalTemplate(element, searchString1);
         private bool FilterFuncTrnsEmployeeReHire(TrnsEmployeeReHire element) => FilterFuncTrnsEmployeeReHire(element, searchString1);
         private bool FilterFuncEmployeeBonus(TrnsEmployeeBonu element) => FilterFuncEmployeeBonus(element, searchString1);
+        private bool FilterFuncBatch(TrnsBatch element) => FilterFuncBatch(element, searchString1);
         private bool FilterFuncMonthlyOT(TrnsSingleEntryOtrequest element) => FilterFuncMonthlyOT(element, searchString1);
         void Cancel() => MudDialog.Cancel();
 
@@ -187,6 +192,10 @@ namespace HCM.UI.General
         private MudTable<TrnsEmployeeBonu> _tableEmployeeBonus;
         TrnsEmployeeBonu oModelEmployeeBonus = new TrnsEmployeeBonu();
         List<TrnsEmployeeBonu> oListEmployeeBonus = new List<TrnsEmployeeBonu>();
+        
+        private MudTable<TrnsBatch> _tableBatch;
+        TrnsBatch oModelBatch = new TrnsBatch();
+        List<TrnsBatch> oListBatch= new List<TrnsBatch>();
 
         private MudTable<TrnsSingleEntryOtrequest> _tableTrnsSingleEntryOtrequest;
         TrnsSingleEntryOtrequest oModelTrnsSingleEntryOtrequest = new TrnsSingleEntryOtrequest();
@@ -749,6 +758,40 @@ namespace HCM.UI.General
             return false;
         }
 
+        private async Task GetAllBatch()
+        {
+            try
+            {
+                oListBatch = await _trnsBatch.GetAllData();
+                if (oListBatch?.Count == 0 || oListBatch == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncBatch(TrnsBatch element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.DocNum.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.BatchName.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.PayrollName.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.ElmtCode.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.PayrollPeriod.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.DocStatus.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
+        }
+
         private async Task GetAllFilterFuncMonthlyOT()
         {
             try
@@ -865,6 +908,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "EmployeeBonus")
                 {
                     await GetAllEmployeeBonus();
+                }
+                else if (DialogFor == "Batch")
+                {
+                    await GetAllBatch();
                 }
                 else if (DialogFor == "MonthlyOT")
                 {
@@ -1453,6 +1500,38 @@ namespace HCM.UI.General
                 return string.Empty;
             }
         }
+        
+        public void RowClickEventBatch(TableRowClickEventArgs<TrnsBatch> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncFilterFuncBatch(TrnsBatch element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableBatch.SelectedItem != null && _tableBatch.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
 
         public void RowClickEventMonthlyOT(TableRowClickEventArgs<TrnsSingleEntryOtrequest> tableRowClickEventArgs)
         {
@@ -1572,6 +1651,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "EmployeeBonus" && oModelEmployeeBonus.Id > 0)
                 {
                     MudDialog.Close(DialogResult.Ok<TrnsEmployeeBonu>(oModelEmployeeBonus));
+                }
+                else if (DialogFor == "Batch" && oModelBatch.Id > 0)
+                {
+                    MudDialog.Close(DialogResult.Ok<TrnsBatch>(oModelBatch));
                 }
                 else if (DialogFor == "ApprovalDecesion")
                 {
