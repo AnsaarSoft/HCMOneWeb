@@ -639,6 +639,26 @@
                         </PagerContent>
                     </MudTable>
                 }
+                @if (oListUserDataAccessDistinct?.Count() > 0 && DialogFor == "UserDataAccess")
+                {
+                    <MudTable Items="@oListUserDataAccessDistinct" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<UserDataAccess,bool>(FilterFuncUserDataAccess)"
+                      Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableUserDataAccess" RowClassFunc="@SelectedRowClassFuncFilterFuncUserDataAccess" OnRowClick="RowClickEventMonthlyOT" T="UserDataAccess" @bind-SelectedItem="oModelUserDataAccess">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">User Data Access</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Employee Code</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code">@context.EmpId</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                }
             }
         </MudContainer>
     </DialogContent>
