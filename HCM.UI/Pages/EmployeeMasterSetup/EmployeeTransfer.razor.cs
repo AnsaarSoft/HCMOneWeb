@@ -300,31 +300,30 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 return null;
             }
         }
-
-        private async Task<IEnumerable<MstBranch>> SearchBranch(string value)
-        {
-            try
-            {
-                await Task.Delay(1);
-                if (string.IsNullOrWhiteSpace(value))
-                    return oListBranch.Select(o => new MstBranch
-                    {
-                        Id = o.Id,
-                        Description = o.Description,
-                    }).ToList();
-                var res = oListBranch.Where(x => x.Description.ToUpper().Contains(value.ToUpper())).ToList();
-                return res.Select(x => new MstBranch
-                {
-                    Id = x.Id,
-                    Description = x.Description,
-                }).ToList();
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-                return null;
-            }
-        }
+        //private async Task<IEnumerable<MstBranch>> SearchBranch(string value)
+        //{
+        //    try
+        //    {
+        //        await Task.Delay(1);
+        //        if (string.IsNullOrWhiteSpace(value))
+        //            return oListBranch.Select(o => new MstBranch
+        //            {
+        //                Id = o.Id,
+        //                Description = o.Description,
+        //            }).ToList();
+        //        var res = oListBranch.Where(x => x.Description.ToUpper().Contains(value.ToUpper())).ToList();
+        //        return res.Select(x => new MstBranch
+        //        {
+        //            Id = x.Id,
+        //            Description = x.Description,
+        //        }).ToList();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logs.GenerateLogs(ex);
+        //        return null;
+        //    }
+        //}
         private async Task<IEnumerable<MstDepartment>> SearchDepartment(string value)
         {
             try
@@ -401,7 +400,6 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 return true;
             return false;
         }
-
         private async void Reset()
         {
             try
@@ -417,7 +415,6 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 Loading = false;
             }
         }
-
         private async Task SearchCriteria()
         {
             try
@@ -479,7 +476,6 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 Loading = false;
             }
         }
-
         //public void EditRecord(int LineNum)
         //{
         //    try
