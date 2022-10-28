@@ -58,6 +58,46 @@ namespace HCM.UI.Data.EmployeeMasterSetup
             }
         }
 
+        public async Task<List<MstEmployee>> GetAllData(string EmpID)
+        {
+            try
+            {
+                if (_memoryCache.TryGetValue(CacheKey + EmpID, out IEnumerable<MstEmployee> oListCache))
+                {
+                    return oListCache.ToList();
+                }
+                else
+                {
+                    List<MstEmployee> oList = new List<MstEmployee>();
+
+                    var request = new RestRequest($"EmployeeMasterData/getAllEmployeeByEmp?EmpID={EmpID}", Method.Get) { RequestFormat = DataFormat.Json };
+
+                    var response = await _restClient.ExecuteAsync<List<MstEmployee>>(request);
+
+                    if (response.IsSuccessful)
+                    {
+                        var cacheEntryOptions = new MemoryCacheEntryOptions()
+                           .SetSlidingExpiration(TimeSpan.FromSeconds(60))
+                           .SetAbsoluteExpiration(TimeSpan.FromHours(2))
+                           .SetPriority(CacheItemPriority.Normal)
+                           .SetSize(1024);
+                        _memoryCache.Set(CacheKey+ EmpID, response.Data, cacheEntryOptions);
+                        return response.Data;
+                    }
+                    else
+                    {
+                        return response.Data;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return null;
+            }
+        }
+
         public async Task<ApiResponseModel> Insert(MstEmployee oMstEmployee)
         {
             ApiResponseModel response = new ApiResponseModel();

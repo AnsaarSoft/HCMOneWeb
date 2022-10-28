@@ -23423,6 +23423,11 @@ namespace HCM.API.HCMModels
                     .IsUnicode(false);
 
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+
+                entity.HasOne(d => d.FkPayroll)
+                    .WithMany(p => p.UserDataAccesses)
+                    .HasForeignKey(d => d.FkPayrollId)
+                    .HasConstraintName("FK_UserDataAccess_CfgPayrollDefination");
             });
 
             modelBuilder.Entity<VacancyEmailNotification>(entity =>

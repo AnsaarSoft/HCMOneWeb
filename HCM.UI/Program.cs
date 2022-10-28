@@ -1,6 +1,7 @@
 global using HCM.API.HCMModels;
 using Blazored.LocalStorage;
 using CA.UI.Authentication;
+using HCM.API.Repository.SAPData;
 using HCM.UI;
 using HCM.UI.Data.Account;
 using HCM.UI.Data.Advance;
@@ -13,6 +14,7 @@ using HCM.UI.Data.EmployeeMasterSetup;
 using HCM.UI.Data.Loan;
 using HCM.UI.Data.MasterData;
 using HCM.UI.Data.MasterElement;
+using HCM.UI.Data.SAPData;
 using HCM.UI.Data.ShiftManagement;
 using HCM.UI.Interfaces.Account;
 using HCM.UI.Interfaces.Advance;
@@ -25,6 +27,7 @@ using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.Loan;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
+using HCM.UI.Interfaces.SAPData;
 using HCM.UI.Interfaces.ShiftManagement;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
@@ -51,6 +54,8 @@ builder.Services.AddMudServices(config =>
     config.SnackbarConfiguration.ShowTransitionDuration = 500;
     config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
 });
+
+builder.Services.AddScoped<ISAPData, SAPDataService>();
 builder.Services.AddScoped<IMstForm, MstFormService>();
 builder.Services.AddScoped<IMstDocumentNumberSeries, MstDocumentNumberSeriesService>();
 builder.Services.AddScoped<IMstCountryStateCity, MstCountryStateCityService>();

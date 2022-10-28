@@ -24,6 +24,7 @@ namespace HCM.API.HCMModels
             TrnsReHireEmployeeDetails = new HashSet<TrnsReHireEmployeeDetail>();
             TrnsSalaryProcessRegisters = new HashSet<TrnsSalaryProcessRegister>();
             TrnsSingleEntryOtrequests = new HashSet<TrnsSingleEntryOtrequest>();
+            UserDataAccesses = new HashSet<UserDataAccess>();
         }
 
         public int Id { get; set; }
@@ -77,5 +78,6 @@ namespace HCM.API.HCMModels
         public virtual ICollection<TrnsReHireEmployeeDetail> TrnsReHireEmployeeDetails { get; set; }
         public virtual ICollection<TrnsSalaryProcessRegister> TrnsSalaryProcessRegisters { get; set; }
         public virtual ICollection<TrnsSingleEntryOtrequest> TrnsSingleEntryOtrequests { get; set; }
+        public virtual ICollection<UserDataAccess> UserDataAccesses { get; set; }
     }
 }

@@ -15,5 +15,7 @@ namespace HCM.API.HCMModels
         public string UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public bool? FlgActive { get; set; }
+
+        public virtual CfgPayrollDefination FkPayroll { get; set; }
     }
 }
