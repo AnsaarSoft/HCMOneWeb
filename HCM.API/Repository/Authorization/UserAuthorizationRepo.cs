@@ -51,7 +51,7 @@ namespace HCM.API.Repository.Authorization
             {
                 using (var command = _DBContext.Database.GetDbConnection().CreateCommand())
                 {
-                    if (UserID == "manager")
+                    if (UserID.ToLower() == "manager")
                     {
                         command.CommandText = $"SELECT isnull(t3.ID,0) as ID,t3.CreatedBy,t3.CreatedDate,a.MenuLink,b.MenuID AS PMenuID,b.MenuName AS PMenuName\r\n,a.MenuID AS CMenuID,a.MenuName AS CMenuName\r\n,case when isnull(UserRights,2) = 1 then 'false' else 'true' end as UserRights FROM MstMenu a\r\ninner join MstMenu b on a.MenuParent=b.MenuID\r\nleft join UserAuthorization t3 on t3.FKMenuID=a.MenuID and FkUserID = '{UserID}'";
                     }

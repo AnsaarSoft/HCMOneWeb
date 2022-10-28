@@ -20,11 +20,18 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oList = (from a in _DBContext.CfgPayrollDefinations.Include(c => c.MstElementLinks).Include(c => c.CfgPeriodDates)
-                             join d in _DBContext.UserDataAccesses on a.Id equals d.FkPayrollId
-                             where d.FlgActive == true && d.EmpId == EmpID
-                             select a
-                             ).ToList();
+                    if (EmpID.ToLower() == "manager")
+                    {
+                        oList = _DBContext.CfgPayrollDefinations.Include(c => c.MstElementLinks).Include(c => c.CfgPeriodDates).ToList();
+                    }
+                    else
+                    {
+                        oList = (from a in _DBContext.CfgPayrollDefinations.Include(c => c.MstElementLinks).Include(c => c.CfgPeriodDates)
+                                 join d in _DBContext.UserDataAccesses on a.Id equals d.FkPayrollId
+                                 where d.FlgActive == true && d.EmpId == EmpID
+                                 select a
+                                 ).ToList();
+                    }
                 });
             }
             catch (Exception ex)

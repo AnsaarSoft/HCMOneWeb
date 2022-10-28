@@ -13,6 +13,35 @@ namespace HCM.API.Repository.EmployeeMasterSetup
         {
             _DBContext = DBContext;
         }
+
+        public async Task<List<MstEmployee>> GetAllData(string EmpID)
+        {
+            List<MstEmployee> oList = new List<MstEmployee>();
+            try
+            {
+                await Task.Run(() =>
+                {
+                    if (EmpID.ToLower() == "manager")
+                    {
+                        oList = _DBContext.MstEmployees.Where(x => x.EmpId != "manager").Include(x => x.MstEmployeeAttachments).Include(x => x.MstEmployeeLeaves).Include(x => x.TrnsEmployeeElements).ThenInclude(x => x.TrnsEmployeeElementDetails).ToList();
+                    }
+                    else
+                    {
+                        oList = (from a in _DBContext.MstEmployees.Where(x => x.EmpId != "manager").Include(x => x.MstEmployeeAttachments).Include(x => x.MstEmployeeLeaves).Include(x => x.TrnsEmployeeElements).ThenInclude(x => x.TrnsEmployeeElementDetails)
+                                 join d in _DBContext.UserDataAccesses on a.PayrollId equals d.FkPayrollId
+                                 where d.FlgActive == true && d.EmpId == EmpID
+                                 select a
+                                 ).ToList();
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+            return oList;
+        }
+
         public async Task<List<MstEmployee>> GetAllData()
         {
             List<MstEmployee> oList = new List<MstEmployee>();
@@ -20,7 +49,7 @@ namespace HCM.API.Repository.EmployeeMasterSetup
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.MstEmployees.Where(x=>x.EmpId != "manager").Include(x => x.MstEmployeeAttachments).Include(x => x.MstEmployeeLeaves).Include(x => x.TrnsEmployeeElements).ThenInclude(x=> x.TrnsEmployeeElementDetails).ToList();
+                    oList = _DBContext.MstEmployees.Where(x => x.EmpId != "manager").Include(x => x.MstEmployeeAttachments).Include(x => x.MstEmployeeLeaves).Include(x => x.TrnsEmployeeElements).ThenInclude(x => x.TrnsEmployeeElementDetails).ToList();
                 });
             }
             catch (Exception ex)

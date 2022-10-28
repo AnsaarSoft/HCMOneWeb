@@ -58,6 +58,30 @@ namespace HCM.API.Controllers
             }
         }
 
+        [Route("getAllEmployeeByEmp")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllEmployeeByEmp(string EmpID)
+        {
+            List<MstEmployee> oMstEmployee = new List<MstEmployee>();
+            try
+            {
+                oMstEmployee = await _mstEmployee.GetAllData(EmpID);
+                if (oMstEmployee == null)
+                {
+                    return BadRequest(oMstEmployee);
+                }
+                else
+                {
+                    return Ok(oMstEmployee);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
         [Route("addEmployee")]
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] MstEmployee pMstEmployee)

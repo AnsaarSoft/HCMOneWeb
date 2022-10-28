@@ -12,6 +12,8 @@ using HCM.UI.Interfaces.MasterElement;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Blazored.LocalStorage;
 
 namespace HCM.UI.General
 {
@@ -24,6 +26,12 @@ namespace HCM.UI.General
 
         [CascadingParameter]
         MudDialogInstance MudDialog { get; set; }
+
+        [Inject]
+        public NavigationManager Navigation { get; set; }
+
+        [Inject]
+        public ILocalStorageService _localStorage { get; set; }
 
         [Inject]
         public ISnackbar Snackbar { get; set; }
@@ -60,6 +68,7 @@ namespace HCM.UI.General
 
         [Parameter]
         public string DialogFor { get; set; }
+
 
         [Parameter]
         public IEnumerable<MstElementLink> PayrollElements { get; set; }
@@ -103,6 +112,7 @@ namespace HCM.UI.General
         private string searchString1 = "";
         private int selectedRowNumber = -1;
         private List<string> clickedEvents = new();
+        private string LoginUser = "";
 
         public string Remarks { get; set; }
 
@@ -378,7 +388,7 @@ namespace HCM.UI.General
         {
             try
             {
-                oListMstEmployee = await _mstEmployee.GetAllData();
+                oListMstEmployee = await _mstEmployee.GetAllData(LoginUser);
                 if (oListMstEmployee?.Count == 0 || oListMstEmployee == null)
                 {
                     Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
@@ -865,98 +875,110 @@ namespace HCM.UI.General
             try
             {
                 Loading = true;
-                if (DialogFor == "Element" || DialogFor == "PayrollElement")
+                var Session = await _localStorage.GetItemAsync<MstEmployee>("User");
+                if (Session != null)
                 {
-                    await GetAllElements();
+                    LoginUser = Session.EmpId;
+                    if (DialogFor == "Element" || DialogFor == "PayrollElement")
+                    {
+                        await GetAllElements();
+                    }
+                    else if (DialogFor == "ElementTransaction")
+                    {
+                        await GetAllElements();
+                    }
+                    else if (DialogFor == "Shifts")
+                    {
+                        await GetAllShift();
+                    }
+                    else if (DialogFor == "TaxSetup")
+                    {
+                        await GetAllTaxSetup();
+                    }
+                    else if (DialogFor == "GratuitySetup")
+                    {
+                        await GetAllGratuitySetup();
+                    }
+                    else if (DialogFor == "PayrollSetup")
+                    {
+                        await GetAllPayrollSetup();
+                    }
+                    else if (DialogFor == "EmployeeMaster")
+                    {
+                        await GetAllMstEmployee();
+                    }
+                    else if (DialogFor == "MultipleEmployeeSelect")
+                    {
+                        await GetAllMstEmployee();
+                    }
+                    else if (DialogFor == "TrnsEmployeeTransfer")
+                    {
+                        await GetAllTrnsEmployeeTransfer();
+                    }
+                    else if (DialogFor == "LeaveRequest")
+                    {
+                        await GetAllTrnsLeavesRequest();
+                    }
+                    else if (DialogFor == "LoanRequest")
+                    {
+                        await GetAllTrnsLoanRequest();
+                    }
+                    else if (DialogFor == "AdvanceRequest")
+                    {
+                        await GetAllTrnsAdvanceRequest();
+                    }
+                    else if (DialogFor == "TrnsEmployeeOverTime")
+                    {
+                        await GetAllTrnsEmployeeOverTime();
+                    }
+                    else if (DialogFor == "EmployeeResign")
+                    {
+                        await GetAllTrnsEmployeeResign();
+                    }
+                    else if (DialogFor == "TaxAdjustment")
+                    {
+                        await GetAllTrnsTaxAdjustment();
+                    }
+                    else if (DialogFor == "EmployeeReHire")
+                    {
+                        await GetAllMstEmployeeReHire();
+                    }
+                    else if (DialogFor == "ApprovalStages")
+                    {
+                        await GetAllMstStages();
+                    }
+                    else if (DialogFor == "ApprovalTemplate")
+                    {
+                        await GetAllCfgApprovalTemplate();
+                    }
+                    else if (DialogFor == "EmployeeReHireEdit")
+                    {
+                        await GetAllTrnsEmployeeReHire();
+                    }
+                    else if (DialogFor == "EmployeeBonus")
+                    {
+                        await GetAllEmployeeBonus();
+                    }
+                    else if (DialogFor == "Batch")
+                    {
+                        await GetAllBatch();
+                    }
+                    else if (DialogFor == "MonthlyOT")
+                    {
+                        await GetAllFilterFuncMonthlyOT();
+                    }
+                    else if (DialogFor == "UserDataAccess")
+                    {
+                        await GetAllUserDataAccess();
+                    }
                 }
-                else if (DialogFor == "ElementTransaction")
+                else
                 {
-                    await GetAllElements();
+                    Navigation.NavigateTo("/Login", forceLoad: true);
                 }
-                else if (DialogFor == "Shifts")
-                {
-                    await GetAllShift();
-                }
-                else if (DialogFor == "TaxSetup")
-                {
-                    await GetAllTaxSetup();
-                }
-                else if (DialogFor == "GratuitySetup")
-                {
-                    await GetAllGratuitySetup();
-                }
-                else if (DialogFor == "PayrollSetup")
-                {
-                    await GetAllPayrollSetup();
-                }
-                else if (DialogFor == "EmployeeMaster")
-                {
-                    await GetAllMstEmployee();
-                }
-                else if (DialogFor == "MultipleEmployeeSelect")
-                {
-                    await GetAllMstEmployee();
-                }
-                else if (DialogFor == "TrnsEmployeeTransfer")
-                {
-                    await GetAllTrnsEmployeeTransfer();
-                }
-                else if (DialogFor == "LeaveRequest")
-                {
-                    await GetAllTrnsLeavesRequest();
-                }
-                else if (DialogFor == "LoanRequest")
-                {
-                    await GetAllTrnsLoanRequest();
-                }
-                else if (DialogFor == "AdvanceRequest")
-                {
-                    await GetAllTrnsAdvanceRequest();
-                }
-                else if (DialogFor == "TrnsEmployeeOverTime")
-                {
-                    await GetAllTrnsEmployeeOverTime();
-                }
-                else if (DialogFor == "EmployeeResign")
-                {
-                    await GetAllTrnsEmployeeResign();
-                }
-                else if (DialogFor == "TaxAdjustment")
-                {
-                    await GetAllTrnsTaxAdjustment();
-                }
-                else if (DialogFor == "EmployeeReHire")
-                {
-                    await GetAllMstEmployeeReHire();
-                }
-                else if (DialogFor == "ApprovalStages")
-                {
-                    await GetAllMstStages();
-                }
-                else if (DialogFor == "ApprovalTemplate")
-                {
-                    await GetAllCfgApprovalTemplate();
-                }
-                else if (DialogFor == "EmployeeReHireEdit")
-                {
-                    await GetAllTrnsEmployeeReHire();
-                }
-                else if (DialogFor == "EmployeeBonus")
-                {
-                    await GetAllEmployeeBonus();
-                }
-                else if (DialogFor == "Batch")
-                {
-                    await GetAllBatch();
-                }
-                else if (DialogFor == "MonthlyOT")
-                {
-                    await GetAllFilterFuncMonthlyOT();
-                }
-                else if (DialogFor == "UserDataAccess")
-                {
-                    await GetAllUserDataAccess();
-                }
+
+
+                
                 Loading = false;
             }
             catch (Exception ex)

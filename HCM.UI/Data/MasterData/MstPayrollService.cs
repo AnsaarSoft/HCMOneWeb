@@ -44,7 +44,7 @@ namespace HCM.UI.Data.MasterData
             {
                 List<CfgPayrollDefination> oList = new List<CfgPayrollDefination>();
 
-                var request = new RestRequest($"MasterData/getAllPayrollSetupByEmp?EmpID ={EmpID}", Method.Get) { RequestFormat = DataFormat.Json };
+                var request = new RestRequest($"MasterData/getAllPayrollSetupByEmp?EmpID={EmpID}", Method.Get) { RequestFormat = DataFormat.Json };
 
                 var response = await _restClient.ExecuteAsync<List<CfgPayrollDefination>>(request);
 
