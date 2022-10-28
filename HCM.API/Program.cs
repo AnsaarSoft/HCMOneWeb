@@ -11,6 +11,7 @@ using HCM.API.Interfaces.EmployeeMasterSetup;
 using HCM.API.Interfaces.Loan;
 using HCM.API.Interfaces.MasterData;
 using HCM.API.Interfaces.MasterElement;
+using HCM.API.Interfaces.SAPData;
 using HCM.API.Interfaces.ShiftManagement;
 using HCM.API.Repository.Account;
 using HCM.API.Repository.Advance;
@@ -23,6 +24,7 @@ using HCM.API.Repository.EmployeeMasterSetup;
 using HCM.API.Repository.Loan;
 using HCM.API.Repository.MasterData;
 using HCM.API.Repository.MasterElement;
+using HCM.API.Repository.SAPData;
 using HCM.API.Repository.ShiftManagement;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -63,6 +65,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddControllersWithViews()
                 .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
+builder.Services.AddScoped<ISAPData, SAPDataRepo>();
 builder.Services.AddScoped<IMstForm, MstFormRepo>();
 builder.Services.AddScoped<IMstDimension, MstDimensionRepo>();
 builder.Services.AddScoped<IMstDocumentNumberSeries, MstDocumentNumberSeriesRepo>();

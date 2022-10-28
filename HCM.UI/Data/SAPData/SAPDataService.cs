@@ -39,7 +39,6 @@ namespace HCM.UI.Data.SAPData
                 return null;
             }
         }
-
         public async Task<List<SAPModels>> GetBomItemsFromSAP(string ProductCode)
         {
             try
@@ -65,7 +64,6 @@ namespace HCM.UI.Data.SAPData
                 return null;
             }
         }
-
         public async Task<List<SAPModels>> GetCurrencyFromSAP()
         {
             try
@@ -91,7 +89,6 @@ namespace HCM.UI.Data.SAPData
                 return null;
             }
         }
-
         public async Task<List<SAPModels>> GetProductFromSap()
         {
             try
@@ -117,7 +114,6 @@ namespace HCM.UI.Data.SAPData
                 return null;
             }
         }
-
         public async Task<List<SAPModels>> GetCustomerFromSAP()
         {
             try
@@ -143,7 +139,6 @@ namespace HCM.UI.Data.SAPData
                 return null;
             }
         }
-
         public async Task<List<SAPModels>> GetItemsFromSAP(string clause)
         {
             try
@@ -194,7 +189,6 @@ namespace HCM.UI.Data.SAPData
                 return null;
             }
         }
-
         public async Task<List<SAPModels>> GetItemsVOHFromSAP(string clause, string year, string month)
         {
             try
@@ -220,7 +214,6 @@ namespace HCM.UI.Data.SAPData
                 return null;
             }
         }
-
         public async Task<List<SAPModels>> GetAccountsFromSAP(string Clause)
         {
             try
