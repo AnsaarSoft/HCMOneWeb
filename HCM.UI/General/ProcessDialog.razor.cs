@@ -1,4 +1,6 @@
-﻿using HCM.API.Models;
+﻿using HCM.API.HCMModels;
+using HCM.API.Models;
+using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
 using Microsoft.AspNetCore.Components;
@@ -35,21 +37,39 @@ namespace HCM.UI.General
         [Inject]
         public ICfgPayrollDefination _CfgPayrollDefination { get; set; }
 
+        [Inject]
+        public ITrnsEmployeeOverTime _trnsEmployeeOverTime { get; set; }
+
+        [Inject]
+        public IMstEmployeeMasterData _mstEmployeeMaster { get; set; }
+
+        [Inject]
+        public IMstOverTime _mstOverTime { get; set; }
+
         [Parameter]
         public string DialogFor { get; set; }
 
         [Parameter]
-        public int EmpPayrollId { get; set; } =0;
+        public int EmpPayrollId { get; set; } = 0;
+        [Parameter]
+        public int EmpId { get; set; } = 0;
         #endregion
 
         #region Variables
 
         bool Loading = false;
-
+        bool IsFlg = false;
         bool DisabledCode = false;
+
         public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
         private string amountType = "";
         private string taxtype = "";
+        private decimal Amount;
+        private decimal Hours;
+
+        DateTime? docdate;
+        TimeSpan? timefrom = new TimeSpan();
+        TimeSpan? timeto = new TimeSpan();
         void Cancel() => MudDialog.Cancel();
         [Parameter] public List<VMMstShiftDetail> oDetailListPara { get; set; } = new List<VMMstShiftDetail>();
 
@@ -65,10 +85,18 @@ namespace HCM.UI.General
         [Parameter] public TrnsTaxAdjustmentDetail oDetailParaTaxAdjust { get; set; } = new TrnsTaxAdjustmentDetail();
         TrnsTaxAdjustmentDetail oModelTaxAdjustmentDetail = new TrnsTaxAdjustmentDetail();
 
-
         CfgPayrollDefination oModelPayroll = new CfgPayrollDefination();
         private IEnumerable<CfgPayrollDefination> oPayrollList = new List<CfgPayrollDefination>();
         private IEnumerable<CfgPeriodDate> oCfgPeriodDateList = new List<CfgPeriodDate>();
+        [Parameter] public TrnsEmployeeOvertimeDetail oDetailParaEmployeeOT { get; set; } = new TrnsEmployeeOvertimeDetail();
+        TrnsEmployeeOvertimeDetail oModelTrnsEmployeeOvertimeDetail = new TrnsEmployeeOvertimeDetail();
+
+        MstEmployee oModelMstEmployee = new MstEmployee();
+        private IEnumerable<MstEmployee> oListEmployee = new List<MstEmployee>();
+
+
+        MstOverTime oModelmstOvertime = new MstOverTime();
+        private IEnumerable<MstOverTime> oListmstOverTime = new List<MstOverTime>();
 
         #endregion
 
@@ -293,7 +321,7 @@ namespace HCM.UI.General
                 {
                     if (oModelTaxAdjustmentDetail.TaxType == "Monthly")
                     {
-                      //  oModelTaxAdjustmentDetail.FlgMonthly = true;
+                        //  oModelTaxAdjustmentDetail.FlgMonthly = true;
                         if (string.IsNullOrWhiteSpace(oModelTaxAdjustmentDetail.Period))
                         {
                             Snackbar.Add("Must Fill the Period field(s).", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
@@ -314,8 +342,102 @@ namespace HCM.UI.General
                     Snackbar.Add("Fill the required field(s).", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                 }
             }
+            else if (DialogFor == "EmployeeOverTime")
+            {
+                if (!string.IsNullOrWhiteSpace(oModelmstOvertime.Description) && docdate != null && !string.IsNullOrWhiteSpace(timefrom.ToString()) && !string.IsNullOrWhiteSpace(timeto.ToString())
+                    && EmpId > 0 && Hours > 0 && IsFlg == true)
+                {
+                    oModelTrnsEmployeeOvertimeDetail.OvertimeId = oModelmstOvertime.Id;
+                    // oModelTrnsEmployeeOvertimeDetail.EmpOvertimeId = oModel.Id;
+                    oModelTrnsEmployeeOvertimeDetail.Otdate = docdate;
+                    oModelTrnsEmployeeOvertimeDetail.FromTime = timefrom.ToString();
+                    oModelTrnsEmployeeOvertimeDetail.ToTime = timeto.ToString();
+                    oModelTrnsEmployeeOvertimeDetail.Othours = Hours;
+                    oModelTrnsEmployeeOvertimeDetail.FlgActive = IsFlg;
+                    oModelmstOvertime = oListmstOverTime.Where(x => x.Id == oModelmstOvertime.Id).FirstOrDefault();
+                    oModelMstEmployee = oListEmployee.Where(x => x.Id == EmpId).FirstOrDefault();
+                    oModelTrnsEmployeeOvertimeDetail.Amount = BusinessLogic.GetOverTimeAmount(oModelMstEmployee, oModelmstOvertime, Hours);
+
+                    MudDialog.Close(DialogResult.Ok<TrnsEmployeeOvertimeDetail>(oModelTrnsEmployeeOvertimeDetail));
+                }
+                else
+                {
+                    Snackbar.Add("Fill the required field(s).", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
         }
 
+        private async Task GetAllEmployees()
+        {
+            try
+            {
+                oListEmployee = await _mstEmployeeMaster.GetAllData();
+                oListEmployee = oListEmployee.Where(x => x.FlgActive == true).ToList();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private async Task GetAllOvertime()
+        {
+            try
+            {
+                oListmstOverTime = await _mstOverTime.GetAllData();
+                oListmstOverTime = oListmstOverTime.Where(x => x.FlgActive == true).ToList();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private async Task<IEnumerable<MstOverTime>> SearchOvertime(string value)
+        {
+            try
+            {
+                await Task.Delay(1);
+                if (string.IsNullOrWhiteSpace(value))
+                    return oListmstOverTime.Select(o => new MstOverTime
+                    {
+                        Id = o.Id,
+                        Code = o.Code,
+                        Description = o.Description,
+                    }).ToList();
+                var res = oListmstOverTime.Where(x => x.Code.ToUpper().Contains(value.ToUpper())).ToList();
+                return res.Select(x => new MstOverTime
+                {
+                    Id = x.Id,
+                    Code = x.Code,
+                    Description = x.Description,
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return null;
+            }
+        }
+        private async Task CalHour()
+        {
+            try
+            {
+                await Task.Delay(1);
+                if ((timefrom != null && timeto != null))
+                {
+
+                    string totalhour = (timeto - timefrom).ToString();
+                    Hours = Convert.ToDecimal(TimeSpan.Parse(totalhour).TotalHours);
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+            _ = InvokeAsync(StateHasChanged);
+        }
         #endregion
 
         #region Events
@@ -325,6 +447,7 @@ namespace HCM.UI.General
             try
             {
                 Loading = true;
+
                 if (DialogFor == "Element")
                 {
 
@@ -372,25 +495,41 @@ namespace HCM.UI.General
                         oModelPayroll = oPayrollList.Where(x => x.Id == EmpPayrollId).FirstOrDefault();
                         oCfgPeriodDateList = oModelPayroll.CfgPeriodDates.Where(x => x.PayrollId == oModelPayroll.Id).ToList();
 
-                        //if (oDetailParaTaxAdjust.FlgMonthly == true)
-                        //  taxtype = "Monthly";
-                        //else
-                        //  taxtype = "Yearly";
                         oModelTaxAdjustmentDetail = oDetailParaTaxAdjust;
                     }
                     else
                     {
                         if (EmpPayrollId != 0)
                         {
-                        oPayrollList = await _CfgPayrollDefination.GetAllData();
-                        oModelPayroll = oPayrollList.Where(x => x.Id == EmpPayrollId).FirstOrDefault();
-                        oCfgPeriodDateList = oModelPayroll.CfgPeriodDates.Where(x => x.PayrollId == oModelPayroll.Id).ToList();
+                            oPayrollList = await _CfgPayrollDefination.GetAllData();
+                            oModelPayroll = oPayrollList.Where(x => x.Id == EmpPayrollId).FirstOrDefault();
+                            oCfgPeriodDateList = oModelPayroll.CfgPeriodDates.Where(x => x.PayrollId == oModelPayroll.Id).ToList();
                         }
                         oModelTaxAdjustmentDetail.Description = "";
-                        oModelTaxAdjustmentDetail.FlgActive= true;
+                        oModelTaxAdjustmentDetail.FlgActive = true;
                         oModelTaxAdjustmentDetail.Amount = 0;
-                        //oModelTaxAdjustmentDetail.DaysCount = 0;
                     }
+                }
+                else if (DialogFor == "EmployeeOverTime")
+                {
+                    await GetAllEmployees();
+                    await GetAllOvertime();
+                    oModelTrnsEmployeeOvertimeDetail = oDetailParaEmployeeOT;
+
+
+                    // oModelTrnsEmployeeOvertimeDetail.EmpOvertimeId = oModel.Id;
+                    docdate = oDetailParaEmployeeOT.Otdate;
+                    if (oDetailParaEmployeeOT.FromTime != null && oDetailParaEmployeeOT.ToTime != null)
+                    {
+                        timefrom = TimeSpan.Parse(oDetailParaEmployeeOT.FromTime);
+                        timeto = TimeSpan.Parse(oDetailParaEmployeeOT.ToTime);
+
+                    }
+                    Hours = (decimal)oDetailParaEmployeeOT.Othours;
+                    Amount = (decimal)oDetailParaEmployeeOT.Amount;
+                    IsFlg = (bool)oDetailParaEmployeeOT.FlgActive;
+                    oModelmstOvertime = oListmstOverTime.Where(x => x.Id == oModelTrnsEmployeeOvertimeDetail.OvertimeId).FirstOrDefault();
+
                 }
                 Loading = false;
             }

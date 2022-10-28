@@ -190,6 +190,50 @@
                 </MudItem>
             </MudGrid>
         }
+        @if (DialogFor == "EmployeeOverTime")
+        {
+            <MudText Typo="Typo.h6">Employee OverTime Detail</MudText>
+            <MudSpacer />
+            <MudDivider />
+            <MudGrid class="search-action-block align-items-center">
+                 <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudAutocomplete T="MstOverTime" @bind-Value="oModelmstOvertime" SearchFunc="@SearchOvertime" Clearable="true" Label="OverTime" HelperText="Select OverTime" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="docdate" MinDate="DateTime.Today" Label="OT Date" HelperText="Select OverTime Date*" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
+                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
+                </MudItem>
+
+                <MudItem xs="3" sm="3" md="3" lg="3">
+
+                    <MudTimePicker Label="From Time*" HelperText="24 Hour" @bind-Time="timefrom" PickerClosed="CalHour" />
+                </MudItem>
+
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTimePicker Label="To Time*" HelperText="24 Hour" @bind-Time="timeto" PickerClosed="CalHour" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudNumericField @bind-Value="Hours" Min="0" ReadOnly="true" Immediate="true" Clearable="true" Label="Hours" Variant="Variant.Text"
+                                     Adornment="Adornment.Start" Format="0.00" />
+                </MudItem>
+
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudNumericField @bind-Value="Amount" Min="0" ReadOnly="true" Immediate="true" Clearable="true" Label="Amount" Variant="Variant.Text"
+                                     Adornment="Adornment.Start" AdornmentText="Rs" Format="0.00" />
+                </MudItem>
+
+                <MudItem xs="2" sm="2" md="2" lg="2">
+                    <MudSwitch @bind-Checked="@IsFlg" ThumbIcon="@(IsFlg==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(IsFlg==true ? Color.Primary : Color.Error)" Color="@(IsFlg==true ? Color.Info : Color.Error)">
+                        <span>
+                            @(
+                                IsFlg == true ? "Overtime  - Yes" : "Overtime - No"
+                                )
+                        </span>
+                    </MudSwitch>
+                </MudItem>
+            </MudGrid>
+        }
     </DialogContent>
     <DialogActions>
         <MudItem class="text-right custom-btn-design">
