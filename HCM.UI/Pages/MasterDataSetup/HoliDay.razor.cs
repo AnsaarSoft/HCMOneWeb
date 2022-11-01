@@ -8,7 +8,7 @@ using MudBlazor;
 
 namespace HCM.UI.Pages.MasterDataSetup
 {
-    public partial class ChartofAccount
+    public partial class HoliDay
     {
         #region InjectService
 
@@ -22,7 +22,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         public ISnackbar Snackbar { get; set; }
 
         [Inject]
-        public IMstchartofAccount _mstchartofAccount { get; set; }
+        public IMstHoliday _mstHoliday { get; set; }
 
         [Inject]
         public ILocalStorageService _localStorage { get; set; }
@@ -34,10 +34,10 @@ namespace HCM.UI.Pages.MasterDataSetup
         bool DisbaledCode = false;
         private string searchString1 = "";
         private string LoginUser = "";
-        private bool FilterFunc(MstchartofAccount element) => FilterFunc(element, searchString1);
+        private bool FilterFunc(MstHoliDay element) => FilterFunc(element, searchString1);
 
-        MstchartofAccount oModel = new MstchartofAccount();
-        private IEnumerable<MstchartofAccount> oList = new List<MstchartofAccount>();
+        MstHoliDay oModel = new MstHoliDay();
+        private IEnumerable<MstHoliDay> oList = new List<MstHoliDay>();
 
         #endregion
 
@@ -61,19 +61,19 @@ namespace HCM.UI.Pages.MasterDataSetup
                         if (oModel.Id == 0)
                         {
                             oModel.CreatedBy = LoginUser;
-                            res = await _mstchartofAccount.Insert(oModel);
+                            res = await _mstHoliday.Insert(oModel);
                         }
                         else
                         {
                             oModel.UpdatedBy = LoginUser;
-                            res = await _mstchartofAccount.Update(oModel);
+                            res = await _mstHoliday.Update(oModel);
                         }
                     }
                     if (res != null && res.Id == 1)
                     {
                         Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
                         await Task.Delay(3000);
-                        Navigation.NavigateTo("/ChartofAccount", forceLoad: true);
+                        Navigation.NavigateTo("/HoliDay", forceLoad: true);
                     }
                     else
                     {
@@ -102,7 +102,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             {
                 Loading = true;
                 await Task.Delay(3);
-                Navigation.NavigateTo("/ChartofAccount", forceLoad: true);
+                Navigation.NavigateTo("/HoliDay", forceLoad: true);
                 Loading = false;
             }
             catch (Exception ex)
@@ -112,11 +112,11 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
-        private async Task GetAllContractors()
+        private async Task GetAllHoliday()
         {
             try
             {
-                oList = await _mstchartofAccount.GetAllData();
+                oList = await _mstHoliday.GetAllData();
             }
             catch (Exception ex)
             {
@@ -124,7 +124,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
-        private bool FilterFunc(MstchartofAccount element, string searchString1)
+        private bool FilterFunc(MstHoliDay element, string searchString1)
         {
             if (string.IsNullOrWhiteSpace(searchString1))
                 return true;
@@ -143,7 +143,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 oList = res;
                 if (oList.Count() == 0)
                 {
-                    oModel = new MstchartofAccount();
+                    oModel = new MstHoliDay();
                 }
             }
             catch (Exception ex)
@@ -163,6 +163,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     oModel.Id = res.Id;
                     oModel.Code = res.Code;
                     oModel.Description = res.Description;
+                    oModel.HolidayDate = res.HolidayDate;
                     oModel.FlgActive = res.FlgActive;
                     if (oModel.Id !=0)
                     {
@@ -195,7 +196,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     //var res = await _administrationService.FetchUserAuth(Session.UserCode);
                     Loading = true;
                     oModel.FlgActive = true;
-                    await GetAllContractors();
+                    await GetAllHoliday();
                 }
                 else
                 {
