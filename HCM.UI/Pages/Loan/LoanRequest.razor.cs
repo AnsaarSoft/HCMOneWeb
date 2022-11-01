@@ -393,6 +393,7 @@ namespace HCM.UI.Pages.Loan
             {
                 var result = await _trnsLoanRequest.GetAllData();
                 oModel = result.Where(x => x.DocNum == DocNum).FirstOrDefault();
+                LoginUser = oModel.UserId;
             }
             catch (Exception ex)
             {

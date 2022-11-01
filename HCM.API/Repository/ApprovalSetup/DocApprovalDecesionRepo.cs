@@ -251,6 +251,16 @@ namespace HCM.API.Repository.ApprovalSetup
                                 }
                                 else
                                 {
+                                    var result = _DBContext.DocApprovalDecesions.Where(b => b.FkdocNum == oDocApprovalDecesion.FkdocNum && b.FlgActive == true).ToList();
+                                    List<DocApprovalDecesion> oListRDocApproval = new List<DocApprovalDecesion>();
+                                    foreach (var item in result)
+                                    {
+                                        DocApprovalDecesion oRDocApprovalDecesion = new DocApprovalDecesion();
+                                        oRDocApprovalDecesion = item;
+                                        oRDocApprovalDecesion.FlgActive = false;
+                                        oListRDocApproval.Add(oRDocApprovalDecesion);
+                                    }
+                                    _DBContext.DocApprovalDecesions.UpdateRange(oListRDocApproval);
                                     string approved = "Approved";
                                     string opened = "Opened";
                                     switch (oDocApprovalDecesion.FkformId)

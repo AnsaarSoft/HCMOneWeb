@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using HCM.API.Models;
 using HCM.UI.General;
+using HCM.UI.Interfaces.Attendance;
 using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.ShiftManagement;
@@ -48,6 +49,9 @@ namespace HCM.UI.Pages.Attendance
 
         [Inject]
         public ITrnsAttendanceRegister _trnsAttendanceRegister { get; set; }
+
+        [Inject]
+        public ITrnsTempAttendance _trnsTempAttendance { get; set; }
 
         [Inject]
         public ILocalStorageService _localStorage { get; set; }
@@ -99,7 +103,8 @@ namespace HCM.UI.Pages.Attendance
         private IEnumerable<MstEmployee> oListEmployee = new List<MstEmployee>();
         private IEnumerable<MstEmployee> oListFilteredEmployee = new List<MstEmployee>();
 
-        private IEnumerable<TrnsAttendanceRegister> oList = new List<TrnsAttendanceRegister>();
+        private IEnumerable<TrnsAttendanceRegister> oListAttendanceRegister = new List<TrnsAttendanceRegister>();
+        private IEnumerable<TrnsTempAttendance> oListTempAttendance = new List<TrnsTempAttendance>();
 
         private IEnumerable<MstShift> oListShift = new List<MstShift>();
 
@@ -111,7 +116,19 @@ namespace HCM.UI.Pages.Attendance
         {
             try
             {
-                oList = await _trnsAttendanceRegister.GetAllData();
+                oListAttendanceRegister = await _trnsAttendanceRegister.GetAllData();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+       
+        private async Task GetAllTrnsTempAttendance()
+        {
+            try
+            {
+                oListTempAttendance = await _trnsTempAttendance.GetAllData();
             }
             catch (Exception ex)
             {
@@ -655,6 +672,7 @@ namespace HCM.UI.Pages.Attendance
                     LoginUser = Session.EmpId;
                     _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date);
                     await GetAllTrnsAttendanceRegister();
+                    await GetAllTrnsTempAttendance();
                     await GetAllEmployees();
                     await GetAllDesignation();
                     await GetAllDepartments();

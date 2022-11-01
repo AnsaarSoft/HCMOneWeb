@@ -35,6 +35,8 @@ namespace HCM.UI.Pages.ApprovalSetup
 
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
+        private IEnumerable<CfgApprovalStage> oList = new List<CfgApprovalStage>();
+
         private string LoginUser = "";
 
         #endregion
@@ -103,7 +105,14 @@ namespace HCM.UI.Pages.ApprovalSetup
                         Loading = true;
                         var res1 = new ApiResponseModel();
                         await Task.Delay(1);
-                        
+                        await GetAllStages();
+                        var checkStage = oList.Where(x => x.StageName.ToLower() == oModel.StageName.ToLower()).ToList();
+                        if (checkStage != null && checkStage.Count > 0)
+                        {
+                            Snackbar.Add("Can't add duplicate stage name", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                            Loading = false;
+                            return null;
+                        }
                         if (oModel.StageName == null || oModel.ApprovalsNo == null || oModel.RejectionsNo == null)
                         {
                             Snackbar.Add("Please fill the required field(s)", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
@@ -187,6 +196,18 @@ namespace HCM.UI.Pages.ApprovalSetup
                 Logs.GenerateLogs(ex);
                 Loading = false;
                 return null;
+            }
+        }
+
+        private async Task GetAllStages()
+        {
+            try
+            {
+                oList = await _stageService.GetAllData();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
             }
         }
 
