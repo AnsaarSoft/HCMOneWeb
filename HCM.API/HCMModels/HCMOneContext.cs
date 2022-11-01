@@ -238,7 +238,8 @@ namespace HCM.API.HCMModels
         public virtual DbSet<MstGratuityDetail> MstGratuityDetails { get; set; }
         public virtual DbSet<MstGroup> MstGroups { get; set; }
         public virtual DbSet<MstHierarchySetup> MstHierarchySetups { get; set; }
-        public virtual DbSet<MstHoliday> MstHolidays { get; set; }
+        public virtual DbSet<MstHoliDay> MstHoliDays { get; set; }
+        public virtual DbSet<MstHoliday1> MstHolidays1 { get; set; }
         public virtual DbSet<MstHolidayDetail> MstHolidayDetails { get; set; }
         public virtual DbSet<MstIncrementBracket> MstIncrementBrackets { get; set; }
         public virtual DbSet<MstInstitute> MstInstitutes { get; set; }
@@ -335,6 +336,7 @@ namespace HCM.API.HCMModels
         public virtual DbSet<MstUsersAuth> MstUsersAuths { get; set; }
         public virtual DbSet<MstVacancyType> MstVacancyTypes { get; set; }
         public virtual DbSet<MstWarningLetter> MstWarningLetters { get; set; }
+        public virtual DbSet<MstchartofAccount> MstchartofAccounts { get; set; }
         public virtual DbSet<Mulg> Mulgs { get; set; }
         public virtual DbSet<NeskCfgApprovalDecisionRegister> NeskCfgApprovalDecisionRegisters { get; set; }
         public virtual DbSet<NeskCfgDocHierarchy> NeskCfgDocHierarchies { get; set; }
@@ -9107,8 +9109,33 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<MstHoliday>(entity =>
+            modelBuilder.Entity<MstHoliDay>(entity =>
             {
+                entity.ToTable("MstHoliDay");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Code).HasMaxLength(20);
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Description).HasMaxLength(100);
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.HolidayDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<MstHoliday1>(entity =>
+            {
+                entity.ToTable("MstHolidays");
+
                 entity.HasIndex(e => e.Holiday, "IX_MstHolidays")
                     .IsUnique();
 
@@ -11764,6 +11791,27 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.Name).HasMaxLength(150);
 
                 entity.Property(e => e.UpdatedBy).HasMaxLength(50);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<MstchartofAccount>(entity =>
+            {
+                entity.ToTable("MstchartofAccount");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Code).HasMaxLength(20);
+
+                entity.Property(e => e.CreatedBy).HasMaxLength(250);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Description).HasMaxLength(100);
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(250);
 
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });

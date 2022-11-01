@@ -39,11 +39,13 @@ namespace HCM.API.Controllers
         private IMstStation _mstStation;
         private IMstEmployeeLeaves _mstEmployeeLeaves;
         private IMstDimension _mstDimension;
+        private IMstchartofAccount _mstchartofAccount;
+        private IMstHoliDay _mstHoliDay;
 
         public MasterDataController(IMstForm mstForm, IMstDocumentNumberSeries mstDocumentNumberSeries, IMstDepartment mstDepartment, IMstDesignation mstDesignation, IMstLocation mstLocation, IMstPosition mstPosition, IMstBranch mstBranch, IMstGrading mstGrading, IMstCalendar mstCalendar,
             IMstLeaveCalendar mstLeaveCalendar, IMstEmailConfig mstEmailConfig, ICfgPayrollDefinationinit CfgPayrollDefinationinit, IMstLoans mstLoans, IMstShifts mstShift, IMstAdvance mstAdvance, IMstLeaveDeduction mstLeaveDeduction,
             IMstLeaveType mstLeaveType, IMstDeductionRule mstDeductionRule, IMstAttendanceRules mstAttendanceRule, ICfgTaxSetup CfgTaxSetup, ICfgPayrollDefination CfgPayrollDefinationSetup, IMstBonus mstBonus, IMstGratuity mstGratuity,
-            IMstCountryStateCity mstCountryStateCity, IMstContractor mstContractor, IMstStation mstStation, IMstEmployeeLeaves mstEmployeeLeaves, IMstDimension mstDimension)
+            IMstCountryStateCity mstCountryStateCity, IMstContractor mstContractor, IMstStation mstStation, IMstEmployeeLeaves mstEmployeeLeaves, IMstDimension mstDimension, IMstchartofAccount mstchartofAccount, IMstHoliDay mstHoliDay)
         {
             _mstForm = mstForm;
             _mstDocumentNumberSeries = mstDocumentNumberSeries;
@@ -74,6 +76,8 @@ namespace HCM.API.Controllers
             _mstStation = mstStation;
             _mstEmployeeLeaves = mstEmployeeLeaves;
             _mstDimension = mstDimension;
+            _mstchartofAccount = mstchartofAccount;
+            _mstHoliDay = mstHoliDay;
         }
 
         #region MST Form
@@ -2665,6 +2669,254 @@ namespace HCM.API.Controllers
             try
             {
                 response = await _mstEmployeeLeaves.Update(pMstEmployeeLeaf);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
+
+        #region MST ChartofAccount
+
+        [Route("getAllCOA")]
+        [HttpGet]
+        public async Task<IActionResult> getAllCOA()
+        {
+            List<MstchartofAccount> oMstchartofAccount = new List<MstchartofAccount>();
+            try
+            {
+                oMstchartofAccount = await _mstchartofAccount.GetAllData();
+                if (oMstchartofAccount == null)
+                {
+                    return BadRequest(oMstchartofAccount);
+                }
+                else
+                {
+                    return Ok(oMstchartofAccount);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addCOA")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstchartofAccount pMstchartofAccount)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstchartofAccount.Insert(pMstchartofAccount);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateCOA")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstchartofAccount pMstchartofAccount)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstchartofAccount.Update(pMstchartofAccount);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addCOAList")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] List<MstchartofAccount> pMstchartofAccount)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstchartofAccount.Insert(pMstchartofAccount);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateCOAList")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] List<MstchartofAccount> pMstchartofAccount)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstchartofAccount.Update(pMstchartofAccount);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
+
+        #region MST HoliDay
+
+        [Route("getAllHoliday")]
+        [HttpGet]
+        public async Task<IActionResult> getAllHoliday()
+        {
+            List<MstHoliDay> oMstHoliDay = new List<MstHoliDay>();
+            try
+            {
+                oMstHoliDay = await _mstHoliDay.GetAllData();
+                if (oMstHoliDay == null)
+                {
+                    return BadRequest(oMstHoliDay);
+                }
+                else
+                {
+                    return Ok(oMstHoliDay);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addHoliday")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstHoliDay pMstHoliDay)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstHoliDay.Insert(pMstHoliDay);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateHoliday")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstHoliDay pMstHoliDay)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstHoliDay.Update(pMstHoliDay);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addHolidayList")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] List<MstHoliDay> pMstHoliDay)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstHoliDay.Insert(pMstHoliDay);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateHolidayList")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] List<MstHoliDay> pMstHoliDay)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstHoliDay.Update(pMstHoliDay);
                 if (response == null)
                 {
                     return BadRequest(response);

@@ -15,6 +15,6 @@ namespace HCM.API.HCMModels
         public string UserId { get; set; }
         public string UpdatedBy { get; set; }
 
-        public virtual MstHoliday HidNavigation { get; set; }
+        public virtual MstHoliday1 HidNavigation { get; set; }
     }
 }

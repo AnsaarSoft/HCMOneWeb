@@ -3,12 +3,11 @@ using System.Collections.Generic;
 
 namespace HCM.API.HCMModels
 {
-    public partial class MstHoliDay
+    public partial class MstchartofAccount
     {
         public int Id { get; set; }
         public string Code { get; set; }
         public string Description { get; set; }
-        public DateTime? HolidayDate { get; set; }
         public bool? FlgActive { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
