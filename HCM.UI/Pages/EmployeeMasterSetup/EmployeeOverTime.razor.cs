@@ -162,7 +162,7 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 if (!result.Cancelled)
                 {
                     var res = (TrnsEmployeeOvertimeDetail)result.Data;
-                    //oListTrnsEmployeeOtDetail.Clear();
+                   // oListTrnsEmployeeOtDetail.Clear();
                     oListTrnsEmployeeOtDetail.Add(res);
                     oListTrnsEmployeeOvertimeDetail = oListTrnsEmployeeOtDetail;
 
@@ -199,32 +199,17 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                     var update = oListTrnsEmployeeOvertimeDetail.Where(x => x.Id == res.Id).FirstOrDefault();
                     if (update != null)
                     {
-                      //  oDetail.Remove(update);
+                        oListTrnsEmployeeOtDetail.Remove(update);
                     }
-                    TrnsTaxAdjustmentDetail oTaxDetail = new TrnsTaxAdjustmentDetail();
-                    oTaxDetail.Id = res.Id;
-                    oTaxDetail.Amount = res.Amount;
-                    oTaxDetail.FlgActive = res.FlgActive;
-                    oTaxDetail.CreateDt = DateTime.Now;
-                    oTaxDetail.CreatedBy = LoginUser;
-                    TrnsEmployeeOvertimeDetail trnsEmployeeOvertimeDetail = new TrnsEmployeeOvertimeDetail();
-                    trnsEmployeeOvertimeDetail.Id = res.Id;
-                    trnsEmployeeOvertimeDetail.OvertimeId = res.OvertimeId;
-                    trnsEmployeeOvertimeDetail.Otdate = res.Otdate;
-                    trnsEmployeeOvertimeDetail.FromTime = res.FromTime;
-                    trnsEmployeeOvertimeDetail.ToTime= res.ToTime;
-                    trnsEmployeeOvertimeDetail.ToTime= res.ToTime;
-                    trnsEmployeeOvertimeDetail.Othours = res.Othours;
-                    trnsEmployeeOvertimeDetail.FlgActive = res.FlgActive;
                     if (oModel.Id != 0)
                     {
-                        oTaxDetail.UpdateDt = DateTime.Now;
-                        oTaxDetail.UpdatedBy = LoginUser;
+                        res.UpdateDate = DateTime.Now;
+                        res.UpdatedBy = LoginUser;
                     }
                     else
                     {
-                        oTaxDetail.CreateDt = DateTime.Now;
-                        oTaxDetail.CreatedBy = LoginUser;
+                        res.CreateDate = DateTime.Now;
+                        res.UserId = LoginUser;
 
                     }
 
@@ -429,12 +414,13 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 Loading = true;
                 await Task.Delay(1);
                 List<TrnsEmployeeOvertimeDetail> oListTrnsEmployeeOTDtl = new List<TrnsEmployeeOvertimeDetail>();
-                oListTrnsEmployeeOTDtl = oListTrnsEmployeeOvertimeDetail.ToList();
+                 oListTrnsEmployeeOTDtl = oListTrnsEmployeeOvertimeDetail.ToList();
+                oListTrnsEmployeeOtDetail = oListTrnsEmployeeOvertimeDetail.ToList();
                 if (oListTrnsEmployeeOvertimeDetail.Count() > 0)
                 {
                     var FilterRecord = oListTrnsEmployeeOvertimeDetail.Where(x => x.Id == ID).FirstOrDefault();
-                    oListTrnsEmployeeOTDtl.Remove(FilterRecord);
-                    oListTrnsEmployeeOvertimeDetail = oListTrnsEmployeeOTDtl;
+                    oListTrnsEmployeeOtDetail.Remove(FilterRecord);
+                    oListTrnsEmployeeOvertimeDetail = oListTrnsEmployeeOtDetail;
                 }
                 Loading = false;
             }

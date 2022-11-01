@@ -151,7 +151,7 @@
                             <MudTd DataLabel="Amount">@context.Amount</MudTd>
                             <MudTd DataLabel="Active">@context.FlgActive</MudTd>
                             <MudTd DataLabel="Action">
-                                <MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteFromFilter(context.Id) )" Title="Delete"></MudIconButton>
+                                <MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteFromFilter(context.Id))" Title="Delete"></MudIconButton>
                                 <MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@((e) => OpenEditDialog(FullView, context))" Title="Edit"></MudIconButton>
                                 @*<MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id) )" Title="Edit"></MudIconButton>*@
                             </MudTd>
