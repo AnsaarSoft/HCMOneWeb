@@ -1,6 +1,7 @@
 ﻿using HCM.API.General;
 using HCM.API.Interfaces.ShiftManagement;
 using HCM.API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HCM.API.Repository.ShiftManagement
 {
@@ -19,7 +20,7 @@ namespace HCM.API.Repository.ShiftManagement
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.TrnsAttendanceRegisters.ToList();
+                    oList = _DBContext.TrnsAttendanceRegisters.Include(x => x.Shift).ToList();
                 });
             }
             catch (Exception ex)

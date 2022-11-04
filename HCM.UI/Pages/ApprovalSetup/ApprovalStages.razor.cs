@@ -29,6 +29,7 @@ namespace HCM.UI.Pages.ApprovalSetup
         #region Variable
 
         private bool Loading = false;
+        private bool DisbaleName = false;
         private IEnumerable<MstEmployee> AuthorizerNames { get; set; } = new HashSet<MstEmployee>();
 
         CfgApprovalStage oModel = new CfgApprovalStage();
@@ -82,6 +83,7 @@ namespace HCM.UI.Pages.ApprovalSetup
                         obj.EmpId = item.AuthorizerId;
                         oListTemp.Add(obj);
                     }
+                    DisbaleName = true;
                     AuthorizerNames = oListTemp.ToList();
                 }
             }
@@ -106,12 +108,15 @@ namespace HCM.UI.Pages.ApprovalSetup
                         var res1 = new ApiResponseModel();
                         await Task.Delay(1);
                         await GetAllStages();
-                        var checkStage = oList.Where(x => x.StageName.ToLower() == oModel.StageName.ToLower()).ToList();
-                        if (checkStage != null && checkStage.Count > 0)
+                        if (oModel.Id == 0)
                         {
-                            Snackbar.Add("Can't add duplicate stage name", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                            Loading = false;
-                            return null;
+                            var checkStage = oList.Where(x => x.StageName.ToLower() == oModel.StageName.ToLower()).ToList();
+                            if (checkStage != null && checkStage.Count > 0)
+                            {
+                                Snackbar.Add("Can't add duplicate stage name", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                                Loading = false;
+                                return null;
+                            }
                         }
                         if (oModel.StageName == null || oModel.ApprovalsNo == null || oModel.RejectionsNo == null)
                         {
