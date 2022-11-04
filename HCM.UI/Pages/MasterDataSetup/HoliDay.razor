@@ -1,10 +1,11 @@
-﻿@page "/HoliDay"
+﻿@page "/Holiday"
 @using HCM.API.Models
 
 <div class="container-fluid page-content-setting">
     <div class="row">
         <div class="col-sm-12">
-            <h3>HoliDay Setup</h3>
+            <h3>Holiday Setup</h3>
+            <MudDivider />
             <MudDivider />
         </div>
         @*<div class="col-sm-1">
@@ -15,17 +16,17 @@
         <div class="col-sm-12">
             <MudGrid class="search-action-block align-items-center block-design">
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisbaledCode" MaxLength="20" Counter="20" HelperText="Enter HoliDay Code" Immediate="true" Clearable="true" Label="HoliDay Code*" Variant="Variant.Text"
+                    <MudTextField T="string" @bind-Value="oModel.Holiday" Disabled="@DisbaledCode" MaxLength="20" Counter="20" HelperText="Enter Holiday Code" Immediate="true" Clearable="true" Label="Holiday Code*" Variant="Variant.Text"
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="100" Counter="100" HelperText="Enter HoliDayt Name" Immediate="true" Clearable="true" Label="HoliDay Name*" Variant="Variant.Text"
+                    <MudTextField T="string" @bind-Value="oModel.HolidayName" MaxLength="100" Counter="100" HelperText="Enter Holiday Name" Immediate="true" Clearable="true" Label="Holiday Name*" Variant="Variant.Text"
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4">
+               @* <MudItem xs="4" sm="4" md="4" lg="4">
                     <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.HolidayDate" MinDate="DateTime.Today" Label="Holiday Date*" HelperText="Select Holiday Date*" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
                                    Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
-                </MudItem>
+                </MudItem>*@
                 <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
                     <MudSwitch @bind-Checked="@oModel.FlgActive" ThumbIcon="@(oModel.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgActive==true ? Color.Info : Color.Error)">
                         <span>@(oModel.FlgActive == true ? "Active" : "In Active")</span>
@@ -55,27 +56,38 @@
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
-            <MudCard Elevation="5">
+             <MudCard Elevation="6">
                 <MudCardContent>
-                    <MudTable Items="@oList" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstHoliDay,bool>(FilterFunc)">
+                     <MudGrid class="search-action-block align-items-center block-design">
+                       <MudItem xs="10" sm="10" md="10" lg="10" Class="pl-5 pb-4">
+                            <MudText Typo="Typo.h6">Detail</MudText>
+                        </MudItem>
+                        <MudSpacer />
+                        <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right custom-btn-design" style="justify-content: flex-end;">
+                            <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenAddDialog(maxWidth))" StartIcon="@Icons.Material.Filled.Add" Color="Color.Success" Size="Size.Small">Add Details</MudButton>
+                        </MudItem>
+                    </MudGrid>
+                    <MudTable Items="@oListMstHolidayDetail" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstHolidayDetail,bool>(FilterFunc)">
                         <ToolBarContent>
-                            <MudText Typo="Typo.h6">HoliDays</MudText>
-                            <MudSpacer />
+                           @* <MudText Typo="Typo.h6">Employee Detail List</MudText>
+                            <MudSpacer />*@
                             <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
                         </ToolBarContent>
                         <HeaderContent>
-                            <MudTh>Holiday Code</MudTh>
-                            <MudTh>Holiday Name</MudTh>
+                            <MudTh>Description</MudTh>
                             <MudTh>Holiday Date</MudTh>
                             <MudTh>Active</MudTh>
                             <MudTh>Action</MudTh>
                         </HeaderContent>
                         <RowTemplate>
-                            <MudTd DataLabel="Holiday Code">@context.Code</MudTd>
-                            <MudTd DataLabel="Holiday Name">@context.Description</MudTd>
-                            <MudTd DataLabel="Holiday Date">@context.HolidayDate</MudTd>
+                            <MudTd DataLabel="Description">@context.Remarks</MudTd>
+                            <MudTd DataLabel="OT Date">@Convert.ToDateTime(context.StartDate).ToString("MM/dd/yyyy")</MudTd>
                             <MudTd DataLabel="Active">@context.FlgActive</MudTd>
-                            <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id) )" Title="Edit"></MudIconButton></MudTd>
+                            <MudTd DataLabel="Action">
+                                <MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteFromFilter(context.Id))" Title="Delete"></MudIconButton>
+                                <MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@((e) => OpenEditDialog(FullView, context))" Title="Edit"></MudIconButton>
+                                @*<MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id) )" Title="Edit"></MudIconButton>*@
+                            </MudTd>
                         </RowTemplate>
                         <PagerContent>
                             <MudTablePager />
@@ -83,6 +95,7 @@
                     </MudTable>
                 </MudCardContent>
             </MudCard>
+            
         </div>
     </div>
 </div>

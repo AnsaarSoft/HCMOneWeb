@@ -22,6 +22,7 @@
         public string ItemCode { get; set; }
         public string ItemName { get; set; }
         public string U_Item_Department { get; set; }
+        public string ItemGroupCode { get; set; }
 
         #endregion Items
 

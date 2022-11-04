@@ -552,6 +552,9 @@ namespace HCM.API.HCMModels
         public virtual DbSet<TrnsProbationCategorryCycleAttachment> TrnsProbationCategorryCycleAttachments { get; set; }
         public virtual DbSet<TrnsProbationDetail> TrnsProbationDetails { get; set; }
         public virtual DbSet<TrnsProbationHead> TrnsProbationHeads { get; set; }
+        public virtual DbSet<TrnsProductStage> TrnsProductStages { get; set; }
+        public virtual DbSet<TrnsProductStageStation> TrnsProductStageStations { get; set; }
+        public virtual DbSet<TrnsProductStageTeamLead> TrnsProductStageTeamLeads { get; set; }
         public virtual DbSet<TrnsPromotionAdvice> TrnsPromotionAdvices { get; set; }
         public virtual DbSet<TrnsQuarterTaxAdj> TrnsQuarterTaxAdjs { get; set; }
         public virtual DbSet<TrnsQuarterTaxAdjDetail> TrnsQuarterTaxAdjDetails { get; set; }
@@ -8568,6 +8571,8 @@ namespace HCM.API.HCMModels
                     .HasMaxLength(50)
                     .HasColumnName("A1Indicator");
 
+                entity.Property(e => e.AdvancesDescription).HasMaxLength(200);
+
                 entity.Property(e => e.BalancingAccount).HasMaxLength(20);
 
                 entity.Property(e => e.BalancingAcctDisplay).HasMaxLength(120);
@@ -8630,6 +8635,8 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.BalancingAcctDisplay).HasMaxLength(120);
 
+                entity.Property(e => e.ContributionDescription).HasMaxLength(200);
+
                 entity.Property(e => e.CostAccount).HasMaxLength(20);
 
                 entity.Property(e => e.CostAcctDisplay).HasMaxLength(120);
@@ -8673,6 +8680,8 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
+                entity.Property(e => e.DeductionDescription).HasMaxLength(200);
+
                 entity.Property(e => e.Gldid).HasColumnName("GLDId");
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
@@ -8701,6 +8710,8 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.CostAcctDisplay).HasMaxLength(120);
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ElementDescription).HasMaxLength(200);
 
                 entity.Property(e => e.Gldid).HasColumnName("GLDId");
 
@@ -8765,6 +8776,14 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.DiffDrcrdesc)
                     .HasMaxLength(100)
                     .HasColumnName("DiffDRCRDesc");
+
+                entity.Property(e => e.DiffDrcrpayable)
+                    .HasMaxLength(16)
+                    .HasColumnName("DiffDRCRPayable");
+
+                entity.Property(e => e.DiffDrcrpayableDesc)
+                    .HasMaxLength(100)
+                    .HasColumnName("DiffDRCRPayableDesc");
 
                 entity.Property(e => e.EosexpenseDesc)
                     .HasMaxLength(100)
@@ -8864,6 +8883,8 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.Gldid).HasColumnName("GLDId");
 
+                entity.Property(e => e.LeaveDedDescription).HasMaxLength(200);
+
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.UpdatedBy).HasMaxLength(20);
@@ -8897,6 +8918,8 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.Gldid).HasColumnName("GLDId");
 
+                entity.Property(e => e.LoanDescription).HasMaxLength(200);
+
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.UpdatedBy).HasMaxLength(20);
@@ -8925,6 +8948,8 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Gldid).HasColumnName("GLDId");
+
+                entity.Property(e => e.OvertimeDescription).HasMaxLength(200);
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
@@ -9142,6 +9167,8 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Holiday).HasMaxLength(20);
+
+                entity.Property(e => e.HolidayName).HasMaxLength(100);
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
@@ -20928,6 +20955,75 @@ namespace HCM.API.HCMModels
                     .WithMany(p => p.TrnsProbationHeads)
                     .HasForeignKey(d => d.ProbCycleId)
                     .HasConstraintName("FK_TrnsProbationHead_MstProbationEvalCycles");
+            });
+
+            modelBuilder.Entity<TrnsProductStage>(entity =>
+            {
+                entity.ToTable("TrnsProductStage");
+
+                entity.Property(e => e.Code).HasMaxLength(20);
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Description).HasMaxLength(250);
+
+                entity.Property(e => e.FlgActive).HasColumnName("flgActive");
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(10);
+
+                entity.Property(e => e.UserId).HasMaxLength(10);
+            });
+
+            modelBuilder.Entity<TrnsProductStageStation>(entity =>
+            {
+                entity.Property(e => e.Code).HasMaxLength(20);
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Description).HasMaxLength(250);
+
+                entity.Property(e => e.Psid).HasColumnName("PSId");
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(10);
+
+                entity.Property(e => e.UserId).HasMaxLength(10);
+
+                entity.HasOne(d => d.Ps)
+                    .WithMany(p => p.TrnsProductStageStations)
+                    .HasForeignKey(d => d.Psid)
+                    .HasConstraintName("FK_TrnsProductStageStations");
+            });
+
+            modelBuilder.Entity<TrnsProductStageTeamLead>(entity =>
+            {
+                entity.ToTable("TrnsProductStageTeamLead");
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Department).HasMaxLength(250);
+
+                entity.Property(e => e.Designation).HasMaxLength(250);
+
+                entity.Property(e => e.EmpCode).HasMaxLength(20);
+
+                entity.Property(e => e.EmpName).HasMaxLength(250);
+
+                entity.Property(e => e.Psid).HasColumnName("PSId");
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(10);
+
+                entity.Property(e => e.UserId).HasMaxLength(10);
+
+                entity.HasOne(d => d.Ps)
+                    .WithMany(p => p.TrnsProductStageTeamLeads)
+                    .HasForeignKey(d => d.Psid)
+                    .HasConstraintName("FK_TrnsProductStageTeamLead");
             });
 
             modelBuilder.Entity<TrnsPromotionAdvice>(entity =>

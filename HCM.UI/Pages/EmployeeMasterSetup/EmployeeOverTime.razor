@@ -144,7 +144,7 @@
                         </HeaderContent>
                         <RowTemplate>
                             <MudTd DataLabel="Description">@context.OvertimeId</MudTd>
-                            <MudTd DataLabel="OT Date">@context.Otdate</MudTd>
+                            <MudTd DataLabel="OT Date">@Convert.ToDateTime(context.Otdate).ToString("MM/dd/yyyy")</MudTd>
                             <MudTd DataLabel="Hours">@context.FromTime</MudTd>
                             <MudTd DataLabel="Hours">@context.ToTime</MudTd>
                             <MudTd DataLabel="Hours">@context.Othours</MudTd>

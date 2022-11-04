@@ -51,6 +51,8 @@ namespace HCM.API.HCMModels
         public string GratuityExpenseDesc { get; set; }
         public string IncomeTaxExpenseDesc { get; set; }
         public string DiffDrcrdesc { get; set; }
+        public string DiffDrcrpayable { get; set; }
+        public string DiffDrcrpayableDesc { get; set; }
 
         public virtual ICollection<MstGldadvanceDetail> MstGldadvanceDetails { get; set; }
         public virtual ICollection<MstGldbonusDetail> MstGldbonusDetails { get; set; }

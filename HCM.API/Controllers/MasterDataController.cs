@@ -41,11 +41,12 @@ namespace HCM.API.Controllers
         private IMstDimension _mstDimension;
         private IMstchartofAccount _mstchartofAccount;
         private IMstHoliDay _mstHoliDay;
+        private IMstGldetermination _mstGldetermination;
 
         public MasterDataController(IMstForm mstForm, IMstDocumentNumberSeries mstDocumentNumberSeries, IMstDepartment mstDepartment, IMstDesignation mstDesignation, IMstLocation mstLocation, IMstPosition mstPosition, IMstBranch mstBranch, IMstGrading mstGrading, IMstCalendar mstCalendar,
             IMstLeaveCalendar mstLeaveCalendar, IMstEmailConfig mstEmailConfig, ICfgPayrollDefinationinit CfgPayrollDefinationinit, IMstLoans mstLoans, IMstShifts mstShift, IMstAdvance mstAdvance, IMstLeaveDeduction mstLeaveDeduction,
             IMstLeaveType mstLeaveType, IMstDeductionRule mstDeductionRule, IMstAttendanceRules mstAttendanceRule, ICfgTaxSetup CfgTaxSetup, ICfgPayrollDefination CfgPayrollDefinationSetup, IMstBonus mstBonus, IMstGratuity mstGratuity,
-            IMstCountryStateCity mstCountryStateCity, IMstContractor mstContractor, IMstStation mstStation, IMstEmployeeLeaves mstEmployeeLeaves, IMstDimension mstDimension, IMstchartofAccount mstchartofAccount, IMstHoliDay mstHoliDay)
+            IMstCountryStateCity mstCountryStateCity, IMstContractor mstContractor, IMstStation mstStation, IMstEmployeeLeaves mstEmployeeLeaves, IMstDimension mstDimension, IMstchartofAccount mstchartofAccount, IMstHoliDay mstHoliDay, IMstGldetermination mstGldetermination)
         {
             _mstForm = mstForm;
             _mstDocumentNumberSeries = mstDocumentNumberSeries;
@@ -78,6 +79,7 @@ namespace HCM.API.Controllers
             _mstDimension = mstDimension;
             _mstchartofAccount = mstchartofAccount;
             _mstHoliDay = mstHoliDay;
+            _mstGldetermination = mstGldetermination;
         }
 
         #region MST Form
@@ -2817,7 +2819,7 @@ namespace HCM.API.Controllers
         [HttpGet]
         public async Task<IActionResult> getAllHoliday()
         {
-            List<MstHoliDay> oMstHoliDay = new List<MstHoliDay>();
+            List<MstHoliday1> oMstHoliDay = new List<MstHoliday1>();
             try
             {
                 oMstHoliDay = await _mstHoliDay.GetAllData();
@@ -2839,7 +2841,7 @@ namespace HCM.API.Controllers
 
         [Route("addHoliday")]
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] MstHoliDay pMstHoliDay)
+        public async Task<IActionResult> Add([FromBody] MstHoliday1 pMstHoliDay)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
@@ -2863,7 +2865,7 @@ namespace HCM.API.Controllers
 
         [Route("updateHoliday")]
         [HttpPost]
-        public async Task<IActionResult> Update([FromBody] MstHoliDay pMstHoliDay)
+        public async Task<IActionResult> Update([FromBody] MstHoliday1 pMstHoliDay)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
@@ -2887,7 +2889,7 @@ namespace HCM.API.Controllers
 
         [Route("addHolidayList")]
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] List<MstHoliDay> pMstHoliDay)
+        public async Task<IActionResult> Add([FromBody] List<MstHoliday1> pMstHoliDay)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
@@ -2911,12 +2913,136 @@ namespace HCM.API.Controllers
 
         [Route("updateHolidayList")]
         [HttpPost]
-        public async Task<IActionResult> Update([FromBody] List<MstHoliDay> pMstHoliDay)
+        public async Task<IActionResult> Update([FromBody] List<MstHoliday1> pMstHoliDay)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 response = await _mstHoliDay.Update(pMstHoliDay);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        #endregion
+
+        #region MST GlDetermination
+
+        [Route("getAllGLD")]
+        [HttpGet]
+        public async Task<IActionResult> getAllGLD()
+        {
+            List<MstGldetermination> oMstGldetermination = new List<MstGldetermination>();
+            try
+            {
+                oMstGldetermination = await _mstGldetermination.GetAllData();
+                if (oMstGldetermination == null)
+                {
+                    return BadRequest(oMstGldetermination);
+                }
+                else
+                {
+                    return Ok(oMstGldetermination);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addGLD")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstGldetermination pMstGldetermination)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstGldetermination.Insert(pMstGldetermination);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateGLD")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstGldetermination pMstGldetermination)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstGldetermination.Update(pMstGldetermination);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addGLDList")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] List<MstGldetermination> pMstGldetermination)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstGldetermination.Insert(pMstGldetermination);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateGLDList")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] List<MstGldetermination> pMstGldetermination)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstGldetermination.Update(pMstGldetermination);
                 if (response == null)
                 {
                     return BadRequest(response);

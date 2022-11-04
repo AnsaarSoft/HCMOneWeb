@@ -136,7 +136,7 @@ namespace HCM.API.Repository.SAPData
                 string constr = configuration.GetSection("SAPConnection").Value.ToString();
                 using (SqlConnection conn = new SqlConnection(constr))
                 {
-                    string StrQuery = $@"select ItemCode,ItemName from OITM";
+                    string StrQuery = $@"select ItemCode,ItemName,ItmsGrpCod from OITM";
                     if (conn.State == System.Data.ConnectionState.Closed)
                     {
                         conn.Open();
@@ -148,6 +148,7 @@ namespace HCM.API.Repository.SAPData
                         SAPModels oItemObjects = new SAPModels();
                         oItemObjects.ItemCode = Convert.ToString(rdr["ItemCode"]);
                         oItemObjects.ItemName = Convert.ToString(rdr["ItemName"]);
+                        oItemObjects.ItemGroupCode = Convert.ToString(rdr["ItemGroupCode"]);
                         oList.Add(oItemObjects);
                     }
                     conn.Close();

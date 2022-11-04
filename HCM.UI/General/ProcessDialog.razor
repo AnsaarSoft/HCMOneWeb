@@ -234,6 +234,27 @@
                 </MudItem>
             </MudGrid>
         }
+        @if (DialogFor == "HolidayDetail")
+        {
+            <MudText Typo="Typo.h6">Holiday Detail</MudText>
+            <MudSpacer />
+            <MudDivider />
+            <MudGrid class="search-action-block align-items-center">
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField @bind-Value="oModelMstHolidayDetail.Remarks" Required="true" RequiredError="Description is required" T="string" MaxLength="50" Counter="50" HelperText="Enter Description" Immediate="true" Clearable="true" Label="Description*" Variant="Variant.Text"
+                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                    <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModelMstHolidayDetail.StartDate" MinDate="DateTime.Today" Label="Holiday Date*" HelperText="Select Holiday Date" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
+                               Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                    <MudSwitch @bind-Checked="oModelMstHolidayDetail.FlgActive" ThumbIcon="@(oModelMstHolidayDetail.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModelMstHolidayDetail.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModelMstHolidayDetail.FlgActive==true ? Color.Info : Color.Error)">
+                        <span>@(oModelMstHolidayDetail.FlgActive == true ? "Active" : "In Active")</span>
+                    </MudSwitch>
+                </MudItem>
+            </MudGrid>
+        }
     </DialogContent>
     <DialogActions>
         <MudItem class="text-right custom-btn-design">

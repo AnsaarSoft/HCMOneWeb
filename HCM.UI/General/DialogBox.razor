@@ -314,7 +314,7 @@
                     <MudTable Items="@oListTrnsLoanRequest" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsLoanRequest,bool>(FilterFuncTrnsLoanRequest)"
                       Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableTrnsLoanRequest" RowClassFunc="@SelectedRowClassFuncTrnsLoanRequest" OnRowClick="RowClickEventTrnsLoanRequest" T="TrnsLoanRequest" @bind-SelectedItem="oModelTrnsLoanRequest">
                         <ToolBarContent>
-                            <MudText Typo="Typo.h6">Leave Request</MudText>
+                            <MudText Typo="Typo.h6">Loan Request</MudText>
                             <MudSpacer />
                             <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
                         </ToolBarContent>
@@ -324,7 +324,7 @@
                             <MudTh>Doc Status</MudTh>
                             <MudTh>Approval Status</MudTh>
                             <MudTh>Doc Date</MudTh>
-                            <MudTh>Leave Type</MudTh>
+                            <MudTh>Loan Type</MudTh>
                         </HeaderContent>
                         <RowTemplate>
                             <MudTd DataLabel="Code">@context.DocNum</MudTd>
@@ -344,7 +344,7 @@
                     <MudTable Items="@oListTrnsAdvanceRequest" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsAdvanceRequest,bool>(FilterFuncTrnsAdvanceRequest)"
                       Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableTrnsAdvanceRequest" RowClassFunc="@SelectedRowClassFuncTrnsAdvanceRequest" OnRowClick="RowClickEventTrnsAdvanceRequest" T="TrnsAdvanceRequest" @bind-SelectedItem="oModelTrnsAdvanceRequest">
                         <ToolBarContent>
-                            <MudText Typo="Typo.h6">Leave Request</MudText>
+                            <MudText Typo="Typo.h6">Advance Request</MudText>
                             <MudSpacer />
                             <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
                         </ToolBarContent>
@@ -354,7 +354,7 @@
                             <MudTh>Doc Status</MudTh>
                             <MudTh>Approval Status</MudTh>
                             <MudTh>Doc Date</MudTh>
-                            <MudTh>Leave Type</MudTh>
+                            <MudTh>Advance Type</MudTh>
                         </HeaderContent>
                         <RowTemplate>
                             <MudTd DataLabel="Code">@context.DocNum</MudTd>
@@ -653,6 +653,79 @@
                         </HeaderContent>
                         <RowTemplate>
                             <MudTd DataLabel="Code">@context.EmpId</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                }
+                @if (olistVMLoc_Gldetermination?.Count > 0 && DialogFor == "Location")
+                {
+                    <MudTable Items="@olistVMLoc_Gldetermination" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<VMLoc_Gldetermination,bool>(FilterFuncVMlocGlDertmination)"
+                      Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableVMLoc_Gldetermination" RowClassFunc="@SelectedRowClassFuncFilterFuncVMlocGlDertmination" OnRowClick="RowClickEventVMlocGlDertmination" T="VMLoc_Gldetermination" @bind-SelectedItem="VMLoc_Gldetermination">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Location</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Code</MudTh>
+                            <MudTh>Description</MudTh>
+                            <MudTh>DocNum</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code">@context.LocCode</MudTd>
+                            <MudTd DataLabel="Code">@context.LocDescription</MudTd>
+                            <MudTd DataLabel="Code">@context.GlID</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                }
+                @if (olistVMDept_Gldetermination?.Count > 0 && DialogFor == "department")
+                {
+                    <MudTable Items="@olistVMDept_Gldetermination" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<VMDept_Gldetermination,bool>(FilterFuncVMDeptGldetermination)"
+                      Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableVMDept_Gldetermination" RowClassFunc="@SelectedRowClassFuncFilterFuncVMDeptGldetermination" OnRowClick="RowClickEventVMDeptGldetermination" T="VMDept_Gldetermination" @bind-SelectedItem="VMDept_Gldetermination">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Department</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Code</MudTh>
+                            <MudTh>Description</MudTh>
+                            <MudTh>DocNum</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code">@context.DeptCode</MudTd>
+                            <MudTd DataLabel="Code">@context.DeptDescription</MudTd>
+                            <MudTd DataLabel="Code">@context.GlID</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                }
+
+                @if (oListMstchartofAccount?.Count > 0 && DialogFor == "COA")
+                {
+                    <MudTable Items="@oListMstchartofAccount" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstchartofAccount,bool>(FilterFuncMstchartofAccount)"
+                      Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableMstchartofAccount" RowClassFunc="@SelectedRowClassFuncFilterFuncMstchartofAccount" OnRowClick="RowClickEventMstchartofAccount" T="MstchartofAccount" @bind-SelectedItem="oModelMstchartofAccount">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Department</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Code</MudTh>
+                            <MudTh>Description</MudTh>
+                            <MudTh>Active</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code">@context.Code</MudTd>
+                            <MudTd DataLabel="Code">@context.Description</MudTd>
+                            <MudTd DataLabel="Code">@context.FlgActive</MudTd>
                         </RowTemplate>
                         <PagerContent>
                             <MudTablePager />

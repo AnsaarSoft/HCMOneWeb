@@ -120,6 +120,7 @@ builder.Services.AddScoped<ITrnsBatchProcess, TrnsBatchProcessRepo>();
 builder.Services.AddScoped<IUserDataAccess, UserDataAccessRepo>();
 builder.Services.AddScoped<IMstchartofAccount, MstchartofAccountRepo>();
 builder.Services.AddScoped<IMstHoliDay, MstHolidayRepo>();
+builder.Services.AddScoped<IMstGldetermination, MstGldeterminationRepo>();
 
 Settings.TitleConfig = builder.Configuration.GetValue<string>("TitleConfig");
 Settings.EmailConfig = builder.Configuration.GetValue<string>("EmailConfig");

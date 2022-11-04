@@ -45,6 +45,9 @@ namespace HCM.UI.General
 
         [Inject]
         public IMstOverTime _mstOverTime { get; set; }
+        
+        [Inject]
+        public IMstHoliday _mstHoliday { get; set; }
 
         [Parameter]
         public string DialogFor { get; set; }
@@ -90,6 +93,9 @@ namespace HCM.UI.General
         private IEnumerable<CfgPeriodDate> oCfgPeriodDateList = new List<CfgPeriodDate>();
         [Parameter] public TrnsEmployeeOvertimeDetail oDetailParaEmployeeOT { get; set; } = new TrnsEmployeeOvertimeDetail();
         TrnsEmployeeOvertimeDetail oModelTrnsEmployeeOvertimeDetail = new TrnsEmployeeOvertimeDetail();
+
+        [Parameter] public MstHolidayDetail oDetailParaMstHolidayDetail { get; set; } = new MstHolidayDetail();
+        MstHolidayDetail oModelMstHolidayDetail = new MstHolidayDetail();
 
         MstEmployee oModelMstEmployee = new MstEmployee();
         private IEnumerable<MstEmployee> oListEmployee = new List<MstEmployee>();
@@ -365,6 +371,17 @@ namespace HCM.UI.General
                     Snackbar.Add("Fill the required field(s).", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                 }
             }
+            else if (DialogFor == "HolidayDetail")
+            {
+                if (!string.IsNullOrWhiteSpace(oModelMstHolidayDetail.Remarks) && oModelMstHolidayDetail.StartDate != null)
+                {
+                    MudDialog.Close(DialogResult.Ok<MstHolidayDetail>(oModelMstHolidayDetail));
+                }
+                else
+                {
+                    Snackbar.Add("Fill the required field(s).", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
         }
 
         private async Task GetAllEmployees()
@@ -530,6 +547,18 @@ namespace HCM.UI.General
                     IsFlg = (bool)oDetailParaEmployeeOT.FlgActive;
                     oModelmstOvertime = oListmstOverTime.Where(x => x.Id == oModelTrnsEmployeeOvertimeDetail.OvertimeId).FirstOrDefault();
 
+                }
+                else if (DialogFor == "HolidayDetail")
+                {
+                    if (oDetailParaMstHolidayDetail.StartDate!= null && oDetailParaMstHolidayDetail.Remarks != null)
+                    {
+                        oModelMstHolidayDetail= oDetailParaMstHolidayDetail;
+                    }
+                    else
+                    {
+                        oModelMstHolidayDetail.Remarks= "";
+                        oModelMstHolidayDetail.StartDate = DateTime.Now;
+                    }
                 }
                 Loading = false;
             }

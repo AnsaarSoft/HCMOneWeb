@@ -112,7 +112,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
-        private async Task GetAllContractors()
+        private async Task GetAllCOA()
         {
             try
             {
@@ -195,7 +195,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     //var res = await _administrationService.FetchUserAuth(Session.UserCode);
                     Loading = true;
                     oModel.FlgActive = true;
-                    await GetAllContractors();
+                    await GetAllCOA();
                 }
                 else
                 {

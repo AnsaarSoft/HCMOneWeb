@@ -77,12 +77,6 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         #region Variables
 
         bool Loading = false;
-       // public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
-        //string EmpName = "";
-        //private decimal Amount;
-        //private decimal Hours;
-        //private string PayrollPeriodstr = "Select Period";
-       // private string FullName = "";
         private string searchString1 = "";
 
         string AlphanumericMask = @"^[a-zA-Z0-9_]*$";
@@ -134,9 +128,8 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
         CfgPeriodDate oModelPayrollPeriod = new CfgPeriodDate();
         private IEnumerable<CfgPeriodDate> oListPayrollPeriod = new List<CfgPeriodDate>();
 
-        private TrnsSingleEntryOtdetail selectedItem1 = null;
-     //   private HashSet<TrnsSingleEntryOtdetail> selectedItems1 = new HashSet<TrnsSingleEntryOtdetail>();
-        // DateTime? docdate;
+       // private TrnsSingleEntryOtdetail selectedItem1 = null;
+
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
         DialogOptions FullView = new DialogOptions() { MaxWidth = MaxWidth.ExtraExtraLarge, FullWidth = true, CloseButton = true, DisableBackdropClick = true, CloseOnEscapeKey = true };
 
@@ -628,54 +621,54 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
                 Loading = false;
             }
         }
-        private async Task<ApiResponseModel> CalculateOverTime()
-        {
-            try
-            {
-                Loading = true;
-                var res = new ApiResponseModel();
-                await Task.Delay(3);
-                if (oModel.TrnsSingleEntryOtdetails.Count > 0)
-                {
-                    foreach (var item in oModel.TrnsSingleEntryOtdetails)
-                    {
-                        if (item.Hours != null && item.Hours > 0 && item.FlgActive == true)
-                        {
+        //private async Task<ApiResponseModel> CalculateOverTime()
+        //{
+        //    try
+        //    {
+        //        Loading = true;
+        //        var res = new ApiResponseModel();
+        //        await Task.Delay(3);
+        //        if (oModel.TrnsSingleEntryOtdetails.Count > 0)
+        //        {
+        //            foreach (var item in oModel.TrnsSingleEntryOtdetails)
+        //            {
+        //                if (item.Hours != null && item.Hours > 0 && item.FlgActive == true)
+        //                {
 
-                            oModelMstEmployee = oListEmployee.Where(x => x.Id == item.EmpId).FirstOrDefault();
-                            oModelmstOvertime = oListmstOverTime.Where(x => x.Id == item.OverTimeId).FirstOrDefault();
-                            item.Amount = BusinessLogic.GetOverTimeAmount(oModelMstEmployee, oModelmstOvertime, (decimal)item.Hours);
-                            if (oModel.Id == 0)
-                            {
-                                item.CreatedBy = LoginUser;
-                                item.CreatedDate = DateTime.Now;
-                            }
-                            else
-                            {
-                                item.UpdatedBy = LoginUser;
-                                item.UpdatedDate = DateTime.Now;
-                            }
-                        }
-                        else
-                        {
-                            Snackbar.Add("Please Fill Field.", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                        }
-                    }
-                }
-                else
-                {
-                    Snackbar.Add("Please Select Filteration.", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                }
-                Loading = false;
-                return res;
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-                Loading = false;
-                return null;
-            }
-        }
+        //                    oModelMstEmployee = oListEmployee.Where(x => x.Id == item.EmpId).FirstOrDefault();
+        //                    oModelmstOvertime = oListmstOverTime.Where(x => x.Id == item.OverTimeId).FirstOrDefault();
+        //                    item.Amount = BusinessLogic.GetOverTimeAmount(oModelMstEmployee, oModelmstOvertime, (decimal)item.Hours);
+        //                    if (oModel.Id == 0)
+        //                    {
+        //                        item.CreatedBy = LoginUser;
+        //                        item.CreatedDate = DateTime.Now;
+        //                    }
+        //                    else
+        //                    {
+        //                        item.UpdatedBy = LoginUser;
+        //                        item.UpdatedDate = DateTime.Now;
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    Snackbar.Add("Please Fill Field.", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            Snackbar.Add("Please Select Filteration.", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+        //        }
+        //        Loading = false;
+        //        return res;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logs.GenerateLogs(ex);
+        //        Loading = false;
+        //        return null;
+        //    }
+        //}
         public void CalculateAmount(int empid)
       {
             try

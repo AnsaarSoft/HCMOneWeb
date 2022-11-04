@@ -6,23 +6,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HCM.API.Repository.MasterData
 {
-    public class MstHolidayRepo : IMstHoliDay
+    public class MstGldeterminationRepo : IMstGldetermination
     {
         private HCMOneContext _DBContext;
 
-        public MstHolidayRepo(HCMOneContext DBContext)
+        public MstGldeterminationRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
-        public async Task<List<MstHoliday1>> GetAllData()
+        public async Task<List<MstGldetermination>> GetAllData()
         {
-            List<MstHoliday1> oList = new List<MstHoliday1>();
+            List<MstGldetermination> oList = new List<MstGldetermination>();
             try
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.MstHolidays1.Include(t => t.MstHolidayDetails).ToList();
-                    
+                    oList = _DBContext.MstGldeterminations.Include(t => t.MstGldearningDetails).Include(t => t.MstGlddeductionDetails).Include(t => t.MstGldcontributions).Include(t => t.MstGldloansDetails).Include(t => t.MstGldadvanceDetails).Include(t => t.MstGldoverTimeDetails).Include(t => t.MstGldleaveDedDetails).ToList();
+                    //oList = _DBContext.MstGldeterminations.ToList();                    
                 });
             }
             catch (Exception ex)
@@ -31,15 +31,15 @@ namespace HCM.API.Repository.MasterData
             }
             return oList;
         }
-        public async Task<ApiResponseModel> Insert(MstHoliday1 oMstHoliday1)
+        public async Task<ApiResponseModel> Insert(MstGldetermination oMstGldetermination)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    oMstHoliday1.CreateDate = DateTime.Now;
-                    _DBContext.MstHolidays1.Add(oMstHoliday1);
+                    oMstGldetermination.CreateDate = DateTime.Now;
+                    _DBContext.MstGldeterminations.Add(oMstGldetermination);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";
@@ -53,15 +53,15 @@ namespace HCM.API.Repository.MasterData
             }
             return response;
         }
-        public async Task<ApiResponseModel> Update(MstHoliday1 oMstHoliday1)
+        public async Task<ApiResponseModel> Update(MstGldetermination oMstGldetermination)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    oMstHoliday1.UpdateDate= DateTime.Now;
-                    _DBContext.MstHolidays1.Update(oMstHoliday1);
+                    oMstGldetermination.UpdateDate = DateTime.Now;
+                    _DBContext.MstGldeterminations.Update(oMstGldetermination);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Update successfully";
@@ -75,14 +75,14 @@ namespace HCM.API.Repository.MasterData
             }
             return response;
         }
-        public async Task<ApiResponseModel> Insert(List<MstHoliday1> oMstHoliday1)
+        public async Task<ApiResponseModel> Insert(List<MstGldetermination> oMstGldetermination)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    _DBContext.MstHolidays1.AddRange(oMstHoliday1);
+                    _DBContext.MstGldeterminations.AddRange(oMstGldetermination);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";
@@ -96,14 +96,14 @@ namespace HCM.API.Repository.MasterData
             }
             return response;
         }
-        public async Task<ApiResponseModel> Update(List<MstHoliday1> oMstHoliday1)
+        public async Task<ApiResponseModel> Update(List<MstGldetermination> oMstGldetermination)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    _DBContext.MstHolidays1.UpdateRange(oMstHoliday1);
+                    _DBContext.MstGldeterminations.UpdateRange(oMstGldetermination);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Update successfully";

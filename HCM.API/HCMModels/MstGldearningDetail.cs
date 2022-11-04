@@ -16,6 +16,7 @@ namespace HCM.API.HCMModels
         public DateTime? UpdateDate { get; set; }
         public string UserId { get; set; }
         public string UpdatedBy { get; set; }
+        public string ElementDescription { get; set; }
 
         public virtual MstGldetermination Gld { get; set; }
     }

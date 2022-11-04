@@ -413,8 +413,8 @@ namespace HCM.UI.Pages.EmployeeMasterSetup
             {
                 Loading = true;
                 await Task.Delay(1);
-                List<TrnsEmployeeOvertimeDetail> oListTrnsEmployeeOTDtl = new List<TrnsEmployeeOvertimeDetail>();
-                 oListTrnsEmployeeOTDtl = oListTrnsEmployeeOvertimeDetail.ToList();
+               // List<TrnsEmployeeOvertimeDetail> oListTrnsEmployeeOTDtl = new List<TrnsEmployeeOvertimeDetail>();
+               //  oListTrnsEmployeeOTDtl = oListTrnsEmployeeOvertimeDetail.ToList();
                 oListTrnsEmployeeOtDetail = oListTrnsEmployeeOvertimeDetail.ToList();
                 if (oListTrnsEmployeeOvertimeDetail.Count() > 0)
                 {

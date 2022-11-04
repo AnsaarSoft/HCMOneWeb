@@ -96,12 +96,24 @@ namespace HCM.UI.General
 
         [Inject]
         public ITrnsSingleEntryOtrequest _trnsSingleEntryOtrequest { get; set; }
-        
+
         [Inject]
         public ITrnsBatchProcess _trnsBatch { get; set; }
 
         [Inject]
         public IUserDataAccess _userDataAccess { get; set; }
+
+        [Inject]
+        public IMstLocation _mstLocation { get; set; }
+
+        [Inject]
+        public IMstDepartment _mstDepartment { get; set; }
+
+        [Inject]
+        public IMstchartofAccount _mstchartofAccount { get; set; }
+
+        [Inject]
+        public IMstGldetermination _mstGldetermination { get; set; }
 
         #endregion
 
@@ -136,6 +148,11 @@ namespace HCM.UI.General
         private bool FilterFuncBatch(TrnsBatch element) => FilterFuncBatch(element, searchString1);
         private bool FilterFuncMonthlyOT(TrnsSingleEntryOtrequest element) => FilterFuncMonthlyOT(element, searchString1);
         private bool FilterFuncUserDataAccess(UserDataAccess element) => FilterFuncUserDataAccess(element, searchString1);
+        private bool FilterFuncMstLocation(MstLocation element) => FilterFuncMstLocation(element, searchString1);
+        private bool FilterFuncMstDepartment(MstDepartment element) => FilterFuncMstDepartment(element, searchString1);
+        private bool FilterFuncMstchartofAccount(MstchartofAccount element) => FilterFuncMstchartofAccount(element, searchString1);
+        private bool FilterFuncVMlocGlDertmination(VMLoc_Gldetermination element) => FilterFuncVMlocGlDertmination(element, searchString1);
+        private bool FilterFuncVMDeptGldetermination(VMDept_Gldetermination element) => FilterFuncVMDeptGldetermination(element, searchString1);
         void Cancel() => MudDialog.Cancel();
 
         private MudTable<MstElement> _tableElement;
@@ -208,10 +225,10 @@ namespace HCM.UI.General
         private MudTable<TrnsEmployeeBonu> _tableEmployeeBonus;
         TrnsEmployeeBonu oModelEmployeeBonus = new TrnsEmployeeBonu();
         List<TrnsEmployeeBonu> oListEmployeeBonus = new List<TrnsEmployeeBonu>();
-        
+
         private MudTable<TrnsBatch> _tableBatch;
         TrnsBatch oModelBatch = new TrnsBatch();
-        List<TrnsBatch> oListBatch= new List<TrnsBatch>();
+        List<TrnsBatch> oListBatch = new List<TrnsBatch>();
 
         private MudTable<TrnsSingleEntryOtrequest> _tableTrnsSingleEntryOtrequest;
         TrnsSingleEntryOtrequest oModelTrnsSingleEntryOtrequest = new TrnsSingleEntryOtrequest();
@@ -221,6 +238,33 @@ namespace HCM.UI.General
         UserDataAccess oModelUserDataAccess = new UserDataAccess();
         IEnumerable<UserDataAccess> oListUserDataAccessDistinct = new List<UserDataAccess>();
         List<UserDataAccess> oListUserDataAccess = new List<UserDataAccess>();
+
+        private MudTable<MstLocation> _tableMstLocation;
+        MstLocation oModelMstLocation = new MstLocation();
+        List<MstLocation> oListMstLocation = new List<MstLocation>();
+
+        private MudTable<VMLoc_Gldetermination> _tableVMLoc_Gldetermination;
+        VMLoc_Gldetermination VMLoc_Gldetermination = new VMLoc_Gldetermination();
+        List<VMLoc_Gldetermination> olistVMLoc_Gldetermination = new List<VMLoc_Gldetermination>();
+
+        MstGldetermination oModelMstGldetermination = new MstGldetermination();
+        List<MstGldetermination> olistMstGldetermination = new List<MstGldetermination>();
+
+
+        private MudTable<MstDepartment> _tableMstDepartment;
+        MstDepartment oModelMstDepartment = new MstDepartment();
+        List<MstDepartment> oListMstDepartment = new List<MstDepartment>();
+
+        private MudTable<VMDept_Gldetermination> _tableVMDept_Gldetermination;
+        VMDept_Gldetermination VMDept_Gldetermination = new VMDept_Gldetermination();
+        List<VMDept_Gldetermination> olistVMDept_Gldetermination = new List<VMDept_Gldetermination>();
+
+
+        private MudTable<MstchartofAccount> _tableMstchartofAccount;
+        MstchartofAccount oModelMstchartofAccount = new MstchartofAccount();
+        List<MstchartofAccount> oListMstchartofAccount = new List<MstchartofAccount>();
+
+        #endregion
 
         #region Functions
 
@@ -844,7 +888,7 @@ namespace HCM.UI.General
             try
             {
                 oListUserDataAccess = await _userDataAccess.GetAllData();
-                oListUserDataAccessDistinct = oListUserDataAccess.DistinctBy(x=>x.EmpId);
+                oListUserDataAccessDistinct = oListUserDataAccess.DistinctBy(x => x.EmpId);
                 if (oListUserDataAccess?.Count() == 0 || oListUserDataAccess == null)
                 {
                     Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
@@ -864,7 +908,210 @@ namespace HCM.UI.General
             return false;
         }
 
-        #endregion
+        private async Task GetAllGLdetermination()
+        {
+            try
+            {
+                olistMstGldetermination = await _mstGldetermination.GetAllData();
+                if (olistMstGldetermination?.Count == 0 || olistMstGldetermination == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+                if (DialogFor == "Location")
+                {
+                    await SetVMlocGlDertmination();
+                }
+                else if (DialogFor == "department")
+                {
+                    await SetVMDeptGlDertmination();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+
+        private async Task GetAllMstLocation()
+        {
+            try
+            {
+                oListMstLocation = await _mstLocation.GetAllData();
+                if (oListMstLocation?.Count == 0 || oListMstLocation == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+                await GetAllGLdetermination();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncMstLocation(MstLocation element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.Name.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.Description.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            //if (element.JoiningDate.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            //if (element.DesignationName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            //if (element.LocationName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            return false;
+        }
+        private Task SetVMlocGlDertmination()
+        {
+            try
+            {
+                foreach (var item in oListMstLocation)
+                {
+                    VMLoc_Gldetermination vMLoc_Gldetermination = new VMLoc_Gldetermination();
+                    vMLoc_Gldetermination.LocID = item.Id;
+                    vMLoc_Gldetermination.LocCode = item.Name;
+                    vMLoc_Gldetermination.LocDescription = item.Description;
+                    olistVMLoc_Gldetermination.Add(vMLoc_Gldetermination);
+                }
+                foreach (var item in olistVMLoc_Gldetermination)
+                {
+                    item.GlID = olistMstGldetermination.Where(x => x.Glvalue == item.LocID && x.Gltype == "Loc").Select(x => x.Id).FirstOrDefault();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+            return Task.CompletedTask;
+        }
+        private bool FilterFuncVMlocGlDertmination(VMLoc_Gldetermination element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.LocCode.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.LocDescription.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            //if (element.JoiningDate.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            //if (element.DesignationName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            //if (element.LocationName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            return false;
+        }
+
+        private async Task GetAllMstDepartment()
+        {
+            try
+            {
+                oListMstDepartment = await _mstDepartment.GetAllData();
+                if (oListMstDepartment?.Count == 0 || oListMstDepartment == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+                await GetAllGLdetermination();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncMstDepartment(MstDepartment element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.Code.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.DeptName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            //if (element.JoiningDate.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            //if (element.DesignationName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            //if (element.LocationName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            return false;
+        }
+        private Task SetVMDeptGlDertmination()
+        {
+            try
+            {
+                foreach (var item in oListMstDepartment)
+                {
+                    VMDept_Gldetermination vMDept_Gldetermination = new VMDept_Gldetermination();
+                    vMDept_Gldetermination.DeptID = item.Id;
+                    vMDept_Gldetermination.DeptCode = item.Code;
+                    vMDept_Gldetermination.DeptDescription = item.DeptName;
+                    olistVMDept_Gldetermination.Add(vMDept_Gldetermination);
+                }
+                foreach (var item in olistVMDept_Gldetermination)
+                {
+                    item.GlID = olistMstGldetermination.Where(x => x.Glvalue == item.DeptID && x.Gltype == "Dept").Select(x => x.Id).FirstOrDefault();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+            return Task.CompletedTask;
+        }
+        private bool FilterFuncVMDeptGldetermination(VMDept_Gldetermination element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.DeptCode.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.DeptDescription.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            //if (element.JoiningDate.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            //if (element.DesignationName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            //if (element.LocationName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            return false;
+        }
+
+
+        private async Task GetAllMstchartofAccount()
+        {
+            try
+            {
+                oListMstchartofAccount = await _mstchartofAccount.GetAllData();
+                if (oListMstchartofAccount?.Count == 0 || oListMstchartofAccount == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncMstchartofAccount(MstchartofAccount element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.Code.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.Description.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            //if (element.JoiningDate.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            //if (element.DesignationName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            //if (element.LocationName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            return false;
+        }
 
         #endregion
 
@@ -971,6 +1218,18 @@ namespace HCM.UI.General
                     {
                         await GetAllUserDataAccess();
                     }
+                    else if (DialogFor == "Location")
+                    {
+                        await GetAllMstLocation();
+                    }
+                    else if (DialogFor == "department")
+                    {
+                        await GetAllMstDepartment();
+                    }
+                    else if (DialogFor == "COA")
+                    {
+                        await GetAllMstchartofAccount();
+                    }
                 }
                 else
                 {
@@ -978,7 +1237,7 @@ namespace HCM.UI.General
                 }
 
 
-                
+
                 Loading = false;
             }
             catch (Exception ex)
@@ -1562,7 +1821,7 @@ namespace HCM.UI.General
                 return string.Empty;
             }
         }
-        
+
         public void RowClickEventBatch(TableRowClickEventArgs<TrnsBatch> tableRowClickEventArgs)
         {
             try
@@ -1620,8 +1879,6 @@ namespace HCM.UI.General
             }
 
         }
-
-
         private string SelectedRowClassFuncFilterFuncMonthlyOT(TrnsSingleEntryOtrequest element, int rowNumber)
         {
             if (selectedRowNumber == rowNumber)
@@ -1641,7 +1898,6 @@ namespace HCM.UI.General
                 return string.Empty;
             }
         }
-
         private string SelectedRowClassFuncFilterFuncUserDataAccess(UserDataAccess element, int rowNumber)
         {
             if (selectedRowNumber == rowNumber)
@@ -1651,6 +1907,166 @@ namespace HCM.UI.General
                 return string.Empty;
             }
             else if (_tableUserDataAccess.SelectedItem != null && _tableUserDataAccess.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public void RowClickEventMstLocation(TableRowClickEventArgs<MstLocation> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncFilterFuncMstLocation(MstLocation element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableMstLocation.SelectedItem != null && _tableMstLocation.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public void RowClickEventMstDepartment(TableRowClickEventArgs<MstDepartment> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncFilterFuncMstDepartment(MstDepartment element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableMstDepartment.SelectedItem != null && _tableMstDepartment.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public void RowClickEventMstchartofAccount(TableRowClickEventArgs<MstchartofAccount> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncFilterFuncMstchartofAccount(MstchartofAccount element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableMstchartofAccount.SelectedItem != null && _tableMstchartofAccount.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public void RowClickEventVMlocGlDertmination(TableRowClickEventArgs<VMLoc_Gldetermination> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncFilterFuncVMlocGlDertmination(VMLoc_Gldetermination element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableVMLoc_Gldetermination.SelectedItem != null && _tableVMLoc_Gldetermination.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public void RowClickEventVMDeptGldetermination(TableRowClickEventArgs<VMDept_Gldetermination> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncFilterFuncVMDeptGldetermination(VMDept_Gldetermination element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableVMDept_Gldetermination.SelectedItem != null && _tableVMDept_Gldetermination.SelectedItem.Equals(element))
             {
                 selectedRowNumber = rowNumber;
                 clickedEvents.Add($"Selected Row: {rowNumber}");
@@ -1767,6 +2183,18 @@ namespace HCM.UI.General
                     var a = oListUserDataAccessDistinct;
                     oListUserDataAccess = oListUserDataAccess.Where(x => x.EmpId == oModelUserDataAccess.EmpId).ToList();
                     MudDialog.Close(DialogResult.Ok<List<UserDataAccess>>(oListUserDataAccess));
+                }
+                else if (DialogFor == "Location")
+                {
+                    MudDialog.Close(DialogResult.Ok(VMLoc_Gldetermination));
+                }
+                else if (DialogFor == "department")
+                {
+                    MudDialog.Close(DialogResult.Ok(VMDept_Gldetermination));
+                }
+                else if (DialogFor == "COA")
+                {
+                    MudDialog.Close(DialogResult.Ok(oModelMstchartofAccount));
                 }
                 else
                 {

@@ -1,0 +1,484 @@
+﻿@page "/GLdetermination"
+@using HCM.API.Models
+@using System.Globalization
+<PageTitle>Gl Determination</PageTitle>
+
+<div class="container-fluid page-content-setting">
+    <div class="row">
+        <div class="col-sm-11">
+            <h3>Gl Determination</h3>
+            <MudDivider />
+        </div>
+        <div class="col-sm-1">
+           @* <MudFab Color="Color.Primary" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Material.Filled.List" Title="View All" />*@
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            @*TextChanged="@((e)=> onselect(e))" *@
+            <MudGrid class="search-action-block align-items-center">
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudSelect @bind-Value="oModel.Gltype" Label="Gl Type*" HelperText="Select Gl Type" TextChanged="@((e)=> selectGlType(e))" AdornmentIcon="@Icons.Material.Filled.DocumentScanner" Adornment="Adornment.Start">
+                        <MudSelectItem Value="@("Comp")">Company</MudSelectItem>
+                        <MudSelectItem Value="@("Loc")">Location</MudSelectItem>
+                        <MudSelectItem Value="@("Dept")">Department</MudSelectItem>
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTextField T="string" ReadOnly="@true" @bind-Value="gltype1" HelperText="Gl Type" Immediate="true" Label="" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogloc_Dept(maxWidth))" AdornmentAriaLabel="" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTextField @bind-Value="DocNum" ReadOnly="@true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields"
+                                  Label="Doc No*" Variant="Variant.Text"> </MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="12" md="12" lg="12">
+                    <div class="row mt-1">
+                        <div class="col-sm-6">
+                            <MudText Typo="Typo.h6">Debit Account</MudText>
+                            <MudSpacer />
+                            <MudGrid class="search-action-block align-items-center">
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField T="string"  ReadOnly="@true"@bind-Value="oModel.BasicSalary" HelperText="" Immediate="true" Label="Basic Salary*" Variant="Variant.Text"
+                                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_DBS(maxWidth))" AdornmentAriaLabel="" />
+                                </MudItem>
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField @bind-Value="oModel.BasicSalaryDesc" ReadOnly="@true"  Label="" Variant="Variant.Text"></MudTextField>
+                                </MudItem>
+
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField T="string"  ReadOnly="@true"@bind-Value="oModel.ArrearsExpense" HelperText="" Immediate="true" Label="Arrears*" Variant="Variant.Text"
+                                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_DArreas(maxWidth))" AdornmentAriaLabel="" />
+                                </MudItem>
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField @bind-Value="oModel.ArrearsExpenseDesc" ReadOnly="@true"  Label="" Variant="Variant.Text"></MudTextField>
+                                </MudItem>
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField T="string"  ReadOnly="@true"@bind-Value="oModel.LeaveEncashmentExpense" HelperText="" Immediate="true" Label="Leave Enc*" Variant="Variant.Text"
+                                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_DLeavEnc(maxWidth))" AdornmentAriaLabel="" />
+                                </MudItem>
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField @bind-Value="oModel.LeaveEncashmentExpenseDesc" ReadOnly="@true"  Label="" Variant="Variant.Text"></MudTextField>
+                                </MudItem>
+
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField T="string"  ReadOnly="@true"@bind-Value="oModel.Eosexpese" HelperText="" Immediate="true" Label="EOS*" Variant="Variant.Text"
+                                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_DEOS(maxWidth))" AdornmentAriaLabel="" />
+                                </MudItem>
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField @bind-Value="oModel.EosexpenseDesc" ReadOnly="@true"  Label="" Variant="Variant.Text"></MudTextField>
+                                </MudItem>
+
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField T="string"  ReadOnly="@true"@bind-Value="oModel.GratuityExpense" HelperText="" Immediate="true" Label="Gratuity*" Variant="Variant.Text"
+                                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_DGratuity(maxWidth))" AdornmentAriaLabel="" />
+                                </MudItem>
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField @bind-Value="oModel.GratuityExpenseDesc" ReadOnly="@true" Label="" Variant="Variant.Text"></MudTextField>
+                                </MudItem>
+
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField T="string"  ReadOnly="@true"@bind-Value="oModel.IncomeTaxExpense" HelperText="" Immediate="true" Label="Income Tax*" Variant="Variant.Text"
+                                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_DIncomTax(maxWidth))" AdornmentAriaLabel="" />
+                                </MudItem>
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField @bind-Value="oModel.IncomeTaxExpenseDesc" ReadOnly="@true"  Label="" Variant="Variant.Text"></MudTextField>
+                                </MudItem>
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField T="string" ReadOnly="@true" @bind-Value="oModel.DiffDrcr" HelperText="" Immediate="true" Label="Difference*" Variant="Variant.Text"
+                                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_Ddifferenc(maxWidth))" AdornmentAriaLabel="" />
+                                </MudItem>
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField @bind-Value="oModel.DiffDrcrdesc" ReadOnly="@true"  Label="" Variant="Variant.Text"></MudTextField>
+                                </MudItem>
+                            </MudGrid>
+                        </div>
+                        <div class="col-sm-6">
+                            <MudText Typo="Typo.h6">Credit Account</MudText>
+                            <MudSpacer />
+                            <MudGrid class="search-action-block align-items-center">
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField T="string"  ReadOnly="@true"@bind-Value="oModel.Bspayable" HelperText="" Immediate="true" Label="Basic Salary*" Variant="Variant.Text"
+                                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_CBS(maxWidth))" AdornmentAriaLabel="" />
+                                </MudItem>
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField @bind-Value="oModel.BspayableDesc" ReadOnly="@true"  Label="" Variant="Variant.Text"></MudTextField>
+                                </MudItem>
+
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField T="string"  ReadOnly="@true"@bind-Value="oModel.ArrearsPayable" HelperText="" Immediate="true" Label="Arrears*" Variant="Variant.Text"
+                                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_CArreas(maxWidth))" AdornmentAriaLabel="" />
+                                </MudItem>
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField @bind-Value="oModel.ArrearsPayableDesc" ReadOnly="@true"  Label="" Variant="Variant.Text"></MudTextField>
+                                </MudItem>
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField T="string"  ReadOnly="@true"@bind-Value="oModel.LeaveEncashmentPayable" HelperText="" Immediate="true" Label="Leave Enc*" Variant="Variant.Text"
+                                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_CLeavEnc(maxWidth))" AdornmentAriaLabel="" />
+                                </MudItem>
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField @bind-Value="oModel.LeaveEncashmentPayableDesc" ReadOnly="@true"  Label="" Variant="Variant.Text"></MudTextField>
+                                </MudItem>
+
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField T="string"  ReadOnly="@true"@bind-Value="oModel.Eospayable" HelperText="" Immediate="true" Label="EOS*" Variant="Variant.Text"
+                                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_CEOS(maxWidth))" AdornmentAriaLabel="" />
+                                </MudItem>
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField @bind-Value="oModel.EospayableDesc" ReadOnly="@true"  Label="" Variant="Variant.Text"></MudTextField>
+                                </MudItem>
+
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField T="string"  ReadOnly="@true"@bind-Value="oModel.GratuityPayable" HelperText="" Immediate="true" Label="Gratuity*" Variant="Variant.Text"
+                                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_CGratuity(maxWidth))" AdornmentAriaLabel="" />
+                                </MudItem>
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField @bind-Value="oModel.GratuityPayableDesc" ReadOnly="@true"  Label="" Variant="Variant.Text"></MudTextField>
+                                </MudItem>
+
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField T="string"  ReadOnly="@true"@bind-Value="oModel.IncomeTaxPayable" HelperText="" Immediate="true" Label="Income Tax*" Variant="Variant.Text"
+                                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_CIncomTax(maxWidth))" AdornmentAriaLabel="" />
+                                </MudItem>
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField @bind-Value="oModel.IncomeTaxPayableDesc" ReadOnly="@true" Label="" Variant="Variant.Text"></MudTextField>
+                                </MudItem>
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField T="string"  ReadOnly="@true"@bind-Value="oModel.DiffDrcrpayable" HelperText="" Immediate="true" Label="Difference*" Variant="Variant.Text"
+                                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_Cdifferenc(maxWidth))" AdornmentAriaLabel="" />
+                                </MudItem>
+                                <MudItem xs="6" sm="6" md="6" lg="6">
+                                    <MudTextField @bind-Value="oModel.DiffDrcrpayableDesc" ReadOnly="@true" Label="" Variant="Variant.Text"></MudTextField>
+                                </MudItem>
+                            </MudGrid>
+                        </div>
+                    </div>
+                </MudItem>
+            </MudGrid>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudTabs Color="Color.Dark" Elevation="4" Rounded="true" Centered="true">
+                <MudTabPanel Text="Earnings" Icon="@Icons.Material.Filled.Accessible">
+                    <MudGrid class="search-action-block align-items-center mt-3">
+                        <MudItem xs="12" sm="12" md="12" lg="12">
+                            <MudCard Elevation="5">
+                                <MudTable Items="@oListGldearningDetail" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstGldearningDetail,bool>(FilterFuncMstGldearningDetail)">
+                                    <ToolBarContent>
+                                        <MudText Typo="Typo.h6">Earns</MudText>
+                                        <MudSpacer />
+                                        <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                                    </ToolBarContent>
+                                    <HeaderContent>
+                                        <MudTh>Description</MudTh>
+                                        <MudTh>Debit Account</MudTh>
+                                        <MudTh>Description</MudTh>
+                                        <MudTh>Credit Account</MudTh>
+                                        <MudTh>Description</MudTh>
+                                    </HeaderContent>
+                                    <RowTemplate>
+                                        <MudTd DataLabel="Description">@context.ElementDescription</MudTd>
+                                        <MudTd DataLabel="Debit Account">
+                                            @*TextChanged="@(()=>CalculateAmount((int)context.EmpId))"*@
+                                            <MudTextField T="string"  ReadOnly="@true"@bind-Value="context.BalancingAccount"  Immediate="true" Variant="Variant.Text"
+                                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_DEarns(maxWidth,context.ElementId))" AdornmentAriaLabel="" />
+                                        </MudTd>
+                                        <MudTd DataLabel="Description">
+                                            <MudTextField @bind-Value="context.BalancingAcctDisplay" ReadOnly="@true" Label="" Variant="Variant.Text"></MudTextField>
+                                        </MudTd>
+                                        <MudTd DataLabel="Credit Account">
+                                            <MudTextField T="string"  ReadOnly="@true"@bind-Value="context.CostAccout" Immediate="true" Variant="Variant.Text"
+                                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_CEarns(maxWidth,context.ElementId))" AdornmentAriaLabel="" />
+                                        </MudTd>
+                                        <MudTd DataLabel="Description">
+                                            <MudTextField @bind-Value="context.CostAcctDisplay" ReadOnly="@true" Label="" Variant="Variant.Text"></MudTextField>
+                                        </MudTd>
+                                    </RowTemplate>
+                                    <PagerContent>
+                                        <MudTablePager />
+                                    </PagerContent>
+                                </MudTable>
+                            </MudCard>
+                        </MudItem>
+                    </MudGrid>
+                </MudTabPanel>
+                <MudTabPanel Text="Deductions" Icon="@Icons.Material.Filled.Accessible">
+                    <MudGrid class="search-action-block align-items-center mt-3">
+                        <MudItem xs="12" sm="12" md="12" lg="12">
+                            <MudCard Elevation="5">
+                                <MudTable Items="@oListMstGlddeductionDetail" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstGlddeductionDetail,bool>(FilterFuncMstGlddeductionDetail)">
+                                    <ToolBarContent>
+                                        <MudText Typo="Typo.h6">Deductions</MudText>
+                                        <MudSpacer />
+                                        <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                                    </ToolBarContent>
+                                    <HeaderContent>
+                                        <MudTh>Description</MudTh>
+                                        <MudTh>Debit Account</MudTh>
+                                        <MudTh>Description</MudTh>
+                                        <MudTh>Credit Account</MudTh>
+                                        <MudTh>Description</MudTh>
+                                    </HeaderContent>
+                                    <RowTemplate>
+                                        <MudTd DataLabel="Description">@context.DeductionDescription</MudTd>
+                                         <MudTd DataLabel="Debit Account">
+                                            @*TextChanged="@(()=>CalculateAmount((int)context.EmpId))"*@
+                                            <MudTextField T="string"  ReadOnly="@true"@bind-Value="context.BalancingAccount"  Immediate="true" Variant="Variant.Text"
+                                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_DDeducts(maxWidth,context.DeductionId))" AdornmentAriaLabel="" />
+                                        </MudTd>
+                                        <MudTd DataLabel="Description">
+                                            <MudTextField @bind-Value="context.BalancingAcctDisplay" ReadOnly="@true"  Label="" Variant="Variant.Text"></MudTextField>
+                                        </MudTd>
+                                        <MudTd DataLabel="Credit Account">
+                                            <MudTextField T="string"  ReadOnly="@true"@bind-Value="context.CostAccount" Immediate="true" Variant="Variant.Text"
+                                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_CDeducts(maxWidth,context.DeductionId))" AdornmentAriaLabel="" />
+                                        </MudTd>
+                                        <MudTd DataLabel="Description">
+                                            <MudTextField @bind-Value="context.CostAcctDisplay" ReadOnly="@true"  Label="" Variant="Variant.Text"></MudTextField>
+                                        </MudTd>
+                                    </RowTemplate>
+                                    <PagerContent>
+                                        <MudTablePager />
+                                    </PagerContent>
+                                </MudTable>
+                            </MudCard>
+                        </MudItem>
+                    </MudGrid>
+                </MudTabPanel>
+                <MudTabPanel Text="Contributions" Icon="@Icons.Material.Filled.Accessible">
+                    <MudGrid class="search-action-block align-items-center mt-3">
+                        <MudItem xs="12" sm="12" md="12" lg="12">
+                            <MudCard Elevation="5">
+                                <MudTable Items="@oListGldMstGldcontribution" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstGldcontribution,bool>(FilterFuncMstGldcontribution)">
+                                    <ToolBarContent>
+                                        <MudText Typo="Typo.h6">Contributions</MudText>
+                                        <MudSpacer />
+                                        <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                                    </ToolBarContent>
+                                    <HeaderContent>
+                                        <MudTh>Description</MudTh>
+                                        <MudTh>Debit Account</MudTh>
+                                        <MudTh>Description</MudTh>
+                                        <MudTh>Credit Account</MudTh>
+                                        <MudTh>Description</MudTh>
+                                    </HeaderContent>
+                                    <RowTemplate>
+                                        <MudTd DataLabel="Description">@context.ContributionDescription</MudTd>
+                                        <MudTd DataLabel="Debit Account">
+                                            @*TextChanged="@(()=>CalculateAmount((int)context.EmpId))"*@
+                                            <MudTextField T="string"  ReadOnly="@true"@bind-Value="context.BalancingAccount"  Immediate="true" Variant="Variant.Text"
+                                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_DContributs(maxWidth,context.ContributionId))" AdornmentAriaLabel="" />
+                                        </MudTd>
+                                        <MudTd DataLabel="Description">
+                                            <MudTextField @bind-Value="context.BalancingAcctDisplay" ReadOnly="@true"  Label="" Variant="Variant.Text"></MudTextField>
+                                        </MudTd>
+                                        <MudTd DataLabel="Credit Account">
+                                            <MudTextField T="string"  ReadOnly="@true"@bind-Value="context.CostAccount" Immediate="true" Variant="Variant.Text"
+                                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_CContributs(maxWidth,context.ContributionId))" AdornmentAriaLabel="" />
+                                        </MudTd>
+                                        <MudTd DataLabel="Description">
+                                            <MudTextField @bind-Value="context.CostAcctDisplay" ReadOnly="@true"  Label="" Variant="Variant.Text"></MudTextField>
+                                        </MudTd>
+                                    </RowTemplate>
+                                    <PagerContent>
+                                        <MudTablePager />
+                                    </PagerContent>
+                                </MudTable>
+                            </MudCard>
+                        </MudItem>
+                    </MudGrid>
+                </MudTabPanel>
+                <MudTabPanel Text="Loans" Icon="@Icons.Material.Filled.Accessible">
+                    <MudGrid class="search-action-block align-items-center mt-3">
+                        <MudItem xs="12" sm="12" md="12" lg="12">
+                            <MudCard Elevation="5">
+                                <MudTable Items="@oListGldMstGldloansDetail" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstGldloansDetail,bool>(FilterFuncMstGldloansDetail)">
+                                    <ToolBarContent>
+                                        <MudText Typo="Typo.h6">Loans</MudText>
+                                        <MudSpacer />
+                                        <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                                    </ToolBarContent>
+                                    <HeaderContent>
+                                        <MudTh>Description</MudTh>
+                                        <MudTh>Debit Account</MudTh>
+                                        <MudTh>Description</MudTh>
+                                        <MudTh>Credit Account</MudTh>
+                                        <MudTh>Description</MudTh>
+                                    </HeaderContent>
+                                    <RowTemplate>
+                                        <MudTd DataLabel="Description">@context.LoanDescription</MudTd>
+                                        <MudTd DataLabel="Debit Account">
+                                            @*TextChanged="@(()=>CalculateAmount((int)context.EmpId))"*@
+                                            <MudTextField T="string"  ReadOnly="@true"@bind-Value="context.BalancingAccount"  Immediate="true" Variant="Variant.Text"
+                                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_DLoans(maxWidth,context.LoanId))" AdornmentAriaLabel="" />
+                                        </MudTd>
+                                        <MudTd DataLabel="Description">
+                                            <MudTextField @bind-Value="context.BalancingAcctDisplay" ReadOnly="@true"  Label="" Variant="Variant.Text"></MudTextField>
+                                        </MudTd>
+                                        <MudTd DataLabel="Credit Account">
+                                            <MudTextField T="string"  ReadOnly="@true"@bind-Value="context.CostAccount" Immediate="true" Variant="Variant.Text"
+                                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_CLoans(maxWidth,context.LoanId))" AdornmentAriaLabel="" />
+                                        </MudTd>
+                                        <MudTd DataLabel="Description">
+                                            <MudTextField @bind-Value="context.CostAcctDisplay" ReadOnly="@true"  Label="" Variant="Variant.Text"></MudTextField>
+                                        </MudTd>
+                                    </RowTemplate>
+                                    <PagerContent>
+                                        <MudTablePager />
+                                    </PagerContent>
+                                </MudTable>
+                            </MudCard>
+                        </MudItem>
+                    </MudGrid>
+                </MudTabPanel>
+                <MudTabPanel Text="Advances" Icon="@Icons.Material.Filled.Accessible">
+                    <MudGrid class="search-action-block align-items-center mt-3">
+                        <MudItem xs="12" sm="12" md="12" lg="12">
+                            <MudCard Elevation="5">
+                                <MudTable Items="@oListMstGldadvanceDetail" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstGldadvanceDetail,bool>(FilterFuncMstGldadvanceDetail)">
+                                    <ToolBarContent>
+                                        <MudText Typo="Typo.h6">Advances</MudText>
+                                        <MudSpacer />
+                                        <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                                    </ToolBarContent>
+                                    <HeaderContent>
+                                        <MudTh>Description</MudTh>
+                                        <MudTh>Debit Account</MudTh>
+                                        <MudTh>Description</MudTh>
+                                        <MudTh>Credit Account</MudTh>
+                                        <MudTh>Description</MudTh>
+                                    </HeaderContent>
+                                    <RowTemplate>
+                                        <MudTd DataLabel="Description">@context.AdvancesDescription</MudTd>
+                                         <MudTd DataLabel="Debit Account">
+                                            @*TextChanged="@(()=>CalculateAmount((int)context.EmpId))"*@
+                                            <MudTextField T="string"  ReadOnly="@true"@bind-Value="context.BalancingAccount"  Immediate="true" Variant="Variant.Text"
+                                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_DAdvances(maxWidth,context.AdvancesId))" AdornmentAriaLabel="" />
+                                        </MudTd>
+                                        <MudTd DataLabel="Description">
+                                            <MudTextField @bind-Value="context.BalancingAcctDisplay" ReadOnly="@true"  Label="" Variant="Variant.Text"></MudTextField>
+                                        </MudTd>
+                                        <MudTd DataLabel="Credit Account">
+                                            <MudTextField T="string"  ReadOnly="@true"@bind-Value="context.CostAccount" Immediate="true" Variant="Variant.Text"
+                                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_CAdvances(maxWidth,context.AdvancesId))" AdornmentAriaLabel="" />
+                                        </MudTd>
+                                        <MudTd DataLabel="Description">
+                                            <MudTextField @bind-Value="context.CostAcctDisplay" ReadOnly="@true"  Label="" Variant="Variant.Text"></MudTextField>
+                                        </MudTd>
+                                    </RowTemplate>
+                                    <PagerContent>
+                                        <MudTablePager />
+                                    </PagerContent>
+                                </MudTable>
+                            </MudCard>
+                        </MudItem>
+                    </MudGrid>
+                </MudTabPanel>
+                <MudTabPanel Text="OverTimes" Icon="@Icons.Material.Filled.Accessible">
+                    <MudGrid class="search-action-block align-items-center mt-3">
+                        <MudItem xs="12" sm="12" md="12" lg="12">
+                            <MudCard Elevation="5">
+                                <MudTable Items="@oListMstGldoverTimeDetail" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstGldoverTimeDetail,bool>(FilterFuncMstGldoverTimeDetail)">
+                                    <ToolBarContent>
+                                        <MudText Typo="Typo.h6">OverTime</MudText>
+                                        <MudSpacer />
+                                        <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                                    </ToolBarContent>
+                                    <HeaderContent>
+                                        <MudTh>Description</MudTh>
+                                        <MudTh>Debit Account</MudTh>
+                                        <MudTh>Description</MudTh>
+                                        <MudTh>Credit Account</MudTh>
+                                        <MudTh>Description</MudTh>
+                                    </HeaderContent>
+                                    <RowTemplate>
+                                        <MudTd DataLabel="Description">@context.OvertimeDescription</MudTd>
+                                        <MudTd DataLabel="Debit Account">
+                                            @*TextChanged="@(()=>CalculateAmount((int)context.EmpId))"*@
+                                            <MudTextField T="string"  ReadOnly="@true"@bind-Value="context.BalancingAccount"  Immediate="true" Variant="Variant.Text"
+                                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_DOverTimes(maxWidth,context.OvertimeId))" AdornmentAriaLabel="" />
+                                        </MudTd>
+                                        <MudTd DataLabel="Description">
+                                            <MudTextField @bind-Value="context.BalancingAcctDisplay" ReadOnly="@true"  Label="" Variant="Variant.Text"></MudTextField>
+                                        </MudTd>
+                                        <MudTd DataLabel="Credit Account">
+                                            <MudTextField T="string"  ReadOnly="@true"@bind-Value="context.CostAccount" Immediate="true" Variant="Variant.Text"
+                                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_COverTimes(maxWidth,context.OvertimeId))" AdornmentAriaLabel="" />
+                                        </MudTd>
+                                        <MudTd DataLabel="Description">
+                                            <MudTextField @bind-Value="context.CostAcctDisplay" ReadOnly="@true" Label="" Variant="Variant.Text"></MudTextField>
+                                        </MudTd>
+                                    </RowTemplate>
+                                    <PagerContent>
+                                        <MudTablePager />
+                                    </PagerContent>
+                                </MudTable>
+                            </MudCard>
+                        </MudItem>
+                    </MudGrid>
+                </MudTabPanel>
+                <MudTabPanel Text="Leave Deductions" Icon="@Icons.Material.Filled.Accessible">
+                    <MudGrid class="search-action-block align-items-center mt-3">
+                        <MudItem xs="12" sm="12" md="12" lg="12">
+                            <MudCard Elevation="5">
+                                <MudTable Items="@oListMstGldleaveDedDetail" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstGldleaveDedDetail,bool>(FilterFuncMstGldleaveDedDetail)">
+                                    <ToolBarContent>
+                                        <MudText Typo="Typo.h6">Leave Deductions</MudText>
+                                        <MudSpacer />
+                                        <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                                    </ToolBarContent>
+                                    <HeaderContent>
+                                        <MudTh>Description</MudTh>
+                                        <MudTh>Debit Account</MudTh>
+                                        <MudTh>Description</MudTh>
+                                        <MudTh>Credit Account</MudTh>
+                                        <MudTh>Description</MudTh>
+                                    </HeaderContent>
+                                    <RowTemplate>
+                                        <MudTd DataLabel="Description">@context.LeaveDedDescription</MudTd>
+                                       <MudTd DataLabel="Debit Account">
+                                            @*TextChanged="@(()=>CalculateAmount((int)context.EmpId))"*@
+                                            <MudTextField T="string"  ReadOnly="@true"@bind-Value="context.BalancingAccount"  Immediate="true" Variant="Variant.Text"
+                                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_DLeavDeducts(maxWidth,context.LeaveDedId))" AdornmentAriaLabel="" />
+                                        </MudTd>
+                                        <MudTd DataLabel="Description">
+                                            <MudTextField @bind-Value="context.BalancingAcctDisplay" ReadOnly="@true"  Label="" Variant="Variant.Text"></MudTextField>
+                                        </MudTd>
+                                        <MudTd DataLabel="Credit Account">
+                                            <MudTextField T="string"  ReadOnly="@true"@bind-Value="context.CostAccount" Immediate="true" Variant="Variant.Text"
+                                                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogCOA_CLeavDeducts(maxWidth,context.LeaveDedId))" AdornmentAriaLabel="" />
+                                        </MudTd>
+                                        <MudTd DataLabel="Description">
+                                            <MudTextField @bind-Value="context.CostAcctDisplay" ReadOnly="@true"  Label="" Variant="Variant.Text"></MudTextField>
+                                        </MudTd>
+                                    </RowTemplate>
+                                    <PagerContent>
+                                        <MudTablePager />
+                                    </PagerContent>
+                                </MudTable>
+                            </MudCard>
+                        </MudItem>
+                    </MudGrid>
+                </MudTabPanel>
+            </MudTabs>
+              <MudGrid class="search-action-block align-items-center">
+              @if (Loading)
+                {
+                    <MudItem xs="12" sm="12" md="12" lg="12">
+                        <MudText>Loading...</MudText>
+                        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                    </MudItem>
+                }
+                else
+                {
+                    <MudItem xs="12" sm="12" md="12" lg="12" class="text-right">
+                        @*<MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Save</MudButton>*@
+                        <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                        <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
+                    </MudItem>
+                }
+            </MudGrid>
+        </div>
+    </div>
+</div>

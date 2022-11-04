@@ -6,42 +6,26 @@ using RestSharp;
 
 namespace HCM.UI.Data.MasterData
 {
-    public class MstHolidayService : IMstHoliday
+    public class MstGldeterminationService : IMstGldetermination
     {
         private readonly RestClient _restClient;
-        //private readonly IMemoryCache _memoryCache;
-        //private const string CacheKey = "ContractorMaster";
-
-        public MstHolidayService(IMemoryCache memoryCache)
+        public MstGldeterminationService(IMemoryCache memoryCache)
         {
             _restClient = new RestClient(Settings.APIBaseURL);
-          //  _memoryCache = memoryCache;
         }
 
-        public async Task<List<MstHoliday1>> GetAllData()
+        public async Task<List<MstGldetermination>> GetAllData()
         {
             try
             {
-                //if (_memoryCache.TryGetValue(CacheKey, out IEnumerable<MstchartofAccount> oListCache))
-                //{
-                //    return oListCache.ToList();
-                //}
-                //else
-                //{
-                    List<MstHoliday1> oList = new List<MstHoliday1>();
+                    List<MstGldetermination> oList = new List<MstGldetermination>();
 
-                    var request = new RestRequest("MasterData/getAllHoliday", Method.Get) { RequestFormat = DataFormat.Json };
+                    var request = new RestRequest("MasterData/getAllGLD", Method.Get) { RequestFormat = DataFormat.Json };
 
-                    var response = await _restClient.ExecuteAsync<List<MstHoliday1>>(request);
+                    var response = await _restClient.ExecuteAsync<List<MstGldetermination>>(request);
 
                     if (response.IsSuccessful)
                     {
-                        //var cacheEntryOptions = new MemoryCacheEntryOptions()
-                        //   .SetSlidingExpiration(TimeSpan.FromSeconds(60))
-                        //   .SetAbsoluteExpiration(TimeSpan.FromHours(2))
-                        //   .SetPriority(CacheItemPriority.Normal)
-                        //   .SetSize(1024);
-                        //_memoryCache.Set(CacheKey, response.Data, cacheEntryOptions);
                         return response.Data;
                     }
                     else
@@ -57,22 +41,18 @@ namespace HCM.UI.Data.MasterData
             }
         }
 
-        public async Task<ApiResponseModel> Insert(MstHoliday1 oMstHoliDay)
+        public async Task<ApiResponseModel> Insert(MstGldetermination oMstGldetermination)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                var request = new RestRequest("MasterData/addHoliday", Method.Post);
-                request.AddJsonBody(oMstHoliDay);
+                var request = new RestRequest("MasterData/addGLD", Method.Post);
+                request.AddJsonBody(oMstGldetermination);
                 var res= await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {
                     response.Id = 1;
                     response.Message = "Saved successfully";
-                    //if (_memoryCache.TryGetValue(CacheKey, out IEnumerable<MstchartofAccount> oListCache))
-                    //{
-                    //    _memoryCache.Remove(CacheKey);
-                    //}
                     return response;
                 }
                 else
@@ -91,22 +71,18 @@ namespace HCM.UI.Data.MasterData
             }
         }
 
-        public async Task<ApiResponseModel> Update(MstHoliday1 oMstHoliDay)
+        public async Task<ApiResponseModel> Update(MstGldetermination oMstGldetermination)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                var request = new RestRequest("MasterData/updateHoliday", Method.Post);
-                request.AddJsonBody(oMstHoliDay);
+                var request = new RestRequest("MasterData/updateGLD", Method.Post);
+                request.AddJsonBody(oMstGldetermination);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {
                     response.Id = 1;
                     response.Message = "Update successfully";
-                    //if (_memoryCache.TryGetValue(CacheKey, out IEnumerable<MstchartofAccount> oListCache))
-                    //{
-                    //    _memoryCache.Remove(CacheKey);
-                    //}
                     return response;
                 }
                 else
@@ -125,22 +101,18 @@ namespace HCM.UI.Data.MasterData
             }
         }
 
-        public async Task<ApiResponseModel> Insert(List<MstHoliday1> oMstHoliDay)
+        public async Task<ApiResponseModel> Insert(List<MstGldetermination> oMstGldetermination)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                var request = new RestRequest("MasterData/addHolidayList", Method.Post);
-                request.AddJsonBody(oMstHoliDay);
+                var request = new RestRequest("MasterData/addGLDList", Method.Post);
+                request.AddJsonBody(oMstGldetermination);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {
                     response.Id = 1;
                     response.Message = "Saved successfully";
-                    //if (_memoryCache.TryGetValue(CacheKey, out IEnumerable<MstchartofAccount> oListCache))
-                    //{
-                    //    _memoryCache.Remove(CacheKey);
-                    //}
                     return response;
                 }
                 else
@@ -159,22 +131,18 @@ namespace HCM.UI.Data.MasterData
             }
         }
 
-        public async Task<ApiResponseModel> Update(List<MstHoliday1> oMstHoliDay)
+        public async Task<ApiResponseModel> Update(List<MstGldetermination> oMstGldetermination)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                var request = new RestRequest("MasterData/updateHolidayList", Method.Post);
-                request.AddJsonBody(oMstHoliDay);
+                var request = new RestRequest("MasterData/updateGLDList", Method.Post);
+                request.AddJsonBody(oMstGldetermination);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {
                     response.Id = 1;
                     response.Message = "Update successfully";
-                    //if (_memoryCache.TryGetValue(CacheKey, out IEnumerable<MstchartofAccount> oListCache))
-                    //{
-                    //    _memoryCache.Remove(CacheKey);
-                    //}
                     return response;
                 }
                 else

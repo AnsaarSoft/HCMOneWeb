@@ -110,6 +110,7 @@ builder.Services.AddScoped<ITrnsBatchProcess, TrnsBatchProcessService>();
 builder.Services.AddScoped<IUserDataAccess, UserDataAccessService>();
 builder.Services.AddScoped<IMstchartofAccount, MstchartofAccountService>();
 builder.Services.AddScoped<IMstHoliday, MstHolidayService>();
+builder.Services.AddScoped<IMstGldetermination, MstGldeterminationService>();
 //Configuration Start
 
 Settings.APIBaseURL = builder.Configuration.GetValue<string>("APIBaseUrl");

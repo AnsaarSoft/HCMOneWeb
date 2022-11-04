@@ -20,6 +20,7 @@ namespace HCM.API.HCMModels
         public string EmprCostAcctDisplay { get; set; }
         public string EmprBalancingAccount { get; set; }
         public string EmprBalancingAcctDisplay { get; set; }
+        public string ContributionDescription { get; set; }
 
         public virtual MstGldetermination Gld { get; set; }
     }

@@ -4,10 +4,10 @@ namespace HCM.UI.Interfaces.MasterData
 {
     public interface IMstHoliday
     {
-        Task<List<MstHoliDay>> GetAllData();
-        Task<ApiResponseModel> Insert(MstHoliDay oMstHoliDay);
-        Task<ApiResponseModel> Update(MstHoliDay oMstHoliDay);
-        Task<ApiResponseModel> Insert(List<MstHoliDay> oMstHoliDay);
-        Task<ApiResponseModel> Update(List<MstHoliDay> oMstHoliDay);
+        Task<List<MstHoliday1>> GetAllData();
+        Task<ApiResponseModel> Insert(MstHoliday1 oMstHoliDay);
+        Task<ApiResponseModel> Update(MstHoliday1 oMstHoliDay);
+        Task<ApiResponseModel> Insert(List<MstHoliday1> oMstHoliDay);
+        Task<ApiResponseModel> Update(List<MstHoliday1> oMstHoliDay);
     }
 }

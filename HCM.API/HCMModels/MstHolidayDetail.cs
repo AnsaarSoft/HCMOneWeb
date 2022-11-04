@@ -10,6 +10,7 @@ namespace HCM.API.HCMModels
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public string Remarks { get; set; }
+        public bool? FlgActive { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? UpdateDate { get; set; }
         public string UserId { get; set; }
