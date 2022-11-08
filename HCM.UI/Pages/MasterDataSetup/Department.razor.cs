@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using HCM.API.Models;
 using HCM.UI.General;
+using HCM.UI.Interfaces.Authorization;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Caching.Memory;
@@ -26,6 +27,10 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         [Inject]
         public ILocalStorageService _localStorage { get; set; }
+
+        [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
+
         #endregion
 
         #region Variables
@@ -49,7 +54,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             {
                 Loading = true;
                 var res = new ApiResponseModel();
-                await Task.Delay(3);                
+                await Task.Delay(3);
                 if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.DeptName))
                 {
                     if (oList.Where(x => x.Code.Trim().ToLowerInvariant() == oModel.Code.Trim().ToLowerInvariant()).Count() > 0)
@@ -187,10 +192,17 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    //var res = await _administrationService.FetchUserAuth(Session.UserCode);
-                    Loading = true;
-                    oModel.FlgActive = true;
-                    await GetAllDepartments();
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 11 && x.UserRights == true).ToList().Count > 0)
+                    {
+                        Loading = true;
+                        oModel.FlgActive = true;
+                        await GetAllDepartments();
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {
