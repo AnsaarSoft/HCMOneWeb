@@ -65,10 +65,11 @@ namespace HCM.UI.General
         bool DisabledCode = false;
 
         public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
-        private string amountType = "";
-        private string taxtype = "";
+      //  private string amountType = "";
+      //  private string taxtype = "";
         private decimal Amount;
         private decimal Hours;
+        DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
         DateTime? docdate;
         TimeSpan? timefrom = new TimeSpan();
@@ -96,6 +97,15 @@ namespace HCM.UI.General
 
         [Parameter] public MstHolidayDetail oDetailParaMstHolidayDetail { get; set; } = new MstHolidayDetail();
         MstHolidayDetail oModelMstHolidayDetail = new MstHolidayDetail();
+
+        [Parameter] public TrnsProductStageItem oDetailTrnsProductStageItem { get; set; } = new TrnsProductStageItem();
+        TrnsProductStageItem oModelTrnsProductStageItem = new TrnsProductStageItem();
+
+        [Parameter] public TrnsProductStageTeamLead oDetailParaProductStageTeamLead { get; set; } = new TrnsProductStageTeamLead();
+        TrnsProductStageTeamLead oModelTrnsProductStageTeamLead = new TrnsProductStageTeamLead();
+
+        [Parameter] public TrnsProductStageStation oDetailTrnsProductStageStation { get; set; } = new TrnsProductStageStation();
+        TrnsProductStageStation oModelTrnsProductStageStation = new TrnsProductStageStation();
 
         MstEmployee oModelMstEmployee = new MstEmployee();
         private IEnumerable<MstEmployee> oListEmployee = new List<MstEmployee>();
@@ -382,6 +392,39 @@ namespace HCM.UI.General
                     Snackbar.Add("Fill the required field(s).", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                 }
             }
+            else if (DialogFor == "ProductStageItem")
+            {
+                if (!string.IsNullOrWhiteSpace(oModelTrnsProductStageItem.ItemCode) && !string.IsNullOrWhiteSpace(oModelTrnsProductStageItem.ItemDescription))
+                {
+                    MudDialog.Close(DialogResult.Ok<TrnsProductStageItem>(oModelTrnsProductStageItem));
+                }
+                else
+                {
+                    Snackbar.Add("Fill the required field(s).", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            else if (DialogFor == "ProductStageTeamLead")
+            {
+                if (!string.IsNullOrWhiteSpace(oModelTrnsProductStageTeamLead.EmpCode) )
+                {
+                    MudDialog.Close(DialogResult.Ok<TrnsProductStageTeamLead>(oModelTrnsProductStageTeamLead));
+                }
+                else
+                {
+                    Snackbar.Add("Fill the required field(s).", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            else if (DialogFor == "ProductStageStation")
+            {
+                if (!string.IsNullOrWhiteSpace(oModelTrnsProductStageStation.StationCode))
+                {
+                    MudDialog.Close(DialogResult.Ok<TrnsProductStageStation>(oModelTrnsProductStageStation));
+                }
+                else
+                {
+                    Snackbar.Add("Fill the required field(s).", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
         }
 
         private async Task GetAllEmployees()
@@ -455,6 +498,70 @@ namespace HCM.UI.General
             }
             _ = InvokeAsync(StateHasChanged);
         }
+        private async Task OpenDialogStageItem(DialogOptions options)
+        {
+            try
+            {
+                var parameters = new DialogParameters();
+                parameters.Add("DialogFor", "StageItem");
+                var dialog = Dialog.Show<DialogBox>("", parameters, options);
+                var result = await dialog.Result;
+                if (!result.Cancelled)
+                {
+                    var res = (SAPModels)result.Data;
+                    oModelTrnsProductStageItem.ItemCode = res.ItemCode;
+                    oModelTrnsProductStageItem.ItemGrpCode = res.ItemGroupCode.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private async Task OpenDialogStageTeamLead(DialogOptions options)
+        {
+            try
+            {
+                var parameters = new DialogParameters();
+                parameters.Add("DialogFor", "EmployeeMaster");
+                var dialog = Dialog.Show<DialogBox>("", parameters, options);
+                var result = await dialog.Result;
+                if (!result.Cancelled)
+                {
+                    var res = (MstEmployee)result.Data;
+                    oModelTrnsProductStageTeamLead.EmpCode = res.EmpId;
+                    oModelTrnsProductStageTeamLead.EmpName = res.FirstName + " " + res.MiddleName + " " + res.LastName;
+                    oModelTrnsProductStageTeamLead.Designation = res.DesignationName;
+                    oModelTrnsProductStageTeamLead.Department = res.DepartmentName;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private async Task OpenDialogStageStation(DialogOptions options)
+        {
+            try
+            {
+                var parameters = new DialogParameters();
+                parameters.Add("DialogFor", "Station");
+                var dialog = Dialog.Show<DialogBox>("", parameters, options);
+                var result = await dialog.Result;
+                if (!result.Cancelled)
+                {
+                    var res = (MstStation)result.Data;
+                    oModelTrnsProductStageStation.StationCode = res.Code;
+                    oModelTrnsProductStageStation.StationDescription = res.Description;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+
+
         #endregion
 
         #region Events
@@ -550,6 +657,7 @@ namespace HCM.UI.General
                 }
                 else if (DialogFor == "HolidayDetail")
                 {
+                    oModelMstHolidayDetail.FlgActive = true;
                     if (oDetailParaMstHolidayDetail.StartDate!= null && oDetailParaMstHolidayDetail.Remarks != null)
                     {
                         oModelMstHolidayDetail= oDetailParaMstHolidayDetail;
@@ -558,6 +666,44 @@ namespace HCM.UI.General
                     {
                         oModelMstHolidayDetail.Remarks= "";
                         oModelMstHolidayDetail.StartDate = DateTime.Now;
+                    }
+                }
+                else if (DialogFor == "ProductStageItem")
+                {
+                    if (oDetailTrnsProductStageItem.ItemCode != null)
+                    {
+                        oModelTrnsProductStageItem = oDetailTrnsProductStageItem;
+                    }
+                    else
+                    {
+                        oModelTrnsProductStageItem.ItemDescription = "";
+                        oModelTrnsProductStageItem.ItemGrpCode= "";
+                    }
+                }
+                else if (DialogFor == "ProductStageTeamLead")
+                {
+                    if (oDetailParaProductStageTeamLead.EmpCode != null)
+                    {
+                        oModelTrnsProductStageTeamLead = oDetailParaProductStageTeamLead;
+                    }
+                    else
+                    {
+                        oModelTrnsProductStageTeamLead.EmpCode = "";
+                        oModelTrnsProductStageTeamLead.EmpName = "";
+                        oModelTrnsProductStageTeamLead.Designation = "";
+                        oModelTrnsProductStageTeamLead.Department = "";
+                    }
+                }
+                else if (DialogFor == "ProductStageStation")
+                {
+                    if (oDetailTrnsProductStageStation.StationCode != null)
+                    {
+                        oModelTrnsProductStageStation = oDetailTrnsProductStageStation;
+                    }
+                    else
+                    {
+                        oModelTrnsProductStageStation.StationCode= "";
+                        oModelTrnsProductStageStation.StationDescription= "";
                     }
                 }
                 Loading = false;

@@ -7,6 +7,7 @@ namespace HCM.API.HCMModels
     {
         public TrnsProductStage()
         {
+            TrnsProductStageItems = new HashSet<TrnsProductStageItem>();
             TrnsProductStageStations = new HashSet<TrnsProductStageStation>();
             TrnsProductStageTeamLeads = new HashSet<TrnsProductStageTeamLead>();
         }
@@ -21,6 +22,7 @@ namespace HCM.API.HCMModels
         public string UserId { get; set; }
         public string UpdatedBy { get; set; }
 
+        public virtual ICollection<TrnsProductStageItem> TrnsProductStageItems { get; set; }
         public virtual ICollection<TrnsProductStageStation> TrnsProductStageStations { get; set; }
         public virtual ICollection<TrnsProductStageTeamLead> TrnsProductStageTeamLeads { get; set; }
     }

@@ -1,27 +1,28 @@
 ﻿using HCM.API.General;
-using HCM.API.Interfaces.EmployeeMasterSetup;
-using Microsoft.EntityFrameworkCore;
+using HCM.API.Interfaces.ClientSpecific;
+using HCM.API.Interfaces.MasterData;
 using HCM.API.Models;
+using Microsoft.EntityFrameworkCore;
 
-
-namespace HCM.API.Repository.EmployeeMasterSetup
+namespace HCM.API.Repository.ClientSpecific
 {
-    public class TrnsEmployeeOverTimeRepo : ITrnsEmployeeOverTime
+    public class TrnsProductStageRepo: ITrnsProductStage
     {
+
         private HCMOneContext _DBContext;
 
-        public TrnsEmployeeOverTimeRepo(HCMOneContext DBContext)
+        public TrnsProductStageRepo(HCMOneContext DBContext)
         {
             _DBContext = DBContext;
         }
-        public async Task<List<TrnsEmployeeOvertime>> GetAllData()
+        public async Task<List<TrnsProductStage>> GetAllData()
         {
-            List<TrnsEmployeeOvertime> oList = new List<TrnsEmployeeOvertime>();
+            List<TrnsProductStage> oList = new List<TrnsProductStage>();
             try
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.TrnsEmployeeOvertimes.Include(t=>t.TrnsEmployeeOvertimeDetails).ToList();
+                    oList = _DBContext.TrnsProductStages.Include(t => t.TrnsProductStageItems).Include(t => t.TrnsProductStageTeamLeads).Include(t => t.TrnsProductStageStations).ToList();
                 });
             }
             catch (Exception ex)
@@ -30,15 +31,15 @@ namespace HCM.API.Repository.EmployeeMasterSetup
             }
             return oList;
         }
-        public async Task<ApiResponseModel> Insert(TrnsEmployeeOvertime oTrnsEmployeeOvertime)
+        public async Task<ApiResponseModel> Insert(TrnsProductStage oTrnsProductStage)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    oTrnsEmployeeOvertime.CreateDate = DateTime.Now;
-                    _DBContext.TrnsEmployeeOvertimes.Add(oTrnsEmployeeOvertime);
+                    oTrnsProductStage.CreateDate = DateTime.Now;
+                    _DBContext.TrnsProductStages.Add(oTrnsProductStage);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";
@@ -52,17 +53,17 @@ namespace HCM.API.Repository.EmployeeMasterSetup
             }
             return response;
         }
-        public async Task<ApiResponseModel> Update(TrnsEmployeeOvertime oTrnsEmployeeOvertime)
+        public async Task<ApiResponseModel> Update(TrnsProductStage oTrnsProductStage)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    oTrnsEmployeeOvertime.UpdateDate = DateTime.Now;
-                    //var Detail = _DBContext.TrnsEmployeeOvertimeDetails.Where(x => x.EmpOvertimeId == oTrnsEmployeeOvertime.Id).ToList();
+                    oTrnsProductStage.UpdateDate = DateTime.Now;
+                    //var Detail = _DBContext.TrnsEmployeeOvertimeDetails.Where(x => x.EmpOvertimeId == oTrnsProductStage.Id).ToList();
                     //_DBContext.TrnsEmployeeOvertimeDetails.RemoveRange(Detail);
-                    _DBContext.TrnsEmployeeOvertimes.Update(oTrnsEmployeeOvertime);
+                    _DBContext.TrnsProductStages.Update(oTrnsProductStage);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";
@@ -76,14 +77,14 @@ namespace HCM.API.Repository.EmployeeMasterSetup
             }
             return response;
         }
-        public async Task<ApiResponseModel> Insertlist(List<TrnsEmployeeOvertime> oTrnsEmployeeOvertime)
+        public async Task<ApiResponseModel> Insertlist(List<TrnsProductStage> oTrnsProductStage)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    _DBContext.TrnsEmployeeOvertimes.AddRange(oTrnsEmployeeOvertime);
+                    _DBContext.TrnsProductStages.AddRange(oTrnsProductStage);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Saved successfully";
@@ -97,14 +98,14 @@ namespace HCM.API.Repository.EmployeeMasterSetup
             }
             return response;
         }
-        public async Task<ApiResponseModel> Updatelist(List<TrnsEmployeeOvertime> oTrnsEmployeeOvertime)
+        public async Task<ApiResponseModel> Updatelist(List<TrnsProductStage> oTrnsProductStage)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
                 await Task.Run(() =>
                 {
-                    _DBContext.TrnsEmployeeOvertimes.UpdateRange(oTrnsEmployeeOvertime);
+                    _DBContext.TrnsProductStages.UpdateRange(oTrnsProductStage);
                     _DBContext.SaveChanges();
                     response.Id = 1;
                     response.Message = "Update successfully";

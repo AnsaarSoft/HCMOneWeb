@@ -280,105 +280,154 @@ namespace HCM.UI.Pages.MasterDataSetup
                             oListMstGldoverTimeDetail = oModel.MstGldoverTimeDetails.ToList();
                             oListMstGldleaveDedDetail = oModel.MstGldleaveDedDetails.ToList();
 
-                            if (oListGldearningDetail.Count != oListElementEarn.Count())
-                            {
+                            //if (oListGldearningDetail.Count != oListElementEarn.Count())
+                            //{
                                 foreach (var item in oListElementEarn)
                                 {
                                     var restitem = oListGldearningDetail.Where(x => x.ElementId == item.Id).FirstOrDefault();
+                                    if(restitem != null)
+                                    {
+                                        oListGldearningDetail.Where(x => x.ElementId == item.Id).FirstOrDefault().UpdateDate = DateTime.Now; 
+                                        oListGldearningDetail.Where(x => x.ElementId == item.Id).FirstOrDefault().UpdatedBy = LoginUser ;
+                                    }
                                     if (restitem == null && item.ElmtType == "Ear")
                                     {
                                         MstGldearningDetail mstGldearningDetail = new MstGldearningDetail();
                                         mstGldearningDetail.ElementId = item.Id;
                                         mstGldearningDetail.ElementDescription = item.Description;
+                                        mstGldearningDetail.CreateDate = DateTime.Now; 
+                                        mstGldearningDetail.UserId = LoginUser;
                                         oListGldearningDetail.Add(mstGldearningDetail);
                                     }
                                 }
-                            }
-                            if (oListMstGlddeductionDetail.Count != oListElementDeduction.Count())
-                            {
+                            //}
+                            //if (oListMstGlddeductionDetail.Count != oListElementDeduction.Count())
+                            //{
                                 foreach (var item in oListElementDeduction)
                                 {
                                     var restitem = oListMstGlddeductionDetail.Where(x => x.DeductionId == item.Id).FirstOrDefault();
+                                    if (restitem != null)
+                                    {
+                                        oListMstGlddeductionDetail.Where(x => x.DeductionId == item.Id).FirstOrDefault().UpdateDate = DateTime.Now; 
+                                        oListMstGlddeductionDetail.Where(x => x.DeductionId == item.Id).FirstOrDefault().UpdatedBy = LoginUser;
+                                    }
                                     if (restitem == null && item.ElmtType == "Ded")
                                     {
 
                                         MstGlddeductionDetail mstGlddeductionDetail = new MstGlddeductionDetail();
                                         mstGlddeductionDetail.DeductionId = item.Id;
                                         mstGlddeductionDetail.DeductionDescription = item.Description;
+                                        mstGlddeductionDetail.CreateDate = DateTime.Now;
+                                        mstGlddeductionDetail.UserId = LoginUser;
                                         oListMstGlddeductionDetail.Add(mstGlddeductionDetail);
                                     }
                                 }
-                            }
-                            if (oListGldMstGldcontribution.Count != oListElementContribution.Count())
-                            {
+                            //}
+                            //if (oListGldMstGldcontribution.Count != oListElementContribution.Count())
+                            //{
                                 foreach (var item in oListElementContribution)
                                 {
                                     var restitem = oListGldMstGldcontribution.Where(x => x.ContributionId == item.Id).FirstOrDefault();
+                                    if (restitem != null)
+                                    {
+                                        oListGldMstGldcontribution.Where(x => x.ContributionId == item.Id).FirstOrDefault().UpdateDate = DateTime.Now;
+                                        oListGldMstGldcontribution.Where(x => x.ContributionId == item.Id).FirstOrDefault().UpdatedBy = LoginUser;
+                                    }
                                     if (restitem == null && item.ElmtType == "Con")
                                     {
                                         MstGldcontribution mstGldcontribution = new MstGldcontribution();
                                         mstGldcontribution.ContributionId = item.Id;
                                         mstGldcontribution.ContributionDescription = item.Description;
+                                        mstGldcontribution.CreateDate = DateTime.Now;
+                                        mstGldcontribution.UserId = LoginUser;
                                         oListGldMstGldcontribution.Add(mstGldcontribution);
                                     }
                                 }
-                            }
-                            if (oListGldMstGldloansDetail.Count != oListMstLoan.Count())
-                            {
+                            //}
+                            //if (oListGldMstGldloansDetail.Count != oListMstLoan.Count())
+                            //{
                                 foreach (var item in oListMstLoan)
                                 {
                                     var restitem = oListGldMstGldloansDetail.Where(x => x.LoanId == item.Id).FirstOrDefault();
+                                    if (restitem != null)
+                                    {
+                                         oListGldMstGldloansDetail.Where(x => x.LoanId == item.Id).FirstOrDefault().UpdateDate = DateTime.Now;
+                                        oListGldMstGldloansDetail.Where(x => x.LoanId == item.Id).FirstOrDefault().UpdatedBy = LoginUser;
+                                    }
                                     if (restitem == null)
                                     {
                                         MstGldloansDetail mstGldloansDetail= new MstGldloansDetail();
                                         mstGldloansDetail.LoanId = item.Id;
                                         mstGldloansDetail.LoanDescription= item.Description;
+                                        mstGldloansDetail.CreateDate = DateTime.Now;
+                                        mstGldloansDetail.UserId = LoginUser;
                                         oListGldMstGldloansDetail.Add(mstGldloansDetail);
                                     }
                                 }
-                            }
-                            if (oListMstGldadvanceDetail.Count != oListMstAdvance.Count())
-                            {
+                           // }
+                            //if (oListMstGldadvanceDetail.Count != oListMstAdvance.Count())
+                            //{
                                 foreach (var item in oListMstAdvance)
                                 {
                                     var restitem = oListMstGldadvanceDetail.Where(x => x.AdvancesId == item.Id).FirstOrDefault();
+                                    if (restitem != null)
+                                    {
+                                        oListMstGldadvanceDetail.Where(x => x.AdvancesId == item.Id).FirstOrDefault().UpdateDate = DateTime.Now;
+                                        oListMstGldadvanceDetail.Where(x => x.AdvancesId == item.Id).FirstOrDefault().UpdatedBy = LoginUser;
+                                    }
                                     if (restitem == null)
                                     {
                                         MstGldadvanceDetail mstGldadvanceDetail= new  MstGldadvanceDetail();
                                         mstGldadvanceDetail.AdvancesId= item.Id;
                                         mstGldadvanceDetail.AdvancesDescription= item.Description;
+                                        mstGldadvanceDetail.CreateDate = DateTime.Now;
+                                        mstGldadvanceDetail.UserId = LoginUser;
                                         oListMstGldadvanceDetail.Add(mstGldadvanceDetail);
                                     }
                                 }
-                            }
-                            if (oListMstGldoverTimeDetail.Count != oListMstOverTime.Count())
-                            {
+                            //}
+                            //if (oListMstGldoverTimeDetail.Count != oListMstOverTime.Count())
+                            //{
                                 foreach (var item in oListMstOverTime)
                                 {
                                     var restitem = oListMstGldoverTimeDetail.Where(x => x.OvertimeId == item.Id).FirstOrDefault();
+                                    if (restitem != null)
+                                    {
+                                        oListMstGldoverTimeDetail.Where(x => x.OvertimeId == item.Id).FirstOrDefault().UpdateDate = DateTime.Now;
+                                        oListMstGldoverTimeDetail.Where(x => x.OvertimeId == item.Id).FirstOrDefault().UpdatedBy = LoginUser;
+                                    }
                                     if (restitem == null)
                                     {
                                         MstGldoverTimeDetail mstGldoverTimeDetail = new MstGldoverTimeDetail();
                                         mstGldoverTimeDetail.OvertimeId = item.Id;
                                         mstGldoverTimeDetail.OvertimeDescription= item.Description;
+                                        mstGldoverTimeDetail.CreateDate = DateTime.Now;
+                                        mstGldoverTimeDetail.UserId = LoginUser;
                                         oListMstGldoverTimeDetail.Add(mstGldoverTimeDetail);
                                     }
                                 }
-                            }
-                            if (oListMstGldleaveDedDetail.Count != oListMstLeaveDeduction.Count())
-                            {
+                            //}
+                            //if (oListMstGldleaveDedDetail.Count != oListMstLeaveDeduction.Count())
+                            //{
                                 foreach (var item in oListMstLeaveDeduction)
                                 {
                                     var restitem = oListMstGldleaveDedDetail.Where(x => x.LeaveDedId == item.Id).FirstOrDefault();
+                                    if (restitem != null)
+                                    {
+                                        oListMstGldleaveDedDetail.Where(x => x.LeaveDedId == item.Id).FirstOrDefault().UpdateDate = DateTime.Now;
+                                        oListMstGldleaveDedDetail.Where(x => x.LeaveDedId == item.Id).FirstOrDefault().UpdatedBy = LoginUser;
+                                    }
                                     if (restitem == null)
                                     {
                                         MstGldleaveDedDetail mstGldleaveDedDetail= new MstGldleaveDedDetail();
                                         mstGldleaveDedDetail.LeaveDedId= item.Id;
                                         mstGldleaveDedDetail.LeaveDedDescription= item.Description;
+                                        mstGldleaveDedDetail.CreateDate = DateTime.Now;
+                                        mstGldleaveDedDetail.UserId = LoginUser;
                                         oListMstGldleaveDedDetail.Add(mstGldleaveDedDetail);
                                     }
                                 }
-                            }
+                            //}
                         }
                         else
                         {
@@ -410,105 +459,154 @@ namespace HCM.UI.Pages.MasterDataSetup
                             oListMstGldoverTimeDetail = oModel.MstGldoverTimeDetails.ToList();
                             oListMstGldleaveDedDetail = oModel.MstGldleaveDedDetails.ToList();
 
-                            if (oListGldearningDetail.Count != oListElementEarn.Count())
+                            //if (oListGldearningDetail.Count != oListElementEarn.Count())
+                            //{
+                            foreach (var item in oListElementEarn)
                             {
-                                foreach (var item in oListElementEarn)
+                                var restitem = oListGldearningDetail.Where(x => x.ElementId == item.Id).FirstOrDefault();
+                                if (restitem != null)
                                 {
-                                    var restitem = oListGldearningDetail.Where(x => x.ElementId == item.Id).FirstOrDefault();
-                                    if (restitem == null && item.ElmtType == "Ear")
-                                    {
-                                        MstGldearningDetail mstGldearningDetail = new MstGldearningDetail();
-                                        mstGldearningDetail.ElementId = item.Id;
-                                        mstGldearningDetail.ElementDescription = item.Description;
-                                        oListGldearningDetail.Add(mstGldearningDetail);
-                                    }
+                                    oListGldearningDetail.Where(x => x.ElementId == item.Id).FirstOrDefault().UpdateDate = DateTime.Now;
+                                    oListGldearningDetail.Where(x => x.ElementId == item.Id).FirstOrDefault().UpdatedBy = LoginUser;
+                                }
+                                if (restitem == null && item.ElmtType == "Ear")
+                                {
+                                    MstGldearningDetail mstGldearningDetail = new MstGldearningDetail();
+                                    mstGldearningDetail.ElementId = item.Id;
+                                    mstGldearningDetail.ElementDescription = item.Description;
+                                    mstGldearningDetail.CreateDate = DateTime.Now;
+                                    mstGldearningDetail.UserId = LoginUser;
+                                    oListGldearningDetail.Add(mstGldearningDetail);
                                 }
                             }
-                            if (oListMstGlddeductionDetail.Count != oListElementDeduction.Count())
+                            //}
+                            //if (oListMstGlddeductionDetail.Count != oListElementDeduction.Count())
+                            //{
+                            foreach (var item in oListElementDeduction)
                             {
-                                foreach (var item in oListElementDeduction)
+                                var restitem = oListMstGlddeductionDetail.Where(x => x.DeductionId == item.Id).FirstOrDefault();
+                                if (restitem != null)
                                 {
-                                    var restitem = oListMstGlddeductionDetail.Where(x => x.DeductionId == item.Id).FirstOrDefault();
-                                    if (restitem == null && item.ElmtType == "Ded")
-                                    {
+                                    oListMstGlddeductionDetail.Where(x => x.DeductionId == item.Id).FirstOrDefault().UpdateDate = DateTime.Now;
+                                    oListMstGlddeductionDetail.Where(x => x.DeductionId == item.Id).FirstOrDefault().UpdatedBy = LoginUser;
+                                }
+                                if (restitem == null && item.ElmtType == "Ded")
+                                {
 
-                                        MstGlddeductionDetail mstGlddeductionDetail = new MstGlddeductionDetail();
-                                        mstGlddeductionDetail.DeductionId = item.Id;
-                                        mstGlddeductionDetail.DeductionDescription = item.Description;
-                                        oListMstGlddeductionDetail.Add(mstGlddeductionDetail);
-                                    }
+                                    MstGlddeductionDetail mstGlddeductionDetail = new MstGlddeductionDetail();
+                                    mstGlddeductionDetail.DeductionId = item.Id;
+                                    mstGlddeductionDetail.DeductionDescription = item.Description;
+                                    mstGlddeductionDetail.CreateDate = DateTime.Now;
+                                    mstGlddeductionDetail.UserId = LoginUser;
+                                    oListMstGlddeductionDetail.Add(mstGlddeductionDetail);
                                 }
                             }
-                            if (oListGldMstGldcontribution.Count != oListElementContribution.Count())
+                            //}
+                            //if (oListGldMstGldcontribution.Count != oListElementContribution.Count())
+                            //{
+                            foreach (var item in oListElementContribution)
                             {
-                                foreach (var item in oListElementContribution)
+                                var restitem = oListGldMstGldcontribution.Where(x => x.ContributionId == item.Id).FirstOrDefault();
+                                if (restitem != null)
                                 {
-                                    var restitem = oListGldMstGldcontribution.Where(x => x.ContributionId == item.Id).FirstOrDefault();
-                                    if (restitem == null && item.ElmtType == "Con")
-                                    {
-                                        MstGldcontribution mstGldcontribution = new MstGldcontribution();
-                                        mstGldcontribution.ContributionId = item.Id;
-                                        mstGldcontribution.ContributionDescription = item.Description;
-                                        oListGldMstGldcontribution.Add(mstGldcontribution);
-                                    }
+                                    oListGldMstGldcontribution.Where(x => x.ContributionId == item.Id).FirstOrDefault().UpdateDate = DateTime.Now;
+                                    oListGldMstGldcontribution.Where(x => x.ContributionId == item.Id).FirstOrDefault().UpdatedBy = LoginUser;
+                                }
+                                if (restitem == null && item.ElmtType == "Con")
+                                {
+                                    MstGldcontribution mstGldcontribution = new MstGldcontribution();
+                                    mstGldcontribution.ContributionId = item.Id;
+                                    mstGldcontribution.ContributionDescription = item.Description;
+                                    mstGldcontribution.CreateDate = DateTime.Now;
+                                    mstGldcontribution.UserId = LoginUser;
+                                    oListGldMstGldcontribution.Add(mstGldcontribution);
                                 }
                             }
-                            if (oListGldMstGldloansDetail.Count != oListMstLoan.Count())
+                            //}
+                            //if (oListGldMstGldloansDetail.Count != oListMstLoan.Count())
+                            //{
+                            foreach (var item in oListMstLoan)
                             {
-                                foreach (var item in oListMstLoan)
+                                var restitem = oListGldMstGldloansDetail.Where(x => x.LoanId == item.Id).FirstOrDefault();
+                                if (restitem != null)
                                 {
-                                    var restitem = oListGldMstGldloansDetail.Where(x => x.LoanId == item.Id).FirstOrDefault();
-                                    if (restitem == null)
-                                    {
-                                        MstGldloansDetail mstGldloansDetail = new MstGldloansDetail();
-                                        mstGldloansDetail.LoanId = item.Id;
-                                        mstGldloansDetail.LoanDescription = item.Description;
-                                        oListGldMstGldloansDetail.Add(mstGldloansDetail);
-                                    }
+                                    oListGldMstGldloansDetail.Where(x => x.LoanId == item.Id).FirstOrDefault().UpdateDate = DateTime.Now;
+                                    oListGldMstGldloansDetail.Where(x => x.LoanId == item.Id).FirstOrDefault().UpdatedBy = LoginUser;
+                                }
+                                if (restitem == null)
+                                {
+                                    MstGldloansDetail mstGldloansDetail = new MstGldloansDetail();
+                                    mstGldloansDetail.LoanId = item.Id;
+                                    mstGldloansDetail.LoanDescription = item.Description;
+                                    mstGldloansDetail.CreateDate = DateTime.Now;
+                                    mstGldloansDetail.UserId = LoginUser;
+                                    oListGldMstGldloansDetail.Add(mstGldloansDetail);
                                 }
                             }
-                            if (oListMstGldadvanceDetail.Count != oListMstAdvance.Count())
+                            // }
+                            //if (oListMstGldadvanceDetail.Count != oListMstAdvance.Count())
+                            //{
+                            foreach (var item in oListMstAdvance)
                             {
-                                foreach (var item in oListMstAdvance)
+                                var restitem = oListMstGldadvanceDetail.Where(x => x.AdvancesId == item.Id).FirstOrDefault();
+                                if (restitem != null)
                                 {
-                                    var restitem = oListMstGldadvanceDetail.Where(x => x.AdvancesId == item.Id).FirstOrDefault();
-                                    if (restitem == null)
-                                    {
-                                        MstGldadvanceDetail mstGldadvanceDetail = new MstGldadvanceDetail();
-                                        mstGldadvanceDetail.AdvancesId = item.Id;
-                                        mstGldadvanceDetail.AdvancesDescription = item.Description;
-                                        oListMstGldadvanceDetail.Add(mstGldadvanceDetail);
-                                    }
+                                    oListMstGldadvanceDetail.Where(x => x.AdvancesId == item.Id).FirstOrDefault().UpdateDate = DateTime.Now;
+                                    oListMstGldadvanceDetail.Where(x => x.AdvancesId == item.Id).FirstOrDefault().UpdatedBy = LoginUser;
+                                }
+                                if (restitem == null)
+                                {
+                                    MstGldadvanceDetail mstGldadvanceDetail = new MstGldadvanceDetail();
+                                    mstGldadvanceDetail.AdvancesId = item.Id;
+                                    mstGldadvanceDetail.AdvancesDescription = item.Description;
+                                    mstGldadvanceDetail.CreateDate = DateTime.Now;
+                                    mstGldadvanceDetail.UserId = LoginUser;
+                                    oListMstGldadvanceDetail.Add(mstGldadvanceDetail);
                                 }
                             }
-                            if (oListMstGldoverTimeDetail.Count != oListMstOverTime.Count())
+                            //}
+                            //if (oListMstGldoverTimeDetail.Count != oListMstOverTime.Count())
+                            //{
+                            foreach (var item in oListMstOverTime)
                             {
-                                foreach (var item in oListMstOverTime)
+                                var restitem = oListMstGldoverTimeDetail.Where(x => x.OvertimeId == item.Id).FirstOrDefault();
+                                if (restitem != null)
                                 {
-                                    var restitem = oListMstGldoverTimeDetail.Where(x => x.OvertimeId == item.Id).FirstOrDefault();
-                                    if (restitem == null)
-                                    {
-                                        MstGldoverTimeDetail mstGldoverTimeDetail = new MstGldoverTimeDetail();
-                                        mstGldoverTimeDetail.OvertimeId = item.Id;
-                                        mstGldoverTimeDetail.OvertimeDescription = item.Description;
-                                        oListMstGldoverTimeDetail.Add(mstGldoverTimeDetail);
-                                    }
+                                    oListMstGldoverTimeDetail.Where(x => x.OvertimeId == item.Id).FirstOrDefault().UpdateDate = DateTime.Now;
+                                    oListMstGldoverTimeDetail.Where(x => x.OvertimeId == item.Id).FirstOrDefault().UpdatedBy = LoginUser;
+                                }
+                                if (restitem == null)
+                                {
+                                    MstGldoverTimeDetail mstGldoverTimeDetail = new MstGldoverTimeDetail();
+                                    mstGldoverTimeDetail.OvertimeId = item.Id;
+                                    mstGldoverTimeDetail.OvertimeDescription = item.Description;
+                                    mstGldoverTimeDetail.CreateDate = DateTime.Now;
+                                    mstGldoverTimeDetail.UserId = LoginUser;
+                                    oListMstGldoverTimeDetail.Add(mstGldoverTimeDetail);
                                 }
                             }
-                            if (oListMstGldleaveDedDetail.Count != oListMstLeaveDeduction.Count())
+                            //}
+                            //if (oListMstGldleaveDedDetail.Count != oListMstLeaveDeduction.Count())
+                            //{
+                            foreach (var item in oListMstLeaveDeduction)
                             {
-                                foreach (var item in oListMstLeaveDeduction)
+                                var restitem = oListMstGldleaveDedDetail.Where(x => x.LeaveDedId == item.Id).FirstOrDefault();
+                                if (restitem != null)
                                 {
-                                    var restitem = oListMstGldleaveDedDetail.Where(x => x.LeaveDedId == item.Id).FirstOrDefault();
-                                    if (restitem == null)
-                                    {
-                                        MstGldleaveDedDetail mstGldleaveDedDetail = new MstGldleaveDedDetail();
-                                        mstGldleaveDedDetail.LeaveDedId = item.Id;
-                                        mstGldleaveDedDetail.LeaveDedDescription = item.Description;
-                                        oListMstGldleaveDedDetail.Add(mstGldleaveDedDetail);
-                                    }
+                                    oListMstGldleaveDedDetail.Where(x => x.LeaveDedId == item.Id).FirstOrDefault().UpdateDate = DateTime.Now;
+                                    oListMstGldleaveDedDetail.Where(x => x.LeaveDedId == item.Id).FirstOrDefault().UpdatedBy = LoginUser;
+                                }
+                                if (restitem == null)
+                                {
+                                    MstGldleaveDedDetail mstGldleaveDedDetail = new MstGldleaveDedDetail();
+                                    mstGldleaveDedDetail.LeaveDedId = item.Id;
+                                    mstGldleaveDedDetail.LeaveDedDescription = item.Description;
+                                    mstGldleaveDedDetail.CreateDate = DateTime.Now;
+                                    mstGldleaveDedDetail.UserId = LoginUser;
+                                    oListMstGldleaveDedDetail.Add(mstGldleaveDedDetail);
                                 }
                             }
+                            //}
                         }
                         else
                         {
@@ -912,8 +1010,6 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Logs.GenerateLogs(ex);
             }
         }
-
-
 
         private async Task OpenDialogCOA_DBS(DialogOptions options)
         {

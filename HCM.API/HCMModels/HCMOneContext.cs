@@ -553,6 +553,7 @@ namespace HCM.API.HCMModels
         public virtual DbSet<TrnsProbationDetail> TrnsProbationDetails { get; set; }
         public virtual DbSet<TrnsProbationHead> TrnsProbationHeads { get; set; }
         public virtual DbSet<TrnsProductStage> TrnsProductStages { get; set; }
+        public virtual DbSet<TrnsProductStageItem> TrnsProductStageItems { get; set; }
         public virtual DbSet<TrnsProductStageStation> TrnsProductStageStations { get; set; }
         public virtual DbSet<TrnsProductStageTeamLead> TrnsProductStageTeamLeads { get; set; }
         public virtual DbSet<TrnsPromotionAdvice> TrnsPromotionAdvices { get; set; }
@@ -20976,15 +20977,41 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.UserId).HasMaxLength(10);
             });
 
-            modelBuilder.Entity<TrnsProductStageStation>(entity =>
+            modelBuilder.Entity<TrnsProductStageItem>(entity =>
             {
-                entity.Property(e => e.Code).HasMaxLength(20);
+                entity.ToTable("TrnsProductStageItem");
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
-                entity.Property(e => e.Description).HasMaxLength(250);
+                entity.Property(e => e.ItemCode).HasMaxLength(20);
+
+                entity.Property(e => e.ItemDescription).HasMaxLength(250);
+
+                entity.Property(e => e.ItemGrpCode).HasMaxLength(50);
 
                 entity.Property(e => e.Psid).HasColumnName("PSId");
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(10);
+
+                entity.Property(e => e.UserId).HasMaxLength(10);
+
+                entity.HasOne(d => d.Ps)
+                    .WithMany(p => p.TrnsProductStageItems)
+                    .HasForeignKey(d => d.Psid)
+                    .HasConstraintName("FK_TrnsProductStageItem");
+            });
+
+            modelBuilder.Entity<TrnsProductStageStation>(entity =>
+            {
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Psid).HasColumnName("PSId");
+
+                entity.Property(e => e.StationCode).HasMaxLength(20);
+
+                entity.Property(e => e.StationDescription).HasMaxLength(250);
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 

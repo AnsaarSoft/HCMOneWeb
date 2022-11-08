@@ -2,15 +2,14 @@
 @using HCM.API.Models
 
 <div class="container-fluid page-content-setting">
-    <div class="row">
-        <div class="col-sm-12">
-            <h3>Holiday Setup</h3>
-            <MudDivider />
+     <div class="row">
+        <div class="col-sm-10">
+            <h3>Holiday</h3>
             <MudDivider />
         </div>
-        @*<div class="col-sm-1">
-        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.List" Title="View All" />
-        </div>*@
+        <div class="col-sm-2 custom-btn-design text-right">
+            <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Filled.RemoveRedEye" Color="Color.Info" Size="Size.Small">View All</MudButton>
+        </div>
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
