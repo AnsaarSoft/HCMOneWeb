@@ -241,7 +241,7 @@
             <MudDivider />
             <MudGrid class="search-action-block align-items-center">
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField @bind-Value="oModelMstHolidayDetail.Remarks" Required="true" RequiredError="Description is required" T="string" MaxLength="50" Counter="50" HelperText="Enter Description" Immediate="true" Clearable="true" Label="Description*" Variant="Variant.Text"
+                    <MudTextField @bind-Value="oModelMstHolidayDetail.Remarks" Required="true" RequiredError="Description is required" T="string" MaxLength="50" Counter="50" HelperText="Enter Description" Immediate="true" Clearable="true" Label="Description" Variant="Variant.Text"
                               Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
                 <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
@@ -252,6 +252,66 @@
                     <MudSwitch @bind-Checked="oModelMstHolidayDetail.FlgActive" ThumbIcon="@(oModelMstHolidayDetail.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModelMstHolidayDetail.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModelMstHolidayDetail.FlgActive==true ? Color.Info : Color.Error)">
                         <span>@(oModelMstHolidayDetail.FlgActive == true ? "Active" : "In Active")</span>
                     </MudSwitch>
+                </MudItem>
+            </MudGrid>
+        }
+        @if (DialogFor == "ProductStageItem")
+        {
+                <MudText Typo="Typo.h6">Prodution Stage Item</MudText>
+                <MudSpacer />
+                <MudDivider />
+                <MudGrid class="search-action-block align-items-center">
+                  <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" ReadOnly="@true" @bind-Value="oModelTrnsProductStageItem.ItemCode" HelperText="select Item Code" Immediate="true" Label="Item*" Variant="Variant.Text"
+                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogStageItem(maxWidth))" AdornmentAriaLabel="" />
+                </MudItem>
+                    <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" @bind-Value="oModelTrnsProductStageItem.ItemDescription" HelperText="Insert Description" Immediate="true" Label="Description*" Variant="Variant.Text"
+                              Adornment="Adornment.Start" />
+                      </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" ReadOnly="@true" @bind-Value="oModelTrnsProductStageItem.ItemGrpCode" HelperText="Select Group Code" Immediate="true" Label="Group Code*" Variant="Variant.Text"
+                              Adornment="Adornment.Start" />
+                    </MudItem>
+              </MudGrid>
+        }
+        @if (DialogFor == "ProductStageTeamLead")
+        {
+            <MudText Typo="Typo.h6">Prodution Stage Team Lead</MudText>
+            <MudSpacer />
+            <MudDivider />
+            <MudGrid class="search-action-block align-items-center">
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                        <MudTextField T="string" ReadOnly="@true" @bind-Value="oModelTrnsProductStageTeamLead.EmpCode" HelperText="Select Employee" Immediate="true" Label="Employee Code*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogStageTeamLead(maxWidth))" />
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" ReadOnly="@true" @bind-Value="oModelTrnsProductStageTeamLead.EmpName" HelperText="Select EmpLoyee Name" Immediate="true" Label="EmpLoyee Name*" Variant="Variant.Text"
+                              Adornment="Adornment.Start" />
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" ReadOnly="@true" @bind-Value="oModelTrnsProductStageTeamLead.Department" HelperText="Select Department" Immediate="true" Label="Department*" Variant="Variant.Text"
+                              Adornment="Adornment.Start" />
+                </MudItem>
+                 <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" ReadOnly="@true" @bind-Value="oModelTrnsProductStageTeamLead.Designation" HelperText="Select Designation" Immediate="true" Label="Designation*" Variant="Variant.Text"
+                              Adornment="Adornment.Start" />
+                </MudItem>
+            </MudGrid>
+        }
+        @if (DialogFor == "ProductStageStation")
+        {
+            <MudText Typo="Typo.h6">Prodution Stage Station</MudText>
+            <MudSpacer />
+            <MudDivider />
+            <MudGrid class="search-action-block align-items-center">
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" ReadOnly="@true" @bind-Value="oModelTrnsProductStageStation.StationCode" HelperText="Select Station" Immediate="true" Label="Station Code*" Variant="Variant.Text"
+                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogStageStation(maxWidth))" AdornmentAriaLabel="" />
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" ReadOnly="@true" @bind-Value="oModelTrnsProductStageStation.StationDescription" HelperText="Select Description" Immediate="true" Label="Station Description*" Variant="Variant.Text"
+                              Adornment="Adornment.Start" />
                 </MudItem>
             </MudGrid>
         }

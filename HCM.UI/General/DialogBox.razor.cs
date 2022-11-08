@@ -14,6 +14,7 @@ using MudBlazor;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Blazored.LocalStorage;
+using HCM.UI.Interfaces.SAPData;
 
 namespace HCM.UI.General
 {
@@ -114,7 +115,15 @@ namespace HCM.UI.General
 
         [Inject]
         public IMstGldetermination _mstGldetermination { get; set; }
+        
+        [Inject]
+        public IMstHoliday _mstHoliday{ get; set; }
 
+        [Inject]
+        public IMstStation _mstStation { get; set; }
+
+        [Inject]
+        public ISAPData _SAPData { get; set; }
         #endregion
 
         #region Variables
@@ -150,9 +159,12 @@ namespace HCM.UI.General
         private bool FilterFuncUserDataAccess(UserDataAccess element) => FilterFuncUserDataAccess(element, searchString1);
         private bool FilterFuncMstLocation(MstLocation element) => FilterFuncMstLocation(element, searchString1);
         private bool FilterFuncMstDepartment(MstDepartment element) => FilterFuncMstDepartment(element, searchString1);
-        private bool FilterFuncMstchartofAccount(MstchartofAccount element) => FilterFuncMstchartofAccount(element, searchString1);
         private bool FilterFuncVMlocGlDertmination(VMLoc_Gldetermination element) => FilterFuncVMlocGlDertmination(element, searchString1);
         private bool FilterFuncVMDeptGldetermination(VMDept_Gldetermination element) => FilterFuncVMDeptGldetermination(element, searchString1);
+        private bool FilterFuncMstchartofAccount(MstchartofAccount element) => FilterFuncMstchartofAccount(element, searchString1);
+        private bool FilterFuncMstHoliday(MstHoliday1 element) => FilterFuncMstHoliday(element, searchString1);
+        private bool FilterFuncMstStation(MstStation element) => FilterFuncMstStation(element, searchString1);
+        private bool FilterFuncSAPModels(SAPModels element) => FilterFuncSAPModels(element, searchString1);
         void Cancel() => MudDialog.Cancel();
 
         private MudTable<MstElement> _tableElement;
@@ -263,6 +275,18 @@ namespace HCM.UI.General
         private MudTable<MstchartofAccount> _tableMstchartofAccount;
         MstchartofAccount oModelMstchartofAccount = new MstchartofAccount();
         List<MstchartofAccount> oListMstchartofAccount = new List<MstchartofAccount>();
+
+        private MudTable<MstHoliday1> _tableMstHoliday;
+        MstHoliday1 oModelMstHoliday = new MstHoliday1();
+        List<MstHoliday1> oListMstHoliday = new List<MstHoliday1>();
+
+        private MudTable<MstStation> _tableMstStation;
+        MstStation oModelMstStation = new MstStation();
+        List<MstStation> oListMstStation = new List<MstStation>();
+
+        private MudTable<SAPModels> _tableSAPModels;
+        SAPModels oModelSAPModels = new SAPModels();
+        List<SAPModels> oListSAPModels = new List<SAPModels>();
 
         #endregion
 
@@ -1080,7 +1104,6 @@ namespace HCM.UI.General
             return false;
         }
 
-
         private async Task GetAllMstchartofAccount()
         {
             try
@@ -1109,6 +1132,92 @@ namespace HCM.UI.General
             //if (element.DesignationName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             //    return true;
             //if (element.LocationName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            return false;
+        }
+
+        private async Task GetAllMstHoliday()
+        {
+            try
+            {
+                oListMstHoliday = await _mstHoliday.GetAllData();
+                if (oListMstHoliday?.Count == 0 || oListMstHoliday == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncMstHoliday(MstHoliday1 element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.Holiday.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.HolidayName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            //if (element.JoiningDate.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            //if (element.DesignationName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            //if (element.LocationName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            return false;
+        }
+
+        private async Task GetAllMstStation()
+        {
+            try
+            { 
+                oListMstStation = await _mstStation.GetAllData();
+                if (oListMstStation?.Count == 0 || oListMstStation == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncMstStation(MstStation element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.Code.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.Description.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
+        }
+
+        private async Task GetAllSAPModels()
+        {
+            try
+            {
+                oListSAPModels = await _SAPData.GetAllItemsFromSAP();
+                if (oListSAPModels?.Count == 0 || oListSAPModels == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncSAPModels(SAPModels element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.ItemCode.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.ItemName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            //if (element.ItemGroupCode.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             //    return true;
             return false;
         }
@@ -1229,6 +1338,18 @@ namespace HCM.UI.General
                     else if (DialogFor == "COA")
                     {
                         await GetAllMstchartofAccount();
+                    }
+                    else if (DialogFor == "Holiday")
+                    {
+                        await GetAllMstHoliday();
+                    }
+                    else if (DialogFor == "Station")
+                    {
+                        await GetAllMstStation();
+                    }
+                    else if (DialogFor == "StageItem")
+                    {
+                        await GetAllSAPModels();
                     }
                 }
                 else
@@ -2078,6 +2199,101 @@ namespace HCM.UI.General
             }
         }
 
+        public void RowClickEventMstHoliday(TableRowClickEventArgs<MstHoliday1> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncFilterFuncMstHoliday(MstHoliday1 element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableMstHoliday.SelectedItem != null && _tableMstHoliday.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public void RowClickEventMstStation(TableRowClickEventArgs<MstStation> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncFilterFuncMstStation(MstStation element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableMstStation.SelectedItem != null && _tableMstStation.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public void RowClickEventSAPModels(TableRowClickEventArgs<SAPModels> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncFilterFuncSAPModels(SAPModels element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableSAPModels.SelectedItem != null && _tableSAPModels.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
         private void Submit()
         {
             try
@@ -2195,6 +2411,18 @@ namespace HCM.UI.General
                 else if (DialogFor == "COA")
                 {
                     MudDialog.Close(DialogResult.Ok(oModelMstchartofAccount));
+                }
+                else if (DialogFor == "Holiday")
+                {
+                    MudDialog.Close(DialogResult.Ok(oModelMstHoliday));
+                }
+                else if (DialogFor == "Station")
+                {
+                    MudDialog.Close(DialogResult.Ok(oModelMstStation));
+                }
+                else if (DialogFor == "StageItem")
+                {
+                    MudDialog.Close(DialogResult.Ok(oModelSAPModels));
                 }
                 else
                 {

@@ -210,6 +210,7 @@
                             <MudTh>Name</MudTh>
                             <MudTh>Date of Joining</MudTh>
                             <MudTh>Designation</MudTh>
+                            <MudTh>Department</MudTh>
                             <MudTh>Location</MudTh>
                         </HeaderContent>
                         <RowTemplate>
@@ -218,6 +219,7 @@
                             <MudTd DataLabel="Code">@context.FirstName @context.MiddleName @context.LastName</MudTd>
                             <MudTd DataLabel="Code">@Convert.ToDateTime(context.JoiningDate).ToString("MM/dd/yyyy")</MudTd>
                             <MudTd DataLabel="Code">@context.DesignationName</MudTd>
+                            <MudTd DataLabel="Code">@context.DepartmentName</MudTd>
                             <MudTd DataLabel="Code">@context.LocationName</MudTd>
                         </RowTemplate>
                         <PagerContent>
@@ -726,6 +728,80 @@
                             <MudTd DataLabel="Code">@context.Code</MudTd>
                             <MudTd DataLabel="Code">@context.Description</MudTd>
                             <MudTd DataLabel="Code">@context.FlgActive</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                }
+                @if (oListMstHoliday?.Count > 0 && DialogFor == "Holiday")
+                {
+                    <MudTable Items="@oListMstHoliday" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstHoliday1,bool>(FilterFuncMstHoliday)"
+                      Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableMstHoliday" RowClassFunc="@SelectedRowClassFuncFilterFuncMstHoliday" OnRowClick="RowClickEventMstHoliday" T="MstHoliday1" @bind-SelectedItem="oModelMstHoliday">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Holiday</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Code</MudTh>
+                            <MudTh>Description</MudTh>
+                            <MudTh>Active</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code">@context.Holiday</MudTd>
+                            <MudTd DataLabel="Code">@context.HolidayName</MudTd>
+                            <MudTd DataLabel="Code">@context.FlgActive</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                }
+
+                @if (oListMstStation?.Count > 0 && DialogFor == "Station")
+                {
+                    <MudTable Items="@oListMstStation" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstStation,bool>(FilterFuncMstStation)"
+                      Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableMstStation" RowClassFunc="@SelectedRowClassFuncFilterFuncMstStation" OnRowClick="RowClickEventMstStation" T="MstStation" @bind-SelectedItem="oModelMstStation">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Holiday</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Code</MudTh>
+                            <MudTh>Description</MudTh>
+                            <MudTh>Active</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code">@context.Code</MudTd>
+                            <MudTd DataLabel="Code">@context.Description</MudTd>
+                            <MudTd DataLabel="Code">@context.FlgActive</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                }
+
+                @if (oListSAPModels?.Count > 0 && DialogFor == "StageItem")
+                {
+                    <MudTable Items="@oListSAPModels" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<SAPModels,bool>(FilterFuncSAPModels)"
+                      Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableSAPModels" RowClassFunc="@SelectedRowClassFuncFilterFuncSAPModels" OnRowClick="RowClickEventSAPModels" T="SAPModels" @bind-SelectedItem="oModelSAPModels">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Stage Item</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Code</MudTh>
+                            <MudTh>Description</MudTh>
+                            <MudTh>Group Code</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code">@context.ItemCode</MudTd>
+                            <MudTd DataLabel="Code">@context.ItemName</MudTd>
+                            <MudTd DataLabel="Code">@context.ItemGroupCode</MudTd>
                         </RowTemplate>
                         <PagerContent>
                             <MudTablePager />

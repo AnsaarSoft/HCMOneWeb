@@ -148,7 +148,7 @@ namespace HCM.API.Repository.SAPData
                         SAPModels oItemObjects = new SAPModels();
                         oItemObjects.ItemCode = Convert.ToString(rdr["ItemCode"]);
                         oItemObjects.ItemName = Convert.ToString(rdr["ItemName"]);
-                        oItemObjects.ItemGroupCode = Convert.ToString(rdr["ItemGroupCode"]);
+                        oItemObjects.ItemGroupCode = Convert.ToInt32(rdr["ItmsGrpCod"]);
                         oList.Add(oItemObjects);
                     }
                     conn.Close();

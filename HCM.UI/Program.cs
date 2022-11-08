@@ -10,6 +10,7 @@ using HCM.UI.Data.Attendance;
 using HCM.UI.Data.Authorization;
 using HCM.UI.Data.Batch;
 using HCM.UI.Data.Bonus;
+using HCM.UI.Data.ClientSpecific;
 using HCM.UI.Data.EmployeeMasterSetup;
 using HCM.UI.Data.Loan;
 using HCM.UI.Data.MasterData;
@@ -23,6 +24,7 @@ using HCM.UI.Interfaces.Attendance;
 using HCM.UI.Interfaces.Authorization;
 using HCM.UI.Interfaces.Batch;
 using HCM.UI.Interfaces.Bonus;
+using HCM.UI.Interfaces.ClientSpecific;
 using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.Loan;
 using HCM.UI.Interfaces.MasterData;
@@ -111,6 +113,7 @@ builder.Services.AddScoped<IUserDataAccess, UserDataAccessService>();
 builder.Services.AddScoped<IMstchartofAccount, MstchartofAccountService>();
 builder.Services.AddScoped<IMstHoliday, MstHolidayService>();
 builder.Services.AddScoped<IMstGldetermination, MstGldeterminationService>();
+builder.Services.AddScoped<ITrnsProductStage, TrnsProductStageService>();
 //Configuration Start
 
 Settings.APIBaseURL = builder.Configuration.GetValue<string>("APIBaseUrl");

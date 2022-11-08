@@ -48,21 +48,55 @@ namespace HCM.UI.Pages.MasterDataSetup
         #endregion
 
         #region Functions
-
+        private async Task OpenDialog(DialogOptions options)
+        {
+            try
+            {
+                var parameters = new DialogParameters();
+                parameters.Add("DialogFor", "Holiday");
+                var dialog = Dialog.Show<DialogBox>("", parameters, options);
+                var result = await dialog.Result;
+                if (!result.Cancelled)
+                {
+                    var res = (MstHoliday1)result.Data;
+                    oModel = res;
+                    oListMstHolidayDetail = res.MstHolidayDetails;
+                    foreach (var item in oListMstHolidayDetail)
+                    {
+                        item.UpdateDate = DateTime.Now;
+                        item.UpdatedBy = LoginUser;
+                    }
+                    DisbaledCode = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
         private async Task OpenAddDialog(DialogOptions options)
         {
             try
             {
                 var parameters = new DialogParameters();
                 parameters.Add("DialogFor", "HolidayDetail");
-               // parameters.Add("EmpId", oModel.EmployeeId);
+                // parameters.Add("EmpId", oModel.EmployeeId);
                 var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
                 var result = await dialog.Result;
                 if (!result.Cancelled)
                 {
                     var res = (MstHolidayDetail)result.Data;
+                    res.FlgActive = true;
                     oListMstHolidayDtl.Add(res);
-                   oListMstHolidayDetail = oListMstHolidayDtl;
+                    oListMstHolidayDetail = oListMstHolidayDtl;
+                    if (oModel.Id ==0)
+                    {
+                        foreach (var item in oListMstHolidayDetail)
+                        {
+                            item.CreateDate = DateTime.Now;
+                            item.UserId= LoginUser;
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -77,7 +111,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 var parameters = new DialogParameters();
                 parameters.Add("oDetailParaMstHolidayDetail", oDetailPara);
                 parameters.Add("DialogFor", "HolidayDetail");
-               // parameters.Add("EmpId", oModel.EmployeeId);
+                // parameters.Add("EmpId", oModel.EmployeeId);
                 var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
                 var result = await dialog.Result;
 
@@ -141,14 +175,15 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
-                if (!string.IsNullOrWhiteSpace(oModel.Holiday) && !string.IsNullOrWhiteSpace(oModel.HolidayName) && oListMstHolidayDetail.Count()>0)
+                oModel.MstHolidayDetails = oListMstHolidayDetail.ToList();
+                if (!string.IsNullOrWhiteSpace(oModel.Holiday) && !string.IsNullOrWhiteSpace(oModel.HolidayName) && oListMstHolidayDetail.Count() > 0)
                 {
-                    if (oList.Where(x => x.Holiday.Trim().ToLowerInvariant() == oModel.Holiday.Trim().ToLowerInvariant()).Count() > 0)
-                    {
-                        Snackbar.Add(oModel.Holiday + " : is Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                    }
-                    else
-                    {
+                    //if (oList.Where(x => x.Holiday.Trim().ToLowerInvariant() == oModel.Holiday.Trim().ToLowerInvariant()).Count() > 0)
+                    //{
+                    //    Snackbar.Add(oModel.Holiday + " : is Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                    //}
+                    //else
+                    //{
                         if (oModel.Id == 0)
                         {
                             oModel.UserId = LoginUser;
@@ -159,7 +194,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                             oModel.UpdatedBy = LoginUser;
                             res = await _mstHoliday.Update(oModel);
                         }
-                    }
+                   // }
                     if (res != null && res.Id == 1)
                     {
                         Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
@@ -186,7 +221,6 @@ namespace HCM.UI.Pages.MasterDataSetup
                 return null;
             }
         }
-
         private async void Reset()
         {
             try
@@ -202,7 +236,6 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = false;
             }
         }
-
         private async Task GetAllHoliday()
         {
             try
@@ -214,7 +247,6 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Logs.GenerateLogs(ex);
             }
         }
-
         private bool FilterFunc(MstHolidayDetail element, string searchString1)
         {
             if (string.IsNullOrWhiteSpace(searchString1))
@@ -227,8 +259,6 @@ namespace HCM.UI.Pages.MasterDataSetup
                 return true;
             return false;
         }
-
-
         public void RemoveRecord(int LineNum)
         {
             try
@@ -246,7 +276,6 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
 
         }
-
         public void EditRecord(int LineNum)
         {
             try
@@ -258,7 +287,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     oModel.Holiday = res.Holiday;
                     oModel.HolidayName = res.HolidayName;
                     oModel.FlgActive = res.FlgActive;
-                    if (oModel.Id !=0)
+                    if (oModel.Id != 0)
                     {
                         oModel.CreateDate = res.CreateDate;
                         oModel.UserId = res.UserId;

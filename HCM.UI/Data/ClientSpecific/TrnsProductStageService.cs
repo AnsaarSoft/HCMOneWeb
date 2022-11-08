@@ -1,30 +1,26 @@
 ﻿using HCM.API.General;
-using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.API.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
+using HCM.UI.Interfaces.ClientSpecific;
 using RestSharp;
 
-
-namespace HCM.UI.Data.EmployeeMasterSetup
+namespace HCM.UI.Data.ClientSpecific
 {
-    public class TrnsEmployeeOverTimeService : ITrnsEmployeeOverTime
+    public class TrnsProductStageService : ITrnsProductStage
     {
         private readonly RestClient _restClient;
-        public TrnsEmployeeOverTimeService()
+        public TrnsProductStageService()
         {
             _restClient = new RestClient(Settings.APIBaseURL);
         }
-
-        public async Task<List<TrnsEmployeeOvertime>> GetAllData()
+        public async Task<List<TrnsProductStage>> GetAllData()
         {
             try
             {
-                List<TrnsEmployeeOvertime> oList = new List<TrnsEmployeeOvertime>();
+                List<TrnsProductStage> oList = new List<TrnsProductStage>();
 
-                var request = new RestRequest("EmployeeMasterData/getAllEmpOT", Method.Get) { RequestFormat = DataFormat.Json };
+                var request = new RestRequest("ClientSpecific/getAllProductStage", Method.Get) { RequestFormat = DataFormat.Json };
 
-                var response = await _restClient.ExecuteAsync<List<TrnsEmployeeOvertime>>(request);
+                var response = await _restClient.ExecuteAsync<List<TrnsProductStage>>(request);
 
                 if (response.IsSuccessful)
                 {
@@ -41,13 +37,13 @@ namespace HCM.UI.Data.EmployeeMasterSetup
                 return null;
             }
         }
-        public async Task<ApiResponseModel> Insert(TrnsEmployeeOvertime oTrnsEmployeeOvertime)
+        public async Task<ApiResponseModel> Insert(TrnsProductStage oTrnsProductStage)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                var request = new RestRequest("EmployeeMasterData/addEmpOT", Method.Post);
-                request.AddJsonBody(oTrnsEmployeeOvertime);
+                var request = new RestRequest("ClientSpecific/addProductStage", Method.Post);
+                request.AddJsonBody(oTrnsProductStage);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {
@@ -70,13 +66,13 @@ namespace HCM.UI.Data.EmployeeMasterSetup
                 return response;
             }
         }
-        public async Task<ApiResponseModel> Update(TrnsEmployeeOvertime oTrnsEmployeeOvertime)
+        public async Task<ApiResponseModel> Update(TrnsProductStage oTrnsProductStage)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                var request = new RestRequest("EmployeeMasterData/updateEmpOT", Method.Post);
-                request.AddJsonBody(oTrnsEmployeeOvertime);
+                var request = new RestRequest("ClientSpecific/updateProductStage", Method.Post);
+                request.AddJsonBody(oTrnsProductStage);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {
@@ -99,18 +95,18 @@ namespace HCM.UI.Data.EmployeeMasterSetup
                 return response;
             }
         }
-        public async Task<ApiResponseModel> Insertlist(List<TrnsEmployeeOvertime> oTrnsEmployeeOvertime)
+        public async Task<ApiResponseModel> Insertlist(List<TrnsProductStage> oTrnsProductStage)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                var request = new RestRequest("EmployeeMasterData/addEmpOTList", Method.Post);
-                request.AddJsonBody(oTrnsEmployeeOvertime);
+                var request = new RestRequest("ClientSpecific/addProductStageList", Method.Post);
+                request.AddJsonBody(oTrnsProductStage);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {
                     response.Id = 1;
-                    response.Message = "Saved successfully";                    
+                    response.Message = "Saved successfully";
                     return response;
                 }
                 else
@@ -128,18 +124,18 @@ namespace HCM.UI.Data.EmployeeMasterSetup
                 return response;
             }
         }
-        public async Task<ApiResponseModel> Updatelist(List<TrnsEmployeeOvertime> oTrnsEmployeeOvertime)
+        public async Task<ApiResponseModel> Updatelist(List<TrnsProductStage> oTrnsProductStage)
         {
             ApiResponseModel response = new ApiResponseModel();
             try
             {
-                var request = new RestRequest("EmployeeMasterData/updateEmpOTList", Method.Post);
-                request.AddJsonBody(oTrnsEmployeeOvertime);
+                var request = new RestRequest("ClientSpecific/updateProductStageList", Method.Post);
+                request.AddJsonBody(oTrnsProductStage);
                 var res = await _restClient.ExecuteAsync(request);
                 if (res.IsSuccessful)
                 {
                     response.Id = 1;
-                    response.Message = "Update successfully";                    
+                    response.Message = "Update successfully";
                     return response;
                 }
                 else
@@ -157,7 +153,5 @@ namespace HCM.UI.Data.EmployeeMasterSetup
                 return response;
             }
         }
-
-
     }
 }
