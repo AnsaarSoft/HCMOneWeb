@@ -217,9 +217,9 @@ namespace HCM.UI.Pages.ClientSpecific
                     oTempList = oListstageItem.ToList();
                     foreach (var item in res)
                     {
-                        var Items = oListstageItem.Where(x => x.ItemCode == item.ItemCode).FirstOrDefault();
-                        if (Items == null)
-                        {
+                        //var Items = oListstageItem.Where(x => x.ItemCode == item.ItemCode).FirstOrDefault();
+                        //if (Items == null)
+                        //{
                             TrnsProductStageItem trnsProductStageItem = new TrnsProductStageItem();
                             trnsProductStageItem.ItemCode = item.ItemCode;
                             trnsProductStageItem.ItemDescription = item.ItemName;
@@ -228,7 +228,7 @@ namespace HCM.UI.Pages.ClientSpecific
                             trnsProductStageItem.UserId = LoginUser;
                             trnsProductStageItem.CreateDate = DateTime.Now;
                             oTempList.Add(trnsProductStageItem);
-                        }
+                        //}
                     }
                     oListstageItem = oTempList;
                 }
