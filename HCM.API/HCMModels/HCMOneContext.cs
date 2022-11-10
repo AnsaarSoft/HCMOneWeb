@@ -13824,11 +13824,6 @@ namespace HCM.API.HCMModels
                     .WithMany(p => p.TrnsAttendanceRegisters)
                     .HasForeignKey(d => d.PeriodId)
                     .HasConstraintName("FK_TrnsAttendanceRegister_CfgPeriodDates");
-
-                entity.HasOne(d => d.Shift)
-                    .WithMany(p => p.TrnsAttendanceRegisters)
-                    .HasForeignKey(d => d.ShiftId)
-                    .HasConstraintName("FK_TrnsAttendanceRegisterDetail_MstShifts");
             });
 
             modelBuilder.Entity<TrnsAttendanceRegisterDetail>(entity =>

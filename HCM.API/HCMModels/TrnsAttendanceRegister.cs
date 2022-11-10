@@ -66,7 +66,6 @@ namespace HCM.API.HCMModels
         public virtual MstLeaveType LeaveTypeNavigation { get; set; }
         public virtual MstOverTime OttypeNavigation { get; set; }
         public virtual CfgPeriodDate Period { get; set; }
-        public virtual MstShift Shift { get; set; }
         public virtual ICollection<TrnsAttendanceRegisterDetail> TrnsAttendanceRegisterDetails { get; set; }
     }
 }

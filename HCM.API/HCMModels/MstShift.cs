@@ -12,7 +12,6 @@ namespace HCM.API.HCMModels
             MstShiftDetails = new HashSet<MstShiftDetail>();
             NeskTrnsAttendanceRegisters = new HashSet<NeskTrnsAttendanceRegister>();
             TrnsAttendanceRegisterTs = new HashSet<TrnsAttendanceRegisterT>();
-            TrnsAttendanceRegisters = new HashSet<TrnsAttendanceRegister>();
             TrnsEmployeeWddetails = new HashSet<TrnsEmployeeWddetail>();
             TrnsTextileGroupAttendanceRegs = new HashSet<TrnsTextileGroupAttendanceReg>();
         }
@@ -52,7 +51,6 @@ namespace HCM.API.HCMModels
         public virtual ICollection<MstShiftDetail> MstShiftDetails { get; set; }
         public virtual ICollection<NeskTrnsAttendanceRegister> NeskTrnsAttendanceRegisters { get; set; }
         public virtual ICollection<TrnsAttendanceRegisterT> TrnsAttendanceRegisterTs { get; set; }
-        public virtual ICollection<TrnsAttendanceRegister> TrnsAttendanceRegisters { get; set; }
         public virtual ICollection<TrnsEmployeeWddetail> TrnsEmployeeWddetails { get; set; }
         public virtual ICollection<TrnsTextileGroupAttendanceReg> TrnsTextileGroupAttendanceRegs { get; set; }
     }

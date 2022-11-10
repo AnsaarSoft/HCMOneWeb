@@ -20,7 +20,7 @@ namespace HCM.API.Repository.ShiftManagement
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.TrnsAttendanceRegisters.Include(x => x.Shift).ToList();
+                    oList = _DBContext.TrnsAttendanceRegisters.ToList();
                 });
             }
             catch (Exception ex)
