@@ -539,6 +539,8 @@ namespace HCM.API.HCMModels
         public virtual DbSet<TrnsPayeslab> TrnsPayeslabs { get; set; }
         public virtual DbSet<TrnsPayeslabDetail> TrnsPayeslabDetails { get; set; }
         public virtual DbSet<TrnsPeerFeedback360> TrnsPeerFeedback360s { get; set; }
+        public virtual DbSet<TrnsPerPieceTransaction> TrnsPerPieceTransactions { get; set; }
+        public virtual DbSet<TrnsPerPieceTransactionDetail> TrnsPerPieceTransactionDetails { get; set; }
         public virtual DbSet<TrnsPerformanceAppraisal> TrnsPerformanceAppraisals { get; set; }
         public virtual DbSet<TrnsPerformanceAppraisal360> TrnsPerformanceAppraisal360s { get; set; }
         public virtual DbSet<TrnsPerformanceAppraisal360Detail> TrnsPerformanceAppraisal360Details { get; set; }
@@ -20305,6 +20307,79 @@ namespace HCM.API.HCMModels
                     .WithMany(p => p.TrnsPeerFeedback360s)
                     .HasForeignKey(d => d.PeerId)
                     .HasConstraintName("FK_TrnsPeerFeedback360_MstEmployee");
+            });
+
+            modelBuilder.Entity<TrnsPerPieceTransaction>(entity =>
+            {
+                entity.ToTable("TrnsPerPieceTransaction");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.DocDate).HasColumnType("datetime");
+
+                entity.Property(e => e.DocStatus).HasMaxLength(50);
+
+                entity.Property(e => e.ProductionDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Pscode)
+                    .HasMaxLength(50)
+                    .HasColumnName("PSCode");
+
+                entity.Property(e => e.Psid).HasColumnName("PSid");
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(20);
+
+                entity.Property(e => e.UserId).HasMaxLength(20);
+            });
+
+            modelBuilder.Entity<TrnsPerPieceTransactionDetail>(entity =>
+            {
+                entity.ToTable("TrnsPerPieceTransactionDetail");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.DepartmentName).HasMaxLength(300);
+
+                entity.Property(e => e.DesignationName).HasMaxLength(300);
+
+                entity.Property(e => e.EmpCode).HasMaxLength(50);
+
+                entity.Property(e => e.EmpName).HasMaxLength(250);
+
+                entity.Property(e => e.EndTime).HasMaxLength(10);
+
+                entity.Property(e => e.FkId).HasColumnName("Fk_ID");
+
+                entity.Property(e => e.ItemCode).HasMaxLength(50);
+
+                entity.Property(e => e.ItemName).HasMaxLength(300);
+
+                entity.Property(e => e.PayrollPeriod).HasMaxLength(30);
+
+                entity.Property(e => e.StartTime).HasMaxLength(10);
+
+                entity.Property(e => e.StattionCode).HasMaxLength(50);
+
+                entity.Property(e => e.StattionName).HasMaxLength(300);
+
+                entity.Property(e => e.SubItemName).HasMaxLength(300);
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(20);
+
+                entity.Property(e => e.UserId).HasMaxLength(20);
+
+                entity.HasOne(d => d.Fk)
+                    .WithMany(p => p.TrnsPerPieceTransactionDetails)
+                    .HasForeignKey(d => d.FkId)
+                    .HasConstraintName("FK__TrnsPerPi__Updat__79D55E91");
             });
 
             modelBuilder.Entity<TrnsPerformanceAppraisal>(entity =>

@@ -126,6 +126,7 @@ builder.Services.AddScoped<IMstHoliDay, MstHolidayRepo>();
 builder.Services.AddScoped<IMstGldetermination, MstGldeterminationRepo>();
 builder.Services.AddScoped<ITrnsProductStage, TrnsProductStageRepo>();
 builder.Services.AddScoped<IMstTarget, MstTargetRepo>();
+builder.Services.AddScoped<ITrnsPerPiece, TrnsPerPieceRepo>();
 
 Settings.TitleConfig = builder.Configuration.GetValue<string>("TitleConfig");
 Settings.EmailConfig = builder.Configuration.GetValue<string>("EmailConfig");
@@ -149,3 +150,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+//Scaffold-DbContext "Server=PK-LHR-MME-133;Database=HCMOne;User ID=sa;Password=super;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir HCMModels -Force
