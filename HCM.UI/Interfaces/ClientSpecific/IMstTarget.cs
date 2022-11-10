@@ -1,6 +1,6 @@
 ﻿using HCM.API.Models;
 
-namespace HCM.API.Interfaces.ClientSpecific
+namespace HCM.UI.Interfaces.ClientSpecific
 {
     public interface IMstTarget
     {

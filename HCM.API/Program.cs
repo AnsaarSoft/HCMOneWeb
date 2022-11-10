@@ -124,6 +124,7 @@ builder.Services.AddScoped<IMstchartofAccount, MstchartofAccountRepo>();
 builder.Services.AddScoped<IMstHoliDay, MstHolidayRepo>();
 builder.Services.AddScoped<IMstGldetermination, MstGldeterminationRepo>();
 builder.Services.AddScoped<ITrnsProductStage, TrnsProductStageRepo>();
+builder.Services.AddScoped<IMstTarget, MstTargetRepo>();
 
 Settings.TitleConfig = builder.Configuration.GetValue<string>("TitleConfig");
 Settings.EmailConfig = builder.Configuration.GetValue<string>("EmailConfig");

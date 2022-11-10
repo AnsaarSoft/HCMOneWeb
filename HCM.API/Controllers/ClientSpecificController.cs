@@ -11,10 +11,12 @@ namespace HCM.API.Controllers
     public class ClientSpecificController : ControllerBase
     {
         private ITrnsProductStage _trnsProductStage;
+        private IMstTarget  _mstTarget;
 
-        public ClientSpecificController(ITrnsProductStage trnsProductStage)
+        public ClientSpecificController(ITrnsProductStage trnsProductStage, IMstTarget mstTarget)
         {
             _trnsProductStage = trnsProductStage;
+            _mstTarget = mstTarget;
         }
 
         #region Production  Stages
@@ -140,5 +142,127 @@ namespace HCM.API.Controllers
         }
         #endregion
 
+        #region Mst Target
+
+        [Route("getAllMstTarget")]
+        [HttpGet]
+        public async Task<IActionResult> getAllMstTarget()
+        {
+            List<MstTarget> oList = new List<MstTarget>();
+            try
+            {
+                oList = await _mstTarget.GetAllData();
+                if (oList == null)
+                {
+                    return BadRequest(oList);
+                }
+                else
+                {
+                    return Ok(oList);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addMstTarget")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] MstTarget pMstTarget)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstTarget.Insert(pMstTarget);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateMstTarget")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] MstTarget pMstTarget)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstTarget.Update(pMstTarget);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addMstTargetList")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] List<MstTarget> pMstTarget)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstTarget.Insert(pMstTarget);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updateMstTargetList")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] List<MstTarget> pMstTarget)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _mstTarget.Update(pMstTarget);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+        #endregion
     }
 }

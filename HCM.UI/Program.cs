@@ -114,6 +114,7 @@ builder.Services.AddScoped<IMstchartofAccount, MstchartofAccountService>();
 builder.Services.AddScoped<IMstHoliday, MstHolidayService>();
 builder.Services.AddScoped<IMstGldetermination, MstGldeterminationService>();
 builder.Services.AddScoped<ITrnsProductStage, TrnsProductStageService>();
+builder.Services.AddScoped<IMstTarget, MstTargetService>();
 //Configuration Start
 
 Settings.APIBaseURL = builder.Configuration.GetValue<string>("APIBaseUrl");

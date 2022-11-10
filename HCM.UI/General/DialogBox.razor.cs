@@ -71,9 +71,11 @@ namespace HCM.UI.General
         [Parameter]
         public string DialogFor { get; set; }
 
-
         [Parameter]
         public IEnumerable<MstElementLink> PayrollElements { get; set; }
+
+        [Parameter]
+        public int productStageID { get; set; }
 
         [Inject]
         public ITrnsEmployeeResign _trnsEmployeeResign { get; set; }
@@ -169,6 +171,7 @@ namespace HCM.UI.General
         private bool FilterFuncMstStation(MstStation element) => FilterFuncMstStation(element, searchString1);
         private bool FilterFuncSAPModels(SAPModels element) => FilterFuncSAPModels(element, searchString1);
         private bool FilterFuncTrnsProductStage(TrnsProductStage element) => FilterFuncTrnsProductStage(element, searchString1);
+        private bool FilterFuncTrnsProductStageItem(TrnsProductStageItem element) => FilterFuncTrnsProductStageItem(element, searchString1);
         void Cancel() => MudDialog.Cancel();
 
         private MudTable<MstElement> _tableElement;
@@ -297,6 +300,10 @@ namespace HCM.UI.General
         private MudTable<TrnsProductStage> _tableTrnsProductStage;
         TrnsProductStage oModelTrnsProductStage = new TrnsProductStage();
         List<TrnsProductStage> oListTrnsProductStage = new List<TrnsProductStage>();
+
+        private MudTable<TrnsProductStageItem> _tableTrnsProductStageItem;
+        TrnsProductStageItem oModelTrnsProductStageItem = new TrnsProductStageItem();
+        private IEnumerable<TrnsProductStageItem> oListTrnsProductStageItem = new List<TrnsProductStageItem>();
 
         #endregion
 
@@ -1072,6 +1079,7 @@ namespace HCM.UI.General
             //    return true;
             return false;
         }
+
         private Task SetVMDeptGlDertmination()
         {
             try
@@ -1237,6 +1245,13 @@ namespace HCM.UI.General
             try
             {
                 oListTrnsProductStage = await _trnsProductStage.GetAllData();
+                if (DialogFor == "TrnsProductStageItem")
+                {
+                    TrnsProductStage trnsProductStage = new TrnsProductStage();
+                    trnsProductStage = oListTrnsProductStage.Where(x=>x.Id == productStageID).FirstOrDefault();
+                    oListTrnsProductStageItem = trnsProductStage.TrnsProductStageItems.Where(x=>x.Psid == trnsProductStage.Id).ToList();
+                }
+
                 if (oListTrnsProductStage?.Count == 0 || oListTrnsProductStage == null)
                 {
                     Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
@@ -1254,6 +1269,24 @@ namespace HCM.UI.General
             if (element.Code.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
             if (element.Description.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            //if (element.ItemGroupCode.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            return false;
+        }
+        private bool FilterFuncTrnsProductStageItem(TrnsProductStageItem element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.ItemCode.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.ItemDescription.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.SubItemDescription.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.ItemGrpCode.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.ItemGrpName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
             //if (element.ItemGroupCode.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             //    return true;
@@ -1390,6 +1423,10 @@ namespace HCM.UI.General
                         await GetAllSAPModels();
                     }
                     else if (DialogFor == "TrnsProductStage")
+                    {
+                        await GetAllTrnsProductStage();
+                    }
+                    else if (DialogFor == "TrnsProductStageItem")
                     {
                         await GetAllTrnsProductStage();
                     }
@@ -2369,6 +2406,38 @@ namespace HCM.UI.General
             }
         }
 
+        public void RowClickEventTrnsProductStageItem(TableRowClickEventArgs<TrnsProductStageItem> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncFilterFuncTrnsProductStageItem(TrnsProductStageItem element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableTrnsProductStageItem.SelectedItem != null && _tableTrnsProductStageItem.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
         private void Submit()
         {
             try
@@ -2504,6 +2573,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "TrnsProductStage")
                 {
                     MudDialog.Close(DialogResult.Ok(oModelTrnsProductStage));
+                }
+                else if (DialogFor == "TrnsProductStageItem")
+                {
+                    MudDialog.Close(DialogResult.Ok(oModelTrnsProductStageItem));
                 }
                 //else if (DialogFor == "ElementTransaction" && oListElement.Count() > 0)
                 //{
