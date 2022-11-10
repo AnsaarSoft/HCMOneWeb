@@ -709,7 +709,6 @@
                         </PagerContent>
                     </MudTable>
                 }
-
                 @if (oListMstchartofAccount?.Count > 0 && DialogFor == "COA")
                 {
                     <MudTable Items="@oListMstchartofAccount" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstchartofAccount,bool>(FilterFuncMstchartofAccount)"
@@ -758,7 +757,6 @@
                         </PagerContent>
                     </MudTable>
                 }
-
                 @if (oListMstStation?.Count > 0 && DialogFor == "Station")
                 {
                     <MudTable Items="@oListMstStation" Class="table-setting" @bind-SelectedItems="@HashStation" MultiSelection="true" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstStation,bool>(FilterFuncMstStation)"
@@ -783,10 +781,9 @@
                         </PagerContent>
                     </MudTable>
                 }
-
                 @if (oListSAPModels?.Count > 0 && DialogFor == "StageItem")
                 {
-                    <MudTable Items="@oListSAPModels" Class="table-setting" @bind-SelectedItems="@HashSAPModels" MultiSelection="true"  Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<SAPModels,bool>(FilterFuncSAPModels)"
+                    <MudTable Items="@oListSAPModels" Class="table-setting" @bind-SelectedItems="@HashSAPModels" MultiSelection="true" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<SAPModels,bool>(FilterFuncSAPModels)"
                       Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableSAPModels" RowClassFunc="@SelectedRowClassFuncFilterFuncSAPModels" OnRowClick="RowClickEventSAPModels" T="SAPModels" @bind-SelectedItem="oModelSAPModels">
                         <ToolBarContent>
                             <MudText Typo="Typo.h6">Stage Item</MudText>
@@ -808,8 +805,7 @@
                         </PagerContent>
                     </MudTable>
                 }
-
-                 @if (oListTrnsProductStage?.Count > 0 && DialogFor == "TrnsProductStage")
+                @if (oListTrnsProductStage?.Count > 0 && DialogFor == "TrnsProductStage")
                 {
                     <MudTable Items="@oListTrnsProductStage" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsProductStage,bool>(FilterFuncTrnsProductStage)"
                       Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableTrnsProductStage" RowClassFunc="@SelectedRowClassFuncFilterFuncTrnsProductStage" OnRowClick="RowClickEventTrnsProductStage" T="TrnsProductStage" @bind-SelectedItem="oModelTrnsProductStage">
@@ -829,6 +825,34 @@
                             <MudTd DataLabel="Code">@context.Description</MudTd>
                             <MudTd DataLabel="Code">@context.Rework</MudTd>
                             <MudTd DataLabel="Code">@context.FlgActive</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                }
+                @if (oListTrnsProductStage?.Count > 0 && DialogFor == "TrnsProductStageItem")
+                {
+                    <MudTable Items="@oListTrnsProductStageItem" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsProductStageItem,bool>(FilterFuncTrnsProductStageItem)"
+                      Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableTrnsProductStageItem" RowClassFunc="@SelectedRowClassFuncFilterFuncTrnsProductStageItem" OnRowClick="RowClickEventTrnsProductStageItem" T="TrnsProductStageItem" @bind-SelectedItem="oModelTrnsProductStageItem">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Production Stage Item</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Code</MudTh>
+                            <MudTh>Description</MudTh>
+                            <MudTh>SubItemDescription</MudTh>
+                            <MudTh>ItemGrpCode</MudTh>
+                            <MudTh>ItemGrpName</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code">@context.ItemCode</MudTd>
+                            <MudTd DataLabel="Code">@context.ItemDescription</MudTd>
+                            <MudTd DataLabel="Code">@context.SubItemDescription</MudTd>
+                            <MudTd DataLabel="Code">@context.ItemGrpCode</MudTd>
+                            <MudTd DataLabel="Code">@context.ItemGrpName</MudTd>
                         </RowTemplate>
                         <PagerContent>
                             <MudTablePager />

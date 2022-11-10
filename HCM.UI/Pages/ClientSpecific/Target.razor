@@ -1,0 +1,100 @@
+﻿@page "/Target"
+@using HCM.API.Models
+
+<div class="container-fluid page-content-setting">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>Target Setup</h3>
+            <MudDivider />
+        </div>
+        @*<div class="col-sm-1">
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.List" Title="View All" />
+        </div>*@
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudGrid class="search-action-block align-items-center block-design">
+                 <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTextField T="string" ReadOnly="true" @bind-Value="oModel.Pscode" HelperText="Select production stage" Immediate="true" Label="Production stage*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DocumentScanner" OnAdornmentClick="@((e) => OpenDialog(maxWidth))" />
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" ReadOnly="true" @bind-Value="oModel.ItemCode" HelperText="Select Target Code" Immediate="true" Label="Target Code*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DocumentScanner" OnAdornmentClick="@((e) => OpenDialogItem(maxWidth))" />
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudTextField T="string" ReadOnly="true" @bind-Value="oModel.ItemName" MaxLength="100" Counter="100" HelperText="Enter Target Name" Immediate="true" Clearable="true" Label="Target Name*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    @*TextChanged="@(()=>CalculateAmount((int)context.EmpId))"*@
+                    <MudNumericField @bind-Value="oModel.FrmPieces" Min="0" Immediate="true" Clearable="true" Label="From Pieces*" HelperText="Enter From Pieces" Variant="Variant.Text"
+                                                 Adornment="Adornment.Start" Format="0.00" />
+                </MudItem>
+                 <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModel.ToPieces" Min="0" Immediate="true" Clearable="true" Label="To Pieces*" HelperText="Enter To Pieces" Variant="Variant.Text"
+                                                 Adornment="Adornment.Start" Format="0.00" />
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudNumericField @bind-Value="oModel.FixValue" Min="0" Immediate="true" Clearable="true" Label="Fix Value*" HelperText="Enter Fix Value" Variant="Variant.Text"
+                                                 Adornment="Adornment.Start" Format="0.00" />
+                </MudItem>
+                @*<MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                    <MudSwitch @bind-Checked="@oModel.FlgActive" ThumbIcon="@(oModel.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgActive==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgActive == true ? "Active" : "In Active")</span>
+                    </MudSwitch>
+                </MudItem>*@
+                <MudItem xs="12" sm="12" md="12" lg="12">
+                    @if (Loading)
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudText>Loading...</MudText>
+                            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2" class="text-right custom-btn-design">
+                            <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small">Save</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
+                        </MudItem>
+                    }
+                </MudItem>
+            </MudGrid>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudCard Elevation="5">
+                <MudCardContent>
+                    <MudTable Items="@oList" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstTarget,bool>(FilterFunc)">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Target</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Target Code</MudTh>
+                            <MudTh>Target Name</MudTh>
+                            <MudTh>From Pieces</MudTh>
+                            <MudTh>To Pieces</MudTh>
+                            <MudTh>Fix Values</MudTh>
+                            <MudTh>Action</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Target Code">@context.ItemCode</MudTd>
+                            <MudTd DataLabel="Target Name">@context.ItemName</MudTd>
+                            <MudTd DataLabel="From Pieces">@context.FrmPieces</MudTd>
+                            <MudTd DataLabel="To Pieces<">@context.ToPieces</MudTd>
+                            <MudTd DataLabel="Fix Value">@context.FixValue</MudTd>
+                            <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id) )" Title="Edit"></MudIconButton></MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                </MudCardContent>
+            </MudCard>
+        </div>
+    </div>
+</div>
