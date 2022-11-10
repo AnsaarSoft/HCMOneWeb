@@ -44,9 +44,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<HCMOneContext>(options =>
-options.UseSqlServer(
-    builder.Configuration.GetConnectionString("DefaultConnection")
-    ));
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+});
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = "JwtBearer";
