@@ -32,27 +32,35 @@
 
                 <MudItem xs="4" sm="4" md="4" lg="4">
                     <MudSelect @bind-Value="oModel.OverTimeId" Label="Over time Type*" HelperText="Select Overtime" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
-                        @foreach (MstLove Love in oLoveList.Where(x => x.Type == "Val_Type").ToList())
+                        @foreach (MstOverTime OverTime in oListOverTime)
                         {
-                            <MudSelectItem Value="(int?)Love.Id">@Love.Code - @Love.Value</MudSelectItem>
+                            <MudSelectItem Value="(int?)OverTime.Id">@OverTime.Description</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudSelect @bind-Value="oModel.OffDayOverTime" Label="Off Day Over time Type*" HelperText="Select Offday Overtime" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (MstOverTime OverTime in oListOverTime)
+                        {
+                            <MudSelectItem Value="(int?)OverTime.Id">@OverTime.Description</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="4" sm="4" md="4" lg="4">
+                    <MudSelect @bind-Value="oModel.HoliDayOverTime" Label="Holiday Over time Type*" HelperText="Select Holiday Overtime" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (MstOverTime OverTime in oListOverTime)
+                        {
+                            <MudSelectItem Value="(int?)OverTime.Id">@OverTime.Description</MudSelectItem>
                         }
                     </MudSelect>
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
                     <MudSelect @bind-Value="oModel.DeductionRuleId" Label="Deduction Type*" HelperText="Select Deduction" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
-                        @foreach (MstLove Love in oLoveList.Where(x => x.Type == "Val_Type").ToList())
+                        @foreach (MstDeductionRule Deduction in oListDeduction)
                         {
-                            <MudSelectItem Value="(int?)Love.Id">@Love.Code - @Love.Value</MudSelectItem>
+                            <MudSelectItem Value="(int?)Deduction.Id">@Deduction.Value</MudSelectItem>
                         }
                     </MudSelect>
-                </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.HoliDayOverTime" Min="0" HelperText="Enter Holiday Time" Immediate="true" Clearable="true" Label="Holiday Over Time*"
-                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text"> </MudNumericField>
-                </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.OffDayOverTime" Min="0" HelperText="Enter Off Day Over Time" Immediate="true" Clearable="true" Label="Off Day Over Time*"
-                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text"> </MudNumericField>
                 </MudItem>
                 <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right">
                     <MudSwitch @bind-Checked="@oModel.FlgOverTime" ThumbIcon="@(oModel.FlgOverTime==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgOverTime==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgOverTime==true ? Color.Info : Color.Error)">

@@ -28,7 +28,14 @@ namespace HCM.UI.Pages.MasterDataSetup
         public IMstLove _mstLove { get; set; }
 
         [Inject]
+        public IMstOverTime _mstOverTime { get; set; }
+
+        [Inject]
         public ILocalStorageService _localStorage { get; set; }
+
+        [Inject]
+        public IMstDeductionRule _mstDeductionRule { get; set; }
+
         private string LoginUser = "";
 
         #endregion
@@ -49,6 +56,10 @@ namespace HCM.UI.Pages.MasterDataSetup
         private IEnumerable<MstShift> oList = new List<MstShift>();
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
         DialogOptions FullView = new DialogOptions() { MaxWidth = MaxWidth.ExtraExtraLarge, FullWidth = true, CloseButton = true, DisableBackdropClick = true, CloseOnEscapeKey = true };
+
+        private IEnumerable<MstOverTime> oListOverTime = new List<MstOverTime>();
+
+        private IEnumerable<MstDeductionRule> oListDeduction = new List<MstDeductionRule>();
 
         #endregion
 
@@ -282,6 +293,31 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
+        private async Task GetAllOverTime()
+        {
+            try
+            {
+                oListOverTime = await _mstOverTime.GetAllData();
+                oListOverTime = oListOverTime.Where(x => x.FlgActive == true).ToList();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+
+        private async Task GetAllDeductionRule()
+        {
+            try
+            {
+                oListDeduction = await _mstDeductionRule.GetAllData();
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+
         public void EditRecord(int LineNum)
         {
             try
@@ -320,16 +356,15 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    oModel.HoliDayOverTime = 0;
                     oModel.FlgHoliDayOverTime = true;
-
-                    oModel.OffDayOverTime = 0;
                     oModel.FlgOffDayOverTime = true;
 
                     oModel.FlgActive = true;
                     //oModel.FlgOverTime = true;
                     oModel.FlgOtwrkHrs = true;
                     await GetAllLove();
+                    await GetAllOverTime();
+                    await GetAllDeductionRule();
                     //await GetAllShift();
                 }
                 else
