@@ -761,7 +761,7 @@
 
                 @if (oListMstStation?.Count > 0 && DialogFor == "Station")
                 {
-                    <MudTable Items="@oListMstStation" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstStation,bool>(FilterFuncMstStation)"
+                    <MudTable Items="@oListMstStation" Class="table-setting" @bind-SelectedItems="@HashStation" MultiSelection="true" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstStation,bool>(FilterFuncMstStation)"
                       Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableMstStation" RowClassFunc="@SelectedRowClassFuncFilterFuncMstStation" OnRowClick="RowClickEventMstStation" T="MstStation" @bind-SelectedItem="oModelMstStation">
                         <ToolBarContent>
                             <MudText Typo="Typo.h6">Holiday</MudText>
@@ -786,7 +786,7 @@
 
                 @if (oListSAPModels?.Count > 0 && DialogFor == "StageItem")
                 {
-                    <MudTable Items="@oListSAPModels" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<SAPModels,bool>(FilterFuncSAPModels)"
+                    <MudTable Items="@oListSAPModels" Class="table-setting" @bind-SelectedItems="@HashSAPModels" MultiSelection="true"  Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<SAPModels,bool>(FilterFuncSAPModels)"
                       Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableSAPModels" RowClassFunc="@SelectedRowClassFuncFilterFuncSAPModels" OnRowClick="RowClickEventSAPModels" T="SAPModels" @bind-SelectedItem="oModelSAPModels">
                         <ToolBarContent>
                             <MudText Typo="Typo.h6">Stage Item</MudText>
@@ -802,6 +802,33 @@
                             <MudTd DataLabel="Code">@context.ItemCode</MudTd>
                             <MudTd DataLabel="Code">@context.ItemName</MudTd>
                             <MudTd DataLabel="Code">@context.ItemGroupCode</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                }
+
+                 @if (oListTrnsProductStage?.Count > 0 && DialogFor == "TrnsProductStage")
+                {
+                    <MudTable Items="@oListTrnsProductStage" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsProductStage,bool>(FilterFuncTrnsProductStage)"
+                      Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableTrnsProductStage" RowClassFunc="@SelectedRowClassFuncFilterFuncTrnsProductStage" OnRowClick="RowClickEventTrnsProductStage" T="TrnsProductStage" @bind-SelectedItem="oModelTrnsProductStage">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Production Stage</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Code</MudTh>
+                            <MudTh>Description</MudTh>
+                            <MudTh>Rework</MudTh>
+                            <MudTh>Active</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code">@context.Code</MudTd>
+                            <MudTd DataLabel="Code">@context.Description</MudTd>
+                            <MudTd DataLabel="Code">@context.Rework</MudTd>
+                            <MudTd DataLabel="Code">@context.FlgActive</MudTd>
                         </RowTemplate>
                         <PagerContent>
                             <MudTablePager />

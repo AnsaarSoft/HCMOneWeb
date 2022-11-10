@@ -1,27 +1,27 @@
 ﻿@page "/ProductionStage"
 @using HCM.API.Models
 @using System.Globalization
-<PageTitle>Gl Determination</PageTitle>
+<PageTitle>Production Stage</PageTitle>
 
 <div class="container-fluid page-content-setting">
     <div class="row">
-        <div class="col-sm-11">
+        <div class="col-sm-10">
             <h3>Production Stage</h3>
             <MudDivider />
         </div>
-        <div class="col-sm-1">
-            @* <MudFab Color="Color.Primary" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Material.Filled.List" Title="View All" />*@
+        <div class="col-sm-2 custom-btn-design text-right">
+            <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Filled.RemoveRedEye" Color="Color.Info" Size="Size.Small">View All</MudButton>
         </div>
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
             <MudGrid class="search-action-block align-items-center block-design">
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisbaledCode" MaxLength="20" Counter="20" HelperText="Enter Holiday Code" Immediate="true" Clearable="true" Label="Holiday Code*" Variant="Variant.Text"
+                    <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisbaledCode" MaxLength="20" Counter="20" HelperText="Enter Production Stage Code" Immediate="true" Clearable="true" Label="Production Stage Code*" Variant="Variant.Text"
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="100" Counter="100" HelperText="Enter Holiday Name" Immediate="true" Clearable="true" Label="Holiday Name*" Variant="Variant.Text"
+                    <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="100" Counter="100" HelperText="Enter Production Stage Description" Immediate="true" Clearable="true" Label="Production Stage Description*" Variant="Variant.Text"
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
                 <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
@@ -67,28 +67,28 @@
                                         <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
                                         <MudSpacer />
                                         <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right custom-btn-design" style="justify-content: flex-end;">
-                                            <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialogStageItem(maxWidth))" StartIcon="@Icons.Material.Filled.Add" Color="Color.Success" Size="Size.Small">Add Details</MudButton>
+                                            <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialogStageItem1(maxWidth))" StartIcon="@Icons.Material.Filled.Add" Color="Color.Success" Size="Size.Small">Add Details</MudButton>
                                         </MudItem>
                                     </ToolBarContent>
                                     <HeaderContent>
-                                        <MudTh>Item Code</MudTh>
                                         <MudTh>Item Description</MudTh>
-                                        <MudTh>Item Group Code</MudTh>
+                                        <MudTh>Sub Item Description</MudTh>
+                                        <MudTh>Item Group Decription</MudTh>
                                         <MudTh>Action</MudTh>
                                     </HeaderContent>
                                     <RowTemplate>
-                                        <MudTd DataLabel="Code">
-                                            @context.ItemCode
+                                        <MudTd DataLabel="Item Description">
+                                            @context.ItemDescription
                                         </MudTd>
-                                        <MudTd DataLabel="Description">
-                                           @context.ItemDescription
+                                        <MudTd DataLabel="Sub Item Description">
+                                             <MudTextField T="string" @bind-Value="context.SubItemDescription"  Immediate="true" Clearable="true" Variant="Variant.Text"
+                                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                                         </MudTd>
-                                        <MudTd DataLabel="GroupCode">
-                                            @context.ItemGrpCode
+                                        <MudTd DataLabel="Group Decription">
+                                            @context.ItemGrpName
                                         </MudTd>
                                          <MudTd DataLabel="Action">
                                             <MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteFromFilterStageItem(context.Id))" Title="Delete"></MudIconButton>
-                                            <MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@((e) => OpenEditDialogStageItem(FullView, context))" Title="Edit"></MudIconButton>
                                         </MudTd>
                                     </RowTemplate>
                                     <PagerContent>
@@ -110,7 +110,7 @@
                                         <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
                                         <MudSpacer />
                                         <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right custom-btn-design" style="justify-content: flex-end;">
-                                            <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialogStageTeamLead(maxWidth))" StartIcon="@Icons.Material.Filled.Add" Color="Color.Success" Size="Size.Small">Add Details</MudButton>
+                                            <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialogStageTeamLead1(maxWidth))" StartIcon="@Icons.Material.Filled.Add" Color="Color.Success" Size="Size.Small">Add Details</MudButton>
                                         </MudItem>
                                     </ToolBarContent>
                                     <HeaderContent>
@@ -128,7 +128,6 @@
 
                                         <MudTd DataLabel="Action">
                                             <MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteFromFilterStageTeamLead(context.Id))" Title="Delete"></MudIconButton>
-                                            <MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@((e) => OpenEditDialogStageTeamLead(FullView, context))" Title="Edit"></MudIconButton>
                                         </MudTd>
                                     </RowTemplate>
                                     <PagerContent>
@@ -150,7 +149,7 @@
                                         <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
                                         <MudSpacer />
                                         <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right custom-btn-design" style="justify-content: flex-end;">
-                                            <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialogStageStation(maxWidth))" StartIcon="@Icons.Material.Filled.Add" Color="Color.Success" Size="Size.Small">Add Details</MudButton>
+                                            <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialogStageStation1(maxWidth))" StartIcon="@Icons.Material.Filled.Add" Color="Color.Success" Size="Size.Small">Add Details</MudButton>
                                         </MudItem>
                                     </ToolBarContent>
                                     <HeaderContent>
@@ -165,7 +164,6 @@
                                         <MudTd DataLabel="Description">@context.StationDescription</MudTd>
                                           <MudTd DataLabel="Action">
                                             <MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteFromFilterStageStation(context.Id))" Title="Delete"></MudIconButton>
-                                            <MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@((e) => OpenEditDialogStageStation(FullView, context))" Title="Edit"></MudIconButton>
                                         </MudTd>
                                     </RowTemplate>
                                     <PagerContent>
