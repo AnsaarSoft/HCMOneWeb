@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Blazored.LocalStorage;
 using HCM.UI.Interfaces.SAPData;
+using HCM.UI.Interfaces.ClientSpecific;
 
 namespace HCM.UI.General
 {
@@ -115,15 +116,17 @@ namespace HCM.UI.General
 
         [Inject]
         public IMstGldetermination _mstGldetermination { get; set; }
-        
+
         [Inject]
-        public IMstHoliday _mstHoliday{ get; set; }
+        public IMstHoliday _mstHoliday { get; set; }
 
         [Inject]
         public IMstStation _mstStation { get; set; }
 
         [Inject]
         public ISAPData _SAPData { get; set; }
+        [Inject]
+        public ITrnsProductStage _trnsProductStage { get; set; }
         #endregion
 
         #region Variables
@@ -165,6 +168,7 @@ namespace HCM.UI.General
         private bool FilterFuncMstHoliday(MstHoliday1 element) => FilterFuncMstHoliday(element, searchString1);
         private bool FilterFuncMstStation(MstStation element) => FilterFuncMstStation(element, searchString1);
         private bool FilterFuncSAPModels(SAPModels element) => FilterFuncSAPModels(element, searchString1);
+        private bool FilterFuncTrnsProductStage(TrnsProductStage element) => FilterFuncTrnsProductStage(element, searchString1);
         void Cancel() => MudDialog.Cancel();
 
         private MudTable<MstElement> _tableElement;
@@ -283,10 +287,16 @@ namespace HCM.UI.General
         private MudTable<MstStation> _tableMstStation;
         MstStation oModelMstStation = new MstStation();
         List<MstStation> oListMstStation = new List<MstStation>();
+        private HashSet<MstStation> HashStation = new HashSet<MstStation>();
 
         private MudTable<SAPModels> _tableSAPModels;
         SAPModels oModelSAPModels = new SAPModels();
         List<SAPModels> oListSAPModels = new List<SAPModels>();
+        private HashSet<SAPModels> HashSAPModels = new HashSet<SAPModels>();
+
+        private MudTable<TrnsProductStage> _tableTrnsProductStage;
+        TrnsProductStage oModelTrnsProductStage = new TrnsProductStage();
+        List<TrnsProductStage> oListTrnsProductStage = new List<TrnsProductStage>();
 
         #endregion
 
@@ -1171,7 +1181,7 @@ namespace HCM.UI.General
         private async Task GetAllMstStation()
         {
             try
-            { 
+            {
                 oListMstStation = await _mstStation.GetAllData();
                 if (oListMstStation?.Count == 0 || oListMstStation == null)
                 {
@@ -1216,6 +1226,34 @@ namespace HCM.UI.General
             if (element.ItemCode.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
             if (element.ItemName.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            //if (element.ItemGroupCode.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            return false;
+        }
+
+        private async Task GetAllTrnsProductStage()
+        {
+            try
+            {
+                oListTrnsProductStage = await _trnsProductStage.GetAllData();
+                if (oListTrnsProductStage?.Count == 0 || oListTrnsProductStage == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncTrnsProductStage(TrnsProductStage element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.Code.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (element.Description.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
             //if (element.ItemGroupCode.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
             //    return true;
@@ -1350,6 +1388,10 @@ namespace HCM.UI.General
                     else if (DialogFor == "StageItem")
                     {
                         await GetAllSAPModels();
+                    }
+                    else if (DialogFor == "TrnsProductStage")
+                    {
+                        await GetAllTrnsProductStage();
                     }
                 }
                 else
@@ -2294,6 +2336,39 @@ namespace HCM.UI.General
                 return string.Empty;
             }
         }
+
+        public void RowClickEventTrnsProductStage(TableRowClickEventArgs<TrnsProductStage> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncFilterFuncTrnsProductStage(TrnsProductStage element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableTrnsProductStage.SelectedItem != null && _tableTrnsProductStage.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
         private void Submit()
         {
             try
@@ -2416,14 +2491,24 @@ namespace HCM.UI.General
                 {
                     MudDialog.Close(DialogResult.Ok(oModelMstHoliday));
                 }
-                else if (DialogFor == "Station")
+                else if (DialogFor == "Station" && oListMstStation.Count() > 0)
                 {
-                    MudDialog.Close(DialogResult.Ok(oModelMstStation));
+                    MudDialog.Close(DialogResult.Ok<HashSet<MstStation>>(HashStation));
+                    // MudDialog.Close(DialogResult.Ok(oModelMstStation));
                 }
-                else if (DialogFor == "StageItem")
+                else if (DialogFor == "StageItem" && oListSAPModels.Count() > 0)
                 {
-                    MudDialog.Close(DialogResult.Ok(oModelSAPModels));
+                    MudDialog.Close(DialogResult.Ok<HashSet<SAPModels>>(HashSAPModels));
+                    //MudDialog.Close(DialogResult.Ok(oModelSAPModels));
                 }
+                else if (DialogFor == "TrnsProductStage")
+                {
+                    MudDialog.Close(DialogResult.Ok(oModelTrnsProductStage));
+                }
+                //else if (DialogFor == "ElementTransaction" && oListElement.Count() > 0)
+                //{
+                //    MudDialog.Close(DialogResult.Ok<HashSet<MstElement>>(HashElement));
+                //}
                 else
                 {
                     Snackbar.Add("Select row first", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });

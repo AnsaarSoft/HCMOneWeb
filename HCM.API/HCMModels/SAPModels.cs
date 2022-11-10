@@ -23,6 +23,7 @@
         public string ItemName { get; set; }
         public string U_Item_Department { get; set; }
         public int ItemGroupCode { get; set; }
+        public string ItemGroupName { get; set; }
 
         #endregion Items
 

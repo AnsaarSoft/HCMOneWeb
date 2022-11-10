@@ -4,6 +4,7 @@ using HCM.API.Interfaces.MasterData;
 using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.Account;
+using HCM.UI.Interfaces.Authorization;
 using HCM.UI.Interfaces.ClientSpecific;
 using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.MasterData;
@@ -35,8 +36,9 @@ namespace HCM.UI.Pages.ClientSpecific
 
         [Inject]
         public ILocalStorageService _localStorage { get; set; }
+
         [Inject]
-        IJSRuntime JS { get; set; }
+        public IUserAuthorization _UserAuthorization { get; set; }
 
         private string LoginUser = "";
 
@@ -63,11 +65,11 @@ namespace HCM.UI.Pages.ClientSpecific
         List<TrnsProductStage> oList = new List<TrnsProductStage>();
 
         TrnsProductStageItem oModelstageItem = new TrnsProductStageItem();
-        List<TrnsProductStageItem> oListstageItem = new List<TrnsProductStageItem>();
+        private IEnumerable<TrnsProductStageItem> oListstageItem = new List<TrnsProductStageItem>();
         TrnsProductStageTeamLead oModelStageTeamLead = new TrnsProductStageTeamLead();
-        List<TrnsProductStageTeamLead> oListStageTeamLead = new List<TrnsProductStageTeamLead>();
+        private IEnumerable<TrnsProductStageTeamLead> oListStageTeamLead = new List<TrnsProductStageTeamLead>();
         TrnsProductStageStation oModelStageStation = new TrnsProductStageStation();
-        List<TrnsProductStageStation> oListStageStation = new List<TrnsProductStageStation>();
+        private IEnumerable<TrnsProductStageStation> oListStageStation = new List<TrnsProductStageStation>();
 
         //MstGldetermination oModel1 = new MstGldetermination();
         //private IEnumerable<MstGldetermination> oList = new List<MstGldetermination>();
@@ -150,6 +152,44 @@ namespace HCM.UI.Pages.ClientSpecific
             return false;
         }
 
+        private async Task OpenDialog(DialogOptions options)
+        {
+            try
+            {
+                var parameters = new DialogParameters();
+                parameters.Add("DialogFor", "TrnsProductStage");
+                var dialog = Dialog.Show<DialogBox>("", parameters, options);
+                var result = await dialog.Result;
+                if (!result.Cancelled)
+                {
+                    var res = (TrnsProductStage)result.Data;
+                    oModel = res;
+                    oListstageItem = res.TrnsProductStageItems.ToList();
+                    oListStageTeamLead = res.TrnsProductStageTeamLeads.ToList();
+                    oListStageStation = res.TrnsProductStageStations.ToList();
+                    foreach (var item in oListstageItem)
+                    {
+                        item.UpdateDate = DateTime.Now;
+                        item.UpdatedBy = LoginUser;
+                    }
+                    foreach (var item in oListStageTeamLead)
+                    {
+                        item.UpdateDate = DateTime.Now;
+                        item.UpdatedBy = LoginUser;
+                    }
+                    foreach (var item in oListStageStation)
+                    {
+                        item.UpdateDate = DateTime.Now;
+                        item.UpdatedBy = LoginUser;
+                    }
+                    DisbaledCode = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
         private async Task GetAllProductionStages()
         {
             try
@@ -161,23 +201,36 @@ namespace HCM.UI.Pages.ClientSpecific
                 Logs.GenerateLogs(ex);
             }
         }
-        private async Task OpenDialogStageItem(DialogOptions options)
+        private async Task OpenDialogStageItem1(DialogOptions options)
         {
             try
             {
                 var parameters = new DialogParameters();
-                parameters.Add("DialogFor", "ProductStageItem");
-                var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
+                parameters.Add("DialogFor", "StageItem");
+                var dialog = Dialog.Show<DialogBox>("", parameters, options);
                 var result = await dialog.Result;
                 if (!result.Cancelled)
                 {
-                    var res = (TrnsProductStageItem)result.Data;
-                    oModelstageItem.ItemCode = res.ItemCode;
-                    oModelstageItem.ItemGrpCode = res.ItemGrpCode;
-                    oModelstageItem.ItemDescription = res.ItemDescription;
-                    oModelstageItem.UserId = LoginUser;
-                    oModelstageItem.CreateDate = DateTime.Now;
-                    oListstageItem.Add(oModelstageItem);
+                    var res = (HashSet<SAPModels>)result.Data;
+                    AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
+                    List<TrnsProductStageItem> oTempList = new List<TrnsProductStageItem>();
+                    oTempList = oListstageItem.ToList();
+                    foreach (var item in res)
+                    {
+                        var Items = oListstageItem.Where(x => x.ItemCode == item.ItemCode).FirstOrDefault();
+                        if (Items == null)
+                        {
+                            TrnsProductStageItem trnsProductStageItem = new TrnsProductStageItem();
+                            trnsProductStageItem.ItemCode = item.ItemCode;
+                            trnsProductStageItem.ItemDescription = item.ItemName;
+                            trnsProductStageItem.ItemGrpCode = item.ItemGroupCode.ToString();
+                            trnsProductStageItem.ItemGrpName = item.ItemGroupName;
+                            trnsProductStageItem.UserId = LoginUser;
+                            trnsProductStageItem.CreateDate = DateTime.Now;
+                            oTempList.Add(trnsProductStageItem);
+                        }
+                    }
+                    oListstageItem = oTempList;
                 }
             }
             catch (Exception ex)
@@ -185,40 +238,72 @@ namespace HCM.UI.Pages.ClientSpecific
                 Logs.GenerateLogs(ex);
             }
         }
-        private async Task OpenEditDialogStageItem(DialogOptions options, TrnsProductStageItem oDetailPara)
+        private async Task OpenDialogStageTeamLead1(DialogOptions options)
         {
             try
             {
                 var parameters = new DialogParameters();
-                parameters.Add("oDetailTrnsProductStageItem ", oDetailPara);
-                parameters.Add("DialogFor", "ProductStageItem");
-                var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
+                parameters.Add("DialogFor", "MultipleEmployeeSelect");
+                var dialog = Dialog.Show<DialogBox>("", parameters, options);
                 var result = await dialog.Result;
-
                 if (!result.Cancelled)
                 {
-                    var res = (TrnsProductStageItem)result.Data;
-                    var update = oListstageItem.Where(x => x.Id == res.Id).FirstOrDefault();
-                    if (update != null)
+                    var res = (HashSet<MstEmployee>)result.Data;
+                    AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
+                    List<TrnsProductStageTeamLead> oTempList = new List<TrnsProductStageTeamLead>();
+                    oTempList = oListStageTeamLead.ToList();
+                    foreach (var item in res)
                     {
-                        oListstageItem.Remove(update);
+                        var Items = oListStageTeamLead.Where(x => x.EmpCode == item.EmpId).FirstOrDefault();
+                        if (Items == null)
+                        {
+                            TrnsProductStageTeamLead trnsProductStageTeamLead = new TrnsProductStageTeamLead();
+                            trnsProductStageTeamLead.EmpCode = item.EmpId;
+                            trnsProductStageTeamLead.EmpName = item.FirstName + " " + item.MiddleName + " " + item.LastName;
+                            trnsProductStageTeamLead.Designation = item.DesignationName;
+                            trnsProductStageTeamLead.Department = item.DepartmentName;
+                            trnsProductStageTeamLead.UserId = LoginUser;
+                            trnsProductStageTeamLead.CreateDate = DateTime.Now;
+                            oTempList.Add(trnsProductStageTeamLead);
+                        }
                     }
-                    if (oModel.Id != 0)
-                    {
-                        res.UpdateDate = DateTime.Now;
-                        res.UpdatedBy = LoginUser;
-                    }
-                    else
-                    {
-                        res.CreateDate = DateTime.Now;
-                        res.UserId = LoginUser;
-
-                    }
-                    oListstageItem.Add(res);
-                    // oListMstHolidayDtl.Add(res);
-                    //oListMstHolidayDetail = oListMstHolidayDtl;
+                    oListStageTeamLead = oTempList;
                 }
-
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private async Task OpenDialogStageStation1(DialogOptions options)
+        {
+            try
+            {
+                var parameters = new DialogParameters();
+                parameters.Add("DialogFor", "Station");
+                var dialog = Dialog.Show<DialogBox>("", parameters, options);
+                var result = await dialog.Result;
+                if (!result.Cancelled)
+                {
+                    var res = (HashSet<MstStation>)result.Data;
+                    AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
+                    List<TrnsProductStageStation> oTempList = new List<TrnsProductStageStation>();
+                    oTempList = oListStageStation.ToList();
+                    foreach (var item in res)
+                    {
+                        var Items = oListStageStation.Where(x => x.StationCode == item.Code).FirstOrDefault();
+                        if (Items == null)
+                        {
+                            TrnsProductStageStation trnsProductStageStation = new TrnsProductStageStation();
+                            trnsProductStageStation.StationCode = item.Code;
+                            trnsProductStageStation.StationDescription = item.Description;
+                            trnsProductStageStation.UserId = LoginUser;
+                            trnsProductStageStation.CreateDate = DateTime.Now;
+                            oTempList.Add(trnsProductStageStation);
+                        }
+                    }
+                    oListStageStation = oTempList;
+                }
             }
             catch (Exception ex)
             {
@@ -232,92 +317,30 @@ namespace HCM.UI.Pages.ClientSpecific
                 Loading = true;
                 await Task.Delay(1);
 
+                //List<TrnsEmployeeTransferDetail> oListTrnsEmployeeTransferDtl = new List<TrnsEmployeeTransferDetail>();
+                //oListTrnsEmployeeTransferDtl = oListFilteredEmployeeTransferDetail.ToList();
+                //if (oListFilteredEmployeeTransferDetail.Count() > 0)
+                //{
+                //    var FilterRecord = oListFilteredEmployeeTransferDetail.Where(x => x.Id == ID).FirstOrDefault();
+                //    oListTrnsEmployeeTransferDtl.Remove(FilterRecord);
+                //    oListFilteredEmployeeTransferDetail = oListTrnsEmployeeTransferDtl;
+                //}
 
-                if (oListStageTeamLead.Count() > 0)
+
+                List<TrnsProductStageItem> oListTrnsProductStageItem = new List<TrnsProductStageItem>();
+                oListTrnsProductStageItem = oListstageItem.ToList();
+                if (oListstageItem.Count() > 0)
                 {
                     var FilterRecord = oListstageItem.Where(x => x.Id == ID).FirstOrDefault();
-                    oListstageItem.Remove(FilterRecord);
+                    oListTrnsProductStageItem.Remove(FilterRecord);
+                    oListstageItem = oListTrnsProductStageItem;
                 }
-
-                //oListMstHolidayDtl = oListMstHolidayDetail.ToList();
-                //if (oListMstHolidayDetail.Count() > 0)
-                //{
-                //    var FilterRecord = oListMstHolidayDetail.Where(x => x.Id == ID).FirstOrDefault();
-                //    oListMstHolidayDtl.Remove(FilterRecord);
-                //    oListMstHolidayDetail = oListMstHolidayDtl;
-                //}
                 Loading = false;
             }
             catch (Exception ex)
             {
                 Logs.GenerateLogs(ex);
                 Loading = false;
-            }
-        }
-        private async Task OpenDialogStageTeamLead(DialogOptions options)
-        {
-            try
-            {
-                var parameters = new DialogParameters();
-                parameters.Add("DialogFor", "ProductStageTeamLead");
-                var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
-                var result = await dialog.Result;
-                if (!result.Cancelled)
-                {
-                    var res = (TrnsProductStageTeamLead)result.Data;
-                    oModelStageTeamLead.EmpCode = res.EmpCode;
-                    oModelStageTeamLead.EmpName = res.EmpName;
-                    oModelStageTeamLead.Designation = res.Designation;
-                    oModelStageTeamLead.Department = res.Department;
-                    oModelStageTeamLead.UserId = LoginUser;
-                    oModelStageTeamLead.CreateDate = DateTime.Now;
-                    oListStageTeamLead.Add(oModelStageTeamLead);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-            }
-        }
-        private async Task OpenEditDialogStageTeamLead(DialogOptions options, TrnsProductStageTeamLead oDetailPara)
-        {
-            try
-            {
-                var parameters = new DialogParameters();
-                parameters.Add("oDetailParaProductStageTeamLead ", oDetailPara);
-                parameters.Add("DialogFor", "ProductStageTeamLead");
-                // parameters.Add("EmpId", oModel.EmployeeId);
-                var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
-                var result = await dialog.Result;
-
-                if (!result.Cancelled)
-                {
-                    var res = (TrnsProductStageTeamLead)result.Data;
-                    var update = oListStageTeamLead.Where(x => x.Id == res.Id).FirstOrDefault();
-                    if (update != null)
-                    {
-                        oListStageTeamLead.Remove(update);
-                    }
-                    if (oModel.Id != 0)
-                    {
-                        res.UpdateDate = DateTime.Now;
-                        res.UpdatedBy = LoginUser;
-                    }
-                    else
-                    {
-                        res.CreateDate = DateTime.Now;
-                        res.UserId = LoginUser;
-
-                    }
-                    oListStageTeamLead.Add(res);
-                    // oListMstHolidayDtl.Add(res);
-                    //oListMstHolidayDetail = oListMstHolidayDtl;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
             }
         }
         private async Task DeleteFromFilterStageTeamLead(int ID)
@@ -328,10 +351,13 @@ namespace HCM.UI.Pages.ClientSpecific
                 await Task.Delay(1);
 
 
+                List<TrnsProductStageTeamLead> oListTrnsProductStageTeamLead = new List<TrnsProductStageTeamLead>();
+                oListTrnsProductStageTeamLead = oListStageTeamLead.ToList();
                 if (oListStageTeamLead.Count() > 0)
                 {
                     var FilterRecord = oListStageTeamLead.Where(x => x.Id == ID).FirstOrDefault();
-                    oListStageTeamLead.Remove(FilterRecord);
+                    oListTrnsProductStageTeamLead.Remove(FilterRecord);
+                    oListStageTeamLead = oListTrnsProductStageTeamLead;
                 }
 
                 //oListMstHolidayDtl = oListMstHolidayDetail.ToList();
@@ -347,69 +373,6 @@ namespace HCM.UI.Pages.ClientSpecific
             {
                 Logs.GenerateLogs(ex);
                 Loading = false;
-            }
-        }
-        private async Task OpenDialogStageStation(DialogOptions options)
-        {
-            try
-            {
-                var parameters = new DialogParameters();
-                parameters.Add("DialogFor", "ProductStageStation");
-                var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
-                var result = await dialog.Result;
-                if (!result.Cancelled)
-                {
-                    var res = (TrnsProductStageStation)result.Data;
-                    oModelStageStation.StationCode = res.StationCode;
-                    oModelStageStation.StationDescription = res.StationDescription;
-                    oModelStageStation.UserId = LoginUser;
-                    oModelStageStation.CreateDate = DateTime.Now;
-                    oListStageStation.Add(oModelStageStation);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
-            }
-        }
-        private async Task OpenEditDialogStageStation(DialogOptions options, TrnsProductStageStation oDetailPara)
-        {
-            try
-            {
-                var parameters = new DialogParameters();
-                parameters.Add("oDetailTrnsProductStageStation ", oDetailPara);
-                parameters.Add("DialogFor", "ProductStageStation");
-                var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
-                var result = await dialog.Result;
-
-                if (!result.Cancelled)
-                {
-                    var res = (TrnsProductStageStation)result.Data;
-                    var update = oListStageStation.Where(x => x.Id == res.Id).FirstOrDefault();
-                    if (update != null)
-                    {
-                        oListStageStation.Remove(update);
-                    }
-                    if (oModel.Id != 0)
-                    {
-                        res.UpdateDate = DateTime.Now;
-                        res.UpdatedBy = LoginUser;
-                    }
-                    else
-                    {
-                        res.CreateDate = DateTime.Now;
-                        res.UserId = LoginUser;
-
-                    }
-                    oListStageStation.Add(res);
-                    // oListMstHolidayDtl.Add(res);
-                    //oListMstHolidayDetail = oListMstHolidayDtl;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Logs.GenerateLogs(ex);
             }
         }
         private async Task DeleteFromFilterStageStation(int ID)
@@ -419,11 +382,13 @@ namespace HCM.UI.Pages.ClientSpecific
                 Loading = true;
                 await Task.Delay(1);
 
-
-                if (oListStageTeamLead.Count() > 0)
+                List<TrnsProductStageStation> oListTrnsProductStageStation = new List<TrnsProductStageStation>();
+                oListTrnsProductStageStation = oListStageStation.ToList();
+                if (oListStageStation.Count() > 0)
                 {
                     var FilterRecord = oListStageStation.Where(x => x.Id == ID).FirstOrDefault();
-                    oListStageStation.Remove(FilterRecord);
+                    oListTrnsProductStageStation.Remove(FilterRecord);
+                    oListStageStation = oListTrnsProductStageStation;
                 }
 
                 //oListMstHolidayDtl = oListMstHolidayDetail.ToList();
@@ -441,6 +406,200 @@ namespace HCM.UI.Pages.ClientSpecific
                 Loading = false;
             }
         }
+
+        //private async Task OpenDialogStageItem(DialogOptions options)
+        //{
+        //    try
+        //    {
+        //        var parameters = new DialogParameters();
+        //        parameters.Add("DialogFor", "ProductStageItem");
+        //        var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
+        //        var result = await dialog.Result;
+        //        if (!result.Cancelled)
+        //        {
+        //            var res = (TrnsProductStageItem)result.Data;
+        //            oModelstageItem.ItemCode = res.ItemCode;
+        //            oModelstageItem.ItemGrpCode = res.ItemGrpCode;
+        //            oModelstageItem.ItemDescription = res.ItemDescription;
+        //            oModelstageItem.UserId = LoginUser;
+        //            oModelstageItem.CreateDate = DateTime.Now;
+        //            oListstageItem.Add(oModelstageItem);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logs.GenerateLogs(ex);
+        //    }
+        //}
+        //private async Task OpenEditDialogStageItem(DialogOptions options, TrnsProductStageItem oDetailPara)
+        //{
+        //    try
+        //    {
+        //        var parameters = new DialogParameters();
+        //        parameters.Add("oDetailTrnsProductStageItem ", oDetailPara);
+        //        parameters.Add("DialogFor", "ProductStageItem");
+        //        var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
+        //        var result = await dialog.Result;
+
+        //        if (!result.Cancelled)
+        //        {
+        //            var res = (TrnsProductStageItem)result.Data;
+        //            var update = oListstageItem.Where(x => x.Id == res.Id).FirstOrDefault();
+        //            if (update != null)
+        //            {
+        //                oListstageItem.Remove(update);
+        //            }
+        //            if (oModel.Id != 0)
+        //            {
+        //                res.UpdateDate = DateTime.Now;
+        //                res.UpdatedBy = LoginUser;
+        //            }
+        //            else
+        //            {
+        //                res.CreateDate = DateTime.Now;
+        //                res.UserId = LoginUser;
+
+        //            }
+        //            oListstageItem.Add(res);
+        //            // oListMstHolidayDtl.Add(res);
+        //            //oListMstHolidayDetail = oListMstHolidayDtl;
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logs.GenerateLogs(ex);
+        //    }
+        //}
+        //private async Task OpenDialogStageTeamLead(DialogOptions options)
+        //{
+        //    try
+        //    {
+        //        var parameters = new DialogParameters();
+        //        parameters.Add("DialogFor", "ProductStageTeamLead");
+        //        var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
+        //        var result = await dialog.Result;
+        //        if (!result.Cancelled)
+        //        {
+        //            var res = (TrnsProductStageTeamLead)result.Data;
+        //            oModelStageTeamLead.EmpCode = res.EmpCode;
+        //            oModelStageTeamLead.EmpName = res.EmpName;
+        //            oModelStageTeamLead.Designation = res.Designation;
+        //            oModelStageTeamLead.Department = res.Department;
+        //            oModelStageTeamLead.UserId = LoginUser;
+        //            oModelStageTeamLead.CreateDate = DateTime.Now;
+        //            oListStageTeamLead.Add(oModelStageTeamLead);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logs.GenerateLogs(ex);
+        //    }
+        //}
+        //private async Task OpenEditDialogStageTeamLead(DialogOptions options, TrnsProductStageTeamLead oDetailPara)
+        //{
+        //    try
+        //    {
+        //        var parameters = new DialogParameters();
+        //        parameters.Add("oDetailParaProductStageTeamLead ", oDetailPara);
+        //        parameters.Add("DialogFor", "ProductStageTeamLead");
+        //        // parameters.Add("EmpId", oModel.EmployeeId);
+        //        var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
+        //        var result = await dialog.Result;
+
+        //        if (!result.Cancelled)
+        //        {
+        //            var res = (TrnsProductStageTeamLead)result.Data;
+        //            var update = oListStageTeamLead.Where(x => x.Id == res.Id).FirstOrDefault();
+        //            if (update != null)
+        //            {
+        //                oListStageTeamLead.Remove(update);
+        //            }
+        //            if (oModel.Id != 0)
+        //            {
+        //                res.UpdateDate = DateTime.Now;
+        //                res.UpdatedBy = LoginUser;
+        //            }
+        //            else
+        //            {
+        //                res.CreateDate = DateTime.Now;
+        //                res.UserId = LoginUser;
+
+        //            }
+        //            oListStageTeamLead.Add(res);
+        //            // oListMstHolidayDtl.Add(res);
+        //            //oListMstHolidayDetail = oListMstHolidayDtl;
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logs.GenerateLogs(ex);
+        //    }
+        //}
+        //private async Task OpenDialogStageStation(DialogOptions options)
+        //{
+        //    try
+        //    {
+        //        var parameters = new DialogParameters();
+        //        parameters.Add("DialogFor", "ProductStageStation");
+        //        var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
+        //        var result = await dialog.Result;
+        //        if (!result.Cancelled)
+        //        {
+        //            var res = (TrnsProductStageStation)result.Data;
+        //            oModelStageStation.StationCode = res.StationCode;
+        //            oModelStageStation.StationDescription = res.StationDescription;
+        //            oModelStageStation.UserId = LoginUser;
+        //            oModelStageStation.CreateDate = DateTime.Now;
+        //            oListStageStation.Add(oModelStageStation);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logs.GenerateLogs(ex);
+        //    }
+        //}
+        //private async Task OpenEditDialogStageStation(DialogOptions options, TrnsProductStageStation oDetailPara)
+        //{
+        //    try
+        //    {
+        //        var parameters = new DialogParameters();
+        //        parameters.Add("oDetailTrnsProductStageStation ", oDetailPara);
+        //        parameters.Add("DialogFor", "ProductStageStation");
+        //        var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
+        //        var result = await dialog.Result;
+
+        //        if (!result.Cancelled)
+        //        {
+        //            var res = (TrnsProductStageStation)result.Data;
+        //            var update = oListStageStation.Where(x => x.Id == res.Id).FirstOrDefault();
+        //            if (update != null)
+        //            {
+        //                oListStageStation.Remove(update);
+        //            }
+        //            if (oModel.Id != 0)
+        //            {
+        //                res.UpdateDate = DateTime.Now;
+        //                res.UpdatedBy = LoginUser;
+        //            }
+        //            else
+        //            {
+        //                res.CreateDate = DateTime.Now;
+        //                res.UserId = LoginUser;
+
+        //            }
+        //            oListStageStation.Add(res);
+        //            // oListMstHolidayDtl.Add(res);
+        //            //oListMstHolidayDetail = oListMstHolidayDtl;
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logs.GenerateLogs(ex);
+        //    }
+        //}
         private async void Reset()
         {
             try
@@ -464,24 +623,29 @@ namespace HCM.UI.Pages.ClientSpecific
                 Loading = true;
                 var res = new ApiResponseModel();
 
-                oModel.TrnsProductStageItems = oListstageItem;
-                oModel.TrnsProductStageTeamLeads = oListStageTeamLead;
-                oModel.TrnsProductStageStations = oListStageStation;
+                oModel.TrnsProductStageItems = oListstageItem.ToList();
+                oModel.TrnsProductStageTeamLeads = oListStageTeamLead.ToList();
+                oModel.TrnsProductStageStations = oListStageStation.ToList();
                 if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description) && oModel.FlgActive == true && oModel.Rework == true
                     && oModel.TrnsProductStageItems.Count > 0 && oModel.TrnsProductStageTeamLeads.Count > 0 && oModel.TrnsProductStageStations.Count > 0)
                 {
-                    if (oModel.Id == 0)
+                    if (oList.Where(x => x.Code.Trim().ToLowerInvariant() == oModel.Code.Trim().ToLowerInvariant()).Count() > 0 && DisbaledCode == false)
                     {
-                        oModel.UserId = LoginUser;
-                        res = await _trnsProduct.Insert(oModel);
+                        Snackbar.Add(oModel.Code + " : is Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
                     else
                     {
-                        oModel.UpdatedBy = LoginUser;
-                        res = await _trnsProduct.Update(oModel);
+                        if (oModel.Id == 0)
+                        {
+                            oModel.UserId = LoginUser;
+                            res = await _trnsProduct.Insert(oModel);
+                        }
+                        else
+                        {
+                            oModel.UpdatedBy = LoginUser;
+                            res = await _trnsProduct.Update(oModel);
+                        }
                     }
-
-
                     if (res != null && res.Id == 1)
                     {
                         Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
@@ -492,45 +656,14 @@ namespace HCM.UI.Pages.ClientSpecific
                     {
                         Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
-
-
                 }
                 else
                 {
                     Snackbar.Add("Please fill the required field(s) Or Add Detail", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                 }
-                //if (!string.IsNullOrWhiteSpace(oModel.Gltype))
-                //{
-                //    if (oModel.Id == 0)
-                //    {
-                //        oModel.UserId = LoginUser;
-                //        res = await _mstGldetermination.Insert(oModel);
-                //    }
-                //    else
-                //    {
-                //        oModel.UpdatedBy = LoginUser;
-                //        res = await _mstGldetermination.Update(oModel);
-                //    }
-
-
-                //    if (res != null && res.Id == 1)
-                //    {
-                //        Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
-                //        await Task.Delay(3000);
-                //        Navigation.NavigateTo("/ProductionStage", forceLoad: true);
-                //    }
-                //    else
-                //    {
-                //        Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                //    }
-
-                //}
-                //else
-                //{
-                //    Snackbar.Add("Please fill the required field(s)", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                //}
                 Loading = false;
                 return res;
+
             }
             catch (Exception ex)
             {
@@ -553,17 +686,17 @@ namespace HCM.UI.Pages.ClientSpecific
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    oModel.FlgActive = true;
-                    oModel.Rework = true;
-                    await GetAllProductionStages();
-                    //await GetAllState();
-                    //await GetAllGLDetermination();
-                    //await SetDocNo();
-                    //await GetAllElement();
-                    //await GetAllLoans();
-                    //await GetAllAdvances();
-                    //await GetAllOverTimes();
-                    //await GetAllLeaveDeduction();
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 70 && x.UserRights == true).ToList().Count > 0)
+                    {
+                        oModel.FlgActive = true;
+                        oModel.Rework = true;
+                        await GetAllProductionStages();
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {

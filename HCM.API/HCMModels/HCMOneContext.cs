@@ -316,6 +316,7 @@ namespace HCM.API.HCMModels
         public virtual DbSet<MstSubCategory> MstSubCategories { get; set; }
         public virtual DbSet<MstSubPartsStatement> MstSubPartsStatements { get; set; }
         public virtual DbSet<MstSubPartss> MstSubPartsses { get; set; }
+        public virtual DbSet<MstTarget> MstTargets { get; set; }
         public virtual DbSet<MstTeam> MstTeams { get; set; }
         public virtual DbSet<MstTrainingAttachment> MstTrainingAttachments { get; set; }
         public virtual DbSet<MstTrainingBudget> MstTrainingBudgets { get; set; }
@@ -11318,6 +11319,42 @@ namespace HCM.API.HCMModels
                     .HasConstraintName("FK_MstSubPartss_MstParts");
             });
 
+            modelBuilder.Entity<MstTarget>(entity =>
+            {
+                entity.ToTable("MstTarget");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.FixValue).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.FrmPieces).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.ItemCode).HasMaxLength(50);
+
+                entity.Property(e => e.ItemName).HasMaxLength(250);
+
+                entity.Property(e => e.Pscode)
+                    .HasMaxLength(50)
+                    .HasColumnName("PSCode");
+
+                entity.Property(e => e.Psid).HasColumnName("PSid");
+
+                entity.Property(e => e.ToPieces).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy).HasMaxLength(20);
+
+                entity.Property(e => e.UserId).HasMaxLength(20);
+
+                entity.HasOne(d => d.Ps)
+                    .WithMany(p => p.MstTargets)
+                    .HasForeignKey(d => d.Psid)
+                    .HasConstraintName("FK__MstTarget__Updat__741C853B");
+            });
+
             modelBuilder.Entity<MstTeam>(entity =>
             {
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
@@ -20989,7 +21026,11 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.ItemGrpCode).HasMaxLength(50);
 
+                entity.Property(e => e.ItemGrpName).HasMaxLength(250);
+
                 entity.Property(e => e.Psid).HasColumnName("PSId");
+
+                entity.Property(e => e.SubItemDescription).HasMaxLength(250);
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 

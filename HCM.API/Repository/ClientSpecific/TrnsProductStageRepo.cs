@@ -61,8 +61,15 @@ namespace HCM.API.Repository.ClientSpecific
                 await Task.Run(() =>
                 {
                     oTrnsProductStage.UpdateDate = DateTime.Now;
-                    //var Detail = _DBContext.TrnsEmployeeOvertimeDetails.Where(x => x.EmpOvertimeId == oTrnsProductStage.Id).ToList();
-                    //_DBContext.TrnsEmployeeOvertimeDetails.RemoveRange(Detail);
+                    var StageItems = _DBContext.TrnsProductStageItems.Where(x => x.Psid == oTrnsProductStage.Id).ToList();
+                    _DBContext.TrnsProductStageItems.RemoveRange(StageItems);
+                    
+                    var StageTeamLeads = _DBContext.TrnsProductStageTeamLeads.Where(x => x.Psid == oTrnsProductStage.Id).ToList();
+                    _DBContext.TrnsProductStageTeamLeads.RemoveRange(StageTeamLeads);
+                    
+                    var StageStations = _DBContext.TrnsProductStageStations.Where(x => x.Psid == oTrnsProductStage.Id).ToList();
+                    _DBContext.TrnsProductStageStations.RemoveRange(StageStations);
+
                     _DBContext.TrnsProductStages.Update(oTrnsProductStage);
                     _DBContext.SaveChanges();
                     response.Id = 1;
