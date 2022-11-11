@@ -1,0 +1,114 @@
+﻿@page "/EmployeePerPiece"
+@using HCM.API.Models
+
+<div class="container-fluid page-content-setting">
+     <div class="row">
+        <div class="col-sm-10">
+            <h3>Holiday</h3>
+            <MudDivider />
+        </div>
+        <div class="col-sm-2 custom-btn-design text-right">
+            @*<MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Filled.RemoveRedEye" Color="Color.Info" Size="Size.Small">View All</MudButton>*@
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudGrid class="search-action-block align-items-center block-design">
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTextField T="string" ReadOnly="true" @bind-Value="oModel.Pscode" HelperText="Select production stage" Immediate="true" Label="Production stage*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DocumentScanner" OnAdornmentClick="@((e) => OpenDialogProductStage(maxWidth))" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTextField @bind-Value="oModel.DocNum" ReadOnly="@true" MaxLength="20" Counter="20" Immediate="true" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields"
+                                  Label="Doc No*" Variant="Variant.Text"> </MudTextField>
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTextField T="string" @bind-Value="oModel.DocStatus" ReadOnly="true" HelperText="Document Status" Immediate="true" Label="Status*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.DocDate" MinDate="DateTime.Today" Label="Document Date*" HelperText="Select Document Date*" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
+                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
+                </MudItem>
+               @* <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                    <MudSwitch @bind-Checked="@oModel1.FlgActive" ThumbIcon="@(oModel1.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel1.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModel1.FlgActive==true ? Color.Info : Color.Error)">
+                        <span>@(oModel1.FlgActive == true ? "Active" : "In Active")</span>
+                    </MudSwitch>
+                </MudItem>*@
+                <MudItem xs="12" sm="12" md="12" lg="12">
+                    @if (Loading)
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudText>Loading...</MudText>
+                            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2" class="text-right custom-btn-design">
+                            <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small">Save</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
+                        </MudItem>
+                    }
+                </MudItem>
+            </MudGrid>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+             <MudCard Elevation="6">
+                <MudCardContent>
+                     <MudGrid class="search-action-block align-items-center block-design">
+                       <MudItem xs="10" sm="10" md="10" lg="10" Class="pl-5 pb-4">
+                            <MudText Typo="Typo.h6">Detail</MudText>
+                        </MudItem>
+                        <MudSpacer />
+                        <MudItem xs="2" sm="2" md="2" lg="2" Class="text-right custom-btn-design" style="justify-content: flex-end;">
+                            <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenAddDialog(maxWidth))" StartIcon="@Icons.Material.Filled.Add" Color="Color.Success" Size="Size.Small">Add Details</MudButton>
+                        </MudItem>
+                    </MudGrid>
+                    <MudTable Items="@oListTrnsPerPieceDetail" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsPerPieceTransactionDetail,bool>(FilterFunc)">
+                        <ToolBarContent>
+                           @* <MudText Typo="Typo.h6">Employee Detail List</MudText>
+                            <MudSpacer />*@
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>EmpName</MudTh>
+                            <MudTh>Designation Name</MudTh>
+                            <MudTh>Department Name</MudTh>
+                            <MudTh>Item Name</MudTh>
+                            <MudTh>Sub Item Name</MudTh>
+                            <MudTh>Station Name</MudTh>
+                            <MudTh>Start Time</MudTh>
+                            <MudTh>End Time</MudTh>
+                            <MudTh>Quantity</MudTh>
+                            <MudTh>Rework</MudTh>
+                            <MudTh>Action</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Description">@context.EmpName</MudTd>
+                            <MudTd DataLabel="Description">@context.DesignationName</MudTd>
+                            <MudTd DataLabel="Description">@context.DepartmentName</MudTd>
+                            <MudTd DataLabel="Description">@context.ItemName</MudTd>
+                            <MudTd DataLabel="Description">@context.SubItemName</MudTd>
+                            <MudTd DataLabel="Description">@context.StattionName</MudTd>
+                            <MudTd DataLabel="Description">@context.StartTime</MudTd>
+                            <MudTd DataLabel="Description">@context.EndTime</MudTd>
+                            <MudTd DataLabel="Description">@context.PrdQty</MudTd>
+                            <MudTd DataLabel="Description">@context.Rework</MudTd>
+                            <MudTd DataLabel="Action">
+                                <MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteFromFilter(context.Id))" Title="Delete"></MudIconButton>
+                                <MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@((e) => OpenEditDialog(FullView, context))" Title="Edit"></MudIconButton>
+                            </MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                </MudCardContent>
+            </MudCard>
+            
+        </div>
+    </div>
+</div>

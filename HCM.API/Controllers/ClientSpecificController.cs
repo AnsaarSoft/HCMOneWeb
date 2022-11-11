@@ -1,4 +1,5 @@
 ﻿using HCM.API.General;
+using HCM.API.HCMModels;
 using HCM.API.Interfaces.ClientSpecific;
 using HCM.API.Models;
 using Microsoft.AspNetCore.Http;
@@ -12,11 +13,13 @@ namespace HCM.API.Controllers
     {
         private ITrnsProductStage _trnsProductStage;
         private IMstTarget  _mstTarget;
+        private ITrnsPerPiece _trnsPerPiece;
 
-        public ClientSpecificController(ITrnsProductStage trnsProductStage, IMstTarget mstTarget)
+        public ClientSpecificController(ITrnsProductStage trnsProductStage, IMstTarget mstTarget, ITrnsPerPiece trnsPerPiece)
         {
             _trnsProductStage = trnsProductStage;
             _mstTarget = mstTarget;
+            _trnsPerPiece = trnsPerPiece;
         }
 
         #region Production  Stages
@@ -248,6 +251,129 @@ namespace HCM.API.Controllers
             try
             {
                 response = await _mstTarget.Update(pMstTarget);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+        #endregion
+
+        #region Per Piece Transaction
+
+        [Route("getAllPerPiece")]
+        [HttpGet]
+        public async Task<IActionResult> getAllPerPiece()
+        {
+            List<TrnsPerPieceTransaction> oTrnsPerPieceTransaction = new List<TrnsPerPieceTransaction>();
+            try
+            {
+                oTrnsPerPieceTransaction = await _trnsPerPiece.GetAllData();
+                if (oTrnsPerPieceTransaction == null)
+                {
+                    return BadRequest(oTrnsPerPieceTransaction);
+                }
+                else
+                {
+                    return Ok(oTrnsPerPieceTransaction);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addPerPiece")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] TrnsPerPieceTransaction pTrnsPerPieceTransaction)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _trnsPerPiece.Insert(pTrnsPerPieceTransaction);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updatePerPiece")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] TrnsPerPieceTransaction pTrnsPerPieceTransaction)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _trnsPerPiece.Update(pTrnsPerPieceTransaction);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("addPerPieceList")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] List<TrnsPerPieceTransaction> pTrnsPerPieceTransaction)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _trnsPerPiece.Insert(pTrnsPerPieceTransaction);
+                if (response == null)
+                {
+                    return BadRequest(response);
+                }
+                else
+                {
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                return BadRequest("Something went wrong.");
+            }
+        }
+
+        [Route("updatePerPieceList")]
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] List<TrnsPerPieceTransaction> pTrnsPerPieceTransaction)
+        {
+            ApiResponseModel response = new ApiResponseModel();
+            try
+            {
+                response = await _trnsPerPiece.Update(pTrnsPerPieceTransaction);
                 if (response == null)
                 {
                     return BadRequest(response);
