@@ -21,7 +21,7 @@ namespace HCM.API.Repository.MasterData
             {
                 await Task.Run(() =>
                 {
-                    oList = _DBContext.MstHolidays1.Include(t => t.MstHolidayDetails).ToList();
+                    oList = _DBContext.MstHolidays1.Include(x => x.MstHolidayDetails).ToList();
                     
                 });
             }

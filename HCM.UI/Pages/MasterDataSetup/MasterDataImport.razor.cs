@@ -2312,11 +2312,11 @@ namespace HCM.UI.Pages.MasterDataSetup
                                     //Skip the line if Code is Null or Empty
                                     break;
                                 }
-                                else if (!Regex.IsMatch(StringValue, AlphanumericMask) && PropertyName == "FkempId")
-                                {
-                                    //Skip the line if Code has special character
-                                    break;
-                                }
+                                //else if (!Regex.IsMatch(StringValue, AlphanumericMask) && PropertyName == "FkempId")
+                                //{
+                                //    //Skip the line if Code has special character
+                                //    break;
+                                //}
                                 else if (StringValue.Contains("Null", StringComparison.OrdinalIgnoreCase))
                                 {
                                     //Skip the line if Code has Null String

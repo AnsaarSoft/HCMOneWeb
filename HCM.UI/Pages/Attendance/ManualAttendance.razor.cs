@@ -149,7 +149,7 @@ namespace HCM.UI.Pages.Attendance
                 return true;
             if (element.PunchedDate.ToString().Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
-            if (element.PunchedTime.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            if (element.PunchedTime !=null && element.PunchedTime.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
                 return true;
             return false;
         }
