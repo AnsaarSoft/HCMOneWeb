@@ -20,6 +20,7 @@ namespace HCM.API.HCMModels
         public bool? Rework { get; set; }
         public string StattionCode { get; set; }
         public string StattionName { get; set; }
+        public decimal? PrdQty { get; set; }
         public DateTime? CreateDate { get; set; }
         public string UserId { get; set; }
         public DateTime? UpdateDate { get; set; }

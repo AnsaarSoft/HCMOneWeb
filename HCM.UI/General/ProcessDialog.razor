@@ -172,7 +172,7 @@
                     </MudSelect>
                 </MudItem>
                 <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
-                    <MudSelect @bind-Value="oModelTaxAdjustmentDetail.Period"  Label="Period" HelperText="Select Period" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                    <MudSelect @bind-Value="oModelTaxAdjustmentDetail.Period" Label="Period" HelperText="Select Period" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                         @foreach (CfgPeriodDate Period in oCfgPeriodDateList.ToList())
                         {
                             <MudSelectItem Value="Period.PeriodName">@Period.PeriodName</MudSelectItem>
@@ -196,17 +196,16 @@
             <MudSpacer />
             <MudDivider />
             <MudGrid class="search-action-block align-items-center">
-                 <MudItem xs="3" sm="3" md="3" lg="3">
+                <MudItem xs="3" sm="3" md="3" lg="3">
                     <MudAutocomplete T="MstOverTime" @bind-Value="oModelmstOvertime" SearchFunc="@SearchOvertime" Clearable="true" Label="OverTime" HelperText="Select OverTime" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
-                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
+                                 Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
                 </MudItem>
                 <MudItem xs="3" sm="3" md="3" lg="3">
                     <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="docdate" MinDate="DateTime.Today" Label="OT Date" HelperText="Select OverTime Date*" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
-                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
+                               Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
                 </MudItem>
 
                 <MudItem xs="3" sm="3" md="3" lg="3">
-
                     <MudTimePicker Label="From Time*" HelperText="24 Hour" @bind-Time="timefrom" PickerClosed="CalHour" />
                 </MudItem>
 
@@ -215,20 +214,20 @@
                 </MudItem>
                 <MudItem xs="3" sm="3" md="3" lg="3">
                     <MudNumericField @bind-Value="Hours" Min="0" ReadOnly="true" Immediate="true" Clearable="true" Label="Hours" Variant="Variant.Text"
-                                     Adornment="Adornment.Start" Format="0.00" />
+                                 Adornment="Adornment.Start" Format="0.00" />
                 </MudItem>
 
                 <MudItem xs="3" sm="3" md="3" lg="3">
                     <MudNumericField @bind-Value="Amount" Min="0" ReadOnly="true" Immediate="true" Clearable="true" Label="Amount" Variant="Variant.Text"
-                                     Adornment="Adornment.Start" AdornmentText="Rs" Format="0.00" />
+                                 Adornment="Adornment.Start" AdornmentText="Rs" Format="0.00" />
                 </MudItem>
 
                 <MudItem xs="2" sm="2" md="2" lg="2">
                     <MudSwitch @bind-Checked="@IsFlg" ThumbIcon="@(IsFlg==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(IsFlg==true ? Color.Primary : Color.Error)" Color="@(IsFlg==true ? Color.Info : Color.Error)">
                         <span>
                             @(
-                                IsFlg == true ? "Overtime  - Yes" : "Overtime - No"
-                                )
+                            IsFlg == true ? "Overtime  - Yes" : "Overtime - No"
+                            )
                         </span>
                     </MudSwitch>
                 </MudItem>
@@ -255,66 +254,73 @@
                 </MudItem>
             </MudGrid>
         }
-       @* @if (DialogFor == "ProductStageItem")
+        @if (DialogFor == "PerPieceTransaction")
         {
-                <MudText Typo="Typo.h6">Prodution Stage Item</MudText>
-                <MudSpacer />
-                <MudDivider />
-                <MudGrid class="search-action-block align-items-center">
-                  <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" ReadOnly="@true" @bind-Value="oModelTrnsProductStageItem.ItemCode" HelperText="select Item Code" Immediate="true" Label="Item*" Variant="Variant.Text"
-                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogStageItem(maxWidth))" AdornmentAriaLabel="" />
-                </MudItem>
-                    <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" @bind-Value="oModelTrnsProductStageItem.ItemDescription" HelperText="Insert Description" Immediate="true" Label="Description*" Variant="Variant.Text"
-                              Adornment="Adornment.Start" />
-                      </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" ReadOnly="@true" @bind-Value="oModelTrnsProductStageItem.ItemGrpCode" HelperText="Select Group Code" Immediate="true" Label="Group Code*" Variant="Variant.Text"
-                              Adornment="Adornment.Start" />
-                    </MudItem>
-              </MudGrid>
-        }
-        @if (DialogFor == "ProductStageTeamLead")
-        {
-            <MudText Typo="Typo.h6">Prodution Stage Team Lead</MudText>
+            <MudText Typo="Typo.h6">Per Piece Transaction</MudText>
             <MudSpacer />
             <MudDivider />
             <MudGrid class="search-action-block align-items-center">
-                <MudItem xs="4" sm="4" md="4" lg="4">
-                        <MudTextField T="string" ReadOnly="@true" @bind-Value="oModelTrnsProductStageTeamLead.EmpCode" HelperText="Select Employee" Immediate="true" Label="Employee Code*" Variant="Variant.Text"
-                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogStageTeamLead(maxWidth))" />
+                 <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTextField T="string" ReadOnly="true" @bind-Value="oModelTrnsPerPieceDetail.EmpCode" HelperText="Select Employee Code" Immediate="true" Label="Employee Code*" Variant="Variant.Text"
+                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Person" OnAdornmentClick="@((e) => OpenDialogEmployee(maxWidth))" AdornmentAriaLabel="Select Employee" />
                 </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" ReadOnly="@true" @bind-Value="oModelTrnsProductStageTeamLead.EmpName" HelperText="Select EmpLoyee Name" Immediate="true" Label="EmpLoyee Name*" Variant="Variant.Text"
+              <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTextField T="string" @bind-Value="oModelTrnsPerPieceDetail.EmpName" HelperText="Select Employee Name" Immediate="true" Label="Employee Name*" Variant="Variant.Text"
                               Adornment="Adornment.Start" />
                 </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" ReadOnly="@true" @bind-Value="oModelTrnsProductStageTeamLead.Department" HelperText="Select Department" Immediate="true" Label="Department*" Variant="Variant.Text"
+               <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTextField T="string" @bind-Value="oModelTrnsPerPieceDetail.DesignationName" HelperText="Select Designation Name" Immediate="true" Label="Designation Name*" Variant="Variant.Text"
                               Adornment="Adornment.Start" />
                 </MudItem>
-                 <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" ReadOnly="@true" @bind-Value="oModelTrnsProductStageTeamLead.Designation" HelperText="Select Designation" Immediate="true" Label="Designation*" Variant="Variant.Text"
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTextField T="string" @bind-Value="oModelTrnsPerPieceDetail.DepartmentName" HelperText="Select Department Name" Immediate="true" Label="Department Name*" Variant="Variant.Text"
                               Adornment="Adornment.Start" />
+                </MudItem>
+                  <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudSelect @bind-Value="oModelTrnsPerPieceDetail.PayrollPeriod" Label="Payroll Period*" HelperText="Select Payroll Period" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (var period in oCfgPeriodDateList.ToList())
+                        {
+                            <MudSelectItem Value="@period.PeriodName">@period.PeriodName</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+               <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTextField T="string" ReadOnly="true" @bind-Value="oModelTrnsPerPieceDetail.ItemCode" HelperText="Select Item Code" Immediate="true" Label="Item Code*" Variant="Variant.Text"
+                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Person" OnAdornmentClick="@((e) => OpenDialogItem(maxWidth))" />
+                </MudItem>
+                 <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudSelect @bind-Value="oModelTrnsPerPieceDetail.SubItemName" Label="Sub Item*" HelperText="Select Sub Item" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (var period in oListtrnsProductitem.ToList())
+                        {
+                            <MudSelectItem Value="@period.SubItemDescription">@period.SubItemDescription</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTextField T="string" ReadOnly="true" @bind-Value="oModelTrnsPerPieceDetail.StattionCode" HelperText="Select Station Code" Immediate="true" Label="Station Code*" Variant="Variant.Text"
+                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Person" OnAdornmentClick="@((e) => OpenDialogStation(maxWidth))" />
+                </MudItem>
+
+                @*PickerClosed="CalHour" *@
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTimePicker Label="Start Time*" HelperText="24 Hour" @bind-Time="timefrom" />
+                </MudItem>
+
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTimePicker Label="End Time*" HelperText="24 Hour" @bind-Time="timeto" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudNumericField @bind-Value="oModelTrnsPerPieceDetail.PrdQty" Min="0" Immediate="true" Clearable="true" Label="Quantity*" HelperText="Enter Quantity" Variant="Variant.Text"
+                                 Adornment="Adornment.Start" Format="0.00" />
+                </MudItem>
+                <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
+                    <MudSwitch @bind-Checked="@oModelTrnsPerPieceDetail.Rework" ThumbIcon="@(oModelTrnsPerPieceDetail.Rework==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModelTrnsPerPieceDetail.Rework ==true ? Color.Primary : Color.Error)" Color="@(oModelTrnsPerPieceDetail.Rework ==true ? Color.Info : Color.Error)">
+                        <span>@(oModelTrnsPerPieceDetail.Rework == true ? "Rework" : "In Rework")</span>
+                    </MudSwitch>
                 </MudItem>
             </MudGrid>
         }
-        @if (DialogFor == "ProductStageStation")
-        {
-            <MudText Typo="Typo.h6">Prodution Stage Station</MudText>
-            <MudSpacer />
-            <MudDivider />
-            <MudGrid class="search-action-block align-items-center">
-                <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" ReadOnly="@true" @bind-Value="oModelTrnsProductStageStation.StationCode" HelperText="Select Station" Immediate="true" Label="Station Code*" Variant="Variant.Text"
-                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddCard" OnAdornmentClick="@((e) => OpenDialogStageStation(maxWidth))" AdornmentAriaLabel="" />
-                </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudTextField T="string" ReadOnly="@true" @bind-Value="oModelTrnsProductStageStation.StationDescription" HelperText="Select Description" Immediate="true" Label="Station Description*" Variant="Variant.Text"
-                              Adornment="Adornment.Start" />
-                </MudItem>
-            </MudGrid>
-        }*@
+
     </DialogContent>
     <DialogActions>
         <MudItem class="text-right custom-btn-design">

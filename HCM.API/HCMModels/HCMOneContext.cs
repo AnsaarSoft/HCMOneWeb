@@ -13759,6 +13759,8 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.LeaveDedRule).HasMaxLength(50);
 
+                entity.Property(e => e.LeaveDuration).HasMaxLength(10);
+
                 entity.Property(e => e.LeaveHour).HasMaxLength(10);
 
                 entity.Property(e => e.Othour)
@@ -20361,6 +20363,8 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.ItemName).HasMaxLength(300);
 
                 entity.Property(e => e.PayrollPeriod).HasMaxLength(30);
+
+                entity.Property(e => e.PrdQty).HasColumnType("numeric(18, 2)");
 
                 entity.Property(e => e.StartTime).HasMaxLength(10);
 

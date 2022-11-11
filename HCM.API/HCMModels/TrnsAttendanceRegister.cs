@@ -61,6 +61,7 @@ namespace HCM.API.HCMModels
         public string ShortHours { get; set; }
         public bool? FlgMtpenalty { get; set; }
         public bool? FlgProcessed { get; set; }
+        public string LeaveDuration { get; set; }
 
         public virtual MstEmployee Emp { get; set; }
         public virtual MstLeaveType LeaveTypeNavigation { get; set; }
