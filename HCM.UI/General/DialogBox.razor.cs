@@ -131,6 +131,8 @@ namespace HCM.UI.General
         public ISAPData _SAPData { get; set; }
         [Inject]
         public ITrnsProductStage _trnsProductStage { get; set; }
+        [Inject]
+        public ITrnsPerPiece _trnsPerPiece { get; set; }
         #endregion
 
         #region Variables
@@ -175,6 +177,7 @@ namespace HCM.UI.General
         private bool FilterFuncTrnsProductStage(TrnsProductStage element) => FilterFuncTrnsProductStage(element, searchString1);
         private bool FilterFuncTrnsProductStageItem(TrnsProductStageItem element) => FilterFuncTrnsProductStageItem(element, searchString1);
         private bool FilterFuncTrnsProductStageStation(TrnsProductStageStation element) => FilterFuncTrnsProductStageStation(element, searchString1);
+        private bool FilterFuncTrnsPerPiece(TrnsPerPieceTransaction element) => FilterFuncTrnsPerPiece(element, searchString1);
         void Cancel() => MudDialog.Cancel();
 
         private MudTable<MstElement> _tableElement;
@@ -311,6 +314,10 @@ namespace HCM.UI.General
         private MudTable<TrnsProductStageStation> _tableTrnsProductStageStation;
         TrnsProductStageStation oModelTrnsProductStageStation = new TrnsProductStageStation();
         List<TrnsProductStageStation> oListTrnsProductStageStation = new List<TrnsProductStageStation>();
+
+        private MudTable<TrnsPerPieceTransaction> _tableTrnsPerPiece;
+        TrnsPerPieceTransaction oModelTrnsPerPiece = new TrnsPerPieceTransaction();
+        List<TrnsPerPieceTransaction> oListTrnsPerPiece = new List<TrnsPerPieceTransaction>();
 
         #endregion
 
@@ -1318,6 +1325,35 @@ namespace HCM.UI.General
             return false;
         }
 
+        private async Task GetAllTrnsPerPiece()
+        {
+            try
+            {
+                oListTrnsPerPiece = await _trnsPerPiece.GetAllData();
+                if (oListTrnsPerPiece?.Count == 0 || oListTrnsPerPiece == null)
+                {
+                    Snackbar.Add("No Record Found.", Severity.Info, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
+        private bool FilterFuncTrnsPerPiece(TrnsPerPieceTransaction element, string searchString1)
+        {
+            if (string.IsNullOrWhiteSpace(searchString1))
+                return true;
+            if (element.Pscode.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+                return true;
+            //if (element..Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            //if (element.ItemGroupCode.Contains(searchString1, StringComparison.OrdinalIgnoreCase))
+            //    return true;
+            return false;
+        }
+
+
         #endregion
 
         #region Events
@@ -1458,6 +1494,10 @@ namespace HCM.UI.General
                     else if (DialogFor == "TrnsProductStageStation")
                     {
                         await GetAllTrnsProductStage();
+                    }
+                    else if (DialogFor == "TrnsPerPiece")
+                    {
+                        await GetAllTrnsPerPiece();
                     }
                 }
                 else
@@ -2498,6 +2538,38 @@ namespace HCM.UI.General
                 return string.Empty;
             }
         }
+         
+        public void RowClickEventPerPiece(TableRowClickEventArgs<TrnsPerPieceTransaction> tableRowClickEventArgs)
+        {
+            try
+            {
+                clickedEvents.Add("Row has been clicked");
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+
+        }
+        private string SelectedRowClassFuncFilterFuncPerPiece(TrnsPerPieceTransaction element, int rowNumber)
+        {
+            if (selectedRowNumber == rowNumber)
+            {
+                selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_tableTrnsPerPiece.SelectedItem != null && _tableTrnsPerPiece.SelectedItem.Equals(element))
+            {
+                selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
 
         private void Submit()
         {
@@ -2642,6 +2714,10 @@ namespace HCM.UI.General
                 else if (DialogFor == "TrnsProductStageStation")
                 {
                     MudDialog.Close(DialogResult.Ok(oModelTrnsProductStageStation));
+                }
+                else if (DialogFor == "TrnsPerPiece")
+                {
+                    MudDialog.Close(DialogResult.Ok(oModelTrnsPerPiece));
                 }
                 else
                 {

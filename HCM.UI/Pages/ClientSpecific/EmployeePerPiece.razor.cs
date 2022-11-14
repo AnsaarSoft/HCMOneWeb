@@ -24,7 +24,7 @@ namespace HCM.UI.Pages.ClientSpecific
 
         [Inject]
         public IMstHoliday _mstHoliday { get; set; }
-        
+
         [Inject]
         public ITrnsPerPiece _trnsPerPiece { get; set; }
 
@@ -58,35 +58,33 @@ namespace HCM.UI.Pages.ClientSpecific
         #endregion
 
         #region Functions
-        //private async Task OpenDialog(DialogOptions options)
-        //{
-        //    try
-        //    {
-        //        var parameters = new DialogParameters();
-        //        parameters.Add("DialogFor", "Holiday");
-        //        var dialog = Dialog.Show<DialogBox>("", parameters, options);
-        //        var result = await dialog.Result;
-        //        if (!result.Cancelled)
-        //        {
-        //            var res = (MstHoliday1)result.Data;
-        //            oModel1 = res;
-        //            oList1MstHolidayDetail = res.MstHolidayDetails;
-        //            foreach (var item in oList1MstHolidayDetail)
-        //            {
-        //                item.UpdateDate = DateTime.Now;
-        //                item.UpdatedBy = LoginUser;
-        //            }
-        //            DisbaledCode = true;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logs.GenerateLogs(ex);
-        //    }
-        //}
-
-
-     
+        private async Task OpenDialog(DialogOptions options)
+        {
+            try
+            {
+                var parameters = new DialogParameters();
+                parameters.Add("DialogFor", "TrnsPerPiece");
+                var dialog = Dialog.Show<DialogBox>("", parameters, options);
+                var result = await dialog.Result;
+                if (!result.Cancelled)
+                {
+                    var res = (TrnsPerPieceTransaction)result.Data;
+                    oModel = res;
+                    oListTrnsPerPieceDetail = res.TrnsPerPieceTransactionDetails;
+                    foreach (var item in oListTrnsPerPieceDetail)
+                    {
+                        item.UpdateDate = DateTime.Now;
+                        item.UpdatedBy = LoginUser;
+                    }
+                    oListTrnsPerPieceDtl = oListTrnsPerPieceDetail.ToList();
+                    //DisbaledCode = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+            }
+        }
         private async Task OpenDialogProductStage(DialogOptions options)
         {
             try
@@ -120,16 +118,16 @@ namespace HCM.UI.Pages.ClientSpecific
                 {
                     var res = (TrnsPerPieceTransactionDetail)result.Data;
 
-                    if (oModel.Id == 0)
-                    {
+                    //if (oModel.Id == 0)
+                    //{
                         res.UserId = LoginUser;
                         res.CreateDate = DateTime.Now;
-                    }
-                    else
-                    {
-                        res.UpdatedBy = LoginUser;
-                        res.UpdateDate = DateTime.Now;
-                    }
+                    //}
+                    //else
+                    //{
+                    //    res.UpdatedBy = LoginUser;
+                    //    res.UpdateDate = DateTime.Now;
+                    //}
 
                     oListTrnsPerPieceDtl.Add(res);
                     oListTrnsPerPieceDetail = oListTrnsPerPieceDtl;
@@ -147,6 +145,7 @@ namespace HCM.UI.Pages.ClientSpecific
                 var parameters = new DialogParameters();
                 parameters.Add("oDetailParaTrnsPerPieceDetail", oDetailPara);
                 parameters.Add("DialogFor", "PerPieceTransaction");
+                parameters.Add("ProductStageId", oModel.Psid);
                 var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
                 var result = await dialog.Result;
 
@@ -158,17 +157,17 @@ namespace HCM.UI.Pages.ClientSpecific
                     {
                         oListTrnsPerPieceDtl.Remove(update);
                     }
-                    if (oModel1.Id != 0)
+                    if (oModel.Id != 0)
                     {
                         res.UpdateDate = DateTime.Now;
                         res.UpdatedBy = LoginUser;
                     }
-                    else
-                    {
-                        res.CreateDate = DateTime.Now;
-                        res.UserId = LoginUser;
+                    //else
+                    //{
+                    //    res.CreateDate = DateTime.Now;
+                    //    res.UserId = LoginUser;
 
-                    }
+                    //}
 
                     oListTrnsPerPieceDtl.Add(res);
                     oListTrnsPerPieceDetail = oListTrnsPerPieceDtl;
@@ -202,8 +201,41 @@ namespace HCM.UI.Pages.ClientSpecific
                 Loading = false;
             }
         }
-       
-        
+        private async Task<ApiResponseModel> Post()
+        {
+            try
+            {
+                Loading = true;
+                var res = new ApiResponseModel();
+                await Task.Delay(3);
+
+                if (oModel.Id != 0)
+                {
+                    oModel.DocStatus = "Posted";
+                    oModel.ProductionDate = DateTime.Now;
+                    oModel.UpdatedBy = LoginUser;
+                    res = await _trnsPerPiece.Update(oModel);
+                }
+                if (res != null && res.Id == 1)
+                {
+                    Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+                    await Task.Delay(3000);
+                    Navigation.NavigateTo("/EmployeePerPiece", forceLoad: true);
+                }
+                else
+                {
+                    Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+                Loading = false;
+                return res;
+            }
+            catch (Exception ex)
+            {
+                Logs.GenerateLogs(ex);
+                Loading = false;
+                return null;
+            }
+        }
         private async Task<ApiResponseModel> Save()
         {
             try
@@ -213,24 +245,24 @@ namespace HCM.UI.Pages.ClientSpecific
                 await Task.Delay(3);
                 if (!string.IsNullOrWhiteSpace(oModel.Pscode) && oListTrnsPerPieceDetail.Count() > 0)
                 {
-                        oModel.TrnsPerPieceTransactionDetails = oListTrnsPerPieceDetail.ToList();
+                    oModel.TrnsPerPieceTransactionDetails = oListTrnsPerPieceDetail.ToList();
                     //if (oList1.Where(x => x.Holiday.Trim().ToLowerInvariant() == oModel1.Holiday.Trim().ToLowerInvariant()).Count() > 0)
                     //{
                     //    Snackbar.Add(oModel1.Holiday + " : is Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     //}
                     //else
                     //{
-                        if (oModel.Id == 0)
-                        {
-                            oModel.UserId = LoginUser;
-                            res = await _trnsPerPiece.Insert(oModel);
-                        }
-                        else
-                        {
-                            oModel.UpdatedBy = LoginUser;
-                            res = await _trnsPerPiece.Update(oModel);
-                        }
-                   // }
+                    if (oModel.Id == 0)
+                    {
+                        oModel.UserId = LoginUser;
+                        res = await _trnsPerPiece.Insert(oModel);
+                    }
+                    else
+                    {
+                        oModel.UpdatedBy = LoginUser;
+                        res = await _trnsPerPiece.Update(oModel);
+                    }
+                    // }
                     if (res != null && res.Id == 1)
                     {
                         Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
