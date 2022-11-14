@@ -881,6 +881,32 @@
                         </PagerContent>
                     </MudTable>
                 }
+                @if (oListTrnsPerPiece?.Count > 0 && DialogFor == "TrnsPerPiece")
+                { @*Per Piece*@
+                    <MudTable Items="@oListTrnsPerPiece" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsPerPieceTransaction,bool>(FilterFuncTrnsPerPiece)"
+                      Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableTrnsPerPiece" RowClassFunc="@SelectedRowClassFuncFilterFuncPerPiece" OnRowClick="RowClickEventPerPiece" T="TrnsPerPieceTransaction" @bind-SelectedItem="oModelTrnsPerPiece">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Per Piece Transaction</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchString1" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Document Num</MudTh>
+                            <MudTh>Production Stage Code</MudTh>
+                            <MudTh>Document Status</MudTh>
+                            <MudTh>Document Date</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Code">@context.DocNum</MudTd>
+                            <MudTd DataLabel="Code">@context.Pscode</MudTd>
+                            <MudTd DataLabel="Code">@context.DocStatus</MudTd>
+                            <MudTd DataLabel="OT Date">@Convert.ToDateTime(context.DocDate).ToString("MM/dd/yyyy")</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                }
             }
         </MudContainer>
     </DialogContent>

@@ -37,7 +37,7 @@ namespace HCM.UI.General
 
         [Inject]
         public ICfgPayrollDefination _CfgPayrollDefination { get; set; }
-       
+
         [Inject]
         public ITrnsEmployeeOverTime _trnsEmployeeOverTime { get; set; }
 
@@ -51,7 +51,7 @@ namespace HCM.UI.General
         public IMstHoliday _mstHoliday { get; set; }
 
         [Inject]
-        public ITrnsProductStage  _trnsProductStage{ get; set; }
+        public ITrnsProductStage _trnsProductStage { get; set; }
 
         [Parameter]
         public string DialogFor { get; set; }
@@ -60,7 +60,7 @@ namespace HCM.UI.General
         public int EmpPayrollId { get; set; } = 0;
         [Parameter]
         public int EmpId { get; set; } = 0;
-        
+
         [Parameter]
         public int ProductStageId { get; set; } = 0;
 
@@ -403,10 +403,10 @@ namespace HCM.UI.General
             else if (DialogFor == "PerPieceTransaction")
             {
                 oModelTrnsPerPieceDetail.StartTime = timefrom.ToString();
-                oModelTrnsPerPieceDetail.EndTime= timeto.ToString();
+                oModelTrnsPerPieceDetail.EndTime = timeto.ToString();
                 if (!string.IsNullOrWhiteSpace(oModelTrnsPerPieceDetail.ItemCode) && !string.IsNullOrWhiteSpace(oModelTrnsPerPieceDetail.EmpCode) && !string.IsNullOrWhiteSpace(oModelTrnsPerPieceDetail.StattionCode)
                     && !string.IsNullOrWhiteSpace(oModelTrnsPerPieceDetail.SubItemName) && !string.IsNullOrWhiteSpace(oModelTrnsPerPieceDetail.StartTime) && !string.IsNullOrWhiteSpace(oModelTrnsPerPieceDetail.EndTime)
-                    &&oModelTrnsPerPieceDetail.PrdQty !=0)
+                    && oModelTrnsPerPieceDetail.PrdQty != 0)
                 {
                     MudDialog.Close(DialogResult.Ok<TrnsPerPieceTransactionDetail>(oModelTrnsPerPieceDetail));
                 }
@@ -500,15 +500,18 @@ namespace HCM.UI.General
                 {
                     var res = (MstEmployee)result.Data;
                     oModelTrnsPerPieceDetail.EmpCode = res.EmpId;
-                    oModelTrnsPerPieceDetail.EmpName = res.FirstName+" "+res.MiddleName+" "+res.LastName;
+                    oModelTrnsPerPieceDetail.EmpName = res.FirstName + " " + res.MiddleName + " " + res.LastName;
                     oModelTrnsPerPieceDetail.DesignationName = res.DesignationName;
-                    oModelTrnsPerPieceDetail.DepartmentName =  res.DepartmentName;
+                    oModelTrnsPerPieceDetail.DepartmentName = res.DepartmentName;
 
                     oModelPayroll = oPayrollList.Where(x => x.Id == res.PayrollId).FirstOrDefault();
                     oCfgPeriodDateList = oModelPayroll.CfgPeriodDates.Where(x => x.PayrollId == oModelPayroll.Id).ToList();
+                    var SelectedPeriod = oCfgPeriodDateList.Where(x => DateTime.Now.Date >= x.StartDate && DateTime.Now.Date <= x.EndDate).FirstOrDefault();
+                    oModelTrnsPerPieceDetail.PayrollPeriod = SelectedPeriod.PeriodName;
 
-
-
+                    //var SelectedPeriod = oListPayrollPeriod.Where(x => DateTime.Now.Date >= x.StartDate && DateTime.Now.Date <= x.EndDate).FirstOrDefault();
+                    ////oModel.PayrollPeriodId = SelectedPeriod.Id;
+                    //PayrollPeriod = SelectedPeriod.PeriodName;
                 }
             }
             catch (Exception ex)
@@ -530,7 +533,7 @@ namespace HCM.UI.General
                     var res = (TrnsProductStageItem)result.Data;
                     oModelTrnsPerPieceDetail.ItemCode = res.ItemCode;
                     oModelTrnsPerPieceDetail.ItemName = res.ItemDescription;
-
+                    oModelTrnsPerPieceDetail.SubItemName = "";
                     trnsProduct = oListtrnsProduct.Where(x => x.Id == ProductStageId).FirstOrDefault();
                     oListtrnsProductitem = trnsProduct.TrnsProductStageItems.Where(x => x.ItemCode == res.ItemCode).ToList();
 
@@ -642,43 +645,44 @@ namespace HCM.UI.General
                     await GetAllEmployees();
                     await GetAllOvertime();
                     oModelTrnsEmployeeOvertimeDetail = oDetailParaEmployeeOT;
-
-
-                    // oModelTrnsEmployeeOvertimeDetail.EmpOvertimeId = oModel.Id;
-                    docdate = oDetailParaEmployeeOT.Otdate;
                     if (oDetailParaEmployeeOT.FromTime != null && oDetailParaEmployeeOT.ToTime != null)
                     {
+                        docdate = oDetailParaEmployeeOT.Otdate;
                         timefrom = TimeSpan.Parse(oDetailParaEmployeeOT.FromTime);
                         timeto = TimeSpan.Parse(oDetailParaEmployeeOT.ToTime);
-                    }
-                    Hours = (decimal)oDetailParaEmployeeOT.Othours;
-                    Amount = (decimal)oDetailParaEmployeeOT.Amount;
-                    IsFlg = (bool)oDetailParaEmployeeOT.FlgActive;
-                    oModelmstOvertime = oListmstOverTime.Where(x => x.Id == oModelTrnsEmployeeOvertimeDetail.OvertimeId).FirstOrDefault();
+                        Hours = (decimal)oDetailParaEmployeeOT.Othours;
+                        Amount = (decimal)oDetailParaEmployeeOT.Amount;
+                        IsFlg = (bool)oDetailParaEmployeeOT.FlgActive;
+                        oModelmstOvertime = oListmstOverTime.Where(x => x.Id == oModelTrnsEmployeeOvertimeDetail.OvertimeId).FirstOrDefault();
 
+                    }
                 }
                 else if (DialogFor == "HolidayDetail")
                 {
-                    oModelMstHolidayDetail.FlgActive = true;
                     if (oDetailParaMstHolidayDetail.StartDate != null && oDetailParaMstHolidayDetail.Remarks != null)
                     {
                         oModelMstHolidayDetail = oDetailParaMstHolidayDetail;
                     }
                     else
                     {
+                        oModelMstHolidayDetail.FlgActive = true;
                         oModelMstHolidayDetail.Remarks = "";
                         oModelMstHolidayDetail.StartDate = DateTime.Now;
                     }
                 }
                 else if (DialogFor == "PerPieceTransaction")
                 {
-                    oModelTrnsPerPieceDetail.Rework= true;
+                    oModelTrnsPerPieceDetail.Rework = false;
                     oPayrollList = await _CfgPayrollDefination.GetAllData();
                     oListtrnsProduct = await _trnsProductStage.GetAllData();
-                    if (oDetailParaTrnsPerPieceDetail.EmpCode != null && oDetailParaTrnsPerPieceDetail.ItemCode!= null 
-                        && oDetailParaTrnsPerPieceDetail.SubItemName != null && oDetailParaTrnsPerPieceDetail.StattionCode != null 
-                        && oDetailParaTrnsPerPieceDetail.PrdQty!=0 )
+                    if (oDetailParaTrnsPerPieceDetail.EmpCode != null
+                        //&& oDetailParaTrnsPerPieceDetail.ItemCode != null
+                        //&& oDetailParaTrnsPerPieceDetail.SubItemName != null && oDetailParaTrnsPerPieceDetail.StattionCode != null
+                        //&& oDetailParaTrnsPerPieceDetail.PrdQty != 0
+                        )
                     {
+                        timefrom = TimeSpan.Parse(oDetailParaTrnsPerPieceDetail.StartTime);
+                        timeto = TimeSpan.Parse(oDetailParaTrnsPerPieceDetail.EndTime);
                         oModelTrnsPerPieceDetail = oDetailParaTrnsPerPieceDetail;
                     }
                     else
