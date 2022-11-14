@@ -13759,7 +13759,7 @@ namespace HCM.API.HCMModels
 
                 entity.Property(e => e.LeaveDedRule).HasMaxLength(50);
 
-                entity.Property(e => e.LeaveDuration).HasMaxLength(10);
+                entity.Property(e => e.LeaveDuration).HasMaxLength(100);
 
                 entity.Property(e => e.LeaveHour).HasMaxLength(10);
 
