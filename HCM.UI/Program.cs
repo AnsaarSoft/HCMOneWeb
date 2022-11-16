@@ -122,6 +122,7 @@ builder.Services.AddScoped<IMstReport, MstReportService>();
 //Configuration Start
 
 Settings.APIBaseURL = builder.Configuration.GetValue<string>("APIBaseUrl");
+Settings.ReportPath = builder.Configuration.GetValue<string>("ReportPath");
 Settings.DialogFor = "";
 //Configuration End
 

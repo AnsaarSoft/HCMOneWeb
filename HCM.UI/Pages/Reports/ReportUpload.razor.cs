@@ -252,7 +252,7 @@ namespace HCM.UI.Pages.Reports
                 else
                 {
                     var TemplateFile = excelSheet.Select(x => x.Name).FirstOrDefault();
-                    TemplateFile = Path.GetFullPath("wwwroot\\Reports\\" + TemplateFile);
+                    TemplateFile = Path.GetFullPath(Settings.ReportPath + TemplateFile);
                     if (!string.IsNullOrWhiteSpace(oModel.ReportCode) && !string.IsNullOrWhiteSpace(oModel.ReportName) && !string.IsNullOrWhiteSpace(FlgLayout) && (excelSheet.Count > 0 || !string.IsNullOrWhiteSpace(oModel.FilePath)))
                     {
                         oModel.ReportDoc = oModelForm.FormName;
