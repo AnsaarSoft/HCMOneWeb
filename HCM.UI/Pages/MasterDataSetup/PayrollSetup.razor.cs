@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using HCM.API.Models;
 using HCM.UI.General;
+using HCM.UI.Interfaces.Authorization;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
 using Microsoft.AspNetCore.Components;
@@ -23,6 +24,8 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         [Inject]
         public ICfgPayrollDefination _CfgPayrollDefination { get; set; }
+        [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
 
         [Inject]
         public IMstLove _mstLove { get; set; }
@@ -107,9 +110,9 @@ namespace HCM.UI.Pages.MasterDataSetup
                     foreach (var item in res)
                     {
                         var Element = oElementList.Where(x => x.Id == item.Id).FirstOrDefault();
-                        if(Element == null)
+                        if (Element == null)
                         {
-                            oTempList.Add(item);                            
+                            oTempList.Add(item);
                         }
                     }
                     oElementList = oTempList;
@@ -167,7 +170,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 var TempElement = await _mstElement.GetAllData();
                 List<MstElement> oTempList = new List<MstElement>();
                 foreach (var item in oMstElementLinkList)
-                {                    
+                {
                     var Element = TempElement.Where(x => x.Id == item.ElementId).FirstOrDefault();
                     Element.FlgActive = item.FlgActive;
                     oTempList.Add(Element);
@@ -226,7 +229,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                                 oPayrollElement.ElementId = Element.Id;
                                 oPayrollElement.FlgActive = Element.FlgActive;
                                 var CheckElement = oModel.MstElementLinks.Where(x => x.ElementId == oPayrollElement.ElementId).FirstOrDefault();
-                                if(CheckElement == null)
+                                if (CheckElement == null)
                                 {
                                     oModel.MstElementLinks.Add(oPayrollElement);
                                 }
@@ -305,12 +308,21 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    oModel.WorkDays = 0;
-                    oModel.WorkHours = 0;
-                    oModel.FlgActive = true;
-                    await GetAllLove();
-                    //await GetAllElements();
-                    await GetAllCalendar();
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 34 && x.UserRights == true).ToList().Count > 0)
+                    {
+
+                        oModel.WorkDays = 0;
+                        oModel.WorkHours = 0;
+                        oModel.FlgActive = true;
+                        await GetAllLove();
+                        //await GetAllElements();
+                        await GetAllCalendar();
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {

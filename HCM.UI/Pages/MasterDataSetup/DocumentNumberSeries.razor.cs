@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using HCM.API.Models;
 using HCM.UI.General;
+using HCM.UI.Interfaces.Authorization;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -25,6 +26,9 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         [Inject]
         public IMstDocumentNumberSeries _mstDocumentNumberSeries { get; set; }
+
+        [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
 
         [Inject]
         public ILocalStorageService _localStorage { get; set; }
@@ -242,11 +246,20 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    //var res = await _administrationService.FetchUserAuth(Session.UserCode);
-                    Loading = true;
-                    oModel.FlgActive = true;
-                    await GetAllForms();
-                    await GetAllDocumentNumberSeriess();
+
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 4 && x.UserRights == true).ToList().Count > 0)
+                    {
+                        //var res = await _administrationService.FetchUserAuth(Session.UserCode);
+                        Loading = true;
+                        oModel.FlgActive = true;
+                        await GetAllForms();
+                        await GetAllDocumentNumberSeriess();
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {

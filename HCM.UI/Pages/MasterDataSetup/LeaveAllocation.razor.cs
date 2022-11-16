@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using HCM.API.Models;
 using HCM.UI.General;
+using HCM.UI.Interfaces.Authorization;
 using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
@@ -56,6 +57,8 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         [Inject]
         public IMstLeaveType _mstLeaveType { get; set; }
+        [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
 
         [Inject]
         public ILocalStorageService _localStorage { get; set; }
@@ -706,15 +709,24 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    await GetPayrollInit();
-                    await GetAllMstEmployeeLeaves();
-                    await GetAllEmployees();
-                    await GetAllLeaveType();
-                    await GetAllDesignation();
-                    await GetAllDepartments();
-                    await GetAllLocation();
-                    await GetAllBranches();
-                    await GetAllPayroll();
+
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 31 && x.UserRights == true).ToList().Count > 0)
+                    {
+                        await GetPayrollInit();
+                        await GetAllMstEmployeeLeaves();
+                        await GetAllEmployees();
+                        await GetAllLeaveType();
+                        await GetAllDesignation();
+                        await GetAllDepartments();
+                        await GetAllLocation();
+                        await GetAllBranches();
+                        await GetAllPayroll();
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {

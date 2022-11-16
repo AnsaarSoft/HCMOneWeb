@@ -44,6 +44,9 @@ namespace HCM.UI.Pages.Authorization
         public IUserDataAccess _IUserDataAccess { get; set; }
 
         [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
+
+        [Inject]
         public ILocalStorageService _localStorage { get; set; }
 
 
@@ -323,9 +326,9 @@ namespace HCM.UI.Pages.Authorization
                 Loading = true;
                 await Task.Delay(1);
                 var a = SelectedPayrollList;
-                if ((!string.IsNullOrWhiteSpace(oModelEmployeeFrom.EmpId) && !string.IsNullOrWhiteSpace(oModelEmployeeTo.EmpId)) 
-                    || !string.IsNullOrWhiteSpace(oModelDesignation.Description) 
-                    || !string.IsNullOrWhiteSpace(oModelDepartment.DeptName) 
+                if ((!string.IsNullOrWhiteSpace(oModelEmployeeFrom.EmpId) && !string.IsNullOrWhiteSpace(oModelEmployeeTo.EmpId))
+                    || !string.IsNullOrWhiteSpace(oModelDesignation.Description)
+                    || !string.IsNullOrWhiteSpace(oModelDepartment.DeptName)
                     || !string.IsNullOrWhiteSpace(oModelLocation.Description)
                     )
                 {
@@ -343,7 +346,7 @@ namespace HCM.UI.Pages.Authorization
                         {
                             foreach (var item1 in oListFilteredEmployee)
                             {
-                                var chkCount = oListUserDataAccess.Where(x=>x.EmpId == item1.EmpId && x.FkPayrollId == item.Id).Count();
+                                var chkCount = oListUserDataAccess.Where(x => x.EmpId == item1.EmpId && x.FkPayrollId == item.Id).Count();
                                 if (chkCount == 0)
                                 {
                                     var chkList = oListSaveUserDataAccess.Where(x => x.EmpId == item1.EmpId && x.FkPayrollId == item.Id).Count();
@@ -409,7 +412,7 @@ namespace HCM.UI.Pages.Authorization
             }
         }
 
-        private async Task DeleteFromFilter(string empID,int payrollID)
+        private async Task DeleteFromFilter(string empID, int payrollID)
         {
             try
             {
@@ -497,11 +500,20 @@ namespace HCM.UI.Pages.Authorization
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    await GetAllEmployees();
-                    await GetAllDesignation();
-                    await GetAllDepartments();
-                    await GetAllLocation();
-                    await GetAllPayroll();
+
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 9 && x.UserRights == true).ToList().Count > 0)
+                    {
+                        await GetAllEmployees();
+                        await GetAllDesignation();
+                        await GetAllDepartments();
+                        await GetAllLocation();
+                        await GetAllPayroll();
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {

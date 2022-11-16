@@ -4,6 +4,7 @@ using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.Account;
 using HCM.UI.Interfaces.Attendance;
+using HCM.UI.Interfaces.Authorization;
 using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
@@ -28,6 +29,9 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         [Inject]
         IJSRuntime JS { get; set; }
+
+        [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
 
 
         [Inject]
@@ -2115,7 +2119,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                                         var empcodfromlist = empstr + empnum;
                                         if (empcod == empcodfromlist)
                                         {
-                                            oModelMstEmployee.EmpId = empcod; 
+                                            oModelMstEmployee.EmpId = empcod;
                                             oModelMstEmployee.CreatedBy = LoginUser;
                                             oModelMstEmployee.CreateDate = DateTime.Now;
                                             var CheckDuplicate = oMstEmployeeAddList.Where(x => x.EmpId == oModelMstEmployee.EmpId).FirstOrDefault();
@@ -2124,7 +2128,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                                                 oMstEmployeeAddList.Add(oModelMstEmployee);
                                             }
                                         }
-                                        else if(oMstEmployeeAddList.Count > 0 && oMstEmployeeAddList != null)
+                                        else if (oMstEmployeeAddList.Count > 0 && oMstEmployeeAddList != null)
                                         {
                                             maxemp = oMstEmployeeAddList.LastOrDefault();
                                             empnum = Regex.Replace(maxemp.EmpId, @"\D", "");
@@ -2134,7 +2138,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                                             {
                                                 oModelMstEmployee.EmpId = empcod;
                                                 oModelMstEmployee.CreatedBy = LoginUser;
-                                                oModelMstEmployee.CreateDate= DateTime.Now;
+                                                oModelMstEmployee.CreateDate = DateTime.Now;
                                                 var CheckDuplicate = oMstEmployeeAddList.Where(x => x.EmpId == oModelMstEmployee.EmpId).FirstOrDefault();
                                                 if (CheckDuplicate == null)
                                                 {
@@ -2278,7 +2282,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     Type type = typeof(VMAttendanceMasterDataImport);
                     int NumberOfRecords = type.GetProperties().Length;
                     string CustomPropertyName = "";
-                    for (int i = 2; i <= ws.Rows().Count()-1; i++)
+                    for (int i = 2; i <= ws.Rows().Count() - 1; i++)
                     {
                         var a = ws.Rows().Count();
                         IsForUpdate = false;
@@ -2332,7 +2336,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                                         empid = CheckList.Id;
                                         oModelTrnsTempAttendance.EmpId = StringValue;
                                     }
-                                   
+
                                     oModelTrnsTempAttendance.GetType().GetProperty(PropertyName).SetValue(oModelTrnsTempAttendance, Convert.ToInt32(empid), null);
                                     continue;
                                 }
@@ -2353,7 +2357,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                                         //oModelTrnsTempAttendance. = LoginUser;
                                         oModelTrnsTempAttendance.UpdateDate = DateTime.Now;
                                         IsForUpdate = true;
-                                       
+
                                     }
                                     else
                                     {
@@ -2416,7 +2420,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                                     var DatetimeValue = (ws.Cell(i, j).Value).ToString();
                                     if (DatetimeValue != null && DatetimeValue != "")
                                     {
-                                        
+
                                         oModelTrnsTempAttendance.GetType().GetProperty(PropertyName).SetValue(oModelTrnsTempAttendance, Convert.ToDateTime(DatetimeValue), null);
                                         continue;
                                     }
@@ -2687,19 +2691,28 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    await GetAllUsers();
-                    await GetAllPayroll();
-                    await GetPayrollinit();
-                    await GetAllDepartments();
-                    await GetAllContractors();
-                    await GetAllStations();
-                    await GetAllDesignation();
-                    await GetAllLocation();
-                    await GetAllPosition();
-                    await GetAllBranch();
-                    await GetAllGrading();
-                    await GetAllMstEmployee();
-                    await GetAllTrnsTempAttendance();
+
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 25 && x.UserRights == true).ToList().Count > 0)
+                    {
+                        await GetAllUsers();
+                        await GetAllPayroll();
+                        await GetPayrollinit();
+                        await GetAllDepartments();
+                        await GetAllContractors();
+                        await GetAllStations();
+                        await GetAllDesignation();
+                        await GetAllLocation();
+                        await GetAllPosition();
+                        await GetAllBranch();
+                        await GetAllGrading();
+                        await GetAllMstEmployee();
+                        await GetAllTrnsTempAttendance();
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {

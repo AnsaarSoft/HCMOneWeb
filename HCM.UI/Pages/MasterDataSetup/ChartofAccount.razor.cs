@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using HCM.API.Models;
 using HCM.UI.General;
+using HCM.UI.Interfaces.Authorization;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Caching.Memory;
@@ -23,6 +24,9 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         [Inject]
         public IMstchartofAccount _mstchartofAccount { get; set; }
+
+        [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
 
         [Inject]
         public ILocalStorageService _localStorage { get; set; }
@@ -164,7 +168,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                     oModel.Code = res.Code;
                     oModel.Description = res.Description;
                     oModel.FlgActive = res.FlgActive;
-                    if (oModel.Id !=0)
+                    if (oModel.Id != 0)
                     {
                         oModel.CreatedDate = res.CreatedDate;
                         oModel.CreatedBy = res.CreatedBy;
@@ -192,10 +196,19 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    //var res = await _administrationService.FetchUserAuth(Session.UserCode);
-                    Loading = true;
-                    oModel.FlgActive = true;
-                    await GetAllCOA();
+
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID ==66  && x.UserRights == true).ToList().Count > 0)
+                    {
+                        //var res = await _administrationService.FetchUserAuth(Session.UserCode);
+                        Loading = true;
+                        oModel.FlgActive = true;
+                        await GetAllCOA();
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {

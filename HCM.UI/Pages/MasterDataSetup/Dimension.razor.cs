@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using HCM.API.Models;
 using HCM.UI.General;
+using HCM.UI.Interfaces.Authorization;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Caching.Memory;
@@ -23,6 +24,9 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         [Inject]
         public IMstDimension _mstDimension { get; set; }
+
+        [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
 
         [Inject]
         public ILocalStorageService _localStorage { get; set; }
@@ -49,7 +53,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             {
                 Loading = true;
                 var res = new ApiResponseModel();
-                await Task.Delay(3);                
+                await Task.Delay(3);
                 if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description) && !string.IsNullOrWhiteSpace(oModel.Type))
                 {
                     //if (oList.Where(x => x.Code.Trim().ToLowerInvariant() == oModel.Code.Trim().ToLowerInvariant()).Count() > 0)
@@ -58,16 +62,16 @@ namespace HCM.UI.Pages.MasterDataSetup
                     //}
                     //else
                     //{
-                        if (oModel.Id == 0)
-                        {
-                            oModel.CreatedBy = LoginUser;
-                            res = await _mstDimension.Insert(oModel);
-                        }
-                        else
-                        {
-                            oModel.UpdatedBy = LoginUser;
-                            res = await _mstDimension.Update(oModel);
-                        }
+                    if (oModel.Id == 0)
+                    {
+                        oModel.CreatedBy = LoginUser;
+                        res = await _mstDimension.Insert(oModel);
+                    }
+                    else
+                    {
+                        oModel.UpdatedBy = LoginUser;
+                        res = await _mstDimension.Update(oModel);
+                    }
                     //}
                     if (res != null && res.Id == 1)
                     {
@@ -188,10 +192,20 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    //var res = await _administrationService.FetchUserAuth(Session.UserCode);
-                    Loading = true;
-                    oModel.FlgActive = true;
-                    await GetAllDimension();
+
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 17 && x.UserRights == true).ToList().Count > 0)
+                    {
+
+                        //var res = await _administrationService.FetchUserAuth(Session.UserCode);
+                        Loading = true;
+                        oModel.FlgActive = true;
+                        await GetAllDimension();
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {

@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using HCM.API.Models;
 using HCM.UI.General;
+using HCM.UI.Interfaces.Authorization;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Caching.Memory;
@@ -21,6 +22,8 @@ namespace HCM.UI.Pages.MasterDataSetup
         [Inject]
         public ISnackbar Snackbar { get; set; }
 
+        [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
         [Inject]
         public IMstGrading _mstGrading { get; set; }
 
@@ -194,10 +197,19 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    oModel.FlgActive = true;
-                    oModel.MinSalary = 1;
-                    oModel.MaxSalary = 1;
-                    await GetAllGradings();
+
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 16 && x.UserRights == true).ToList().Count > 0)
+                    {
+                        oModel.FlgActive = true;
+                        oModel.MinSalary = 1;
+                        oModel.MaxSalary = 1;
+                        await GetAllGradings();
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {

@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using HCM.API.Models;
 using HCM.UI.General;
+using HCM.UI.Interfaces.Authorization;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
 using Microsoft.AspNetCore.Components;
@@ -26,6 +27,9 @@ namespace HCM.UI.Pages.MasterElement
 
         [Inject]
         public IMstLove _mstLove { get; set; }
+
+        [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
 
         [Inject]
         public ILocalStorageService _localStorage { get; set; }
@@ -184,26 +188,35 @@ namespace HCM.UI.Pages.MasterElement
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    oModel.Value = 0;
-                    oModel.EmployeeContribution = 0;
-                    oModel.EmployeeContributionMax = 0;
-                    oModel.EmployerContribution = 0;
-                    oModel.EmployerContributionMax = 0;
-                    oModel.ApplicableAmountMax = 0;
-                    oModel.FlgActive = true;
-                    oModel.FlgProcessInPayroll = true;
-                    oModel.FlgStandardElement = true;
-                    oModel.FlgEffectOnGross = true;
-                    oModel.FlgProbationApplicable = true;
-                    oModel.FlgEmployeeBonus = false;
-                    //oModel.FlgNotTaxable = false;
-                    //oModel.FlgEos = false;
-                    //oModel.FlgVariableValue = false;
-                    //oModel.FlgPropotionate = false;
-                    oModel.StartDate = DateTime.Today;
-                    oModel.EndDate = DateTime.Today;
-                    await GetAllLove();
-                    await GetAllElements();
+
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 33 && x.UserRights == true).ToList().Count > 0)
+                    {
+                        oModel.Value = 0;
+                        oModel.EmployeeContribution = 0;
+                        oModel.EmployeeContributionMax = 0;
+                        oModel.EmployerContribution = 0;
+                        oModel.EmployerContributionMax = 0;
+                        oModel.ApplicableAmountMax = 0;
+                        oModel.FlgActive = true;
+                        oModel.FlgProcessInPayroll = true;
+                        oModel.FlgStandardElement = true;
+                        oModel.FlgEffectOnGross = true;
+                        oModel.FlgProbationApplicable = true;
+                        oModel.FlgEmployeeBonus = false;
+                        //oModel.FlgNotTaxable = false;
+                        //oModel.FlgEos = false;
+                        //oModel.FlgVariableValue = false;
+                        //oModel.FlgPropotionate = false;
+                        oModel.StartDate = DateTime.Today;
+                        oModel.EndDate = DateTime.Today;
+                        await GetAllLove();
+                        await GetAllElements();
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {

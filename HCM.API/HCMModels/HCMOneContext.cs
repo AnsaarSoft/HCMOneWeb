@@ -9702,6 +9702,8 @@ namespace HCM.API.HCMModels
                     .HasMaxLength(150)
                     .IsUnicode(false);
 
+                entity.Property(e => e.ReportCode).HasMaxLength(150);
+
                 entity.Property(e => e.UappStamp)
                     .HasMaxLength(100)
                     .IsUnicode(false)
@@ -10757,6 +10759,8 @@ namespace HCM.API.HCMModels
                 entity.Property(e => e.FilePath).HasMaxLength(500);
 
                 entity.Property(e => e.ReportCode).HasMaxLength(150);
+
+                entity.Property(e => e.ReportDoc).HasMaxLength(150);
 
                 entity.Property(e => e.ReportName).HasMaxLength(150);
 

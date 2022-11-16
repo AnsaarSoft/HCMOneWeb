@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using HCM.API.HCMModels;
+//using HCM.API.Interfaces.Authorization;
 using HCM.UI.General;
 using HCM.UI.Interfaces.Authorization;
 using Microsoft.AspNetCore.Components;
@@ -368,6 +369,16 @@ namespace HCM.UI.Pages.Authorization
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
+
+                    var res = await UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 8 && x.UserRights == true).ToList().Count > 0)
+                    {
+
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {

@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Blazored.LocalStorage;
 using HCM.UI.Interfaces.SAPData;
 using HCM.UI.Interfaces.ClientSpecific;
+using HCM.UI.Interfaces.Reports;
 
 namespace HCM.UI.General
 {
@@ -1353,7 +1354,6 @@ namespace HCM.UI.General
             return false;
         }
 
-
         #endregion
 
         #region Events
@@ -2570,7 +2570,7 @@ namespace HCM.UI.General
                 return string.Empty;
             }
         }
-
+        
         private void Submit()
         {
             try

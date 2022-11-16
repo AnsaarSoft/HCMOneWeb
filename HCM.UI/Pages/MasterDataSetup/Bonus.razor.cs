@@ -5,6 +5,7 @@ using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Blazored.LocalStorage;
+using HCM.UI.Interfaces.Authorization;
 
 namespace HCM.UI.Pages.MasterDataSetup
 {
@@ -23,6 +24,9 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         [Inject]
         public IMstBonus _mstBonus { get; set; }
+
+        [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
 
         [Inject]
         public IMstLove _mstLove { get; set; }
@@ -49,7 +53,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         MstBonu oModel = new MstBonu();
         List<MstLove> oLoveList = new List<MstLove>();
         List<MstElement> oElementList = new List<MstElement>();
-        private IEnumerable<MstBonu> oList = new List<MstBonu>();        
+        private IEnumerable<MstBonu> oList = new List<MstBonu>();
         #endregion
 
         #region Functions        
@@ -166,7 +170,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             try
             {
                 oElementList = await _mstElement.GetAllData();
-                oElementList = oElementList.Where(x=> x.FlgActive == true && x.FlgEmployeeBonus == true).ToList();
+                oElementList = oElementList.Where(x => x.FlgActive == true && x.FlgEmployeeBonus == true).ToList();
             }
             catch (Exception ex)
             {
@@ -236,11 +240,20 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    await GetAllBonus();
-                    await SetDocNo();
-                    await GetAllLove();
-                    //await GetAllElement();
-                    oModel.FlgActive = true;
+
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 22 && x.UserRights == true).ToList().Count > 0)
+                    {
+                        await GetAllBonus();
+                        await SetDocNo();
+                        await GetAllLove();
+                        //await GetAllElement();
+                        oModel.FlgActive = true;
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {
