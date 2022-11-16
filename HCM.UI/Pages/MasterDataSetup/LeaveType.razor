@@ -14,15 +14,63 @@
     <div class="row mt-5">
         <div class="col-sm-12">
             <MudGrid class="search-action-block align-items-center block-design">
-                <MudItem xs="4" sm="4" md="4" lg="4">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisabledCode" Mask="@AlphaNumericMask" MaxLength="20" Counter="20" HelperText="Enter Code" Immediate="true" Clearable="true" Label="Code*" Variant="Variant.Text"
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="250" Counter="250" HelperText="Enter Description" Immediate="true" Clearable="true" Label="Description*" Variant="Variant.Text"
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4" class="text-left">
+                
+
+                <MudItem xs="12" sm="6" md="4" lg="3">
+                    <MudSelect @bind-Value="oModel.DeductionType" Label="Leave Type*" HelperText="Select Deduction Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (MstLove Love in oLovesList.Where(x => x.Type == "LevTyp_LevType").ToList())
+                        {
+                            <MudSelectItem Value="@Love.Code">@Love.Code - @Love.Value</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" sm="6" md="4" lg="3">
+                    <MudSelect @bind-Value="oModel.DeductionId" Label="Deduction ID" HelperText="Select Deduction ID" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        @foreach (MstLeaveDeduction LeaveDeduction in oListLeaveDeduction.Where(x => x.FlgActive == true).ToList())
+                        {
+                            <MudSelectItem Value="(int?)LeaveDeduction.Id">@LeaveDeduction.Code - @LeaveDeduction.Description</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" sm="6" md="4" lg="3">
+                    <MudNumericField @bind-Value="oModel.LeaveCap" Min="0" HelperText="Enter Leave Days" Immediate="true" Clearable="true" Label="Leave Days*"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text"> </MudNumericField>
+                </MudItem>
+               
+                @if (oModel.FlgEncash == true)
+                {
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudSelect @bind-Value="oModel.ElementCode" Label="Encash Element*" HelperText="Select Encash Element" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                            @foreach (MstElement Element in oListElement.Where(x => x.ElmtType == "Ded").ToList())
+                            {
+                                <MudSelectItem Value="@Element.Code">@Element.Code - @Element.Description</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                }
+                @if (oModel.FlgEncash == true || oModel.FlgPartiallyEncash == true)
+                {
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudNumericField @bind-Value="oModel.EncashmentCap" Min="0" HelperText="Enter Encashment Cap" Immediate="true" Clearable="true" Label="Encashment Cap*"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text"> </MudNumericField>
+                    </MudItem>
+                }
+                @if (oModel.FlgCarryForward  == true)
+                {
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudNumericField @bind-Value="oModel.CarryForwardLeaves" Min="0" HelperText="Enter Carry Forward Leaves" Immediate="true" Clearable="true" Label="Carry Forward Leaves*"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text"> </MudNumericField>
+                    </MudItem>
+                }
+                 <MudItem xs="12" sm="12" md="12" lg="12" class="text-left">
                     <MudSwitch @bind-Checked="@oModel.FlgActive" ThumbIcon="@(oModel.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgActive==true ? Color.Info : Color.Error)">
                         <span>@(oModel.FlgActive == true ? "Active" : "In Active")</span>
                     </MudSwitch>
@@ -36,52 +84,6 @@
                         <span>@(oModel.FlgCarryForward == true ? "CarryForward Active" : "CarryForward In Active")</span>
                     </MudSwitch>
                 </MudItem>
-
-                <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudSelect @bind-Value="oModel.DeductionType" Label="Leave Type*" HelperText="Select Deduction Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
-                        @foreach (MstLove Love in oLovesList.Where(x => x.Type == "LevTyp_LevType").ToList())
-                        {
-                            <MudSelectItem Value="@Love.Code">@Love.Code - @Love.Value</MudSelectItem>
-                        }
-                    </MudSelect>
-                </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudSelect @bind-Value="oModel.DeductionId" Label="Deduction ID" HelperText="Select Deduction ID" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
-                        @foreach (MstLeaveDeduction LeaveDeduction in oListLeaveDeduction.Where(x => x.FlgActive == true).ToList())
-                        {
-                            <MudSelectItem Value="(int?)LeaveDeduction.Id">@LeaveDeduction.Code - @LeaveDeduction.Description</MudSelectItem>
-                        }
-                    </MudSelect>
-                </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.LeaveCap" Min="0" HelperText="Enter Leave Days" Immediate="true" Clearable="true" Label="Leave Days*"
-                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text"> </MudNumericField>
-                </MudItem>
-                @if (oModel.FlgEncash == true)
-                {
-                    <MudItem xs="4" sm="4" md="4" lg="4">
-                        <MudSelect @bind-Value="oModel.ElementCode" Label="Encash Element*" HelperText="Select Encash Element" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
-                            @foreach (MstElement Element in oListElement.Where(x => x.ElmtType == "Ded").ToList())
-                            {
-                                <MudSelectItem Value="@Element.Code">@Element.Code - @Element.Description</MudSelectItem>
-                            }
-                        </MudSelect>
-                    </MudItem>
-                }
-                @if (oModel.FlgEncash == true || oModel.FlgPartiallyEncash == true)
-                {
-                    <MudItem xs="4" sm="4" md="4" lg="4">
-                        <MudNumericField @bind-Value="oModel.EncashmentCap" Min="0" HelperText="Enter Encashment Cap" Immediate="true" Clearable="true" Label="Encashment Cap*"
-                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text"> </MudNumericField>
-                    </MudItem>
-                }
-                @if (oModel.FlgCarryForward  == true)
-                {
-                    <MudItem xs="4" sm="4" md="4" lg="4">
-                        <MudNumericField @bind-Value="oModel.CarryForwardLeaves" Min="0" HelperText="Enter Carry Forward Leaves" Immediate="true" Clearable="true" Label="Carry Forward Leaves*"
-                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Text"> </MudNumericField>
-                    </MudItem>
-                }
                 <MudItem xs="12" sm="12" md="12" lg="12">
                     @if (Loading)
                     {

@@ -11,31 +11,31 @@
     <div class="row mt-5">
         <div class="col-sm-12">
             <MudGrid class="search-action-block align-items-center block-design">
-                <MudItem xs="3" sm="3" md="3" lg="3">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudAutocomplete T="MstEmployee" @bind-Value="oModelEmployeeFrom" SearchFunc="@SearchEmployeeFrom" Clearable="true" Label="Select Employee From" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.EmpId}")" />
                 </MudItem>
-                <MudItem xs="3" sm="3" md="3" lg="3">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudAutocomplete T="MstEmployee" @bind-Value="oModelEmployeeTo" SearchFunc="@SearchEmployeeTo" Clearable="true" Label="Select Employee To" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.EmpId}")" />
                 </MudItem>
-                <MudItem xs="3" sm="3" md="3" lg="3">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudAutocomplete T="CfgPayrollDefination" @bind-Value="oModelPayroll" SearchFunc="@SearchPayroll" Clearable="true" Label="Select Payroll" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.PayrollName}")" />
                 </MudItem>
-                <MudItem xs="3" sm="3" md="3" lg="3">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudAutocomplete T="MstDesignation" @bind-Value="oModelDesignation" SearchFunc="@SearchDesignation" Clearable="true" Label="Select Designation" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true"
                                      CoerceValue="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
                 </MudItem>
-                <MudItem xs="3" sm="3" md="3" lg="3">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudAutocomplete T="MstDepartment" @bind-Value="oModelDepartment" SearchFunc="@SearchDepartment" Clearable="true" Label="Select Department" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.DeptName}")" />
                 </MudItem>
-                <MudItem xs="3" sm="3" md="3" lg="3">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudAutocomplete T="MstLocation" @bind-Value="oModelLocation" SearchFunc="@SearchLocation" Clearable="true" Label="Select Location" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
                 </MudItem>
-                <MudItem xs="3" sm="3" md="3" lg="3">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudAutocomplete T="MstBranch" @bind-Value="oModelBranch" SearchFunc="@SearchBranch" Clearable="true" Label="Select Branch" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
                 </MudItem>
@@ -109,7 +109,7 @@
     </div>
     <div class="row mt-3">
         <div class="col-sm-12">
-            <MudGrid>
+            <MudGrid class="search-action-block align-items-center block-design">
                 <MudItem xs="12" sm="12" md="12" lg="12">
                     <MudText Typo="Typo.h6">Assign Shifts</MudText>
                 </MudItem>

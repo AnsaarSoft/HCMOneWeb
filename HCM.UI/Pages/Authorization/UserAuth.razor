@@ -1,6 +1,6 @@
 ﻿@page "/UserAuth"
 @using HCM.API.Models
-<div class="input-field-setting">
+<div class="input-field-setting page-content-setting">
     <h3>User Authorization</h3>
     <MudDivider />
     @if (Loading)
@@ -10,14 +10,14 @@
     <div class="row mt-5">
         <div class="col-sm-12">
             <MudGrid class="search-action-block align-items-center block-design">
-                <MudItem xs="4" sm="4" md="4" lg="4">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudTextField T="string" ReadOnly="true" @bind-Value="oModelEmployee.EmpId" TextChanged="GetAllAuthMenu" HelperText="Employee ID" Immediate="true" Label="Select Employee*" Variant="Variant.Text"
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Person" OnAdornmentClick="@((e) => OpenDialogEmployee(maxWidth))" AdornmentAriaLabel="Select Employee" />
                 </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4" Class="text-right custom-btn-design">
+                <MudItem xs="12" sm="6" md="4" lg="3" Class="text-right custom-btn-design">
                     <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenCopyDialog(maxWidth))" StartIcon="@Icons.Material.Filled.ContentCopy" Color="Color.Success" Size="Size.Small">Copy Authorization</MudButton>
                 </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                 </MudItem>
                 <MudItem xs="12" sm="12" md="12" lg="12">
                     @if (Loading)
@@ -50,7 +50,7 @@
                 </ColGroup>
                 <HeaderContent>
                     <MudTh>Select</MudTh>
-                    <MudTh>Form Name</MudTh>
+                    <MudTh>Foam Name</MudTh>
                 </HeaderContent>
                 <GroupHeaderTemplate>
                     <MudTh colspan="5">@($"{context.GroupName}: {context.Key}")</MudTh>

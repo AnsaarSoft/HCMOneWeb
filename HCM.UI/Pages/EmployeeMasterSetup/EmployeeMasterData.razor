@@ -5,79 +5,80 @@
 
 <div class="container-fluid page-content-setting">
     <div class="row">
-        <div class="col-sm-11">
+        <div class="col-sm-10">
             <h3>Employee Master Data</h3>
             <MudDivider />
         </div>
-        <div class="col-sm-1">
-            <MudFab Color="Color.Primary" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Material.Filled.List" Title="View All" />
+        <div class="col-sm-2 custom-btn-design">
+           @* <MudFab Color="Color.Primary" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Material.Filled.List" Title="View All" />*@
+            <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenDialog(maxWidth))" StartIcon="@Icons.Filled.RemoveRedEye" Color="Color.Info" Size="Size.Small">View All</MudButton>
         </div>
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
-            <MudGrid class="search-action-block align-items-center">
+            <MudGrid class="search-action-block align-items-center block-design">
                 @if (oModelPayrollInit.FlgEmployeeCodeSeries == true)
                 {
-                    <MudItem xs="1" sm="1" md="1" lg="1">
+                    <MudItem xs="12" sm="6" md="4" lg="3">
                         <MudAutocomplete T="MstDocumentNumberSeries" Disabled="@DisableSeries" Value="oModelDocumentNumberSeries" ValueChanged="@FillEmployeeCode" SearchFunc="@SearchDocumentNumberSeries" Clearable="true" Label="Select Series*" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true"
                                      CoerceValue="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Prefix}")" />
                     </MudItem>
                 }
-                <MudItem xs="1" sm="1" md="1" lg="1">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudTextField T="string" @bind-Value="oModel.EmpId" Disabled="@DisbaledCode" Immediate="true" Clearable="true" Label="Code*" HelperText="Enter Code" Variant="Variant.Text"
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudTextField T="string" @bind-Value="oModel.FirstName" MaxLength="50" Counter="50" HelperText="Enter First Name" Immediate="true" Clearable="true" Label="First Name*" Variant="Variant.Text"
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudTextField T="string" @bind-Value="oModel.MiddleName" MaxLength="50" Counter="50" HelperText="Enter Middle Name" Immediate="true" Clearable="true" Label="Middle Name" Variant="Variant.Text"
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudTextField T="string" @bind-Value="oModel.LastName" MaxLength="50" Counter="50" HelperText="Enter Last Name" Immediate="true" Clearable="true" Label="Last Name*" Variant="Variant.Text"
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudAutocomplete T="MstDesignation" @bind-Value="oModelDesignation" SearchFunc="@SearchDesignation" Clearable="true" Label="Select Designation*" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true"
                                      CoerceValue="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
                 </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudAutocomplete T="MstEmployee" @bind-Value="oModelUser" SearchFunc="@SearchUser" Clearable="true" Label="Select Manager*" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.FirstName}")" />
                 </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudAutocomplete T="MstPosition" @bind-Value="oModelPosition" SearchFunc="@SearchPosition" Clearable="true" Label="Select Position*" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
                 </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudAutocomplete T="MstDepartment" @bind-Value="oModelDepartment" SearchFunc="@SearchDepartment" Clearable="true" Label="Select Department*" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.DeptName}")" />
                 </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudAutocomplete T="MstLocation" @bind-Value="oModelLocation" SearchFunc="@SearchLocation" Clearable="true" Label="Select Location*" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
                 </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudAutocomplete T="MstBranch" @bind-Value="oModelBranch" SearchFunc="@SearchBranch" Clearable="true" Label="Select Branch*" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Description}")" />
                 </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudAutocomplete T="CfgPayrollDefination" @bind-Value="oModelPayroll" SearchFunc="@SearchPayroll" Clearable="true" Label="Select Payroll*" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.PayrollName}")" />
                 </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudPaper @ondragenter="@SetDragClassEmpPicture" @ondragleave="@ClearDragClassEmpPicture" @ondragend="@ClearDragClassEmpPicture" Height="150px" Outlined="true" Class="@DragClassEmpPicture">
                         @if (!ClearingEmpPicture)
                         {
-                            <InputFile OnChange="OnInputFileChangedEmpPicture" accept=".jpg, .jpeg, .png" class="absolute mud-width-full mud-height-full overflow-hidden z-2" style="opacity:0;" />
+                            <InputFile OnChange="OnInputFileChangedEmpPicture" accept=".jpg, .jpeg, .png" class="absolute mud-width-full mud-height-full overflow-hidden z-2" style="opacity:0;top:0;left:0;cursor: pointer;" />
                         }
                         <MudText Typo="Typo.caption">Drag and drop image here or click*</MudText>
-                        <MudAvatar Image="@EmpImagePath" Style="height:70px; width:70px; font-size:2rem;" />
+                        <MudAvatar Image="@EmpImagePath" Style="width: 100%;height: 100%;max-width: 100px;max-height: 100px;" />
                     </MudPaper>
                 </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2" class="text-left">
+                <MudItem xs="12" sm="6" md="4" lg="3" class="text-left">
                     <MudSwitch @bind-Checked="@oModel.FlgMedicalExempt" ThumbIcon="@(oModel.FlgMedicalExempt==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgMedicalExempt==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgMedicalExempt==true ? Color.Info : Color.Error)">
                         <span>@(oModel.FlgMedicalExempt == true ? "10% Med Exampt - Yes" : "10% Med Exampt - No")</span>
                     </MudSwitch>
@@ -85,7 +86,7 @@
                         <span>@(oModel.FlgTax == true ? "Taxable - Yes" : "Taxable - No")</span>
                     </MudSwitch>
                 </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2" class="text-left">
+                <MudItem xs="12" sm="6" md="4" lg="3" class="text-left">
                     <MudSwitch @bind-Checked="@oModel.FlgOtapplicable" ThumbIcon="@(oModel.FlgOtapplicable==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgOtapplicable==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgOtapplicable==true ? Color.Info : Color.Error)">
                         <span>@(oModel.FlgOtapplicable == true ? "Overtime Applicable - Yes" : "Overtime Applicable - No")</span>
                     </MudSwitch>
@@ -93,7 +94,7 @@
                         <span>@(oModel.FlgSuperVisor == true ? "Supervisor - Yes" : "Supervisor - No")</span>
                     </MudSwitch>
                 </MudItem>
-                <MudItem xs="2" sm="2" md="2" lg="2" class="text-left">
+                <MudItem xs="12" sm="6" md="4" lg="3" class="text-left">
                     <MudSwitch @bind-Checked="@oModel.FlgDailyWager" ThumbIcon="@(oModel.FlgDailyWager==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgDailyWager==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgDailyWager==true ? Color.Info : Color.Error)">
                         <span>@(oModel.FlgDailyWager == true ? "Daily Wager - Yes" : "Daily Wager - No")</span>
                     </MudSwitch>
@@ -110,10 +111,13 @@
                 }
                 else
                 {
-                    <MudItem xs="2" sm="2" md="2" lg="2" class="text-right">
-                        <MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
-                        <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />
+                    <MudItem xs="12" sm="12" md="12" lg="12" class="text-right custom-btn-design" style="justify-content: flex-end;">
+                        @*<MudFab Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save" IconSize="Size.Small" />
+                        <MudFab Color="Color.Info" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Title="Refresh" IconSize="Size.Small" />*@
+                        <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Save</MudButton>
+                        <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
                     </MudItem>
+
                 }
             </MudGrid>
         </div>
@@ -122,24 +126,24 @@
         <div class="col-sm-12">
             <MudTabs Color="Color.Dark" Elevation="4" Rounded="true" Centered="true">
                 <MudTabPanel Text="Personal Detail" Icon="@Icons.Material.Filled.Details">
-                    <MudGrid class="search-action-block align-items-center mt-3">
+                    <MudGrid class="search-action-block align-items-center mt-3 tabs-title-style block-design">
                         <MudItem xs="12" sm="12" md="12" lg="12">
                             <MudText Typo="Typo.body1">Personal Detail</MudText>
                         </MudItem>
                         <MudDivider />
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.FatherName" MaxLength="100" Counter="100" HelperText="Enter Father Name" Immediate="true" Clearable="true" Label="Father Name*" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.MotherName" MaxLength="100" Counter="100" HelperText="Enter Mother Name" Immediate="true" Clearable="true" Label="Mother Name*" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.Dob" Label="Date of Birth*" HelperText="Enter Date of Birth" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
                                            Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudSelect @bind-Value="oModel.GenderId" Label="Gender*" HelperText="Select Gender" AdornmentIcon="@Icons.Material.Filled.Male" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "Gender").ToList())
                                 {
@@ -147,7 +151,7 @@
                                 }
                             </MudSelect>
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudSelect @bind-Value="oModel.BloodGroupId" Label="Blood Group" HelperText="Select Blood Group" AdornmentIcon="@Icons.Material.Filled.Bloodtype" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "BloodGroup").ToList())
                                 {
@@ -155,7 +159,7 @@
                                 }
                             </MudSelect>
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudSelect @bind-Value="oModel.MartialStatusId" Label="Marital Status*" HelperText="Select Marital Status" AdornmentIcon="@Icons.Material.Filled.People" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "Marital").ToList())
                                 {
@@ -163,7 +167,7 @@
                                 }
                             </MudSelect>
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudSelect @bind-Value="oModel.ReligionId" Label="Religion*" HelperText="Select Religion" AdornmentIcon="@Icons.Material.Filled.Groups" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "Religion").ToList())
                                 {
@@ -171,91 +175,91 @@
                                 }
                             </MudSelect>
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.PersonalEmail" MaxLength="100" Counter="100" HelperText="Enter Personal Email" Immediate="true" Clearable="true" Label="Personal Email*" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Email" />
                         </MudItem>                        
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.PersonalContactNo" MaxLength="100" Counter="100" HelperText="Enter Personal Contact No" Immediate="true" Clearable="true" Label="Personal Contact No*" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Phone" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.Nationality" MaxLength="20" Counter="20" HelperText="Enter Nationality" Immediate="true" Clearable="true" Label="Nationality*" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.SocialSecurityNo" MaxLength="20" Counter="20" HelperText="Enter Social Security No" Immediate="true" Clearable="true" Label="Social Security No" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.EmpUnion" MaxLength="10" Counter="10" HelperText="Enter Employee Union" Immediate="true" Clearable="true" Label="Employee Union" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.UnionMembershipNo" MaxLength="20" Counter="20" HelperText="Enter Union Membership No" Immediate="true" Clearable="true" Label="Union Membership No" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.Idno" MaxLength="20" Counter="20" HelperText="Enter ID No" Immediate="true" Clearable="true" Label="ID No" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.IddateofIssue" Label="ID Date of Issue" HelperText="Enter ID Date of Issue" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
                                            Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.IdplaceofIssue" MaxLength="20" Counter="20" HelperText="Enter ID Place of Issue" Immediate="true" Clearable="true" Label="ID Place of Issue" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.IdissuedBy" MaxLength="50" Counter="50" HelperText="Enter ID Issued By" Immediate="true" Clearable="true" Label="ID Issued By" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.IdexpiryDate" Label="ID Date of Expiry" HelperText="Enter ID Date of Expiry" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
                                            Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.PassportNo" MaxLength="100" Counter="100" HelperText="Enter Passport No" Immediate="true" Clearable="true" Label="Passport No" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.PassportDateofIssue" Label="Passport Date of Issue" HelperText="Enter Passport Date of Issue" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
                                            Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.PassportExpiryDate" Label="Passport Date of Expiry" HelperText="Enter Passport Date of Expiry" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
                                            Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.IncomeTaxNo" MaxLength="20" Counter="20" HelperText="Enter Income Tax No" Immediate="true" Clearable="true" Label="Income Tax No" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.ResignDate" Label="Resignation Date" HelperText="Enter Resignation Date" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
                                            Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.TerminationDate" Label="Termination Date" HelperText="Enter Termination Date" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
                                            Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
                         </MudItem>
                     </MudGrid>
                 </MudTabPanel>
                 <MudTabPanel Text="Salary" Icon="@Icons.Material.Filled.Money">
-                    <MudGrid class="search-action-block align-items-center mt-3">
+                    <MudGrid class="search-action-block align-items-center mt-3 tabs-title-style block-design">
                         <MudItem xs="12" sm="12" md="12" lg="12">
                             <MudText Typo="Typo.body1">Salary</MudText>
                         </MudItem>
                         <MudDivider />
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudNumericField @bind-Value="oModel.BasicSalary" Min="0" HelperText="Enter Basic Salary" Immediate="true" Clearable="true" Label="Basic Salary*" Variant="Variant.Text"
                                              Adornment="Adornment.Start" AdornmentText="Rs" Format="N2" Culture="@CultureInfo.InvariantCulture" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudNumericField @bind-Value="oModel.GrossSalary" Min="0" HelperText="Enter Gross Salary" Immediate="true" Clearable="true" Label="Gross Salary*" Variant="Variant.Text"
                                              Adornment="Adornment.Start" AdornmentText="Rs" Format="N2" Culture="@CultureInfo.InvariantCulture" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudSelect @bind-Value="oModel.SalaryCurrency" Label="Salary Currency*" HelperText="Select Salary Currency" AdornmentIcon="@Icons.Material.Filled.CurrencyExchange" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "SalaryCurrency").ToList())
                                 {
@@ -263,7 +267,7 @@
                                 }
                             </MudSelect>
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudSelect @bind-Value="oModel.PaymentMode" Label="Payment Mode*" HelperText="Select Payment Mode" AdornmentIcon="@Icons.Material.Filled.Payments" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "PaymentMode").ToList())
                                 {
@@ -271,15 +275,15 @@
                                 }
                             </MudSelect>
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.AccountTitle" MaxLength="100" Counter="100" HelperText="Enter Account Title" Immediate="true" Clearable="true" Label="Account Title*" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AccountBox" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.AccountNo" MaxLength="200" Counter="200" HelperText="Enter Account No" Immediate="true" Clearable="true" Label="Account No*" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.NoAccounts" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudSelect @bind-Value="oModel.AccountType" Label="Account Type*" HelperText="Select Account Type" AdornmentIcon="@Icons.Material.Filled.AccountCircle" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "AccountType").ToList())
                                 {
@@ -287,15 +291,15 @@
                                 }
                             </MudSelect>
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.BankName" MaxLength="100" Counter="100" HelperText="Enter Bank Name" Immediate="true" Clearable="true" Label="Bank Name*" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.CommentBank" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.BranchName" MaxLength="150" Counter="150" HelperText="Enter Branch Name" Immediate="true" Clearable="true" Label="Branch Name*" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.CommentBank" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudSelect @bind-Value="oModel.HolidayCalendar" Label="Calendar Type*" HelperText="Select Calendar Type" AdornmentIcon="@Icons.Material.Filled.CalendarMonth" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "AccountType").ToList())
                                 {
@@ -303,19 +307,19 @@
                                 }
                             </MudSelect>
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.EffectiveDate" Label="Effective Date*" HelperText="Enter Effective Date" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
                                            Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="oModel.JoiningDate" Label="Joining Date*" HelperText="Enter Joining Date" DateFormat="MM/dd/yyyy" Variant="Variant.Text"
                                            Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DateRange" />
                         </MudItem>
-                        @*<MudItem xs="3" sm="3" md="3" lg="3">
+                        @*<MudItem xs="12" sm="6" md="4" lg="3">
                         <MudNumericField @bind-Value="oModel.PercentagePaid" Min="0" MaxLength="150" Counter="150" HelperText="Enter Percentage" Immediate="true" Clearable="true" Label="Percentage*" Variant="Variant.Text"
                         Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" />
                         </MudItem>*@
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudSelect @bind-Value="oModel.EmployeeContractType" Label="Contract Type*" HelperText="Select Contract Type" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "ContractType").ToList())
                                 {
@@ -323,11 +327,11 @@
                                 }
                             </MudSelect>
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudAutocomplete T="MstGratuity" @bind-Value="oModelGratuity" SearchFunc="@SearchGratuity" Clearable="true" Label="Gratuity" HelperText="Select Gratuity" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Code}")" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudAutocomplete T="MstBonu" @bind-Value="oModelBonus" SearchFunc="@SearchBonus" Clearable="true" Label="Bonus" HelperText="Select Bonus" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.Code}")" />
                         </MudItem>
@@ -388,64 +392,64 @@
                     </MudGrid>
                 </MudTabPanel>
                 <MudTabPanel Text="Contact" Icon="@Icons.Material.Filled.Contacts">
-                    <MudGrid class="search-action-block align-items-center mt-3">
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudGrid class="search-action-block align-items-center mt-3 tabs-title-style block-design">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.OfficeMobile" MaxLength="13" Counter="13" HelperText="Enter Office Mobile" Immediate="true" Clearable="true" Label="Office Mobile" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.PhoneAndroid" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.OfficeExtension" MaxLength="30" Counter="30" HelperText="Enter Office Extension" Immediate="true" Clearable="true" Label="Office Extension" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Extension" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.OfficePhone" MaxLength="13" Counter="13" HelperText="Enter Office Phone" Immediate="true" Clearable="true" Label="Office Phone" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Phone" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.HomePhone" MaxLength="13" Counter="13" HelperText="Enter Home Phone" Immediate="true" Clearable="true" Label="Home Phone" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Phone" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.OfficeEmail" MaxLength="100" Counter="100" HelperText="Enter Office Email*" Immediate="true" Clearable="true" Label="Office Email" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Email" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.Password" MaxLength="100" Counter="100" HelperText="Enter Password*" Immediate="true" Clearable="true" Variant="Variant.Text"
                                       InputType="@PasswordInput" Adornment="Adornment.Start" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="VisiblePassword" AdornmentAriaLabel="Show Password" />
                         </MudItem>
                     </MudGrid>
                 </MudTabPanel>
                 <MudTabPanel Text="Address" Icon="@Icons.Material.Filled.GpsFixed">
-                    <MudGrid class="search-action-block align-items-center mt-3">
+                    <MudGrid class="search-action-block align-items-center mt-3 tabs-title-style block-design">
                         <MudItem xs="12" sm="12" md="12" lg="12">
                             <MudText Typo="Typo.body1">Work Address</MudText>
                         </MudItem>
                         <MudDivider />
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.Wastreet" MaxLength="100" Counter="100" HelperText="Enter Work Street" Immediate="true" Clearable="true" Label="Work Street" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddRoad" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.WastreetNo" MaxLength="100" Counter="100" HelperText="Enter Work Street No" Immediate="true" Clearable="true" Label="Work Street No" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddRoad" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.Wablock" MaxLength="50" Counter="50" HelperText="Enter Work Block" Immediate="true" Clearable="true" Label="Work Block" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Block" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.WazipCode" MaxLength="20" Counter="20" HelperText="Enter Zip Code" Immediate="true" Clearable="true" Label="Work Zip Code" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Code" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudAutocomplete T="MstCountry" Value="oModelCountryWork" ValueChanged="@FillCountryWork" SearchFunc="@SearchCountry" Clearable="true" Label="Select Work Country" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.CountryName}")" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudAutocomplete T="MstState" Value="oModelStateWork" ValueChanged="@FillStateWork" SearchFunc="@SearchState" Clearable="true" Label="Select Work State" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.StateName}")" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudAutocomplete T="MstCity" Value="oModelCityWork" ValueChanged="@FillCityWork" SearchFunc="@SearchCity" Clearable="true" Label="Select City" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.CityName}")" />
                         </MudItem>
@@ -454,47 +458,47 @@
                             <MudText Typo="Typo.body1">Home Address</MudText>
                         </MudItem>
                         <MudDivider />
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.Hastreet" MaxLength="100" Counter="100" HelperText="Enter Work Street" Immediate="true" Clearable="true" Label="Home Street" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddRoad" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.HastreetNo" MaxLength="100" Counter="100" HelperText="Enter Work Street No" Immediate="true" Clearable="true" Label="Home Street No" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddRoad" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.Hablock" MaxLength="50" Counter="50" HelperText="Enter Work Block" Immediate="true" Clearable="true" Label="Home Block" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Block" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.HazipCode" MaxLength="20" Counter="20" HelperText="Enter Zip Code" Immediate="true" Clearable="true" Label="Home Zip Code" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Code" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudAutocomplete T="MstCountry" Value="oModelCountryHome" ValueChanged="@FillCountryHome" SearchFunc="@SearchCountry" Clearable="true" Label="Select Home Country" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.CountryName}")" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudAutocomplete T="MstState" Value="oModelStateHome" ValueChanged="@FillStateHome" SearchFunc="@SearchState" Clearable="true" Label="Select Home State" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.StateName}")" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudAutocomplete T="MstCity" Value="oModelCityHome" ValueChanged="@FillCityHome" SearchFunc="@SearchCity" Clearable="true" Label="Select City" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.CityName}")" />
                         </MudItem>
                     </MudGrid>
                 </MudTabPanel>
                 <MudTabPanel Text="Emergency Contact" Icon="@Icons.Material.Filled.Emergency">
-                    <MudGrid class="search-action-block align-items-center mt-3">
+                    <MudGrid class="search-action-block align-items-center mt-3 tabs-title-style block-design">
                         <MudItem xs="12" sm="12" md="12" lg="12">
                             <MudText Typo="Typo.body1">Primary Contact</MudText>
                         </MudItem>
                         <MudDivider />
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.PriPersonName" MaxLength="100" Counter="100" HelperText="Enter Primary Person Name" Immediate="true" Clearable="true" Label="Primary Person Name" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudSelect @bind-Value="oModel.PriRelationShip" Label="Primary Relationship" HelperText="Select Primary Relationship" AdornmentIcon="@Icons.Material.Filled.Male" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "Relative").ToList())
                                 {
@@ -502,27 +506,27 @@
                                 }
                             </MudSelect>
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.PriContactNoLandLine" MaxLength="13" Counter="13" HelperText="Enter Primary Landline No" Immediate="true" Clearable="true" Label="Primary Landline No" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.PhoneAndroid" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.PriContactNoMobile" MaxLength="13" Counter="13" HelperText="Enter Primary Mobile No" Immediate="true" Clearable="true" Label="Primary Mobile No" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.PhoneAndroid" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.PriAddress" MaxLength="100" Counter="100" HelperText="Enter Primary Address" Immediate="true" Clearable="true" Label="Primary Address" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddRoad" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudAutocomplete T="MstCountry" Value="oModelCountryPrimary" ValueChanged="@FillCountryPri" SearchFunc="@SearchCountry" Clearable="true" Label="Select Primary Country" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.CountryName}")" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudAutocomplete T="MstState" Value="oModelStatePrimary" ValueChanged="@FillStatePri" SearchFunc="@SearchState" Clearable="true" Label="Select Primary State" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.StateName}")" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudAutocomplete T="MstCity" Value="oModelCityPrimary" ValueChanged="@FillCityPri" SearchFunc="@SearchCity" Clearable="true" Label="Select City" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.CityName}")" />
                         </MudItem>
@@ -530,11 +534,11 @@
                             <MudText Typo="Typo.body1">Secondary Contact</MudText>
                         </MudItem>
                         <MudDivider />
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.SecPersonName" MaxLength="100" Counter="100" HelperText="Enter Secondary Person Name" Immediate="true" Clearable="true" Label="Secondary Person Name" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudSelect @bind-Value="oModel.SecRelationShip" Label="Secondary Relationship" HelperText="Select Secondary Relationship" AdornmentIcon="@Icons.Material.Filled.Male" Adornment="Adornment.Start">
                                 @foreach (MstLove Love in oListLove.Where(x => x.Type == "Relative").ToList())
                                 {
@@ -542,34 +546,34 @@
                                 }
                             </MudSelect>
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.SecContactNoLandline" MaxLength="13" Counter="13" HelperText="Enter Secondary Landline No" Immediate="true" Clearable="true" Label="Secondary Landline No" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.PhoneAndroid" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.SecContactNoMobile" MaxLength="13" Counter="13" HelperText="Enter Secondary Mobile No" Immediate="true" Clearable="true" Label="Secondary Mobile No" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.PhoneAndroid" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudTextField T="string" @bind-Value="oModel.SecAddress" MaxLength="100" Counter="100" HelperText="Enter Secondary Address" Immediate="true" Clearable="true" Label="Secondary Address" Variant="Variant.Text"
                                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AddRoad" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudAutocomplete T="MstCountry" Value="oModelCountrySecondary" ValueChanged="@FillCountrySec" SearchFunc="@SearchCountry" Clearable="true" Label="Select Secondary Country" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.CountryName}")" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudAutocomplete T="MstState" Value="oModelStateSecondary" ValueChanged="@FillStateSec" SearchFunc="@SearchState" Clearable="true" Label="Select Secondary State" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.StateName}")" />
                         </MudItem>
-                        <MudItem xs="3" sm="3" md="3" lg="3">
+                        <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudAutocomplete T="MstCity" Value="oModelCitySecondary" ValueChanged="@FillCitySec" SearchFunc="@SearchCity" Clearable="true" Label="Select City" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true" CoerceValue="true"
                                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.CityName}")" />
                         </MudItem>
                     </MudGrid>
                 </MudTabPanel>
                 <MudTabPanel Text="Absence" Icon="@Icons.Material.Filled.Accessible">
-                    <MudGrid class="search-action-block align-items-center mt-3">
+                    <MudGrid class="search-action-block align-items-center mt-3 tabs-title-style block-design">
                         <MudItem xs="12" sm="12" md="12" lg="12">
                             <MudCard Elevation="5">
                                 <MudCardContent>
@@ -609,7 +613,7 @@
                     </MudGrid>
                 </MudTabPanel>
                 <MudTabPanel Text="Attachment" Icon="@Icons.Material.Filled.Attachment">
-                    <MudGrid class="search-action-block align-items-center mt-3">
+                    <MudGrid class="search-action-block align-items-center mt-3 tabs-title-style block-design">
                         <MudItem xs="12" sm="12" md="12" lg="12">
                             <MudPaper @ondragenter="@SetDragClassAttachment" @ondragleave="@ClearDragClassAttachment" @ondragend="@ClearDragClassAttachment" Height="300px" Outlined="true" Class="@DragClass">
                                 @if (!Clearing)

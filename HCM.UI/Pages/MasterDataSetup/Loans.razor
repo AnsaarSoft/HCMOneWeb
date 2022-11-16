@@ -14,15 +14,55 @@
     <div class="row mt-5">
         <div class="col-sm-12">
             <MudGrid class="search-action-block align-items-center block-design">
-                <MudItem xs="4" sm="4" md="4" lg="4">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudTextField T="string" @bind-Value="oModel.Code" Disabled="@DisabledCode" Mask="@AlphaNumericMask" MaxLength="50" Counter="50" HelperText="Enter Code" Immediate="true" Clearable="true" Label="Code*" Variant="Variant.Text"
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudTextField T="string" @bind-Value="oModel.Description" MaxLength="250" Counter="250" HelperText="Enter Description" Immediate="true" Clearable="true" Label="Description*" Variant="Variant.Text"
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4" class="text-left">
+               
+                <MudItem xs="12" sm="6" md="4" lg="3">
+                    <MudNumericField @bind-Value="oModel.LoanValue" Min="0" HelperText="Enter Loan Cap" Immediate="true" Clearable="true" Label="Loan Cap*"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text"> </MudNumericField>
+                </MudItem>
+                <MudItem xs="12" sm="6" md="4" lg="3">
+                    <MudNumericField @bind-Value="oModel.TotalLoanCap" Min="0" HelperText="Enter Total Loan Cap" Immediate="true" Clearable="true" Label="Total Loan Cap*"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text"> </MudNumericField>
+                </MudItem>
+                @if (oModel.FlgPf == true)
+                {
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudSelect @bind-Value="oModel.ElementCode" Label="PF Element*" HelperText="Select PF Element" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                            @foreach (MstElement Element in oListElement.Where(x => x.ElmtType == "Con").ToList())
+                            {
+                                <MudSelectItem Value="@Element.Code">@Element.Code - @Element.Description</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudNumericField @bind-Value="oModel.Pfcap" Min="0" HelperText="Enter PF Cap" Immediate="true" Clearable="true" Label="PF Cap*"
+                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text"> </MudNumericField>
+                    </MudItem>
+                    oModel.FlgGratuity = false;
+                    oModel.GratuityCode = "";
+                }
+                @if (oModel.FlgGratuity == true)
+                {
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudSelect @bind-Value="oModel.GratuityCode" Label="Gratuity*" HelperText="Select Gratuity" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                            @foreach (MstGratuity Gratuity in oListGratuity)
+                            {
+                                <MudSelectItem Value="@Gratuity.GrtCode">@Gratuity.GrtCode</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudItem>
+                    oModel.FlgPf = false;
+                    oModel.ElementCode = "";
+                    oModel.Pfcap = 0;
+                }
+                 <MudItem xs="12" sm="12" md="12" lg="12" class="text-left">
                     <MudSwitch @bind-Checked="@oModel.FlgActive" ThumbIcon="@(oModel.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgActive==true ? Color.Info : Color.Error)">
                         <span>@(oModel.FlgActive == true ? "Active" : "In Active")</span>
                     </MudSwitch>
@@ -36,45 +76,6 @@
                         <span>@(oModel.FlgGratuity == true ? "Gratuity - Yes" : "Gratuity - No")</span>
                     </MudSwitch>
                 </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.LoanValue" Min="0" HelperText="Enter Loan Cap" Immediate="true" Clearable="true" Label="Loan Cap*"
-                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text"> </MudNumericField>
-                </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4">
-                    <MudNumericField @bind-Value="oModel.TotalLoanCap" Min="0" HelperText="Enter Total Loan Cap" Immediate="true" Clearable="true" Label="Total Loan Cap*"
-                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text"> </MudNumericField>
-                </MudItem>
-                @if (oModel.FlgPf == true)
-                {
-                    <MudItem xs="4" sm="4" md="4" lg="4">
-                        <MudSelect @bind-Value="oModel.ElementCode" Label="PF Element*" HelperText="Select PF Element" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
-                            @foreach (MstElement Element in oListElement.Where(x => x.ElmtType == "Con").ToList())
-                            {
-                                <MudSelectItem Value="@Element.Code">@Element.Code - @Element.Description</MudSelectItem>
-                            }
-                        </MudSelect>
-                    </MudItem>
-                    <MudItem xs="4" sm="4" md="4" lg="4">
-                        <MudNumericField @bind-Value="oModel.Pfcap" Min="0" HelperText="Enter PF Cap" Immediate="true" Clearable="true" Label="PF Cap*"
-                                     Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Percent" Variant="Variant.Text"> </MudNumericField>
-                    </MudItem>
-                    oModel.FlgGratuity = false;
-                    oModel.GratuityCode = "";
-                }
-                @if (oModel.FlgGratuity == true)
-                {
-                    <MudItem xs="4" sm="4" md="4" lg="4">
-                        <MudSelect @bind-Value="oModel.GratuityCode" Label="Gratuity*" HelperText="Select Gratuity" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
-                            @foreach (MstGratuity Gratuity in oListGratuity)
-                            {
-                                <MudSelectItem Value="@Gratuity.GrtCode">@Gratuity.GrtCode</MudSelectItem>
-                            }
-                        </MudSelect>
-                    </MudItem>
-                    oModel.FlgPf = false;
-                    oModel.ElementCode = "";
-                    oModel.Pfcap = 0;
-                }
                 <MudItem xs="12" sm="12" md="12" lg="12">
                     @if (Loading)
                     {

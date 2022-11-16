@@ -1,7 +1,7 @@
 ﻿@page "/ApprovalTemplate"
 @using HCM.API.Models
 
-<div class="input-field-setting">
+<div class="input-field-setting page-content-setting">
     <div class="row">
         <div class="col-sm-10">
             <h3>Approval Template</h3>
@@ -19,16 +19,16 @@
     <div class="row mt-5">
         <div class="col-sm-12">
             <MudGrid class="search-action-block align-items-center block-design">
-                <MudItem xs="4" sm="4" md="4" lg="4">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudTextField @bind-Value="oModel.Name" InputMode="InputMode.text" MaxLength="200" Counter="200" HelperText="Enter Approval Name" Immediate="true" Clearable="true" Label="Approval Name" Variant="Variant.Text"
                                   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
                 </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     <MudSwitch @bind-Checked="@oModel.FlgActive" ThumbIcon="@(oModel.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgActive==true ? Color.Info : Color.Error)">
                         <span>@(oModel.FlgActive == true ? "Active" : "In Active")</span>
                     </MudSwitch>
                 </MudItem>
-                <MudItem xs="4" sm="4" md="4" lg="4">
+                <MudItem xs="12" sm="6" md="4" lg="3">
                     @if (Loading)
                     {
                         <MudItem xs="2" sm="2" md="2" lg="2">
@@ -66,12 +66,14 @@
                     }
                 </MudTabPanel>
                 <MudTabPanel Icon="@Icons.Sharp.Description" Text="Documents">
+
                     <MudSelect Required="true" RequiredError="Required!" MultiSelectionTextFunc="@(new Func<List<string>, string>(GetDocumentSelection))" @bind-SelectedValues="DocNames" T="MstForm" @bind-Value="oDoc" MultiSelection="true" Label="Select Document" Variant="Variant.Outlined" OffsetY="true" Margin="Margin.Dense">
                         @foreach (MstForm item in oDocList)
                         {
                             <MudSelectItem Value="@item">@item.FormName</MudSelectItem>
                         }
                     </MudSelect>
+
                     <MudDivider Class="mt-5" />
                     @if (DocNames != null)
                     {
