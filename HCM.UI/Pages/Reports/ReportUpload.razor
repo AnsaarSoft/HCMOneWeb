@@ -1,0 +1,120 @@
+﻿@page "/ReportUpload"
+@using HCM.API.Models
+
+<div class="container-fluid page-content-setting">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>Report Upload</h3>
+            <MudDivider />
+        </div>
+        @*<div class="col-sm-1">
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.List" Title="View All" />
+        </div>*@
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudGrid class="search-action-block align-items-center block-design">
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTextField T="string" @bind-Value="oModel.ReportCode" Disabled="@ReportCode" MaxLength="100" Counter="100" HelperText="Enter Report Code" Immediate="true" Clearable="true" Label="Report Code*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudTextField T="string" @bind-Value="oModel.ReportName" HelperText="Enter Report Title" Immediate="true" Clearable="true" Label="Report Title*" Variant="Variant.Text"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.TextFields" />
+                </MudItem>
+
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudSelect @bind-Value="FlgLayout" Disabled="@ReportType" Label="Report Type*" HelperText="Select Report" TextChanged="@((e)=> selectReportType(e))" AdornmentIcon="@Icons.Material.Filled.MergeType" Adornment="Adornment.Start">
+                        <MudSelectItem Value="@("Report")">Report</MudSelectItem>
+                        <MudSelectItem Value="@("Layout")">Layout</MudSelectItem>
+                    </MudSelect>
+                </MudItem>
+
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudAutocomplete T="MstForm" Disabled="@DocumentType" @bind-Value="oModelForm" SearchFunc="@SearchForm" Clearable="true" HelperText="Select Document Type" Label="Document Type*" Variant="Variant.Text" ResetValueOnEmptyText="true" CoerceText="true"
+                                     CoerceValue="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" ToStringFunc="@(e=> e==null?null : $"{e.FormName}")" />
+                </MudItem>
+
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    <MudSwitch @bind-Checked="@oModel.FlgActive" ThumbIcon="@(oModel.FlgActive==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(oModel.FlgActive==true ? Color.Primary : Color.Error)" Color="@(oModel.FlgActive==true ? Color.Info : Color.Error)">
+                        <span>@(oModel.FlgActive == true ? "Active" : "In Active")</span>
+                    </MudSwitch>
+                </MudItem>
+
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    @*accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"*@
+                    <InputFile id="excelFile" OnChange="UploadFile" hidden multiple="false"  />
+                    <MudFab HtmlTag="label" Color="Color.Dark" Icon="@Icons.Custom.FileFormats.FileExcel" Label="Import Report" for="excelFile"/>
+                    @*<MudFab HtmlTag="label" Color="Color.Primary" OnClick="GenerateTemplate" StartIcon="@Icons.Material.Filled.ImportExport" Label="Generate Template" />*@
+                </MudItem>
+
+                <MudItem xs="3" sm="3" md="3" lg="3">
+                    @if (excelSheet != null)
+                    {
+                        @foreach (var file in excelSheet)
+                        {
+                            <MudText @key="@file" Typo="@Typo.caption">Template :  @file.Name</MudText>
+                        }
+                        @if (excelSheet.Count == 0)
+                        {
+                            <MudText Typo="@Typo.caption">No Template selected</MudText>
+                        }
+                    }
+                </MudItem>
+
+                <MudItem xs="12" sm="12" md="12" lg="12">
+                    @if (Loading)
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2">
+                            <MudText>Loading...</MudText>
+                            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudItem xs="2" sm="2" md="2" lg="2" class="text-right custom-btn-design" style="justify-content: flex-end;">
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Title="Save Data">Save</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
+                        </MudItem>
+                    }
+                </MudItem>
+
+            </MudGrid>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <MudCard Elevation="5">
+                <MudCardContent>
+                    @* @if (ModuleType == 1)
+                    {*@
+                    <MudTable Items="@oList" Loading="Loading" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstReport,bool>(FilterFuncReport)">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Reports</MudText>
+                            <MudSpacer />
+                            <MudTextField T="string" @bind-Value="searchStringReport" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Report Code</MudTh>
+                            <MudTh>Report Name</MudTh>
+                            @*  <MudTh>Layout</MudTh>*@
+                            <MudTh>Active</MudTh>
+                            <MudTh>Action</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Report Code">@context.ReportCode</MudTd>
+                            <MudTd DataLabel="Report Name">@context.ReportName</MudTd>
+                            @* <MudTd DataLabel="Report Name">@context.FlgLayout</MudTd>*@
+                            <MudTd DataLabel="Active">@context.FlgActive</MudTd>
+                            <MudTd DataLabel="Action"><MudIconButton Color="Color.Primary" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => EditRecord(context.Id) )" Title="Edit"></MudIconButton></MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudTablePager />
+                        </PagerContent>
+                    </MudTable>
+                    @*}*@
+                </MudCardContent>
+            </MudCard>
+        </div>
+    </div>
+</div>

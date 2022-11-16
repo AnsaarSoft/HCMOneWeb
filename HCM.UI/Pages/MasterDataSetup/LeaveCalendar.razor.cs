@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using HCM.API.Models;
 using HCM.UI.General;
+using HCM.UI.Interfaces.Authorization;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -22,6 +23,8 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         [Inject]
         public IMstLeaveCalendar _mstLeaveCalendar { get; set; }
+        [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
 
 
         [Inject]
@@ -209,6 +212,7 @@ namespace HCM.UI.Pages.MasterDataSetup
         }
 
         #endregion
+
         #region Events
 
         protected async override Task OnInitializedAsync()
@@ -220,20 +224,29 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    oModel.FlgActive = true;
-                    await GetAllLeaveCalendars();
-                    if (oList.Where(x => x.FlgActive == true).Count() > 0)
+
+                    var res1 = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res1.Where(x => x.CMenuID == 30 && x.UserRights == true).ToList().Count > 0)
                     {
-                        DisabledDate = true;
-                        var res = oList.Where(x => x.FlgActive == true).Max(x => x.EndDate);
-                        Convert.ToDateTime(res).AddDays(1);
-                        _dateRange = new DateRange(Convert.ToDateTime(res.Value).AddDays(1), Convert.ToDateTime(res).AddMonths(12));
-                        _dateRange.Start = MinDate = Convert.ToDateTime(res).AddDays(1);
+                        oModel.FlgActive = true;
+                        await GetAllLeaveCalendars();
+                        if (oList.Where(x => x.FlgActive == true).Count() > 0)
+                        {
+                            DisabledDate = true;
+                            var res = oList.Where(x => x.FlgActive == true).Max(x => x.EndDate);
+                            Convert.ToDateTime(res).AddDays(1);
+                            _dateRange = new DateRange(Convert.ToDateTime(res.Value).AddDays(1), Convert.ToDateTime(res).AddMonths(12));
+                            _dateRange.Start = MinDate = Convert.ToDateTime(res).AddDays(1);
+                        }
+                        else
+                        {
+                            //MinDate = DateTime.Now.Date;
+                            _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date.AddMonths(12));
+                        }
                     }
                     else
                     {
-                        //MinDate = DateTime.Now.Date;
-                        _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.Date.AddMonths(12));
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
                     }
                 }
                 else

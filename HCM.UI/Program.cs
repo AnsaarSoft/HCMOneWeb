@@ -15,6 +15,7 @@ using HCM.UI.Data.EmployeeMasterSetup;
 using HCM.UI.Data.Loan;
 using HCM.UI.Data.MasterData;
 using HCM.UI.Data.MasterElement;
+using HCM.UI.Data.Reports;
 using HCM.UI.Data.SAPData;
 using HCM.UI.Data.ShiftManagement;
 using HCM.UI.Interfaces.Account;
@@ -29,6 +30,7 @@ using HCM.UI.Interfaces.EmployeeMasterSetup;
 using HCM.UI.Interfaces.Loan;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
+using HCM.UI.Interfaces.Reports;
 using HCM.UI.Interfaces.SAPData;
 using HCM.UI.Interfaces.ShiftManagement;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -116,6 +118,7 @@ builder.Services.AddScoped<IMstGldetermination, MstGldeterminationService>();
 builder.Services.AddScoped<ITrnsProductStage, TrnsProductStageService>();
 builder.Services.AddScoped<IMstTarget, MstTargetService>();
 builder.Services.AddScoped<ITrnsPerPiece, TrnsPerPieceService>();
+builder.Services.AddScoped<IMstReport, MstReportService>();
 //Configuration Start
 
 Settings.APIBaseURL = builder.Configuration.GetValue<string>("APIBaseUrl");

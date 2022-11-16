@@ -12,6 +12,7 @@ namespace HCM.API.HCMModels
         public int? SortNum { get; set; }
         public string MenuLink { get; set; }
         public string Icon { get; set; }
+        public string ReportCode { get; set; }
         public bool? FlgReport { get; set; }
         public bool? FlgActive { get; set; }
         public string CreatedBy { get; set; }

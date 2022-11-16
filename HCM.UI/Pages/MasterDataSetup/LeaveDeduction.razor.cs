@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using HCM.API.Models;
 using HCM.UI.General;
+using HCM.UI.Interfaces.Authorization;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
 using Microsoft.AspNetCore.Components;
@@ -23,6 +24,8 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         [Inject]
         public IMstLeaveDeduction _mstLeaveDeduction { get; set; }
+        [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
 
         [Inject]
         public IMstLove _mstLove { get; set; }
@@ -229,10 +232,19 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    await GetAllLove();
-                    await GetAllLeaveDeduction();
-                    oModel.FlgActive = true;
-                    oModel.DeductionValue = 0;
+
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 29 && x.UserRights == true).ToList().Count > 0)
+                    {
+                        await GetAllLove();
+                        await GetAllLeaveDeduction();
+                        oModel.FlgActive = true;
+                        oModel.DeductionValue = 0;
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {

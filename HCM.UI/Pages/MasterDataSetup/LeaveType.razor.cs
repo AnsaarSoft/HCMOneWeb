@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using HCM.API.Models;
 using HCM.UI.General;
+using HCM.UI.Interfaces.Authorization;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
 using Microsoft.AspNetCore.Components;
@@ -23,6 +24,9 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         [Inject]
         public IMstLeaveType _mstLeaveType { get; set; }
+
+        [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
 
         [Inject]
         public IMstLove _mstLove { get; set; }
@@ -86,7 +90,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = true;
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
-                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description) && !string.IsNullOrWhiteSpace(oModel.DeductionType) && (oModel.FlgEncash ==true || oModel.FlgPartiallyEncash == true) && !string.IsNullOrWhiteSpace(oModel.ElementCode))
+                if (!string.IsNullOrWhiteSpace(oModel.Code) && !string.IsNullOrWhiteSpace(oModel.Description) && !string.IsNullOrWhiteSpace(oModel.DeductionType) && (oModel.FlgEncash == true || oModel.FlgPartiallyEncash == true) && !string.IsNullOrWhiteSpace(oModel.ElementCode))
                 {
                     if (oModel.Code.Length > 20)
                     {
@@ -274,16 +278,25 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    await GetAllLove();
-                    await GetAllLeaveDeduction();
-                    await GetAllLeaveType();
-                    await GetAllElements();
-                    oModel.FlgEncash = true;
-                    oModel.FlgCarryForward = true;
-                    oModel.FlgActive = true;
-                    oModel.LeaveCap = 0;
-                    oModel.EncashmentCap = 0;
-                    oModel.CarryForwardLeaves = 0;
+
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 28 && x.UserRights == true).ToList().Count > 0)
+                    {
+                        await GetAllLove();
+                        await GetAllLeaveDeduction();
+                        await GetAllLeaveType();
+                        await GetAllElements();
+                        oModel.FlgEncash = true;
+                        oModel.FlgCarryForward = true;
+                        oModel.FlgActive = true;
+                        oModel.LeaveCap = 0;
+                        oModel.EncashmentCap = 0;
+                        oModel.CarryForwardLeaves = 0;
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {

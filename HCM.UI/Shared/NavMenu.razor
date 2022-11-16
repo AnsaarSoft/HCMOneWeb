@@ -197,6 +197,15 @@
                     }
                 </MudNavGroup>
             }
+            if (AuthMenus.Where(x => x.PMenuID == 73).ToList().Count > 0)
+            {
+                <MudNavGroup Title="Reports" class="parent-icon" Expanded="false" Icon="@Icons.Filled.SyncProblem" IconColor="Color.Inherit">
+                    @foreach (var item in AuthMenus.Where(x => x.PMenuID == 73))
+                    {
+                        <MudNavLink Href=@item.MenuLink Match="NavLinkMatch.Prefix" class="child-icons" Icon="@Icons.Filled.Circle">@item.CMenuName</MudNavLink>
+                    }
+                </MudNavGroup>
+            }
         }
     </MudNavMenu>
 </MudPaper>

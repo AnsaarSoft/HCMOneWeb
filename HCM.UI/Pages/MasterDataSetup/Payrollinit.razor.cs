@@ -4,6 +4,7 @@ using HCM.UI.General;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Blazored.LocalStorage;
+using HCM.UI.Interfaces.Authorization;
 
 namespace HCM.UI.Pages.MasterDataSetup
 {
@@ -24,6 +25,10 @@ namespace HCM.UI.Pages.MasterDataSetup
         [Inject]
         public ICfgPayrollDefinationinit _CfgPayrollDefinationinit { get; set; }
 
+
+        [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
+
         [Inject]
         public ILocalStorageService _localStorage { get; set; }
         private string LoginUser = "";
@@ -34,9 +39,9 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         bool Loading = false;
 
-        
+
         public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
-        
+
 
         private bool FilterFunc(MstEmailConfig element) => FilterFunc(element);
 
@@ -53,24 +58,24 @@ namespace HCM.UI.Pages.MasterDataSetup
                 var res = new ApiResponseModel();
                 await Task.Delay(3);
 
-                
-                    if (oModel.Id >= 0)
-                    {
-                        res = await _CfgPayrollDefinationinit.Update(oModel);
-                    }
 
-                    if (res != null && res.Id == 1)
-                    {
+                if (oModel.Id >= 0)
+                {
+                    res = await _CfgPayrollDefinationinit.Update(oModel);
+                }
 
-                        Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
-                        await Task.Delay(3000);
-                        Navigation.NavigateTo("/Payrollinit", forceLoad: true);
-                    }
-                    else
-                    {
-                        Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
-                    }
-                                             
+                if (res != null && res.Id == 1)
+                {
+
+                    Snackbar.Add(res.Message, Severity.Info, (options) => { options.Icon = Icons.Sharp.Info; });
+                    await Task.Delay(3000);
+                    Navigation.NavigateTo("/Payrollinit", forceLoad: true);
+                }
+                else
+                {
+                    Snackbar.Add(res.Message, Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
+                }
+
                 Loading = false;
                 return res;
             }
@@ -124,7 +129,15 @@ namespace HCM.UI.Pages.MasterDataSetup
                 {
                     LoginUser = Session.EmpId;
 
-                    await GetPayrollinit();
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 2 && x.UserRights == true).ToList().Count > 0)
+                    {
+                        await GetPayrollinit();
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {

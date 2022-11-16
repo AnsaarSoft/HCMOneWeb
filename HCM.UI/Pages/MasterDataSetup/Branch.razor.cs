@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using HCM.API.Models;
 using HCM.UI.General;
+using HCM.UI.Interfaces.Authorization;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Caching.Memory;
@@ -23,6 +24,10 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         [Inject]
         public IMstBranch _mstBranch { get; set; }
+
+        [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
+
 
         [Inject]
         public ILocalStorageService _localStorage { get; set; }
@@ -186,10 +191,18 @@ namespace HCM.UI.Pages.MasterDataSetup
                 Loading = true;
                 var Session = await _localStorage.GetItemAsync<MstEmployee>("User");
                 if (Session != null)
-                {                    
-                    LoginUser = Session.EmpId;
-                    oModel.FlgActive = true;
-                    await GetAllBranches();
+                {
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 14 && x.UserRights == true).ToList().Count > 0)
+                    {
+                        LoginUser = Session.EmpId;
+                        oModel.FlgActive = true;
+                        await GetAllBranches();
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {

@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using HCM.API.Models;
 using HCM.UI.General;
+using HCM.UI.Interfaces.Authorization;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -24,6 +25,9 @@ namespace HCM.UI.Pages.MasterDataSetup
         public ICfgTaxSetup _CfgTaxSetup { get; set; }
 
         [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
+
+        [Inject]
         public IMstCalendar _mstCalendar { get; set; }
 
         [Inject]
@@ -34,7 +38,7 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         #region Variables
 
-        bool Loading = false;        
+        bool Loading = false;
 
         private string searchString1 = "";
         private bool FilterFunc(CfgTaxDetail element) => FilterFunc(element, searchString1);
@@ -48,7 +52,7 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
         DialogOptions FullView = new DialogOptions() { MaxWidth = MaxWidth.ExtraExtraLarge, FullWidth = true, CloseButton = true, DisableBackdropClick = true, CloseOnEscapeKey = true };
-        
+
         #endregion
 
         #region Functions
@@ -87,7 +91,7 @@ namespace HCM.UI.Pages.MasterDataSetup
 
                 if (!result.Cancelled)
                 {
-                    var res = (CfgTaxDetail)result.Data;                    
+                    var res = (CfgTaxDetail)result.Data;
                     var update = oDetailList.Where(x => x.TaxCode == res.TaxCode).FirstOrDefault();
                     if (update != null)
                     {
@@ -121,7 +125,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             {
                 var parameters = new DialogParameters();
                 parameters.Add("DialogFor", "TaxSetup");
-                var dialog = Dialog.Show<ProcessDialog>("", parameters,options);
+                var dialog = Dialog.Show<ProcessDialog>("", parameters, options);
                 var result = await dialog.Result;
                 if (!result.Cancelled)
                 {
@@ -131,7 +135,7 @@ namespace HCM.UI.Pages.MasterDataSetup
                         Snackbar.Add("Code already exist", Severity.Error, (options) => { options.Icon = Icons.Sharp.Error; });
                     }
                     else
-                    {                        
+                    {
                         oDetail.Add(res);
                         oDetailList = oDetail;
                     }
@@ -258,13 +262,21 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    oModel.MinTaxSalaryF = 0;
 
-                    oModel.DiscountOnTotalTax = 0;
-                    oModel.MaxSalaryDisc = 0;
-                    oModel.SeniorCitizonAge = 0;
-                    await GetAllCalendar();
-                    //await GetAllTaxSetup();
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 19 && x.UserRights == true).ToList().Count > 0)
+                    {
+                        oModel.MinTaxSalaryF = 0;
+                        oModel.DiscountOnTotalTax = 0;
+                        oModel.MaxSalaryDisc = 0;
+                        oModel.SeniorCitizonAge = 0;
+                        await GetAllCalendar();
+                        //await GetAllTaxSetup();
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {

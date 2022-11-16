@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using HCM.API.Models;
 using HCM.UI.General;
+using HCM.UI.Interfaces.Authorization;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
 using Microsoft.AspNetCore.Components;
@@ -23,6 +24,8 @@ namespace HCM.UI.Pages.MasterElement
 
         [Inject]
         public IMstOverTime _mstOverTime { get; set; }
+        [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
 
         [Inject]
         public IMstLove _mstLove { get; set; }
@@ -246,16 +249,24 @@ namespace HCM.UI.Pages.MasterElement
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    oModel.Value = 0;
-                    oModel.PerDayCap = 0;
-                    oModel.PerMonthCap = 0;
-                    oModel.FlgActive = true;
-                    oModel.FlgDefault = true;
-                    oModel.FlgFormula = true;
-                    oModel.Hour = 0;
-                    oModel.MonthDays = 0;
-                    await GetAllLove();
-                    await GetAllOverTime();
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 37 && x.UserRights == true).ToList().Count > 0)
+                    {
+                        oModel.Value = 0;
+                        oModel.PerDayCap = 0;
+                        oModel.PerMonthCap = 0;
+                        oModel.FlgActive = true;
+                        oModel.FlgDefault = true;
+                        oModel.FlgFormula = true;
+                        oModel.Hour = 0;
+                        oModel.MonthDays = 0;
+                        await GetAllLove();
+                        await GetAllOverTime();
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {

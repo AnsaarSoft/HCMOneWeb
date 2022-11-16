@@ -2,6 +2,7 @@
 using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.ApprovalSetup;
+using HCM.UI.Interfaces.Authorization;
 using HCM.UI.Pages.Advance;
 using HCM.UI.Pages.EmployeeMasterSetup;
 using HCM.UI.Pages.Loan;
@@ -23,6 +24,10 @@ namespace HCM.UI.Pages.ApprovalSetup
 
         [Inject]
         public IDocApprovalDecesion _DocApprovalDecesionService { get; set; }
+
+
+        [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
 
         [Inject]
         public NavigationManager Navigation { get; set; }
@@ -99,7 +104,7 @@ namespace HCM.UI.Pages.ApprovalSetup
                 var parameters = new DialogParameters();
                 parameters.Add("DialogFor", "ApprovalDecesion");
                 var dialog = Dialog.Show<DialogBox>("", parameters, options);
-                var result = await dialog.Result;;
+                var result = await dialog.Result; ;
                 if (!result.Cancelled)
                 {
                     Loading = true;
@@ -147,7 +152,7 @@ namespace HCM.UI.Pages.ApprovalSetup
             }
         }
 
-        private async Task ViewApprovalDocument(DialogOptions options, int DocNum,int formID)
+        private async Task ViewApprovalDocument(DialogOptions options, int DocNum, int formID)
         {
             try
             {
@@ -200,7 +205,16 @@ namespace HCM.UI.Pages.ApprovalSetup
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    await GetAllPendingDoc();
+
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 7 && x.UserRights == true).ToList().Count > 0)
+                    {
+                        await GetAllPendingDoc();
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {

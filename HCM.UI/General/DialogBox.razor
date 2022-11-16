@@ -832,7 +832,7 @@
                     </MudTable>
                 }
                 @if (oListTrnsProductStageItem?.Count > 0 && DialogFor == "TrnsProductStageItem")
-                { @*Target me use hua he and per piece*@ 
+                { @*Target me use hua he and per piece*@
                     <MudTable Items="@oListTrnsProductStageItem" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsProductStageItem,bool>(FilterFuncTrnsProductStageItem)"
                       Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableTrnsProductStageItem" RowClassFunc="@SelectedRowClassFuncFilterFuncTrnsProductStageItem" OnRowClick="RowClickEventTrnsProductStageItem" T="TrnsProductStageItem" @bind-SelectedItem="oModelTrnsProductStageItem">
                         <ToolBarContent>
@@ -859,8 +859,8 @@
                         </PagerContent>
                     </MudTable>
                 }
-                 @if (oListTrnsProductStageStation?.Count > 0 && DialogFor == "TrnsProductStageStation")
-                { @*Per Piece*@ 
+                @if (oListTrnsProductStageStation?.Count > 0 && DialogFor == "TrnsProductStageStation")
+                { @*Per Piece*@
                     <MudTable Items="@oListTrnsProductStageStation" Class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsProductStageStation,bool>(FilterFuncTrnsProductStageStation)"
                       Loading="@Loading" LoadingProgressColor="Color.Primary" @ref="@_tableTrnsProductStageStation" RowClassFunc="@SelectedRowClassFuncFilterFuncTrnsProductStageStation" OnRowClick="RowClickEventTrnsProductStageStation" T="TrnsProductStageStation" @bind-SelectedItem="oModelTrnsProductStageStation">
                         <ToolBarContent>

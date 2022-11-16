@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using HCM.API.Models;
 using HCM.UI.General;
+using HCM.UI.Interfaces.Authorization;
 using HCM.UI.Interfaces.MasterData;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -25,6 +26,9 @@ namespace HCM.UI.Pages.MasterDataSetup
         public IMstEmailConfig _mstEmailConfig { get; set; }
 
         [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
+
+        [Inject]
         public ILocalStorageService _localStorage { get; set; }
         private string LoginUser = "";
 
@@ -36,7 +40,7 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         bool DisabledCode = false;
         public IMask AlphaNumericMask = new RegexMask(@"^[a-zA-Z0-9_]*$");
-       
+
 
         bool isShow;
         InputType PasswordInput = InputType.Password;
@@ -108,7 +112,7 @@ namespace HCM.UI.Pages.MasterDataSetup
             }
         }
 
-     
+
         private async Task GetEmailConfig()
         {
             try
@@ -150,7 +154,15 @@ namespace HCM.UI.Pages.MasterDataSetup
                 {
                     LoginUser = Session.EmpId;
 
-                    await GetEmailConfig();
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 3 && x.UserRights == true).ToList().Count > 0)
+                    {
+                        await GetEmailConfig();
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {

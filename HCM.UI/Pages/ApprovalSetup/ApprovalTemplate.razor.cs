@@ -3,6 +3,7 @@ using HCM.API.HCMModels;
 using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.ApprovalSetup;
+using HCM.UI.Interfaces.Authorization;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -23,6 +24,10 @@ namespace HCM.UI.Pages.ApprovalSetup
 
         [Inject]
         public ICfgApprovalTemplate _cfgApprovalTemplateService { get; set; }
+
+
+        [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
 
         [Inject]
         public NavigationManager navigation { get; set; }
@@ -326,7 +331,7 @@ namespace HCM.UI.Pages.ApprovalSetup
                             switch (Line.FormCode)
                             {
                                 case 2:
-                                obj.FlgEmpLeave = true;
+                                    obj.FlgEmpLeave = true;
                                     break;
                                 case 3:
                                     obj.FlgLoan = true;
@@ -335,10 +340,10 @@ namespace HCM.UI.Pages.ApprovalSetup
                                     obj.FlgAdvance = true;
                                     break;
                                 case 5:
-                                    obj.FlgEmpTransfer= true;
+                                    obj.FlgEmpTransfer = true;
                                     break;
                                 case 6:
-                                    obj.FlgResignation= true;
+                                    obj.FlgResignation = true;
                                     break;
                             }
                         }
@@ -421,9 +426,18 @@ namespace HCM.UI.Pages.ApprovalSetup
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    oModel.FlgActive = true;
-                    await GetApprovalDocs();
-                    await GetAllStages();
+
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 6 && x.UserRights == true).ToList().Count > 0)
+                    {
+                        oModel.FlgActive = true;
+                        await GetApprovalDocs();
+                        await GetAllStages();
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {

@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using HCM.API.Models;
 using HCM.UI.General;
+using HCM.UI.Interfaces.Authorization;
 using HCM.UI.Interfaces.MasterData;
 using HCM.UI.Interfaces.MasterElement;
 using Microsoft.AspNetCore.Components;
@@ -29,6 +30,8 @@ namespace HCM.UI.Pages.MasterDataSetup
 
         [Inject]
         public IMstGratuity _mstGratuity { get; set; }
+        [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
 
         [Inject]
         public ILocalStorageService _localStorage { get; set; }
@@ -239,13 +242,22 @@ namespace HCM.UI.Pages.MasterDataSetup
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
-                    oModel.FlgActive = true;
-                    oModel.LoanValue = 0;
-                    oModel.TotalLoanCap = 0;
-                    oModel.Pfcap = 0;
-                    await GetAllLoans();
-                    await GetAllElements();
-                    await GetAllGratuity();
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 35 && x.UserRights == true).ToList().Count > 0)
+                    {
+
+                        oModel.FlgActive = true;
+                        oModel.LoanValue = 0;
+                        oModel.TotalLoanCap = 0;
+                        oModel.Pfcap = 0;
+                        await GetAllLoans();
+                        await GetAllElements();
+                        await GetAllGratuity();
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
                 }
                 else
                 {

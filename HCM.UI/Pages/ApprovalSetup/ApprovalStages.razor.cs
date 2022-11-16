@@ -2,6 +2,7 @@
 using HCM.API.Models;
 using HCM.UI.General;
 using HCM.UI.Interfaces.ApprovalSetup;
+using HCM.UI.Interfaces.Authorization;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -19,6 +20,10 @@ namespace HCM.UI.Pages.ApprovalSetup
         public IDialogService Dialog { get; set; }
         [Inject]
         public ICfgApprovalStage _stageService { get; set; }
+
+        [Inject]
+        public IUserAuthorization _UserAuthorization { get; set; }
+
         [Inject]
         public NavigationManager navigation { get; set; }
         [Inject]
@@ -245,6 +250,16 @@ namespace HCM.UI.Pages.ApprovalSetup
                 if (Session != null)
                 {
                     LoginUser = Session.EmpId;
+
+                    var res = await _UserAuthorization.GetAllAuthorizationMenu(LoginUser);
+                    if (res.Where(x => x.CMenuID == 5 && x.UserRights == true).ToList().Count > 0)
+                    {
+                    }
+                    else
+                    {
+                        Navigation.NavigateTo("/Dashboard", forceLoad: true);
+                    }
+
                 }
                 else
                 {
