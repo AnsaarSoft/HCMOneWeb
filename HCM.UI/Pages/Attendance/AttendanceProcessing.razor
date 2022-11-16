@@ -77,7 +77,7 @@
                         <MudItem xs="12" sm="12" md="12" lg="12" class="text-right custom-btn-design" style="justify-content: flex-end;">
                             <MudButton Variant="Variant.Filled" OnClick="SearchCriteria" StartIcon="@Icons.Material.Filled.Search" Color="Color.Info" Size="Size.Small">Search</MudButton>
                             <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Save</MudButton>
-                            <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.PostAdd" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Post</MudButton>
+                            <MudButton Variant="Variant.Filled" OnClick="Post" StartIcon="@Icons.Material.Filled.PostAdd" Color="Color.Info" Size="Size.Small" style="margin:0 10px;">Post</MudButton>
                             <MudButton Variant="Variant.Filled" OnClick="Save" StartIcon="@Icons.Material.Filled.Clear" Color="Color.Error" Size="Size.Small" style="margin:0 10px;">Void</MudButton>
                             <MudButton Variant="Variant.Filled" OnClick="Reset" StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Error">Reset</MudButton>
                         </MudItem>
@@ -86,56 +86,128 @@
             </MudGrid>
         </div>
     </div>
-
-    <div class="row mt-5">
-        <div class="col-sm-12">
-            <MudCard Elevation="5">
-                <MudCardContent>
-                    <MudTable Items="@oListFilteredEmployee" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstEmployee,bool>(FilterFuncFilteredEmployee)">
-                        <ToolBarContent>
-                            <MudText Typo="Typo.h6">Selected Employees</MudText>
-                            <MudSpacer />
-                            <MudTextField T="string" @bind-Value="searchStringFilteredEmployee" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
-                        </ToolBarContent>
-                        <HeaderContent>
-                            <MudTh>Delete</MudTh>
-                            <MudTh>Employee Code</MudTh>
-                            <MudTh>Employee Name</MudTh>
-                            <MudTh>Payroll</MudTh>
-                            <MudTh>Designation</MudTh>
-                            <MudTh>Department</MudTh>
-                            <MudTh>Location</MudTh>
-                            <MudTh>Branch</MudTh>
-                        </HeaderContent>
-                        <RowTemplate>
-                            <MudTd DataLabel="Action"><MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteFromFilter(context.Id) )" Title="Delete"></MudIconButton></MudTd>
-                            <MudTd DataLabel="Department Code">@context.EmpId</MudTd>
-                            <MudTd DataLabel="Department Name">@context.FirstName @context.MiddleName @context.LastName</MudTd>
-                            <MudTd DataLabel="Active">@context.PayrollName</MudTd>
-                            <MudTd DataLabel="Active">@context.DesignationName</MudTd>
-                            <MudTd DataLabel="Active">@context.DepartmentName</MudTd>
-                            <MudTd DataLabel="Active">@context.LocationName</MudTd>
-                            <MudTd DataLabel="Active">@context.BranchName</MudTd>
-                        </RowTemplate>
-                        <PagerContent>
-                            <MudTablePager />
-                        </PagerContent>
-                    </MudTable>
-                </MudCardContent>
-            </MudCard>
+    @if (!NextButtonClicked)
+    {
+        <div class="row mt-5">
+            <div class="col-sm-12">
+                <MudCard Elevation="5">
+                    <MudCardContent>
+                        <MudTable Items="@oListFilteredEmployee" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<MstEmployee,bool>(FilterFuncFilteredEmployee)">
+                            <ToolBarContent>
+                                <MudText Typo="Typo.h6">Selected Employees</MudText>
+                                <MudSpacer />
+                                <MudTextField T="string" @bind-Value="searchStringFilteredEmployee" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                            </ToolBarContent>
+                            <HeaderContent>
+                                <MudTh>Delete</MudTh>
+                                <MudTh>Employee Code</MudTh>
+                                <MudTh>Employee Name</MudTh>
+                                <MudTh>Payroll</MudTh>
+                                <MudTh>Designation</MudTh>
+                                <MudTh>Department</MudTh>
+                                <MudTh>Location</MudTh>
+                                <MudTh>Branch</MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="Action"><MudIconButton Color="Color.Error" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteFromFilter(context.Id) )" Title="Delete"></MudIconButton></MudTd>
+                                <MudTd DataLabel="Department Code">@context.EmpId</MudTd>
+                                <MudTd DataLabel="Department Name">@context.FirstName @context.MiddleName @context.LastName</MudTd>
+                                <MudTd DataLabel="Active">@context.PayrollName</MudTd>
+                                <MudTd DataLabel="Active">@context.DesignationName</MudTd>
+                                <MudTd DataLabel="Active">@context.DepartmentName</MudTd>
+                                <MudTd DataLabel="Active">@context.LocationName</MudTd>
+                                <MudTd DataLabel="Active">@context.BranchName</MudTd>
+                            </RowTemplate>
+                            <PagerContent>
+                                <MudTablePager />
+                            </PagerContent>
+                        </MudTable>
+                    </MudCardContent>
+                </MudCard>
+            </div>
         </div>
-    </div>
-    <div class="row mt-5">
-        <div class="col-sm-12">
+    }
 
+    @if (oListFilteredAttendanceRegister.Count() > 0)
+    {
+        <div class="row mt-5">
+            <div class="col-sm-12">
+                <MudCard Elevation="5">
+                    <MudCardContent>
+                        <MudTable Items="@oListFilteredAttendanceRegister" class="table-setting" Dense="true" Hover="true" Bordered="true" Striped="true" Filter="new Func<TrnsAttendanceRegister,bool>(FilterFuncAttRegister)">
+                            <ToolBarContent>
+                                <MudText Typo="Typo.h6">Attendance</MudText>
+                                <MudSpacer />
+                                <MudTextField T="string" @bind-Value="searchStringAttRegister" Placeholder="Search" Variant="Variant.Text" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                            </ToolBarContent>
+                            <HeaderContent>
+                                <MudTh>Employee Code</MudTh>
+                                <MudTh>Payroll</MudTh>
+                                <MudTh>Period</MudTh>
+                                <MudTh>Shift</MudTh>
+                                <MudTh>Date</MudTh>
+                                <MudTh>Date Day</MudTh>
+                                <MudTh>Time In</MudTh>
+                                <MudTh>Time Out</MudTh>
+                                <MudTh>Work Hour</MudTh>
+                                <MudTh>Late In Min</MudTh>
+                                <MudTh>Late Out Min</MudTh>
+                                <MudTh>Early In Min</MudTh>
+                                <MudTh>Early Out Min</MudTh>
+                                <MudTh>OT Hour</MudTh>
+                                <MudTh>OT Type</MudTh>
+                                <MudTh>Leave Duration</MudTh>
+                                <MudTh>Leave Type</MudTh>
+                                <MudTh>Leave Count</MudTh>
+                                <MudTh>Off Day</MudTh>
+                                <MudTh>Processed</MudTh>
+                                <MudTh>Posted</MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="Department Code">@context.EmpId</MudTd>
+                                <MudTd DataLabel="Active">@context.FkpayrollId</MudTd>
+                                <MudTd DataLabel="Active">@context.PeriodId</MudTd>
+                                <MudTd DataLabel="Active">@context.ShiftId</MudTd>
+                                <MudTd DataLabel="Active">@Convert.ToDateTime(context.Date).ToString("MM/dd/yyyy")</MudTd>
+                                <MudTd DataLabel="Active">@context.DateDay</MudTd>
+                                <MudTd DataLabel="Active">@context.TimeIn</MudTd>
+                                <MudTd DataLabel="Active">@context.TimeOut</MudTd>
+                                <MudTd DataLabel="Active">@context.WorkHour</MudTd>
+                                <MudTd DataLabel="Active">@context.LateInMin</MudTd>
+                                <MudTd DataLabel="Active">@context.LateOutMin</MudTd>
+                                <MudTd DataLabel="Active">@context.EarlyInMin</MudTd>
+                                <MudTd DataLabel="Active">@context.EarlyOutMin</MudTd>
+                                <MudTd DataLabel="Active">@context.Othour</MudTd>
+                                <MudTd DataLabel="Active">@context.Ottype</MudTd>
+                                <MudTd DataLabel="Active">@context.LeaveDuration</MudTd>
+                                <MudTd DataLabel="Active">@context.LeaveType</MudTd>
+                                <MudTd DataLabel="Active">@context.LeaveCount</MudTd>
+                                <MudTd DataLabel="Active">@context.FlgOffDay</MudTd>
+                                <MudTd DataLabel="Active">@context.FlgProcessed</MudTd>
+                                <MudTd DataLabel="Active">@context.FlgPosted</MudTd>
+                            </RowTemplate>
+                            <PagerContent>
+                                <MudTablePager />
+                            </PagerContent>
+                        </MudTable>
+                    </MudCardContent>
+                </MudCard>
+            </div>
         </div>
-    </div>
+    }
+
     <div class="row mt-5">
         <div class="col-sm-12">
             @if (oListFilteredEmployee.Count() > 0)
             {
-                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.NavigateBefore" Color="Color.Info" Size="Size.Small">Back</MudButton>
-                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.NavigateNext" Color="Color.Info" Size="Size.Small">Next</MudButton>
+                @if (oListFilteredAttendanceRegister.Count() > 0)
+                {
+                    <MudButton Variant="Variant.Filled" OnClick="Back" StartIcon="@Icons.Material.Filled.NavigateBefore" Color="Color.Info" Size="Size.Small">Back</MudButton>
+                }
+                @if (!NextButtonClicked)
+                {
+                    <MudButton Variant="Variant.Filled" OnClick="FetchAttendanceProcessed" EndIcon="@Icons.Material.Filled.NavigateNext" Color="Color.Info" Size="Size.Small">Next</MudButton>
+                }
             }
         </div>
     </div>
