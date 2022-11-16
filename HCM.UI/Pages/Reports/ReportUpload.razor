@@ -43,7 +43,7 @@
 
                 <MudItem xs="3" sm="3" md="3" lg="3">
                     @*accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"*@
-                    <InputFile id="excelFile" OnChange="UploadFile" hidden multiple="false"  />
+                    <InputFile id="excelFile" OnChange="UploadFile" hidden multiple="false" accept=".rpt" />
                     <MudFab HtmlTag="label" Color="Color.Dark" Icon="@Icons.Custom.FileFormats.FileExcel" Label="Import Report" for="excelFile"/>
                     @*<MudFab HtmlTag="label" Color="Color.Primary" OnClick="GenerateTemplate" StartIcon="@Icons.Material.Filled.ImportExport" Label="Generate Template" />*@
                 </MudItem>
